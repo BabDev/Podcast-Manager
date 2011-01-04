@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="1.6"
+	client="site"
+	method="upgrade">
+	<name>mod_podcastmanager</name>
+	<creationDate>28 August 2010</creationDate>
+	<author>Michael Babker</author>
+	<copyright>(C) 2011 Michael Babker</copyright>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.flbab.com</authorUrl>
+	<version>1.6 Alpha</version>
+	<license>GNU/GPL</license>
+	<description>MOD_PODCASTMANAGER_XML_DESCRIPTION</description>
+	<files>
+		<folder>media</folder>
+		<folder>tmpl</folder>
+		<filename module="mod_podcastmanager">mod_podcastmanager.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="text"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_TEXT_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_TEXT_DESCRIPTION" />
+				<field
+					name="urischeme"
+					type="radio"
+					default="http"
+					label="MOD_PODCASTMANAGER_FIELD_URISCHEME_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_URISCHEME_DESCRIPTION">
+					<option
+						value="http">http://</option>
+					<option
+						value="itpc">itpc://</option>
+					<option
+						value="pcast">pcast://</option>
+				</field>
+				<field
+					name="plainlink"
+					type="radio"
+					default="1"
+					label="MOD_PODCASTMANAGER_FIELD_PLAINLINK_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_PLAINLINK_DESCRIPTION">
+					<option
+						value="0">JNO</option>
+					<option
+						value="1">JYES</option>
+				</field>
+				<field
+					name="@spacer"
+					type="spacer"
+					label=""
+					description="" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="@spacer"
+					type="spacer"
+					label=""
+					description="" />
+				<field
+					name="otherlink"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
+				<field
+					name="otherimage"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_DESCRIPTION" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
+					<option
+						value="0">JNO</option>
+					<option
+						value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
