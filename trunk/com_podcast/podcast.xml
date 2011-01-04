@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+	<name>Podcast</name>
+	<creationDate>March 28, 2009</creationDate>
+	<author>http://www.jlleblanc.com</author>
+	<authorEmail>contact@jlleblanc.com</authorEmail>
+	<copyright>2005 - 2009</copyright>
+	<license>GPL v2</license>
+	<version>1.5 RC 1</version>
+	<description>A component for managing podcasts.</description>
+	<menu link="option=com_podcast">Podcast Suite</menu>
+	<languages folder="admin/languages">
+		<language tag="en-GB">en-GB.com_podcast.ini</language>
+		<language tag="fr-FR">fr-FR.com_podcast.ini</language>
+		<language tag="de-DE">de-DE.com_podcast.ini</language>
+	</languages>
+	<files folder="site">
+		<filename>index.html</filename>
+		<folder>media</folder>
+		<folder>models</folder>
+		<filename>podcast.php</filename>
+		<folder>views</folder>
+	</files>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.mysql.sql</file>
+		</sql>
+	</install>
+	<administration>
+		<menu>Podcast Suite</menu>
+		<submenu>
+			<menu link="option=com_podcast&amp;view=files">Manage Clips</menu>
+			<menu link="option=com_podcast&amp;view=info">Information</menu>
+		</submenu>
+		
+		<languages folder="admin/languages">
+			<language tag="en-GB">en-GB.com_podcast.ini</language>
+			<language tag="fr-FR">fr-FR.com_podcast.ini</language>
+		</languages>
+		<files folder="admin">
+			<filename>alerts.css</filename>
+			<filename>alerts_on.css</filename>
+			<filename>config.xml</filename>
+			<filename>LICENSE</filename>
+			<folder>getid3</folder>
+			<filename>index.html</filename>
+			<filename>install.mysql.sql</filename>
+			<folder>models</folder>
+			<filename>podcast.php</filename>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+	</administration>
+</install>
+

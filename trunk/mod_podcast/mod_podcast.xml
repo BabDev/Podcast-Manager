@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5.0">
+	<name>Podcast</name>
+	<author>Joseph LeBlanc and Dan Li</author>
+	<creationDate>July 2008</creationDate>
+	<copyright>Copyright (C) 2005 - 2008. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>contact@jlleblanc.com</authorEmail>
+	<authorUrl>www.jlleblanc.com</authorUrl>
+	<version>1.5 RC 1</version>
+	<description>Provides links for users to subscribe to your podcast feeds.</description>
+	<files>
+		<filename module="mod_podcast">mod_podcast.php</filename>
+		<filename>podcast-mini2.png</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<params>
+		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
+			<option value="0">Never</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="text" type="text" default="" label="Text" description="Enter any text to be displayed along with the RSS link" />
+		<param name="urischeme" type="radio" default="http" label="URI Scheme" description="Setting this option makes one-click subscriptions possible for users with iTunes">
+			<option value="http">http://</option>
+			<option value="itpc">itpc://</option>
+			<option value="pcast">pcast://</option>
+		</param>
+		<param name="plainlink" type="radio" default="1" label="Display Flat Link" description="Set this option to 'Yes' to display an additional 'Full Feed' link that uses http://. When you have a non-http link enabled above, this is useful for users who cannot do one-click subscriptions.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the CSS class of the Module. This allows for individual Module styling." />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="otherlink" type="text" default="" label="Other Link" description="Enter custom link to use, such as one for iTunes subscriptions" />
+		<param name="otherimage" type="text" default="" label="Other Image" description="Enter the relative or direct URL to use for the image" />
+	</params>
+</install>
