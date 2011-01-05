@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: config.xml 19439 2010-11-10 15:42:23Z chdemko $ -->
+<!-- $Id$ -->
 <config>
 	<fieldset name="component"
 		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL"
