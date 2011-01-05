@@ -1,9 +1,21 @@
 <?php 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
-$mainframe->registerEvent( 'onPrepareContent', 'plgContentPodcast' );
+// Restricted access
+defined('_JEXEC') or die();
 
-function plgContentPodcast( &$row, &$params, $page=0 )
+$app	= JFactory::getApplication();
+
+$app->registerEvent( 'onPrepareContent', 'plgContentPodcastManager' );
+
+function plgContentPodcastManager( &$row, &$params, $page=0 )
 {	
 	// Performance check: don't go any farther if we don't have an {enclose ...} tag
 	if ( JString::strpos( $row->text, 'enclose' ) === false && JString::strpos( $row->text, 'player' ) === false) {
@@ -14,7 +26,7 @@ function plgContentPodcast( &$row, &$params, $page=0 )
 	
 	preg_match_all( '/\{(enclose|player) (.*)\}/i' , $row->text, $matches );
 	
-	$podcastParams =& JComponentHelper::getParams('com_podcast');
+	$podManParams =& JComponentHelper::getParams('com_podcastmanager');
 	
 	foreach ($matches[2] as $id => $podcast) {
 
@@ -28,7 +40,7 @@ function plgContentPodcast( &$row, &$params, $page=0 )
 		 */
 		$enclose = explode(' ', $podcast);
 
-		$player = new PodcastPlayer($podcastParams, $enclose, $row->title);
+		$player = new PodcastManagerPlayer($podManParams, $enclose, $row->title);
 				
 		$row->text = JString::str_ireplace($matches[0][$id], $player->generate(), $row->text);
 	}
@@ -36,13 +48,13 @@ function plgContentPodcast( &$row, &$params, $page=0 )
 	return true;
 }
 
-class PodcastPlayer
+class PodcastManagerPlayer
 {
 	private $playerType = null;
 	private $enclose = null;
 	private $fileURL = null;
 	private $title = null;
-	private $podcastParams = null;
+	private $podManParams = null;
 	private $validTypes = array('links', 'player', 'html', 'QTplayer');
 	private $fileTypes = array (
 		'asf' => 'video/asf',
@@ -66,10 +78,10 @@ class PodcastPlayer
 		'wmx' => 'video/asf',
 	);
 	
-	function __construct(&$podcastParams, $enclose, $title)
+	function __construct(&$podManParams, $enclose, $title)
 	{	
-		$this->podcastParams =& $podcastParams;
-		$playerType = $this->podcastParams->get('linkhandling', 'player');
+		$this->podManParams =& $podManParams;
+		$playerType = $this->podManParams->get('linkhandling', 'player');
 		
 		if (in_array($playerType, $this->validTypes)) {
 			$this->playerType = $playerType;
@@ -91,7 +103,7 @@ class PodcastPlayer
 	
 	private function determineURL($filename)
 	{
-		$mediapath = $this->podcastParams->get('mediapath', 'components/com_podcast/media');
+		$mediapath = $this->podManParams->get('mediapath', 'components/com_podcastmanager/media');
 		
 		// If we have a full URL, stop.
 		// Otherwise, see if the file is the normal mediapath and build URL
@@ -113,13 +125,13 @@ class PodcastPlayer
 	
 	private function links()
 	{
-		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podcastParams->get('linktitle', 'Listen Now!')) . '</a>';
+		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podManParams->get('linktitle', JText::_('Listen Now!'))) . '</a>';
 	}
 	
 	private function player()
 	{
-		$width = $this->podcastParams->get( 'playerwidth', 400);
-		$height = $this->podcastParams->get( 'playerheight', 15);
+		$width = $this->podManParams->get( 'playerwidth', 400);
+		$height = $this->podManParams->get( 'playerheight', 15);
 
 		$playerURL = JURI::base() . 'plugins/content/podcast/xspf_player_slim.swf';
 
@@ -128,7 +140,7 @@ class PodcastPlayer
 	
 	private function html()
 	{
-		$linkcode = $this->podcastParams->get('linkcode', '');
+		$linkcode = $this->podManParams->get('linkcode', '');
 		return preg_replace('/\{filename\}/', $this->fileURL, $linkcode);
 	}
 	
@@ -136,8 +148,8 @@ class PodcastPlayer
 	{
 		$ext = substr($this->enclose[0], strlen($this->enclose[0]) - 3);
 
-		$width = $this->podcastParams->get( 'playerwidth', 320);
-		$height = $this->podcastParams->get( 'playerheight', 240);
+		$width = $this->podManParams->get( 'playerwidth', 320);
+		$height = $this->podManParams->get( 'playerheight', 240);
 		
 		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $width . '" height="' . $height . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
 		. '<param name="src" value="' . $this->fileURL . '" />'
