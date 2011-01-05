@@ -1,13 +1,19 @@
 <?php 
-/*
-	Model to find {enclose ...} tags in content items
-	Joseph L. LeBlanc
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
 */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.model');
 
-class PodcastModelFeed extends JModel
+class PodcastManagerModelFeed extends JModel
 {
 	private $data = array();
 	
@@ -26,7 +32,7 @@ class PodcastModelFeed extends JModel
 		$metadata = array();
 		
 		if (isset($this->data['content'])) {
-			$metaList = $this->_getList("SELECT * FROM #__podcast");
+			$metaList = $this->_getList("SELECT * FROM #__podcastmanager");
 			
 			foreach ($metaList as &$row) {
 				$metadata[$row->filename] =& $row;
@@ -63,7 +69,7 @@ class PodcastModelFeed extends JModel
 		$date =& JFactory::getDate();
 		$now = $date->toMySQL();
 		
-		$params =& JComponentHelper::getParams('com_podcast');
+		$params =& JComponentHelper::getParams('com_podcastmanager');
 		
 		$category_id = $params->get('category_id', 0);
 		$count = $params->get('count', 5);

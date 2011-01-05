@@ -1,14 +1,19 @@
 <?php
-/*
-	Podcast Suite
-	(c) 2005 - 2008 Joseph L. LeBlanc
-	Released under the GPLv2 License
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
 */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 
-class PodcastController extends JController
+class PodcastManagerController extends JController
 {
 	function display()
 	{		
@@ -25,6 +30,6 @@ class PodcastController extends JController
 $document =& JFactory::getDocument();
 $document->setType('raw');
 
-$controller = new PodcastController();
+$controller = new PodcastManagerController();
 $controller->execute(JRequest::getVar('task', null));
 $controller->redirect();

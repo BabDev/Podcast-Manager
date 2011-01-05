@@ -1,26 +1,31 @@
 <?php 
-/*
-	Podcast Suite
-	(c) 2008 Joseph L. LeBlanc
-	Released under the GPLv2 License
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
 */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
-class PodcastViewFeed extends JView
+class PodcastManagerViewFeed extends JView
 {
 	function display($tpl = null)
 	{
-		$params =& JComponentHelper::getParams('com_podcast');
+		$params =& JComponentHelper::getParams('com_podcastmanager');
 		
 		$document =& JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 		
 		if($params->get('cache', true)) {
-			$cache =& JFactory::getCache('com_podcast', 'output');
-			if($cache->start('feed', 'com_podcast')) {
+			$cache =& JFactory::getCache('com_podcastmanager', 'output');
+			if($cache->start('feed', 'com_podcastmanager')) {
 				return;
 			}
 		}
@@ -40,7 +45,7 @@ class PodcastViewFeed extends JView
 		$xw->startElement('channel');
 		
 		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false) . 'index.php?option=com_podcast&view=feed&format=raw');
+		$xw->writeAttribute('href', JURI::root(false) . 'index.php?option=com_podcastmanager&view=feed&format=raw');
 		$xw->writeAttribute('rel', 'self');
 		$xw->writeAttribute('type', 'application/rss+xml');
 		$xw->endElement();
@@ -139,14 +144,14 @@ class PodcastViewFeed extends JView
 			if(preg_match('/^http/', $filename)) { // external url
 				$fileFullPath = $fileURL = $filename;
 			} else {
-				$fileFullPath = JPATH_ROOT . DS . $params->get('mediapath', 'components/com_podcast/media') . DS . $filename;
+				$fileFullPath = JPATH_ROOT . DS . $params->get('mediapath', 'components/com_podcastmanager/media') . DS . $filename;
 				if(!JFile::exists($fileFullPath)) {
 					$fileFullPath = JPATH_ROOT . DS . $filename; // try fallback
 					if(!JFile::exists($fileFullPath))
 						continue;
 					$fileURL = JURI::root() . $filename;
 				} else {
-					$fileURL = JURI::root() . $params->get('mediapath', 'components/com_podcast/media') . '/' . $filename;
+					$fileURL = JURI::root() . $params->get('mediapath', 'components/com_podcastmanager/media') . '/' . $filename;
 				}
 			}
 			
