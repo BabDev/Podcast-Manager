@@ -38,6 +38,7 @@
 			<language tag="fr-FR">fr-FR.com_podcast.ini</language>
 		</languages>
 		<files folder="admin">
+			<filename>access.xml</filename>
 			<filename>alerts.css</filename>
 			<filename>alerts_on.css</filename>
 			<filename>config.xml</filename>
