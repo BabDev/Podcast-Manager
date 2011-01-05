@@ -42,11 +42,13 @@
 			<filename>alerts.css</filename>
 			<filename>alerts_on.css</filename>
 			<filename>config.xml</filename>
+			<filename>controller.php</filename>
 			<filename>LICENSE</filename>
 			<filename>index.html</filename>
 			<filename>install.mysql.sql</filename>
 			<filename>podcastmanager.php</filename>
 			<folder>getid3</folder>
+			<folder>helpers</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
