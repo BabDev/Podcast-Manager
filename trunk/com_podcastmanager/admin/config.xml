@@ -8,7 +8,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="mediapath" type="text" size="40" default="components/com_podcast/media" label="Path for uploaded media" description="TIPMEDIA" />
+		<field name="mediapath" type="text" size="40" default="components/com_podcastmanager/media" label="Path for uploaded media" description="TIPMEDIA" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="linkhandling" type="radio" default="links" label="Link titles, Flash player, code, or QuickTime" description="TIPLINKHANDLING">
 			<option value="links">LINKHANDLELINKS</option>

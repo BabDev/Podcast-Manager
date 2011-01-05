@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 JToolBarHelper::title( JText::_( 'Podcast Files Manager' ), 'addedit.png' );
 JToolBarHelper::editList();
 JToolBarHelper::addNew();
-JToolBarHelper::preferences('com_podcast', '550');
+JToolBarHelper::preferences('com_podcastmanager', '550');
 
 $document =& JFactory::getDocument();
 $document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/alerts.css');
