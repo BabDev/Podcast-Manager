@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: config.xml 19439 2010-11-10 15:42:23Z chdemko $ -->
 <config>
-	<params>
-		<param name="cache" type="radio" default="1" label="Cache" description="TIPCACHE">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="mediapath" type="text" size="40" default="components/com_podcast/media" label="Path for uploaded media" description="TIPMEDIA" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="linkhandling" type="radio" default="links" label="Link titles, Flash player, code, or QuickTime" description="TIPLINKHANDLING">
+	<fieldset name="component"
+		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL"
+		description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESC">
+		<field name="cache" type="radio" default="1" label="Cache" description="TIPCACHE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="mediapath" type="text" size="40" default="components/com_podcast/media" label="Path for uploaded media" description="TIPMEDIA" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="linkhandling" type="radio" default="links" label="Link titles, Flash player, code, or QuickTime" description="TIPLINKHANDLING">
 			<option value="links">LINKHANDLELINKS</option>
 			<option value="player">LINKHANDLEFLASH</option>
 			<option value="html">LINKHANDLEHTML</option>
 			<option value="QTplayer">LINKHANDLEQUICKTIME</option>
-		</param>
-		<param name="playerwidth" type="text" default="" label="Player Width" description="TIPPLAYERWIDTH" />
-		<param name="playerheight" type="text" default="" label="Player Height" description="TIPPLAYERHEIGHT" />
-		<param name="linktitle" type="text" default="Listen Now!" label="Enclosure Link Titles" description="TIPLINKTITLES" />
-		<param name="linkcode" type="textarea" rows="5" cols="30" default="" label="Enclosure Code" description="TIPENCLOSURE" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="cache_time" type="text" size="8" default="3600" label="Cache Time" description="TIPCACHETIME" />
-		<param name="mimetype" type="text" size="30" default="audio/mpeg" label="MIME type" description="TIPMIME" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="count" type="text" size="4" default="5" label="# Items" description="TIPITEMS" />
-		<param name="title" type="text" size="40" default="My Podcast" label="Title" description="TIPTITLE" />
-		<param name="description" type="textarea" rows="5" cols="30" default="My regular podcast" label="Description" description="TIPDESCRIPTION" />
-		<param name="copyright" type="text" size="30" default="(c) 2008" label="Copyright" description="Copyright" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="hidehelps" type="radio" default="0" label="Hide Helps" description="TIPHIDEHELPS">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="itBlock" type="radio" default="0" label="ITUNES BLOCK" description="TIPITUNESBLOCK">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="itExplicit" type="radio" default="0" label="ITUNES EXPLICIT" description="TIPITUNESEXPLICIT">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="itAuthor" type="text" size="30" default="" label="ITUNES AUTHOR" description="TIPITUNESAUTHOR" />
-		<param name="itImage" type="text" size="30" default="" label="iTunes Image" description="TIPITUNESIMAGE" />
-		<param name="itCategory1" type="list" default="" label="ITUNES CATEGORY 1" description="TIPITUNESCAT1">
+		</field>
+		<field name="playerwidth" type="text" default="" label="Player Width" description="TIPPLAYERWIDTH" />
+		<field name="playerheight" type="text" default="" label="Player Height" description="TIPPLAYERHEIGHT" />
+		<field name="linktitle" type="text" default="Listen Now!" label="Enclosure Link Titles" description="TIPLINKTITLES" />
+		<field name="linkcode" type="textarea" rows="5" cols="30" default="" label="Enclosure Code" description="TIPENCLOSURE" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="cache_time" type="text" size="8" default="3600" label="Cache Time" description="TIPCACHETIME" />
+		<field name="mimetype" type="text" size="30" default="audio/mpeg" label="MIME type" description="TIPMIME" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="count" type="text" size="4" default="5" label="# Items" description="TIPITEMS" />
+		<field name="title" type="text" size="40" default="My Podcast" label="Title" description="TIPTITLE" />
+		<field name="description" type="textarea" rows="5" cols="30" default="My regular podcast" label="Description" description="TIPDESCRIPTION" />
+		<field name="copyright" type="text" size="30" default="(c) 2008" label="Copyright" description="Copyright" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="hidehelps" type="radio" default="0" label="Hide Helps" description="TIPHIDEHELPS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="itBlock" type="radio" default="0" label="ITUNES BLOCK" description="TIPITUNESBLOCK">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="itExplicit" type="radio" default="0" label="ITUNES EXPLICIT" description="TIPITUNESEXPLICIT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="itAuthor" type="text" size="30" default="" label="ITUNES AUTHOR" description="TIPITUNESAUTHOR" />
+		<field name="itImage" type="text" size="30" default="" label="iTunes Image" description="TIPITUNESIMAGE" />
+		<field name="itCategory1" type="list" default="" label="ITUNES CATEGORY 1" description="TIPITUNESCAT1">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -110,8 +113,8 @@
 			<option value="Technology &gt; Podcasting">Technology &gt; Podcasting</option>
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
-		</param>
-		<param name="itCategory2" type="list" default="" label="ITUNES CATEGORY 2" description="TIPITUNESCAT2">
+		</field>
+		<field name="itCategory2" type="list" default="" label="ITUNES CATEGORY 2" description="TIPITUNESCAT2">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -180,8 +183,8 @@
 			<option value="Technology &gt; Podcasting">Technology &gt; Podcasting</option>
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
-		</param>
-		<param name="itCategory3" type="list" default="" label="ITUNES CATEGORY 3" description="TIPITUNESCAT3">
+		</field>
+		<field name="itCategory3" type="list" default="" label="ITUNES CATEGORY 3" description="TIPITUNESCAT3">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -250,10 +253,26 @@
 			<option value="Technology &gt; Podcasting">Technology &gt; Podcasting</option>
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
-		</param>
-		<param name="itKeywords" type="text" size="30" default="" label="ITUNES KEYWORDS" description="TIPITUNESKEYWORDS" />
-		<param name="itOwnerEmail" type="text" size="30" default="" label="ITUNES OWNER E-MAIL" description="TIPITUNESOWNEREMAIL" />
-		<param name="itOwnerName" type="text" size="30" default="" label="ITUNES OWNER NAME" description="TIPITUNESOWNERNAME" />
-		<param name="itSubtitle" type="text" size="30" default="" label="ITUNES SUBTITLE" description="TIPITUNESSUBTITLE" />
-	</params>
+		</field>
+		<field name="itKeywords" type="text" size="30" default="" label="ITUNES KEYWORDS" description="TIPITUNESKEYWORDS" />
+		<field name="itOwnerEmail" type="text" size="30" default="" label="ITUNES OWNER E-MAIL" description="TIPITUNESOWNEREMAIL" />
+		<field name="itOwnerName" type="text" size="30" default="" label="ITUNES OWNER NAME" description="TIPITUNESOWNERNAME" />
+		<field name="itSubtitle" type="text" size="30" default="" label="ITUNES SUBTITLE" description="TIPITUNESSUBTITLE" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			validate="rules"
+			component="com_podcastmanager"
+			section="component" />
+	</fieldset>
 </config>

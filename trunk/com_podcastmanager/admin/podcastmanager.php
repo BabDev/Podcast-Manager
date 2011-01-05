@@ -1,22 +1,27 @@
 <?php 
-/*
-	Podcast Suite
-	(c) 2005 - 2008 Joseph L. LeBlanc
-	Released under the GPLv2 License
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
 */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 
 JTable::addIncludePath( JPATH_COMPONENT.DS.'tables' );
 
-class PodcastController extends JController
+class PodcastManagerController extends JController
 {
 	function &save()
 	{
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$row =& JTable::getInstance('podcast', 'Table');
+		$row =& JTable::getInstance('podcastmanager', 'Table');
 		
 		$post = JRequest::get('post');
 		
@@ -31,11 +36,11 @@ class PodcastController extends JController
 			JError::raiseError(500, $row->getError());
 		}
 		
-		$this->setRedirect('index.php?option=com_podcast', JText::_('Metadata Saved.'));
+		$this->setRedirect('index.php?option=com_podcastmanager', JText::_('Metadata Saved.'));
 
 		// clear cache
-		$cache =& JFactory::getCache('com_podcast', 'output');
-		$cache->clean('com_podcast');
+		$cache =& JFactory::getCache('com_podcastmanager', 'output');
+		$cache->clean('com_podcastmanager');
 		
 		return $row;
 	}
@@ -114,7 +119,7 @@ class PodcastController extends JController
 	}
 }
 
-$controller = new PodcastController();
+$controller = new PodcastManagerController();
 $controller->registerTask( 'edit', 'display');
 $controller->registerTask( 'add' , 'display' );
 $controller->execute(JRequest::getVar('task', null));

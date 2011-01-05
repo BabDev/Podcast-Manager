@@ -1,14 +1,27 @@
 <?php
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
+
+//TODO: Remove global $option
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
-class PodcastViewPodcast extends JView
+class PodcastManagerViewPodcast extends JView
 {
 	function display($tpl = null)
 	{
 		global $option;
+		$app	= JFactory::getApplication();
 		
 		$params =& JComponentHelper::getParams($option);
 		
@@ -27,15 +40,13 @@ class PodcastViewPodcast extends JView
 		} else if(!$id || !$row->load($id)) { // metadata hasn't been added yet or the given id is invalid
 			
 			if(!$filename) { // this should never happen if user uses interface
-				global $mainframe, $option;
-				$mainframe->redirect("index.php?option=$option", JText::_('Invalid ID or Filename'), 'error');
+				$app->redirect("index.php?option=$option", JText::_('Invalid ID or Filename'), 'error');
 				return;
 			}
 			
 			$row->filename = JFile::makeSafe($filename[0]);
 			if($row->filename !== $filename[0]) { // either they're messing with us or the OS is allowing filenames that Joomla isn't
-				global $mainframe, $option;
-				$mainframe->redirect("index.php?option=$option", JText::_('Filename Cannot Contain Special Characters'), 'error'); // either way, let's stay safe
+				$app->redirect("index.php?option=$option", JText::_('Filename Cannot Contain Special Characters'), 'error'); // either way, let's stay safe
 				return;
 			}
 
@@ -66,8 +77,8 @@ class PodcastViewPodcast extends JView
 		define('GETID3_HELPERAPPSDIR', JPATH_COMPONENT . DS . 'getid3');
 		include JPATH_COMPONENT . DS . 'getid3' . DS . 'getid3.php';
 		
-		$params =& JComponentHelper::getParams('com_podcast');
-		$mediapath = $params->get('mediapath', 'components/com_podcast/media');
+		$params =& JComponentHelper::getParams('com_podcastmanager');
+		$mediapath = $params->get('mediapath', 'components/com_podcastmanager/media');
 		
 		$filename = JPATH_ROOT . DS . $mediapath . DS . $row->filename;
 		

@@ -1,9 +1,19 @@
 <?php 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: mod_podcastmanager.php 5 2011-01-04 03:06:30Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class PodcastModelFiles extends JModel {
+class PodcastManagerModelFiles extends JModel {
 	private $pagination = null;
 	private $filelist = null;
 	private $folder = null;
@@ -29,7 +39,7 @@ class PodcastModelFiles extends JModel {
 	private function &getPodcasts()
 	{
 		if (!$this->podcasts) {
-			$query = "SELECT podcast_id,filename FROM #__podcast";
+			$query = "SELECT podcast_id,filename FROM #__podcastmanager";
 			$this->podcasts = $this->_getList($query);
 			
 			if (!count($this->podcasts)) {
@@ -45,8 +55,8 @@ class PodcastModelFiles extends JModel {
 			jimport('joomla.filesystem.path');
 			jimport('joomla.filesystem.folder');
 
-			$params =& JComponentHelper::getParams('com_podcast');
-			$mediapath = $params->get('mediapath', 'components/com_podcast/media');
+			$params =& JComponentHelper::getParams('com_podcastmanager');
+			$mediapath = $params->get('mediapath', 'components/com_podcastmanager/media');
 
 			$this->folder = JPATH_ROOT . DS . JFolder::makeSafe(JPath::clean($mediapath));
 		}
@@ -69,8 +79,8 @@ class PodcastModelFiles extends JModel {
 	public function getPagination() {
 		if(!$this->pagination) {
 			jimport('joomla.html.pagination');
-			global $mainframe;
-			$this->pagination = new JPagination($this->getTotal(), JRequest::getVar('limitstart', 0), JRequest::getVar('limit', $mainframe->getCfg('list_limit')));
+			$app	= JFactory::getApplication();
+			$this->pagination = new JPagination($this->getTotal(), JRequest::getVar('limitstart', 0), JRequest::getVar('limit', $app->getCfg('list_limit')));
 		}
 
 		return $this->pagination;
@@ -89,7 +99,8 @@ class PodcastModelFiles extends JModel {
 		if($this->data)
 			return $this->data;
 
-		global $mainframe, $option;
+		$app	= JFactory::getApplication();
+		global $option;
 
 		$files =& $this->getFilelist();
 		$podcasts =& $this->getPodcasts();
@@ -168,8 +179,8 @@ class PodcastModelFiles extends JModel {
 		$this->data =& $data;
 
 		// filters
-		$filter_published = $mainframe->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
-		$filter_metadata = $mainframe->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
+		$filter_published = $app->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
+		$filter_metadata = $app->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
 
 		$published = $filter_published == 'on';
 		$unpublished = $filter_published == 'off';

@@ -1,20 +1,31 @@
 <?php
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class PodcastViewFiles extends JView {
+class PodcastManagerViewFiles extends JView {
 	public function display($tpl = null) {
-		global $mainframe, $option;
+		global $option;
+		$app	= JFactory::getApplication();
 
 		$params =& JComponentHelper::getParams($option);
 
-		$filter_published = $mainframe->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
-		$filter_metadata = $mainframe->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
+		$filter_published = $app->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
+		$filter_metadata = $app->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
 
 		$filter = array();
-		$filter['published'] = PodcastViewFiles::filter($filter_published, JText::_('Published'), JText::_('Unpublished'), JText::_('Published'), 'filter_published');
-		$filter['metadata'] = PodcastViewFiles::filter($filter_metadata, JText::_('Has Metadata'), JText::_('No Metadata'), JText::_('Metadata'), 'filter_metadata');
+		$filter['published'] = self::filter($filter_published, JText::_('Published'), JText::_('Unpublished'), JText::_('Published'), 'filter_published');
+		$filter['metadata'] = self::filter($filter_metadata, JText::_('Has Metadata'), JText::_('No Metadata'), JText::_('Metadata'), 'filter_metadata');
 
 		$data =& $this->get('data');
 		$folder = $this->get('folder');

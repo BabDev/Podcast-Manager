@@ -1,5 +1,15 @@
 <?php 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
 
 if ($this->podcast->podcast_id) {
 	JToolBarHelper::title( JText::_('Edit Podcast Metadata'), 'addedit.png' );
@@ -12,7 +22,7 @@ if ($this->podcast->podcast_id) {
 JToolBarHelper::cancel();
 
 $document =& JFactory::getDocument();
-$document->addScript(JURI::base() . 'components/com_podcast/views/podcast/tmpl/default.js');
+$document->addScript(JURI::base() . 'components/com_podcastmanager/views/podcast/tmpl/default.js');
 
 ?>
 <form action="index.php" method="post" name="adminForm">
@@ -113,7 +123,7 @@ $document->addScript(JURI::base() . 'components/com_podcast/views/podcast/tmpl/d
 <div class="clr"></div>
 
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="option" value="com_podcast" />
+	<input type="hidden" name="option" value="com_podcastmanager" />
 	<input type="hidden" name="podcast_id" value="<?php echo $this->podcast->podcast_id; ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

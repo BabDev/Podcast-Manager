@@ -1,8 +1,22 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
+
 JToolBarHelper::title('Podcast Suite 1.5');
 
 $document =& JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/components/com_podcast/views/info/info.css');
+$document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/views/info/info.css');
+
+//TODO: Rewrite this page
 
 ?>
 <div class="podcastmessage">

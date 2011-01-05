@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `#__podcast` (
+CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `podcast_id` int(11) NOT NULL auto_increment,
   `filename` varchar(255) NOT NULL,
   `itAuthor` varchar(255) NOT NULL default '',

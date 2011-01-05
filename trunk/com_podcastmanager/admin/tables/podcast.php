@@ -1,7 +1,17 @@
 <?php
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
-class TablePodcast extends JTable {
+// Restricted access
+defined('_JEXEC') or die();
+
+class PodcastManagerTable extends JTable {
 	
 	var $podcast_id;
 	var $filename;
@@ -15,6 +25,6 @@ class TablePodcast extends JTable {
 	
 	function __construct( &$db )
 	{
-		parent::__construct( '#__podcast', 'podcast_id', $db );
+		parent::__construct( '#__podcastmanager', 'podcast_id', $db );
 	}
 }

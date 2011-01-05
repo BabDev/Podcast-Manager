@@ -1,5 +1,15 @@
 <?php 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id: podcastmanager.php 7 2011-01-05 16:46:53Z mbabker $
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+// Restricted access
+defined('_JEXEC') or die();
 
 JToolBarHelper::title( JText::_( 'Podcast Files Manager' ), 'addedit.png' );
 JToolBarHelper::editList();
@@ -7,9 +17,9 @@ JToolBarHelper::addNew();
 JToolBarHelper::preferences('com_podcast', '550');
 
 $document =& JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/components/com_podcast/alerts.css');
+$document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/alerts.css');
 
-$document->addScript(JURI::base() . '/components/com_podcast/views/files/tmpl/default.js');
+$document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/tmpl/default.js');
 
 if($this->params->get('hidehelps', 0) != 1) 
 {
