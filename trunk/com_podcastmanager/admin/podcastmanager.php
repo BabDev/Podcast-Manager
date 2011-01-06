@@ -2,7 +2,7 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @version		$Id: podcastmanager.php 14 2011-01-05 23:26:28Z mbabker $
+* @version		$Id$
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * 

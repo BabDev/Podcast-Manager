@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: podcastmanager.xml 14 2011-01-05 23:26:28Z mbabker $ -->
+<!-- $Id$ -->
 <extension type="component" version="1.6" method="upgrade">
 	<name>com_podcastmanager</name>
 	<creationDate>January 2011</creationDate>
@@ -9,8 +9,8 @@
 	<authorUrl>http://www.flbab.com</authorUrl>
 	<version>1.6 Alpha</version>
 	<license>GNU/GPL</license>
-	<description>A component for managing podcasts.</description>
-	<menu link="option=com_podcastmanager">Podcast Manager</menu>
+	<description>COM_PODCASTMANAGER_XML_DESCRIPTION</description>
+	<menu link="option=com_podcastmanager">COM_PODCASTMANAGER</menu>
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
@@ -24,18 +24,18 @@
 		</sql>
 	</install>
 	<administration>
-		<menu>Podcast Manager</menu>
+		<menu>COM_PODCASTMANAGER</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_podcastmanager&amp;view=files">Manage Clips</menu>
-			<menu link="option=com_podcastmanager&amp;view=info">Information</menu>
+			<menu link="option=com_podcastmanager&amp;view=files" view="files" alt="Podcast-Manager/Files">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
+			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
 		</submenu>
 		<languages folder="admin/languages">
-			<language tag="en-GB">en-GB.com_podcast.ini</language>
-			<language tag="fr-FR">fr-FR.com_podcast.ini</language>
+			<language tag="en-GB">en-GB.com_podcastmanager.ini</language>
+			<language tag="en-GB">en-GB.com_podcastmanager.sys.ini</language>
 		</languages>
 		<files folder="admin">
 			<filename>access.xml</filename>
