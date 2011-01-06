@@ -10,7 +10,6 @@
 	<version>1.6 Alpha</version>
 	<license>GNU/GPL</license>
 	<description>A component for managing podcasts.</description>
-	<menu link="option=com_podcastmanager">Podcast Manager</menu>
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
@@ -33,9 +32,8 @@
 			<menu link="option=com_podcastmanager&amp;view=files">Manage Clips</menu>
 			<menu link="option=com_podcastmanager&amp;view=info">Information</menu>
 		</submenu>
-		<languages folder="admin/languages">
-			<language tag="en-GB">en-GB.com_podcast.ini</language>
-			<language tag="fr-FR">fr-FR.com_podcast.ini</language>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB.com_podcastmanager.ini</language>
 		</languages>
 		<files folder="admin">
 			<filename>access.xml</filename>
