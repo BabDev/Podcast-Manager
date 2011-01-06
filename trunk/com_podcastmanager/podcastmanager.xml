@@ -24,19 +24,6 @@
 		</sql>
 	</install>
 	<administration>
-		<menu>COM_PODCASTMANAGER</menu>
-		<submenu>
-			<!--
-				Note that all & must be escaped to &amp; for the file to be valid
-				XML and be parsed by the installer
-			-->
-			<menu link="option=com_podcastmanager&amp;view=files" view="files" alt="Podcast-Manager/Files">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
-			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
-		</submenu>
-		<languages folder="admin/languages">
-			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
-			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
-		</languages>
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>alerts.css</filename>
@@ -53,5 +40,18 @@
 			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
+		</languages>
+		<menu>COM_PODCASTMANAGER</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_podcastmanager&amp;view=files" view="files" alt="Podcast-Manager/Files">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
+			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
+		</submenu>
 	</administration>
 </extension>
