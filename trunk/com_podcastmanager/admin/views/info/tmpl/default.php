@@ -11,8 +11,6 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-JToolBarHelper::title('Podcast Suite 1.5');
-
 $document =& JFactory::getDocument();
 $document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/views/info/info.css');
 
