@@ -10,6 +10,16 @@
 	<version>1.6 Alpha</version>
 	<license>GNU/GPL</license>
 	<description>A component for managing podcasts.</description>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.mysql.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">uninstall.mysql.sql</file>
+		</sql>
+	</uninstall>
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
@@ -17,20 +27,15 @@
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">install.mysql.sql</file>
-		</sql>
-	</install>
 	<administration>
-		<menu>Podcast Manager</menu>
+		<menu>COM_PODCASTMANAGER</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_podcastmanager&amp;view=files">Manage Clips</menu>
-			<menu link="option=com_podcastmanager&amp;view=info">Information</menu>
+			<menu link="option=com_podcastmanager&amp;view=files">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
+			<menu link="option=com_podcastmanager&amp;view=info">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
 		</submenu>
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB.com_podcastmanager.ini</language>
@@ -53,4 +58,32 @@
 			<folder>views</folder>
 		</files>
 	</administration>
+	<modules>
+		<module module="mod_podcastmanager" client="administrator">
+			<files folder="mod_podcastmanager">
+				<filename>index.html</filename>
+				<filename>mod_podcastmanager.php</filename>
+				<filename>mod_podcastmanager.xml</filename>
+				<folder>media</folder>
+				<folder>tmpl</folder>
+			</files>
+			<languages folder="site/language">
+				<language tag="en-GB">en-GB.mod_podcastmanager.ini</language>
+				<language tag="en-GB">en-GB.mod_podcastmanager.sys.ini</language>
+			</languages>
+		</module>
+	</modules>
+	<plugins>
+		<plugin plugin="podcastmanager" group="content">
+			<files folder="plg_content_podcastmanager">
+				<filename>podcastmanager.php</filename>
+				<filename>podcastmanager.xml</filename>
+				<folder>podcast</folder>
+			</files>
+			<languages folder="admin/language">
+				<language tag="en-GB">en-GB.plg_content_podcastmanager.ini</language>
+				<language tag="en-GB">en-GB.plg_content_podcastmanager.sys.ini</language>
+			</languages>
+		</plugin>
+	</plugins>
 </extension>
