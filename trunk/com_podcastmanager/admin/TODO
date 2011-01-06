@@ -1,0 +1,52 @@
+Podcast Suite TODO List
+
+# Use the 1.5 Head for testing Podcast Suite: http://joomlacode.org/svn/joomla/development/releases/1.5/
+#
+# Will not have the "one-click" publishing that we had in the last version. Instead, people will enter the
+# metadata, then either copy the {enclose ...} tag in or use a plugin we will build.
+
+- Three views in the backend: podcast, files, and select. Podcast will allow the entry of metadata, files will display MP3 files and enclosures, and select will power the editor button
+
+- Make an editor plugin so that people can select the podcast from a list. Will use MooTools popup, like Image button.
+	* Create a model for 'select' that gets all of the enclosures that are ready to go (have metadata)
+
+- Create an About page with documentation.
+
+=== COMPLETED ===
+
+- Create the mod_podcast module that gets the first menu item pointing to the podcast feed, else generates a default link to the feed. This is so that people who do not wish to add a link to the menu can just use the module instead.
+
+- Create migration script to upgrade from Joomla! 1.0
+
+- Make plugin that changes {enclose ...} to links, players, or custom HTML (FINISH TESTING)
+
+- Make everything multi-lingual ready
+
+- Read ID3 tags from MP3s on metadata creation
+	* Added getid3 library, may want to trim out some of the formats to keep the package size down
+
+
+// unnecessary: menu routing scheme will handle this
+- Create a router for the component based on content categories.
+
+- Create the podcast feed with iTunes tags
+	* Possibly do this using SimpleXML
+	* Use the 'feed' view in the frontend
+	
+- Allow people to create multiple feeds for different categories. This will involve overriding component parameters. I think the menu system will take care of this
+
+- Create component parameters accessible from the toolbar in the 'files' view in the backend.
+
+- Create a model for 'files' that does the following:
+	* Filters by "Published/Unpublished in article"
+	* Filters by "Metadata entered/not entered"
+	* Pagination
+
+ADD THIS QUERY WHILE TESTING:
+insert into jos_components (name, `option`, params, enabled, link, admin_menu_link, admin_menu_img) values ('Podcast Suite', 'com_podcast', '', 1, 'option=com_podcast', 'option=com_podcast', 'js/ThemeOffice/component.png');
+
+ADD THIS QUERY TO ENABLE THE PODCAST PLUGIN:
+insert into jos_plugins (name, element, folder, published, params) values ('Content - Podcasts', 'podcast', 'content', 1, '');
+
+ADD THIS QUERY TO ENABLE THE PODCAST MODULE:
+INSERT INTO j15_modules (`title`, `ordering`, `position`, `published`, `module`, `showtitle`) VALUES ('Podcast', 1, 'left', 1, 'mod_podcast', 1);

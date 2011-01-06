@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<state>
+		<name>Podcast Feed</name>
+		<description>PODCAST FEED DESC</description>
+		<params>
+			<param name="category_id" type="category" label="Category (optional)" description="Choose a specific Joomla! category to use for this podcast feed" />
+		</params>
+		<advanced />
+	</state>
+</metadata>
+

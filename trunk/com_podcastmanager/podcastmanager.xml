@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: podcastmanager.xml 14 2011-01-05 23:26:28Z mbabker $ -->
+<extension type="component" version="1.6" method="upgrade">
+	<name>com_podcastmanager</name>
+	<creationDate>January 2011</creationDate>
+	<author>Michael Babker</author>
+	<copyright>(C) 2011 Michael Babker</copyright>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.flbab.com</authorUrl>
+	<version>1.6 Alpha</version>
+	<license>GNU/GPL</license>
+	<description>A component for managing podcasts.</description>
+	<menu link="option=com_podcastmanager">Podcast Manager</menu>
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>podcastmanager.php</filename>
+		<folder>media</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.mysql.sql</file>
+		</sql>
+	</install>
+	<administration>
+		<menu>Podcast Manager</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_podcastmanager&amp;view=files">Manage Clips</menu>
+			<menu link="option=com_podcastmanager&amp;view=info">Information</menu>
+		</submenu>
+		<languages folder="admin/languages">
+			<language tag="en-GB">en-GB.com_podcast.ini</language>
+			<language tag="fr-FR">fr-FR.com_podcast.ini</language>
+		</languages>
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>alerts.css</filename>
+			<filename>alerts_on.css</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>LICENSE</filename>
+			<filename>index.html</filename>
+			<filename>install.mysql.sql</filename>
+			<filename>podcastmanager.php</filename>
+			<folder>getid3</folder>
+			<folder>helpers</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+	</administration>
+</extension>
