@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
 <extension type="component" version="1.6" method="upgrade">
-	<name>com_podcastmanager</name>
+	<name>Podcast Manager</name>
 	<creationDate>January 2011</creationDate>
 	<author>Michael Babker</author>
 	<copyright>(C) 2011 Michael Babker</copyright>
@@ -47,6 +47,7 @@
 			<filename>index.html</filename>
 			<filename>install.mysql.sql</filename>
 			<filename>podcastmanager.php</filename>
+			<filename>uninstall.mysql.sql</filename>
 			<folder>getid3</folder>
 			<folder>helpers</folder>
 			<folder>models</folder>
