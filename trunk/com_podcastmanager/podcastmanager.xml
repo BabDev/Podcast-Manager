@@ -23,6 +23,11 @@
 			<file charset="utf8" driver="mysql">install.mysql.sql</file>
 		</sql>
 	</install>
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">uninstall.mysql.sql</file>
+		</sql>
+	</uninstall>
 	<administration>
 		<files folder="admin">
 			<filename>access.xml</filename>
@@ -34,6 +39,7 @@
 			<filename>index.html</filename>
 			<filename>install.mysql.sql</filename>
 			<filename>podcastmanager.php</filename>
+			<filename>uninstall.mysql.sql</filename>
 			<folder>getid3</folder>
 			<folder>helpers</folder>
 			<folder>models</folder>
