@@ -20,8 +20,8 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 //{
 	?>
 	<div class="info">
-		<?php echo JText::_('INFO ADD A FILE'); ?><br /><br />
-		<?php JText::printf('INFO FILES IN DIRECTORY', $this->folder); ?>
+		<?php echo JText::_('COM_PODCASTMANAGER_VIEW_FILES_INFO_ADD_FILE'); ?><br /><br />
+		<?php JText::printf('COM_PODCASTMANAGER_VIEW_FILES_INFO_DIRECTORY', $this->folder); ?>
 	</div>
 	<?php
 	
@@ -36,20 +36,24 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 //}
 
 ?>
-<form action="index.php" method="post" name="adminForm">
-	<table>
-		<tr>
-			<td align="left">
-				<strong><?php echo JText::_('Filter'); ?></strong>:
-			</td>
-			<td nowrap="nowrap">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=files');?>" method="post" name="adminForm" id="adminForm">
+			<!-- 1.5 Filter Bars <td nowrap="nowrap">
 				<?php
 					echo $this->filter['published'];
 					echo $this->filter['metadata'];
 				?>
-			</td>
-		</tr>
-	</table>
+			</td>  -->
+	<fieldset id="filter-bar">
+		<div class="filter-search fltlft">
+			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
+
+			<button type="submit" class="btn"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+	</fieldset>
+	<div class="clr"> </div>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -59,6 +63,12 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 				<th class="title"><?php echo JText::_('Metadata'); ?></th>
 			</tr>
 		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="4"><?php echo $this->pagination->getListFooter(); ?></td>
+			</tr>
+		</tfoot>
+		<tbody>
 		<?php
 		$k = 0;
 		$i = 0;
@@ -104,9 +114,7 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 			$i++;
 		}
 		?>
-		<tfoot>
-			<td colspan="4"><?php echo $this->pagination->getListFooter(); ?></td>
-		</tfoot>
+		</tbody>
 	</table>
 	
 	<input type="hidden" name="option" value="<?php echo $option; ?>" />
