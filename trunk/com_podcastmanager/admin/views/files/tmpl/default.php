@@ -23,17 +23,10 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 		<?php echo JText::_('COM_PODCASTMANAGER_VIEW_FILES_INFO_ADD_FILE'); ?><br /><br />
 		<?php JText::printf('COM_PODCASTMANAGER_VIEW_FILES_INFO_DIRECTORY', $this->folder); ?>
 	</div>
-	<?php
-	
-	if ($this->hasSpaces) {
-		?>
-		<div class="alert">
-		<strong><?php echo JText::_('Alert'); ?></strong>
-		<p><?php echo JText::_('ALERT SPACES IN FILENAME'); ?></p>
-		</div>
-		<?php
+	<?php if ($this->hasSpaces) {
+		JError::raiseWarning(500, JText::_('COM_PODCASTMANAGER_WARNING_FILENAME_SPACE'));
 	}
-//}
+// }
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=files');?>" method="post" name="adminForm" id="adminForm">
@@ -93,7 +86,7 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 			} else {
 				$published = JText::_('No') ;
 			}
-			$link = JRoute::_("index.php?option=$option&task=edit&{$editKeyName}[]=" . urlencode($editKeyValue));
+			$link = JRoute::_("index.php?option=com_podcastmanager&task=edit&{$editKeyName}[]=" . urlencode($editKeyValue));
 			?>
 			<tr class="<?php echo $file->hasSpaces ? 'filespace' : "row$k"; ?>"> 
 				<td> 
@@ -117,7 +110,9 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 		</tbody>
 	</table>
 	
-	<input type="hidden" name="option" value="<?php echo $option; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
+	<div>
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<?php echo JHtml::_('form.token'); ?>
+	</div>
 </form>

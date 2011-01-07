@@ -50,10 +50,14 @@ class PodcastManagerViewFiles extends JView {
 	 */
 	public function display($tpl = null)
 	{
+		// Initialise variables
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
-
+		$this->folder		= $this->get('folder');
+		$this->data			= $this->get('data');
+		$this->hasSpaces	= $this->get('hasSpaces');
+		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode("\n", $errors));
@@ -79,11 +83,11 @@ class PodcastManagerViewFiles extends JView {
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FILES_TITLE'), '');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('podcast.add','JTOOLBAR_NEW');
+			JToolBarHelper::addNew('','JTOOLBAR_NEW');
 		}
 
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('podcast.edit','JTOOLBAR_EDIT');
+			JToolBarHelper::editList('','JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::divider();

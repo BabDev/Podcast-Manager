@@ -55,8 +55,8 @@ class PodcastManagerModelFiles extends JModel {
 			jimport('joomla.filesystem.path');
 			jimport('joomla.filesystem.folder');
 
-			$params =& JComponentHelper::getParams('com_podcastmanager');
-			$mediapath = $params->get('mediapath', 'components/com_podcastmanager/media');
+			$params		= JComponentHelper::getParams('com_podcastmanager');
+			$mediapath	= $params->get('mediapath', 'components/com_podcastmanager/media');
 
 			$this->folder = JPATH_ROOT . DS . JFolder::makeSafe(JPath::clean($mediapath));
 		}
@@ -71,7 +71,7 @@ class PodcastManagerModelFiles extends JModel {
 		return $files;
 	}
 
-	private function getTotal() {
+	public function getTotal() {
 		$data =& $this->getAllData();
 		return count($data);
 	}
@@ -219,5 +219,3 @@ class PodcastManagerModelFiles extends JModel {
 		return $data;
 	}
 }
-
-?>
