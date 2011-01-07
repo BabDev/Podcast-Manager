@@ -80,13 +80,13 @@ $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/
 			$checked = JHTML::_('grid.id', $i, htmlentities($editKeyValue), false, $editKeyName);
 			if($file->published) {
 				$viewLink = JRoute::_("../index.php?option=com_content&view=article&id={$file->articleId}");
-				$editLink = JRoute::_("index.php?option=com_content&task=edit&cid[]={$file->articleId}");
+				$editLink = JRoute::_("index.php?option=com_content&task=article.edit&cid[]={$file->articleId}");
 
 				$published = JText::_('Yes') . " <span style=\"font-size: 85%;\">(<a href=\"$viewLink\">" . JText::_('view')  . "</a>/<a href=\"$editLink\">" . JText::_('edit')  . "</a> " . JText::_('article')  . ")";
 			} else {
 				$published = JText::_('No') ;
 			}
-			$link = JRoute::_("index.php?option=com_podcastmanager&task=edit&{$editKeyName}[]=" . urlencode($editKeyValue));
+			$link = JRoute::_("index.php?option=com_podcastmanager&task=podcast.edit&{$editKeyName}[]=" . urlencode($editKeyValue));
 			?>
 			<tr class="<?php echo $file->hasSpaces ? 'filespace' : "row$k"; ?>"> 
 				<td> 

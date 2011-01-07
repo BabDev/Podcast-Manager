@@ -42,9 +42,7 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 		// Initialise variables
 		$row	= JTable::getInstance('Podcast', 'PodcastManagerTable');
 		
-		$post	= JRequest::get('POST');
-		
-		if(!$row->bind($post)) {
+		if(!$row->bind($data)) {
 			JError::raiseError(500, $row->getError());
 		}
 		
