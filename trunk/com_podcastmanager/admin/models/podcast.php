@@ -14,15 +14,35 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.modeladmin' );
 
 class PodcastManagerModelPodcast extends JModelAdmin {
+
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @return	mixed	A JForm object on success, false on failure
+	 * @since	1.6
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		// Get the form.
+		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form)) {
+			return false;
+		}
+
+		return $form;
+	}
+
 	function save($data)
 	{
 		// Check for request forgeries.
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 		
 		// Initialise variables
-		$row	= JTable::getInstance('podcastmanager', 'Table');
+		$row	= JTable::getInstance('Podcast', 'PodcastManagerTable');
 		
-		$post	= JRequest::get('post');
+		$post	= JRequest::get('POST');
 		
 		if(!$row->bind($post)) {
 			JError::raiseError(500, $row->getError());
@@ -38,7 +58,7 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 		$this->setRedirect('index.php?option=com_podcastmanager', JText::_('Metadata Saved.'));
 
 		// clear cache
-		$cache =& JFactory::getCache('com_podcastmanager', 'output');
+		$cache =& JFactory::getCache('com_podcastmanager');
 		$cache->clean('com_podcastmanager');
 		
 		return $row;

@@ -20,15 +20,14 @@ class PodcastManagerViewPodcast extends JView
 {
 	function display($tpl = null)
 	{
-		global $option;
 		$app	= JFactory::getApplication();
 		
-		$params =& JComponentHelper::getParams($option);
+		$params = JComponentHelper::getParams('com_podcastmanager');
 		
 		$cid = JRequest::getVar('cid', array(0), '', 'array');
 		$id = (int)$cid[0];
 		
-		$row =& JTable::getInstance('podcast', 'Table');
+		$row =& JTable::getInstance('Podcast', 'PodcastManagerTable');
 		
 		// TODO: may need to prefill this with article information
 		$title = '';
@@ -40,13 +39,13 @@ class PodcastManagerViewPodcast extends JView
 		} else if(!$id || !$row->load($id)) { // metadata hasn't been added yet or the given id is invalid
 			
 			if(!$filename) { // this should never happen if user uses interface
-				$app->redirect("index.php?option=$option", JText::_('Invalid ID or Filename'), 'error');
+				$app->redirect("index.php?option=com_podcastmanager", JText::_('Invalid ID or Filename'), 'error');
 				return;
 			}
 			
 			$row->filename = JFile::makeSafe($filename[0]);
 			if($row->filename !== $filename[0]) { // either they're messing with us or the OS is allowing filenames that Joomla isn't
-				$app->redirect("index.php?option=$option", JText::_('Filename Cannot Contain Special Characters'), 'error'); // either way, let's stay safe
+				$app->redirect("index.php?option=com_podcastmanager", JText::_('Filename Cannot Contain Special Characters'), 'error'); // either way, let's stay safe
 				return;
 			}
 

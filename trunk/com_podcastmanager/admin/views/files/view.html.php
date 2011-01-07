@@ -83,11 +83,11 @@ class PodcastManagerViewFiles extends JView {
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FILES_TITLE'), '');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('','JTOOLBAR_NEW');
+			JToolBarHelper::addNew('podcast.add','JTOOLBAR_NEW');
 		}
 
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('','JTOOLBAR_EDIT');
+			JToolBarHelper::editList('podcast.edit','JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::divider();

@@ -11,7 +11,7 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-class PodcastManagerTable extends JTable {
+class PodcastManagerTablePodcast extends JTable {
 	
 	var $podcast_id;
 	var $filename;
