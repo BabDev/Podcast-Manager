@@ -11,9 +11,9 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-$document =& JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/alerts.css');
+JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/alerts.css', false, false, false);
 
+$document =& JFactory::getDocument();
 $document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/tmpl/default.js');
 
 //if($this->params->get('hidehelps', 0) != 1) 
