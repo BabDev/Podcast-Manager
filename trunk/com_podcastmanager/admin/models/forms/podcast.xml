@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		$Id: article.xml 19638 2010-11-25 02:53:32Z ian $
+	-->
+<form>
+	<fieldset>
+		<field name="podcast_id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" 
+			readonly="true" />
+
+		<field name="filename" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
+			size="30" required="true" />
+
+		<field name="published" type="list" label="JGLOBAL_STATE"
+			description="JFIELD_PUBLISHED_DESC" class="inputbox"
+			filter="intval" size="1" default="1">
+			<option value="1">
+				JPUBLISHED</option>
+			<option value="0">
+				JUNPUBLISHED</option>
+			<option value="-2">
+				JTRASHED</option>
+		</field>
+
+		<field name="itAuthor" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION"
+			size="30" required="true" />
+
+		<field name="itBlock" type="list"
+			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION"
+			default="0">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="itCategory" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY_DESCRIPTION"
+			size="30" />
+
+		<field name="itDuration" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_ITDURATION_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITDURATION_DESCRIPTION"
+			size="30" />
+
+		<field name="itExplicit" type="list"
+			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION"
+			default="0">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="itKeywords" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION"
+			size="30" />
+
+		<field name="itSubtitle" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION" description="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION"
+			size="30" />
+
+		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
+			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+
+	</fieldset>
+
+</form>
