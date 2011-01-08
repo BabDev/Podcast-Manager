@@ -17,9 +17,9 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js'
 //$document =& JFactory::getDocument();
 //$document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/tmpl/default.js');
 
-//if($this->params->get('hidehelps', 0) != 1) 
-//{
-	?>
+if($this->params->get('hidehelp', 0) != 1) 
+{
+?>
 	<div class="info">
 		<?php echo JText::_('COM_PODCASTMANAGER_VIEW_FILES_INFO_ADD_FILE'); ?><br /><br />
 		<?php JText::printf('COM_PODCASTMANAGER_VIEW_FILES_INFO_DIRECTORY', $this->folder); ?>
@@ -27,7 +27,7 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js'
 	<?php if ($this->hasSpaces) {
 		JError::raiseWarning(500, JText::_('COM_PODCASTMANAGER_WARNING_FILENAME_SPACE'));
 	}
-// }
+}
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=files');?>" method="post" name="adminForm" id="adminForm">

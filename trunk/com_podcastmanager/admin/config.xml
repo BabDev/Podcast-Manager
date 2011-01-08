@@ -1,50 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
 <config>
-	<fieldset name="component"
+	<fieldset
+		name="component"
 		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL"
-		description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESC">
-		<field name="cache" type="radio" default="1" label="Cache" description="TIPCACHE">
+		description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESCRIPTION">
+		<field
+			name="cache"
+			type="radio"
+			default="1"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_DESCRIPTION">
+			<option	value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="cache_time"
+			type="text"
+			size="8"
+			default="3600"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_DESCRIPTION" />
+		<field
+			name="mediapath"
+			type="text"
+			size="60"
+			default="components/com_podcastmanager/media"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_MEDIAPATH_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_MEDIAPATH_DESCRIPTION" />
+		<field
+			name="linkhandling"
+			type="radio"
+			default="links"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
+			<option value="links">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_LINKS</option>
+			<option value="player">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_FLASH</option>
+			<option value="html">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_HTML</option>
+			<option value="QTplayer">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_QUICKTIME</option>
+		</field>
+		<field
+			name="playerwidth"
+			type="text"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_DESCRIPTION" />
+		<field
+			name="playerheight"
+			type="text"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_DESCRIPTION" />
+		<field
+			name="linktitle"
+			type="text"
+			default="Listen Now!"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
+		<field
+			name="linkcode"
+			type="textarea"
+			rows="5"
+			cols="30"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKCODE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKCODE_DESCRIPTION" />
+		<field
+			name="mimetype"
+			type="text"
+			size="30"
+			default="audio/mpeg"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
+		<field
+			name="count"
+			type="text"
+			size="4"
+			default="5"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_COUNT_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_COUNT_DESCRIPTION" />
+		<field
+			name="title"
+			type="text"
+			size="40"
+			default="My Podcast"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_DESCRIPTION" />
+		<field
+			name="description"
+			type="textarea"
+			rows="5"
+			cols="30"
+			default="My regular podcast"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_DESCRIPTION" />
+		<field
+			name="copyright"
+			type="text"
+			size="30"
+			default="(C) 2011"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_DESCRIPTION" />
+		<field
+			name="hidehelp"
+			type="radio"
+			default="0"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_HIDEHELP_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_HIDEHELP_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="mediapath" type="text" size="40" default="components/com_podcastmanager/media" label="Path for uploaded media" description="TIPMEDIA" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="linkhandling" type="radio" default="links" label="Link titles, Flash player, code, or QuickTime" description="TIPLINKHANDLING">
-			<option value="links">LINKHANDLELINKS</option>
-			<option value="player">LINKHANDLEFLASH</option>
-			<option value="html">LINKHANDLEHTML</option>
-			<option value="QTplayer">LINKHANDLEQUICKTIME</option>
-		</field>
-		<field name="playerwidth" type="text" default="" label="Player Width" description="TIPPLAYERWIDTH" />
-		<field name="playerheight" type="text" default="" label="Player Height" description="TIPPLAYERHEIGHT" />
-		<field name="linktitle" type="text" default="Listen Now!" label="Enclosure Link Titles" description="TIPLINKTITLES" />
-		<field name="linkcode" type="textarea" rows="5" cols="30" default="" label="Enclosure Code" description="TIPENCLOSURE" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="cache_time" type="text" size="8" default="3600" label="Cache Time" description="TIPCACHETIME" />
-		<field name="mimetype" type="text" size="30" default="audio/mpeg" label="MIME type" description="TIPMIME" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="count" type="text" size="4" default="5" label="# Items" description="TIPITEMS" />
-		<field name="title" type="text" size="40" default="My Podcast" label="Title" description="TIPTITLE" />
-		<field name="description" type="textarea" rows="5" cols="30" default="My regular podcast" label="Description" description="TIPDESCRIPTION" />
-		<field name="copyright" type="text" size="30" default="(c) 2008" label="Copyright" description="Copyright" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="hidehelps" type="radio" default="0" label="Hide Helps" description="TIPHIDEHELPS">
+	</fieldset>
+	<fieldset
+		name="itunes"
+		label="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_LABEL"
+		description="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_DESCRIPTION">
+		<field
+			name="itBlock"
+			type="radio"
+			default="0"
+			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="itBlock" type="radio" default="0" label="ITUNES BLOCK" description="TIPITUNESBLOCK">
+		<field
+			name="itExplicit"
+			type="radio"
+			default="0"
+			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL"
+			description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
+			<option value="2">COM_PODCASTMANAGER_FIELD_ITEXPLICIT_OPTION_CLEAN</option>
 		</field>
-		<field name="itExplicit" type="radio" default="0" label="ITUNES EXPLICIT" description="TIPITUNESEXPLICIT">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="itAuthor" type="text" size="30" default="" label="ITUNES AUTHOR" description="TIPITUNESAUTHOR" />
-		<field name="itImage" type="text" size="30" default="" label="iTunes Image" description="TIPITUNESIMAGE" />
-		<field name="itCategory1" type="list" default="" label="ITUNES CATEGORY 1" description="TIPITUNESCAT1">
+		<field
+			name="itAuthor"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL"
+			description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" />
+		<field
+			name="itImage"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_DESCRIPTION" />
+		<field
+			name="itCategory1"
+			type="list"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_DESCRIPTION">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -114,7 +223,12 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
 		</field>
-		<field name="itCategory2" type="list" default="" label="ITUNES CATEGORY 2" description="TIPITUNESCAT2">
+		<field
+			name="itCategory2"
+			type="list"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_DESCRIPTION">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -184,7 +298,12 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
 		</field>
-		<field name="itCategory3" type="list" default="" label="ITUNES CATEGORY 3" description="TIPITUNESCAT3">
+		<field
+			name="itCategory3"
+			type="list"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_DESCRIPTION">
 			<option value="">(none)</option>
 			<option value="Arts">Arts</option>
 			<option value="Arts &gt; Design">Arts &gt; Design</option>
@@ -254,10 +373,34 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV &amp; Film</option>
 		</field>
-		<field name="itKeywords" type="text" size="30" default="" label="ITUNES KEYWORDS" description="TIPITUNESKEYWORDS" />
-		<field name="itOwnerEmail" type="text" size="30" default="" label="ITUNES OWNER E-MAIL" description="TIPITUNESOWNEREMAIL" />
-		<field name="itOwnerName" type="text" size="30" default="" label="ITUNES OWNER NAME" description="TIPITUNESOWNERNAME" />
-		<field name="itSubtitle" type="text" size="30" default="" label="ITUNES SUBTITLE" description="TIPITUNESSUBTITLE" />
+		<field
+			name="itKeywords"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL"
+			description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
+		<field
+			name="itOwnerEmail"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
+		<field
+			name="itOwnerName"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_DESCRIPTION" />
+		<field
+			name="itSubtitle"
+			type="text"
+			size="30"
+			default=""
+			label="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_LABEL"
+			description="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION" />
 	</fieldset>
 	<fieldset
 		name="permissions"

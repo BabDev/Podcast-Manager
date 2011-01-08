@@ -65,6 +65,7 @@ class PodcastManagerViewPodcasts extends JView {
 		}
 
 		$params = JComponentHelper::getParams('com_podcastmanager');
+		$this->assignRef('params', $params);
 		
 		$this->addToolbar();
 		
