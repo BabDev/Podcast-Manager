@@ -34,6 +34,20 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 		return $form;
 	}
 
+	/**
+	 * Returns a Table object, always creating it.
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 *
+	 * @return	JTable	A database object
+	*/
+	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+
 	function save($data)
 	{
 		// Check for request forgeries.
