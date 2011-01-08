@@ -17,7 +17,7 @@ jimport('joomla.application.component.controlleradmin');
  * Podcast files list controller class.
  *
  */
-class PodcastManagerControllerFiles extends JControllerAdmin
+class PodcastManagerControllerPodcasts extends JControllerAdmin
 {
 	/**
 	 * Proxy for getModel.

@@ -55,7 +55,7 @@
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_podcastmanager&amp;view=files" view="files" alt="Podcast-Manager/Files">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
+			<menu link="option=com_podcastmanager&amp;view=podcasts" view="podcasts" alt="Podcast-Manager/Podcast-Files">COM_PODCASTMANAGER_SUBMENU_PODCASTS</menu>
 			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
 		</submenu>
 	</administration>

@@ -43,12 +43,15 @@ class PodcastManagerViewPodcast extends JView
 			return false;
 		}
 
+		/**
 		$app	= JFactory::getApplication();
 		$cid	= JRequest::getVar('cid', array(0), '', 'array');
 		$id		= (int)$cid[0];
 		$row	= JTable::getInstance('Podcast', 'PodcastManagerTable');
 		
 		$filename = JRequest::getVar('filename', null, '', 'array');
+		var_dump($filename);
+		die();
 		
 		if (!$id || !$row->load($id)) { // metadata hasn't been added yet or the given id is invalid
 			
@@ -69,6 +72,7 @@ class PodcastManagerViewPodcast extends JView
 		if (stristr($row->filename, ' ')) {
 			$tpl = 'error';
 		}
+		*/
 		
 		$this->addToolbar();
 		parent::display($tpl);

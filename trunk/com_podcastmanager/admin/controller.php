@@ -22,7 +22,7 @@ class PodcastManagerController extends JController
 	 * @var		string	The default view.
 	 * @since	1.6
 	 */
-	protected $default_view = 'files';
+	protected $default_view = 'podcasts';
 
 	/**
 	 * Method to display a view.
@@ -32,10 +32,10 @@ class PodcastManagerController extends JController
 		require_once JPATH_COMPONENT.'/helpers/podcastmanager.php';
 
 		// Load the submenu.
-		PodcastManagerHelper::addSubmenu(JRequest::getWord('view', 'files'));
+		PodcastManagerHelper::addSubmenu(JRequest::getWord('view', 'podcasts'));
 
-		$view		= JRequest::getWord('view', 'files');
-		$layout 	= JRequest::getWord('layout', 'files');
+		$view		= JRequest::getWord('view', 'podcasts');
+		$layout 	= JRequest::getWord('layout', 'podcasts');
 		$id			= JRequest::getInt('id');
 
 		parent::display();

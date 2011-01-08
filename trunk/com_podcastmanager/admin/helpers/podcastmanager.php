@@ -29,9 +29,9 @@ class PodcastManagerHelper
 	public static function addSubmenu($vName)
 	{
 		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
-			'index.php?option=com_podcastmanager&view=files',
-			$vName == 'files');
+			JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
+			'index.php?option=com_podcastmanager&view=podcasts',
+			$vName == 'podcasts');
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_INFO'),
 			'index.php?option=com_podcastmanager&view=info',

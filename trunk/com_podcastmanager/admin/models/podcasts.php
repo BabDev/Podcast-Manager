@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.model' );
 
-class PodcastManagerModelFiles extends JModel {
+class PodcastManagerModelPodcasts extends JModel {
 	private $pagination = null;
 	private $filelist = null;
 	private $folder = null;

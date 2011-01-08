@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class PodcastManagerViewFiles extends JView {
+class PodcastManagerViewPodcasts extends JView {
 	/** display function from 1.5
 	 *  public function display($tpl = null) {
 		global $option;
@@ -80,7 +80,7 @@ class PodcastManagerViewFiles extends JView {
 	{
 		$canDo	= PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FILES_TITLE'), '');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), '');
 
 		if ($canDo->get('core.create')) {
 			JToolBarHelper::addNew('podcast.add','JTOOLBAR_NEW');
