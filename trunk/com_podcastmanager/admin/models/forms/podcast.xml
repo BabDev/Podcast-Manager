@@ -7,9 +7,9 @@
 		<field name="podcast_id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
 			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" 
 			readonly="true" />
-		<field name="filename" type="text" class="inputbox"
+		<field name="filename" type="media"	hide_none="1"
 			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
-			size="30" required="true" />
+			required="true" />
 		<field name="itAuthor" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION"
 			size="30" required="true" />

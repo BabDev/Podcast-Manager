@@ -26,9 +26,6 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js',
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
-			<?php // if (!$this->item->podcast_id) {
-				//echo $this->loadTemplate('shownotes');
-			//} ?>
 			<ul class="adminformlist">
 				<li><?php echo $this->form->getLabel('filename'); ?>
 				<?php echo $this->form->getInput('filename'); ?></li>

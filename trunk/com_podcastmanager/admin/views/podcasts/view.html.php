@@ -14,35 +14,6 @@ defined('_JEXEC') or die();
 jimport( 'joomla.application.component.view');
 
 class PodcastManagerViewPodcasts extends JView {
-	/** display function from 1.5
-	 *  public function display($tpl = null) {
-		global $option;
-		$app	= JFactory::getApplication();
-
-		$params =& JComponentHelper::getParams($option);
-
-		$filter_published = $app->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
-		$filter_metadata = $app->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
-
-		$filter = array();
-		$filter['published'] = self::filter($filter_published, JText::_('Published'), JText::_('Unpublished'), JText::_('Published'), 'filter_published');
-		$filter['metadata'] = self::filter($filter_metadata, JText::_('Has Metadata'), JText::_('No Metadata'), JText::_('Metadata'), 'filter_metadata');
-
-		$data =& $this->get('data');
-		$folder = $this->get('folder');
-		$pagination =& $this->get('pagination');
-		$hasSpaces = $this->get('hasSpaces');
-		
-		$this->assignRef('params', $params);
-		$this->assignRef('filter', $filter);
-		$this->assignRef('data', $data);
-		$this->assignRef('folder', $folder);
-		$this->assignRef('pagination', $pagination);
-		$this->assignRef('hasSpaces', $hasSpaces);
-
-		parent::display($tpl);
-	} */
-	
 	/**
 	 * Display the view
 	 *

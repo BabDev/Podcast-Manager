@@ -47,33 +47,4 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-
-	function save($data)
-	{
-		// Check for request forgeries.
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
-		// Initialise variables
-		$row	= JTable::getInstance('Podcast', 'PodcastManagerTable');
-		
-		if(!$row->bind($data)) {
-			JError::raiseError(500, $row->getError());
-		}
-		
-		if(!$row->podcast_id) // undefined or empty string or 0
-			$row->podcast_id = null; // new podcast: let auto_increment take care of it
-
-		if(!$row->store()) {
-			JError::raiseError(500, $row->getError());
-		}
-		
-		//TODO: Why isn't this loading proper method?
-		$this->setRedirect('index.php?option=com_podcastmanager', JText::_('Metadata Saved.'));
-
-		// clear cache
-		$cache =& JFactory::getCache('com_podcastmanager');
-		$cache->clean('com_podcastmanager');
-		
-		return $row;
-	}
 }
