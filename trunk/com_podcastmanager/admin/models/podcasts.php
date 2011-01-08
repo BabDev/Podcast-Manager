@@ -11,211 +11,117 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.modellist');
 
-class PodcastManagerModelPodcasts extends JModel {
-	private $pagination = null;
-	private $filelist = null;
-	private $folder = null;
-	private $data = null;
-	private $podcasts = null;
-	private $hasSpaces = false;
-	
-	private function &getFilelist() {
-		if(!$this->filelist) {
-			$folder = $this->getFolder();
-			
-			if(!JFolder::exists($folder)) {
-				// TODO: handle error when mediapath isn't a folder
-				$this->filelist = array();
-			} else {
-				$this->filelist = JFolder::files($folder);
-			}
-		}
-		
-		return $this->filelist;
-	}
-	
-	private function &getPodcasts()
+class PodcastManagerModelPodcasts extends JModelList
+{
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
 	{
-		if (!$this->podcasts) {
-			$query = "SELECT podcast_id,filename FROM #__podcastmanager";
-			$this->podcasts = $this->_getList($query);
-			
-			if (!count($this->podcasts)) {
-				$this->podcasts = array();
-			}
-		}
-		
-		return $this->podcasts;
+		// Initialise variables.
+		$app = JFactory::getApplication('administrator');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		// Load the parameters.
+		$params = JComponentHelper::getParams('com_podcastmanager');
+		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('a.title', 'asc');
 	}
 
-	public function getFolder() {
-		if(!$this->folder) {
-			jimport('joomla.filesystem.path');
-			jimport('joomla.filesystem.folder');
-
-			$params		= JComponentHelper::getParams('com_podcastmanager');
-			$mediapath	= $params->get('mediapath', 'components/com_podcastmanager/media');
-
-			$this->folder = JPATH_ROOT . DS . JFolder::makeSafe(JPath::clean($mediapath));
-		}
-
-		return $this->folder;
-	}
-
-	public function &getData() {
-		$pagination = $this->getPagination();
-		$files =& $this->getAllData();
-		$files = array_slice($files, $pagination->limitstart, $pagination->limit);
-		return $files;
-	}
-
-	public function getTotal() {
-		$data =& $this->getAllData();
-		return count($data);
-	}
-	
-	public function getPagination() {
-		if(!$this->pagination) {
-			jimport('joomla.html.pagination');
-			$app	= JFactory::getApplication();
-			$this->pagination = new JPagination($this->getTotal(), JRequest::getVar('limitstart', 0), JRequest::getVar('limit', $app->getCfg('list_limit')));
-		}
-
-		return $this->pagination;
-	}
-	
-	public function getHasSpaces()
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param	string		$id	A prefix for the store id.
+	 * @return	string		A store id.
+	 * @since	1.6
+	 */
+	protected function getStoreId($id = '')
 	{
-		if (!$this->data) {
-			$this->getAllData();
-		}
-		
-		return $this->hasSpaces;
+		// Compile the store id.
+		$id.= ':' . $this->getState('filter.search');
+		$id.= ':' . $this->getState('filter.published');
+		$id.= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
 	}
 
-	private function &getAllData() {
-		if($this->data)
-			return $this->data;
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return	JDatabaseQuery
+	 * @since	1.6
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
 
-		$app	= JFactory::getApplication();
-		global $option;
+		// Select the required fields from the table.
+		$query->select(
+			$this->getState(
+				'list.select',
+				'a.id, a.filename, a.title, a.published, a.itAuthor, a.itBlock, a.itCategory, a.itDuration,' .
+				'a.itExplicit, a.itKeywords, a.itSubtitle, a.language'
+			)
+		);
+		$query->from('`#__podcastmanager` AS a');
 
-		$files =& $this->getFilelist();
-		$podcasts =& $this->getPodcasts();
-		$data = array();
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
-		foreach($files as $filename) {
-			$file = new stdClass();
-			$file->filename = $filename;
-			$file->published = false;
-			$file->hasMetadata = false;
-			$file->id = 0;
-			$file->hasSpaces = false;
-			
-			if (JString::stristr($filename, ' ')) {
-				$this->hasSpaces = true;
-				$file->hasSpaces = true;
-			}
-
-			$data[$filename] = $file;
-		}
-		
-		// merge in metadata with no corresponding files on filesystem
-		foreach ($podcasts as $podcast) {			
-			if (!isset($data[$podcast->filename])) {
-				$file = new stdClass();
-				$file->filename = $podcast->filename;
-				$file->published = false;
-				$file->hasMetadata = false;
-				$file->id = 0;
-				$file->hasSpaces = false;
-
-				if (JString::stristr($podcast->filename, ' ')) {
-					$this->hasSpaces = true;
-					$file->hasSpaces = true;
-				}
-
-				$data[$podcast->filename] = $file;
-			}
-		}
-		
-		$date =& JFactory::getDate();
-		$now = $date->toMySQL();
-		$nullDate = $this->_db->Quote($this->_db->getNullDate());
-		
-		$query = "SELECT id,introtext FROM #__content"
-		. "\n WHERE state = '1' AND introtext LIKE '%{enclose%}%'"
-		. "\n AND access = 0"
-		. "\n AND ( publish_up = $nullDate OR publish_up <= '$now' )"
-		. "\n AND ( publish_down = $nullDate OR publish_down >= '$now' );";
-
-		$articles = $this->_getList($query);
-		foreach($articles as &$row) {
-			preg_match('/\{enclose\s(.*)\}/', $row->introtext, $matches);
-			
-			// get the filename, ignore filesize and mimetype
-			$pieces = explode(' ', $matches[1]);
-			$filename = $pieces[0];
-			
-			if(!isset($data[$filename])) // file has probably been deleted
-				continue;
-			
-			$podcast = $data[$filename];
-
-			$podcast->published = true;
-			$podcast->articleId = $row->id;
+		// Filter by published state
+		$published = $this->getState('filter.published');
+		if (is_numeric($published)) {
+			$query->where('a.published = '.(int) $published);
+		} else if ($published === '') {
+			$query->where('(a.published IN (0, 1))');
 		}
 
-		foreach($podcasts as &$row) {
-			if(!isset($data[$row->filename]))
-				continue;
-				
-			$data[$row->filename]->hasMetadata = true;
-			$data[$row->filename]->id = $row->podcast_id;
-		}
-
-		$this->data =& $data;
-
-		// filters
-		$filter_published = $app->getUserStateFromRequest($option . 'filter_published', 'filter_published', '*', 'word');
-		$filter_metadata = $app->getUserStateFromRequest($option . 'filter_metadata', 'filter_metadata', '*', 'word');
-
-		$published = $filter_published == 'on';
-		$unpublished = $filter_published == 'off';
-		if(!$published && !$unpublished) // no filtering on published
-			$published = $unpublished = true;
-
-		$metadata = $filter_metadata == 'on';
-		$nometadata = $filter_metadata == 'off';
-		if(!$metadata && !$nometadata) // no filtering on metadata
-			$metadata = $nometadata = true;
-
-		if($published && $unpublished && $metadata && $nometadata) // no filtering
-			return $data;
-
-		$keys = array_keys($data);
-		foreach($keys as $key) {
-			$file = $data[$key];
-
-			if($file->published) {
-				if(!$published)
-					unset($data[$key]);
+		// Filter by search in title
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
-				if(!$unpublished)
-					unset($data[$key]);
-			}
-
-			if($file->hasMetadata) {
-				if(!$metadata)
-					unset($data[$key]);
-			} else {
-				if(!$nometadata)
-					unset($data[$key]);
+				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$query->where('(a.title LIKE '.$search.')');
 			}
 		}
 
-		return $data;
+		// Filter on the language.
+		if ($language = $this->getState('filter.language')) {
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		// Add the list ordering clause.
+		$orderCol	= $this->state->get('list.ordering');
+		$orderDirn	= $this->state->get('list.direction');
+		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+
+		//echo nl2br(str_replace('#__','jos_',$query));
+		return $query;
 	}
 }

@@ -13,7 +13,12 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class PodcastManagerViewPodcasts extends JView {
+class PodcastManagerViewPodcasts extends JView
+{
+	protected $items;
+	protected $pagination;
+	protected $state;
+
 	/**
 	 * Display the view
 	 *
@@ -25,9 +30,6 @@ class PodcastManagerViewPodcasts extends JView {
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
-		$this->folder		= $this->get('folder');
-		$this->data			= $this->get('data');
-		$this->hasSpaces	= $this->get('hasSpaces');
 		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -50,6 +52,7 @@ class PodcastManagerViewPodcasts extends JView {
 	 */
 	protected function addToolbar()
 	{
+		$state	= $this->get('State');
 		$canDo	= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), '');
@@ -57,22 +60,30 @@ class PodcastManagerViewPodcasts extends JView {
 		if ($canDo->get('core.create')) {
 			JToolBarHelper::addNew('podcast.add','JTOOLBAR_NEW');
 		}
-
 		if ($canDo->get('core.edit')) {
 			JToolBarHelper::editList('podcast.edit','JTOOLBAR_EDIT');
 		}
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.edit.state')) {
+
 			JToolBarHelper::divider();
+			JToolBarHelper::custom('podcasts.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::custom('podcasts.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+
+
+			JToolBarHelper::divider();
+			//TODO: Do we want to be able to archive?
+			JToolBarHelper::archiveList('podcasts.archive','JTOOLBAR_ARCHIVE');
+			JToolBarHelper::custom('podcasts.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
+		}
+		if ($state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+			JToolBarHelper::deleteList('', 'podcasts.delete','JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::divider();
+		} else if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::trash('podcasts.trash','JTOOLBAR_TRASH');
+			JToolBarHelper::divider();
+		}
+		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_podcastmanager');
 		}
-	}
-	
-	// based on JHTMLGrid::state
-	private static function filter($filter_state = '*', $state1, $state2, $desc, $requestVar = 'filter_state') {
-		$state[] = JHTML::_('select.option', '*', '- ' . $desc . ' -');
-		$state[] = JHTML::_('select.option', 'on', $state1);
-		$state[] = JHTML::_('select.option', 'off', $state2);
-		
-		return JHTML::_('select.genericlist', $state, $requestVar, 'class="inputbox" size="1" onchange="submitform( );"', 'value', 'text', $filter_state);
 	}
 }

@@ -10,6 +10,21 @@
 		<field name="filename" type="media"	hide_none="1"
 			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
 			required="true" />
+		<field name="title" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
+			size="30" required="true" />
+		<field name="published" type="list" class="inputbox"
+			label="JGLOBAL_STATE" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
+			size="1" default="1">
+			<option
+				value="1">JPUBLISHED</option>
+			<option
+				value="0">JUNPUBLISHED</option>
+			<option
+				value="2">JARCHIVED</option>
+			<option
+				value="-2">JTRASH</option>
+		</field>
 		<field name="itAuthor" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION"
 			size="30" required="true" />
