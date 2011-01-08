@@ -11,6 +11,11 @@
 // Restricted access
 defined('_JEXEC') or die();
 
+// Load the tooltip behavior.
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+
 $document =& JFactory::getDocument();
 $document->addScript(JURI::base() . 'components/com_podcastmanager/views/podcast/tmpl/default.js');
 
@@ -18,7 +23,10 @@ $document->addScript(JURI::base() . 'components/com_podcastmanager/views/podcast
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->podcast_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo empty($this->item->id) ? JText::_('COM_PODCASTMANAGER_NEW_PODCAST') : JText::sprintf('COM_PODCASTMANAGER_EDIT_PODCAST', $this->item->podcast_id); ?></legend>
+			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
+			<?php // if (!$this->item->podcast_id) {
+				//echo $this->loadTemplate('shownotes');
+			//} ?>
 			<ul class="adminformlist">
 				<li><?php echo $this->form->getLabel('filename'); ?>
 				<?php echo $this->form->getInput('filename'); ?></li>

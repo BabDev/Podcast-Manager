@@ -69,8 +69,10 @@ class PodcastManagerViewFeed extends JView
 		
 		$itExplicit = $params->get('itExplicit', 0);
 		
-		if ($itExplicit) {
+		if ($itExplicit = 1) {
 			$xw->writeElement('itunes:explicit', 'yes');
+		} else if ($itExplicit = 2) {
+			$xw->writeElement('itunes:explicit', 'clean');
 		} else {
 			$xw->writeElement('itunes:explicit', 'no');
 		}		

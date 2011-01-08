@@ -67,6 +67,7 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 			JError::raiseError(500, $row->getError());
 		}
 		
+		//TODO: Why isn't this loading proper method?
 		$this->setRedirect('index.php?option=com_podcastmanager', JText::_('Metadata Saved.'));
 
 		// clear cache

@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itExplicit` tinyint(1) NOT NULL default '0',
   `itKeywords` varchar(255) NOT NULL default '',
   `itSubtitle` varchar(255) NOT NULL default '',
+  `language` char(7) NOT NULL COMMENT 'The language code for the podcast.',
   PRIMARY KEY (`podcast_id`)
 );
