@@ -11,8 +11,7 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-$document =& JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . '/components/com_podcastmanager/views/info/info.css');
+JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/info.css', false, false, false);
 
 //TODO: Rewrite this page
 
