@@ -13,8 +13,14 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.modeladmin' );
 
-class PodcastManagerModelPodcast extends JModelAdmin {
-
+class PodcastManagerModelPodcast extends JModelAdmin
+{
+	/**
+	 * @var		string	The prefix to use with controller messages.
+	 * @since	1.6
+	 */
+	protected $text_prefix = 'COM_PODCASTMANAGER';
+	
 	/**
 	 * Method to get the record form.
 	 *
@@ -29,6 +35,16 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) {
 			return false;
+		}
+
+		// Modify the form based on access controls.
+		if (!$this->canEditState((object) $data)) {
+			// Disable fields for display.
+			$form->setFieldAttribute('published', 'disabled', 'true');
+
+			// Disable fields while saving.
+			// The controller has already verified this is a record you can edit.
+			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
 		return $form;
@@ -46,5 +62,23 @@ class PodcastManagerModelPodcast extends JModelAdmin {
 	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
+	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return	mixed	The data for the form.
+	 * @since	1.6
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
+
+		if (empty($data)) {
+			$data = $this->getItem();
+		}
+
+		return $data;
 	}
 }

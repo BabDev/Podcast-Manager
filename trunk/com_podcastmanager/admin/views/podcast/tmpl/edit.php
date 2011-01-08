@@ -14,21 +14,21 @@ defined('_JEXEC') or die();
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-
-JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
-
-//$document =& JFactory::getDocument();
-//$document->addScript(JURI::base() . 'components/com_podcastmanager/media/js/podcast.js');
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->podcast_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
 			<ul class="adminformlist">
 				<li><?php echo $this->form->getLabel('filename'); ?>
 				<?php echo $this->form->getInput('filename'); ?></li>
+
+				<li><?php echo $this->form->getLabel('title'); ?>
+				<?php echo $this->form->getInput('title'); ?></li>
+
+				<li><?php echo $this->form->getLabel('published'); ?>
+				<?php echo $this->form->getInput('published'); ?></li>
 
 				<li><?php echo $this->form->getLabel('itAuthor'); ?>
 				<?php echo $this->form->getInput('itAuthor'); ?></li>
@@ -53,13 +53,15 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js',
 
 				<li><?php echo $this->form->getLabel('language'); ?>
 				<?php echo $this->form->getInput('language'); ?></li>
+
+				<li><?php echo $this->form->getLabel('id'); ?>
+				<?php echo $this->form->getInput('id'); ?></li>
 			</ul>
 		</fieldset>
 	</div>
 
 	<div>
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="return" value="<?php echo JRequest::getCmd('return');?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

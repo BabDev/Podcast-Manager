@@ -4,10 +4,10 @@
 	-->
 <form>
 	<fieldset>
-		<field name="podcast_id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
 			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" 
 			readonly="true" />
-		<field name="filename" type="media"	hide_none="1"
+		<field name="filename" type="media" hide_none="1"
 			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
 			required="true" />
 		<field name="title" type="text" class="inputbox"

@@ -13,8 +13,10 @@ defined('_JEXEC') or die();
 
 class PodcastManagerTablePodcast extends JTable {
 	
-	var $podcast_id;
+	var $id;
 	var $filename;
+	var $title;
+	var $published;
 	var $itAuthor;
 	var $itBlock;
 	var $itCategory;
@@ -22,9 +24,10 @@ class PodcastManagerTablePodcast extends JTable {
 	var $itExplicit;
 	var $itKeywords;
 	var $itSubtitle;
+	var $language;
 	
 	function __construct( &$db )
 	{
-		parent::__construct( '#__podcastmanager', 'podcast_id', $db );
+		parent::__construct( '#__podcastmanager', 'id', $db );
 	}
 }

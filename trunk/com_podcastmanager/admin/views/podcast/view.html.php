@@ -47,7 +47,7 @@ class PodcastManagerViewPodcast extends JView
 
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
-		$isNew		= ($this->item->podcast_id == 0);
+		$isNew		= ($this->item->id == 0);
 		$canDo		= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), '');
@@ -57,7 +57,7 @@ class PodcastManagerViewPodcast extends JView
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) {
 				JToolBarHelper::apply('podcast.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('podcast.save', 'COM_PODCASTMANAGER_TOOLBAR_SAVE');
+				JToolBarHelper::save('podcast.save', 'JTOOLBAR_SAVE');
 			}
 
 			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CANCEL');
@@ -66,11 +66,15 @@ class PodcastManagerViewPodcast extends JView
 			// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 			if ($canDo->get('core.edit')) {
 				JToolBarHelper::apply('podcast.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('podcast.save', 'COM_PODCASTMANAGER_TOOLBAR_SAVE');
+				JToolBarHelper::save('podcast.save', 'JTOOLBAR_SAVE');
 
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) {
 					JToolBarHelper::custom('podcast.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+				// If an existing item, can save as a copy
+				if ($canDo->get('core.create')) {
+					JToolBarHelper::custom('podcast.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 				}
 			}
 
