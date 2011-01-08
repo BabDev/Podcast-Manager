@@ -12,9 +12,10 @@
 defined('_JEXEC') or die();
 
 JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/alerts.css', false, false, false);
+JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js', false, false);
 
-$document =& JFactory::getDocument();
-$document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/tmpl/default.js');
+//$document =& JFactory::getDocument();
+//$document->addScript(JURI::base() . '/components/com_podcastmanager/views/files/tmpl/default.js');
 
 //if($this->params->get('hidehelps', 0) != 1) 
 //{

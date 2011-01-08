@@ -16,8 +16,10 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 
-$document =& JFactory::getDocument();
-$document->addScript(JURI::base() . 'components/com_podcastmanager/views/podcast/tmpl/default.js');
+JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
+
+//$document =& JFactory::getDocument();
+//$document->addScript(JURI::base() . 'components/com_podcastmanager/media/js/podcast.js');
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->podcast_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
