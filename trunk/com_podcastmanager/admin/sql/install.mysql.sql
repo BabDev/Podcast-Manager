@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itKeywords` varchar(255) NOT NULL default '',
   `itSubtitle` varchar(255) NOT NULL default '',
   `language` char(7) NOT NULL COMMENT 'The language code for the podcast.',
-  PRIMARY KEY (`podcast_id`)
+  PRIMARY KEY (`id`)
 );
