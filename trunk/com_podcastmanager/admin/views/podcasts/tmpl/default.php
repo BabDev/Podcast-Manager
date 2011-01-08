@@ -69,7 +69,7 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js'
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate	= $user->authorise('core.create',		'com_podcastmanager');
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
+			//$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
 			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
