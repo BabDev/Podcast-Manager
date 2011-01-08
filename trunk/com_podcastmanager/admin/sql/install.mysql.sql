@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
-  `podcast_id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL auto_increment,
   `filename` varchar(255) default NULL,
+  `title` varchar(255) NOT NULL default '',
+  `published` tinyint(1) NOT NULL default '0',
   `itAuthor` varchar(255) NOT NULL default '',
   `itBlock` tinyint(1) NOT NULL default '0',
   `itCategory` varchar(255) NOT NULL default '',
