@@ -49,7 +49,7 @@
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
 		</languages>
-		<menu>COM_PODCASTMANAGER</menu>
+		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
