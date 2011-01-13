@@ -14,4 +14,8 @@
 		<filename>index.html</filename>
 		<folder>podcast</folder>
 	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_podcastmanager.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_podcastmanager.sys.ini</language>
+	</languages>
 </extension>
