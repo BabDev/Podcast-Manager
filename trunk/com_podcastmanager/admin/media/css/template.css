@@ -8,9 +8,9 @@
 */
 
 .icon-16-podcastmanager {
-	background-image: url(../images/icon-16-podcastmanager.png);
+	background-image: url(../images/icon-16-podcastmanager.png !important);
 }
 
 .icon-48-podcastmanager {
-	background-image: url(../images/icon-48-podcastmanager.png);
+	background-image: url(../images/icon-48-podcastmanager.png !important);
 }
