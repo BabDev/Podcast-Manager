@@ -1,6 +1,16 @@
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
-/* Podcast Manager Icon */
+.icon-16-podcastmanager {
+	background-image: url(/administrator/components/com_podcastmanager/media/images/icon-16-podcastmanager.png);
+}
 
 .icon-48-podcastmanager {
-	background-image: url(/administrator/components/com_podcastmanager/media/images/header/icon-48-podcastmanager.png);
+	background-image: url(/administrator/components/com_podcastmanager/media/images/icon-48-podcastmanager.png);
 }

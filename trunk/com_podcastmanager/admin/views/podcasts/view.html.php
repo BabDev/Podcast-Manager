@@ -55,7 +55,7 @@ class PodcastManagerViewPodcasts extends JView
 		$state	= $this->get('State');
 		$canDo	= PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), '');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
 
 		if ($canDo->get('core.create')) {
 			JToolBarHelper::addNew('podcast.add','JTOOLBAR_NEW');
