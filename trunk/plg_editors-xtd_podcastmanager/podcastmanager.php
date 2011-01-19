@@ -66,7 +66,7 @@ class plgButtonPodcastManager extends JPlugin
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON'));
-		$button->set('name', 'article');
+		$button->set('name', 'blank');
 		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
 
 		return $button;
