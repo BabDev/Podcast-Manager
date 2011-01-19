@@ -50,7 +50,7 @@ class PodcastManagerViewPodcast extends JView
 		$isNew		= ($this->item->id == 0);
 		$canDo		= PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), '');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
 		// Built the actions for new and existing records.
 		if ($isNew)  {

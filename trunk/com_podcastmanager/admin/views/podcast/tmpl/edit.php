@@ -15,6 +15,8 @@ defined('_JEXEC') or die();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 
+JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
