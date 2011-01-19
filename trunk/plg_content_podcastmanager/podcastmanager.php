@@ -18,13 +18,13 @@ $app->registerEvent( 'onPrepareContent', 'plgContentPodcastManager' );
 function plgContentPodcastManager( &$row, &$params, $page=0 )
 {	
 	// Performance check: don't go any farther if we don't have an {enclose ...} tag
-	if ( JString::strpos( $row->text, 'enclose' ) === false && JString::strpos( $row->text, 'player' ) === false) {
+	if ( JString::strpos( $row->text, 'podcast' ) === false && JString::strpos( $row->text, 'player' ) === false) {
 		return true;
 	}
 	
 	jimport('joomla.filesystem.file');
 	
-	preg_match_all( '/\{(enclose|player) (.*)\}/i' , $row->text, $matches );
+	preg_match_all( '/\{(podcast|player) (.*)\}/i' , $row->text, $matches );
 	
 	$podManParams =& JComponentHelper::getParams('com_podcastmanager');
 	
@@ -133,7 +133,7 @@ class PodcastManagerPlayer
 		$width = $this->podManParams->get( 'playerwidth', 400);
 		$height = $this->podManParams->get( 'playerheight', 15);
 
-		$playerURL = JURI::base() . 'plugins/content/podcast/xspf_player_slim.swf';
+		$playerURL = JURI::base() . 'plugins/content/podcastmanager/xspf_player_slim.swf';
 
 		return '<object type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" data="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->title . '&player_title=' . $this->title . '"><param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->title . '&player_title=' . $this->title . '" /></object>';
 	}

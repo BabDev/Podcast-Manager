@@ -37,6 +37,7 @@
 			<filename>index.html</filename>
 			<filename>podcastmanager.php</filename>
 			<folder>controllers</folder>
+			<folder>elements</folder>
 			<folder>getid3</folder>
 			<folder>helpers</folder>
 			<folder>media</folder>

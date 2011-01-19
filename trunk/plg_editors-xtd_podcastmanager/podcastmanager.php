@@ -45,8 +45,8 @@ class plgButtonPodcastManager extends JPlugin
 		 * and closes the select frame.
 		 */
 		$js = "
-		function PodcastManagerSelectPodcast(title) {
-			var tag = '{enclose '+title+'}';
+		function PodcastManagerSelectPodcast(id, title, filename, object) {
+			var tag = '{podcast '+title+'}';
 			jInsertEditorText(tag, '".$name."');
 			SqueezeBox.close();
 		}";

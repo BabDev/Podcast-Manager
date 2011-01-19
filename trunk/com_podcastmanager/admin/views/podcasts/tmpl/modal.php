@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 JHtml::_('behavior.tooltip');
 
-$function	= JRequest::getCmd('function', 'podcastManagerSelectArticle');
+$function	= JRequest::getCmd('function', 'PodcastManagerSelectPodcast');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
@@ -50,9 +50,6 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort',  'JPUBLISHED', 'a.published', $listDirn, $listOrder); ?>
-				</th>
-				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
@@ -73,9 +70,6 @@ $listDirn	= $this->state->get('list.direction');
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>');">
 						<?php echo $this->escape($item->title); ?></a>
-				</td>
-				<td class="center">
-					<?php echo $this->escape($item->published); ?>
 				</td>
 				<td class="center">
 					<?php if ($item->language=='*'):?>
