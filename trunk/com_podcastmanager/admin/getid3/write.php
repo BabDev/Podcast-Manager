@@ -465,12 +465,12 @@ class getid3_writetags
 			}
 		}
 
-		$tag_data_id3v1['title']   =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TITLE']      ) ? $this->tag_data['TITLE']       : array()));
-		$tag_data_id3v1['artist']  =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ARTIST']     ) ? $this->tag_data['ARTIST']      : array()));
-		$tag_data_id3v1['album']   =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ALBUM']      ) ? $this->tag_data['ALBUM']       : array()));
-		$tag_data_id3v1['year']    =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['YEAR']       ) ? $this->tag_data['YEAR']        : array()));
-		$tag_data_id3v1['comment'] =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COMMENT']    ) ? $this->tag_data['COMMENT']     : array()));
-		$tag_data_id3v1['track']   = intval(getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TRACKNUMBER']) ? $this->tag_data['TRACKNUMBER'] : array())));
+		$tag_data_id3v1['title']   =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TITLE']      ) ? $this->tag_data['TITLE']       : array())));
+		$tag_data_id3v1['artist']  =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ARTIST']     ) ? $this->tag_data['ARTIST']      : array())));
+		$tag_data_id3v1['album']   =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ALBUM']      ) ? $this->tag_data['ALBUM']       : array())));
+		$tag_data_id3v1['year']    =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['YEAR']       ) ? $this->tag_data['YEAR']        : array())));
+		$tag_data_id3v1['comment'] =        getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COMMENT']    ) ? $this->tag_data['COMMENT']     : array())));
+		$tag_data_id3v1['track']   = intval(getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TRACKNUMBER']) ? $this->tag_data['TRACKNUMBER'] : array()))));
 		if ($tag_data_id3v1['track'] <= 0) {
 			$tag_data_id3v1['track'] = '';
 		}
@@ -575,10 +575,10 @@ class getid3_writetags
 	}
 
 	function FormatDataForReal() {
-		$tag_data_real['title']     = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TITLE']    ) ? $this->tag_data['TITLE']     : array()));
-		$tag_data_real['artist']    = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ARTIST']   ) ? $this->tag_data['ARTIST']    : array()));
-		$tag_data_real['copyright'] = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COPYRIGHT']) ? $this->tag_data['COPYRIGHT'] : array()));
-		$tag_data_real['comment']   = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COMMENT']  ) ? $this->tag_data['COMMENT']   : array()));
+		$tag_data_real['title']     = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['TITLE']    ) ? $this->tag_data['TITLE']     : array())));
+		$tag_data_real['artist']    = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['ARTIST']   ) ? $this->tag_data['ARTIST']    : array())));
+		$tag_data_real['copyright'] = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COPYRIGHT']) ? $this->tag_data['COPYRIGHT'] : array())));
+		$tag_data_real['comment']   = getid3_lib::iconv_fallback($this->tag_encoding, 'ISO-8859-1', implode(' ', (isset($this->tag_data['COMMENT']  ) ? $this->tag_data['COMMENT']   : array())));
 
 		$this->MergeExistingTagData('real', $tag_data_real);
 		return $tag_data_real;

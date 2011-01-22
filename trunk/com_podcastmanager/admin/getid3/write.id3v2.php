@@ -793,7 +793,7 @@ class getid3_write_id3v2
 						$framedata .= chr($source_data_array['encodingid']);
 						$framedata .= str_replace("\x00", '', $source_data_array['mime'])."\x00";
 						$framedata .= chr($source_data_array['picturetypeid']);
-						$framedata .= !empty($source_data_array['description']) ? $source_data_array['description'] : '').getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
+						$framedata .= !empty($source_data_array['description']) ? $source_data_array['description'] : ''.getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
 						$framedata .= $source_data_array['data'];
 					}
 					break;
