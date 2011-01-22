@@ -60,7 +60,7 @@ class getid3_voc
 			$BlockSize      = getid3_lib::LittleEndian2Int(substr($BlockData, 1, 3));
 			$ThisBlock      = array();
 
-			@$thisfile_voc['blocktypes'][$BlockType]++;
+			getid3_lib::safe_inc($thisfile_voc['blocktypes'][$BlockType], 1);
 			switch ($BlockType) {
 				case 0:  // Terminator
 					// do nothing, we'll break out of the loop down below

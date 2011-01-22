@@ -51,7 +51,9 @@ class getid3_svg
 				foreach ($section_data as $keyvaluepair) {
 					$keyvaluepair = trim($keyvaluepair);
 					if ($keyvaluepair) {
-						@list($key, $value) = explode('=', $keyvaluepair);
+						$keyvalueexploded = explode('=', $keyvaluepair);
+						$key   = (isset($keyvalueexploded[0]) ? $keyvalueexploded[0] : '');
+						$value = (isset($keyvalueexploded[1]) ? $keyvalueexploded[1] : '');
 						$ThisFileInfo['svg'][$section_to_fix]['sections'][$key] = trim($value, '"');
 					}
 				}
@@ -63,13 +65,13 @@ class getid3_svg
 			//$ThisFileInfo['video']['bits_per_sample']    = 24;
 			$ThisFileInfo['video']['pixel_aspect_ratio'] = (float) 1;
 
-			if (@$ThisFileInfo['svg']['svg']['sections']['width']) {
+			if (!empty($ThisFileInfo['svg']['svg']['sections']['width'])) {
 				$ThisFileInfo['svg']['width']  = intval($ThisFileInfo['svg']['svg']['sections']['width']);
 			}
-			if (@$ThisFileInfo['svg']['svg']['sections']['height']) {
+			if (!empty($ThisFileInfo['svg']['svg']['sections']['height'])) {
 				$ThisFileInfo['svg']['height'] = intval($ThisFileInfo['svg']['svg']['sections']['height']);
 			}
-			if (@$ThisFileInfo['svg']['svg']['sections']['version']) {
+			if (!empty($ThisFileInfo['svg']['svg']['sections']['version'])) {
 				$ThisFileInfo['svg']['version'] = $ThisFileInfo['svg']['svg']['sections']['version'];
 			}
 			if (!isset($ThisFileInfo['svg']['version']) && isset($ThisFileInfo['svg']['doctype']['sections'])) {
@@ -81,10 +83,10 @@ class getid3_svg
 				}
 			}
 
-			if (@$ThisFileInfo['svg']['width']) {
+			if (!empty($ThisFileInfo['svg']['width'])) {
 				$ThisFileInfo['video']['resolution_x'] = $ThisFileInfo['svg']['width'];
 			}
-			if (@$ThisFileInfo['svg']['height']) {
+			if (!empty($ThisFileInfo['svg']['height'])) {
 				$ThisFileInfo['video']['resolution_y'] = $ThisFileInfo['svg']['height'];
 			}
 

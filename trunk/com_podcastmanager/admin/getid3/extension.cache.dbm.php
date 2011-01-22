@@ -85,8 +85,7 @@ class getID3_cached_dbm extends getID3
 			if (!in_array($cache_type, dba_handlers())) {
 				die('PHP is not compiled --with '.$cache_type.' support, required to use DBM style cache.');
 			}
-		}
-		else { // PHP <= 4.2.3
+		} else { // PHP <= 4.2.3
 			ob_start(); // nasty, buy the only way to check...
 			phpinfo();
 			$contents = ob_get_contents();
@@ -120,7 +119,7 @@ class getID3_cached_dbm extends getID3
 		}
 
 		// Try to open dbm file for writing
-		$this->dba = @dba_open($dbm_filename, 'w', $cache_type);
+		$this->dba = dba_open($dbm_filename, 'w', $cache_type);
 		if (!$this->dba) {
 
 			// Failed - create new dbm file
@@ -155,13 +154,13 @@ class getID3_cached_dbm extends getID3
 	function __destruct() {
 
 		// Close dbm file
-		@dba_close($this->dba);
+		dba_close($this->dba);
 
 		// Release exclusive lock
-		@flock($this->lock, LOCK_UN);
+		flock($this->lock, LOCK_UN);
 
 		// Close lock file
-		@fclose($this->lock);
+		fclose($this->lock);
 	}
 
 

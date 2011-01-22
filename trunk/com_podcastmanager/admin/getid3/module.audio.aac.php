@@ -421,7 +421,7 @@ class getid3_aac
 			if (!isset($BitrateCache[$FrameLength])) {
 				$BitrateCache[$FrameLength] = ($ThisFileInfo['aac']['header']['sample_frequency'] / 1024) * $FrameLength * 8;
 			}
-			@$ThisFileInfo['aac']['bitrate_distribution'][$BitrateCache[$FrameLength]]++;
+			getid3_lib::safe_inc($ThisFileInfo['aac']['bitrate_distribution'][$BitrateCache[$FrameLength]], 1);
 
 			$ThisFileInfo['aac'][$framenumber]['aac_frame_length']     = $FrameLength;
 			$bitoffset += 13;

@@ -19,9 +19,9 @@ class getid3_png
 
 	function getid3_png(&$fd, &$ThisFileInfo) {
 
-	    // shortcut
-	    $ThisFileInfo['png'] = array();
-	    $thisfile_png = &$ThisFileInfo['png'];
+		// shortcut
+		$ThisFileInfo['png'] = array();
+		$thisfile_png = &$ThisFileInfo['png'];
 
 		$ThisFileInfo['fileformat']          = 'png';
 		$ThisFileInfo['video']['dataformat'] = 'png';

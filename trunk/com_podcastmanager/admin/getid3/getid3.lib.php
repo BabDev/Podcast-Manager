@@ -32,14 +32,6 @@ class getid3_lib
 		return $returnstring;
 	}
 
-	static function SafeStripSlashes($text) {
-		if (get_magic_quotes_gpc()) {
-			return stripslashes($text);
-		}
-		return $text;
-	}
-
-
 	static function trunc($floatnumber) {
 		// truncates a floating-point number at the decimal point
 		// returns int (if possible, otherwise float)
@@ -56,6 +48,15 @@ class getid3_lib
 		return $truncatednumber;
 	}
 
+
+	static function safe_inc(&$variable, $increment=1) {
+		if (isset($variable)) {
+			$variable += $increment;
+		} else {
+			$variable = $increment;
+		}
+		return true;
+	}
 
 	static function CastAsInt($floatnum) {
 		// convert to float if not already
@@ -169,8 +170,8 @@ class getid3_lib
 
 		$bitword = getid3_lib::BigEndian2Bin($byteword);
 		if (!$bitword) {
-            return 0;
-        }
+			return 0;
+		}
 		$signbit = $bitword{0};
 
 		switch (strlen($byteword) * 8) {
@@ -653,7 +654,7 @@ class getid3_lib
 		}
 
 		// try to create a temporary file in the system temp directory - invalid dirname should force to system temp dir
-		if (($data_filename = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3')) === false) {
+		if (($data_filename = tempnam(GETID3_TEMP_DIR, 'getID3')) === false) {
 			// can't find anywhere to create a temp file, just die
 			return false;
 		}
@@ -662,10 +663,11 @@ class getid3_lib
 		$result = false;
 
 		// copy parts of file
-		if ($fp = @fopen($file, 'rb')) {
-
-			if ($fp_data = @fopen($data_filename, 'wb')) {
-
+		ob_start();
+		if ($fp = fopen($file, 'rb')) {
+			ob_end_clean();
+			ob_start();
+			if ($fp_data = fopen($data_filename, 'wb')) {
 				fseek($fp, $offset, SEEK_SET);
 				$byteslefttowrite = $end - $offset;
 				while (($byteslefttowrite > 0) && ($buffer = fread($fp, GETID3_FREAD_BUFFER_SIZE))) {
@@ -674,9 +676,14 @@ class getid3_lib
 				}
 				fclose($fp_data);
 				$result = getid3_lib::$hash_function($data_filename);
-
+			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 			}
 			fclose($fp);
+		} else {
+			$errormessage = ob_get_contents();
+			ob_end_clean();
 		}
 		unlink($data_filename);
 		return $result;
@@ -765,20 +772,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-				           ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-				           ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 3)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
+						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-				           ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 2)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-				            (ord($string{($offset + 1)}) & 0x3F);
+							(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb
@@ -808,20 +815,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-				           ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-				           ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 3)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
+						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-				           ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 2)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-				            (ord($string{($offset + 1)}) & 0x3F);
+							(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb
@@ -851,20 +858,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-				           ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-				           ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 3)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
+						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-				           ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-				            (ord($string{($offset + 2)}) & 0x3F);
+						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+							(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-				            (ord($string{($offset + 1)}) & 0x3F);
+							(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb
@@ -974,22 +981,27 @@ class getid3_lib
 		// iconv() availble
 		if (function_exists('iconv')) {
 
-		    if ($converted_string = @iconv($in_charset, $out_charset.'//TRANSLIT', $string)) {
-    			switch ($out_charset) {
-    				case 'ISO-8859-1':
-    					$converted_string = rtrim($converted_string, "\x00");
-    					break;
-    			}
-    			return $converted_string;
-    		}
+			ob_start();
+			if ($converted_string = iconv($in_charset, $out_charset.'//TRANSLIT', $string)) {
+				ob_end_clean();
+				switch ($out_charset) {
+					case 'ISO-8859-1':
+						$converted_string = rtrim($converted_string, "\x00");
+						break;
+				}
+				return $converted_string;
+			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
+			}
 
-    		// iconv() may sometimes fail with "illegal character in input string" error message
-    		// and return an empty string, but returning the unconverted string is more useful
-    		return $string;
-    	}
+			// iconv() may sometimes fail with "illegal character in input string" error message
+			// and return an empty string, but returning the unconverted string is more useful
+			return $string;
+		}
 
 
-        // iconv() not available
+		// iconv() not available
 		static $ConversionFunctionList = array();
 		if (empty($ConversionFunctionList)) {
 			$ConversionFunctionList['ISO-8859-1']['UTF-8']    = 'iconv_fallback_iso88591_utf8';
@@ -1164,11 +1176,19 @@ class getid3_lib
 
 	static function GetDataImageSize($imgData, &$imageinfo) {
 		$GetDataImageSize = false;
-		if ($tempfilename = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3')) {
-			if ($tmp = @fopen($tempfilename, 'wb')) {
+		if ($tempfilename = tempnam(GETID3_TEMP_DIR, 'getID3')) {
+			ob_start();
+			if ($tmp = fopen($tempfilename, 'wb')) {
+				ob_end_clean();
 				fwrite($tmp, $imgData);
 				fclose($tmp);
-				$GetDataImageSize = @GetImageSize($tempfilename, $imageinfo);
+				ob_start();
+				$GetDataImageSize = GetImageSize($tempfilename, $imageinfo);
+				$errormessage = ob_get_contents();
+				ob_end_clean();
+			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 			}
 			unlink($tempfilename);
 		}
@@ -1240,11 +1260,11 @@ class getid3_lib
 			}
 
 			// Copy to ['comments_html']
-    		foreach ($ThisFileInfo['comments'] as $field => $values) {
-    		    foreach ($values as $index => $value) {
-    		        $ThisFileInfo['comments_html'][$field][$index] = str_replace('&#0;', '', getid3_lib::MultiByteCharString2HTML($value, $ThisFileInfo['encoding']));
-    		    }
-            }
+			foreach ($ThisFileInfo['comments'] as $field => $values) {
+				foreach ($values as $index => $value) {
+					$ThisFileInfo['comments_html'][$field][$index] = str_replace('&#0;', '', getid3_lib::MultiByteCharString2HTML($value, $ThisFileInfo['encoding']));
+				}
+			}
 		}
 	}
 
@@ -1254,7 +1274,7 @@ class getid3_lib
 		// Cached
 		static $cache;
 		if (isset($cache[$file][$name])) {
-			return @$cache[$file][$name][$key];
+			return (isset($cache[$file][$name][$key]) ? $cache[$file][$name][$key] : '');
 		}
 
 		// Init
@@ -1284,20 +1304,22 @@ class getid3_lib
 
 			// METHOD B: cache all keys in this lookup - more memory but faster on next lookup of not-previously-looked-up key
 			//$cache[$file][$name][substr($line, 0, $keylength)] = trim(substr($line, $keylength + 1));
-			@list($ThisKey, $ThisValue) = explode("\t", $line, 2);
+			$explodedLine = explode("\t", $line, 2);
+			$ThisKey   = (isset($explodedLine[0]) ? $explodedLine[0] : '');
+			$ThisValue = (isset($explodedLine[1]) ? $explodedLine[1] : '');
 			$cache[$file][$name][$ThisKey] = trim($ThisValue);
 		}
 
 		// Close and return
 		fclose($fp);
-		return @$cache[$file][$name][$key];
+		return (isset($cache[$file][$name][$key]) ? $cache[$file][$name][$key] : '');
 	}
 
 	static function IncludeDependency($filename, $sourcefile, $DieOnFailure=false) {
 		global $GETID3_ERRORARRAY;
 
 		if (file_exists($filename)) {
-			if (@include_once($filename)) {
+			if (include_once($filename)) {
 				return true;
 			} else {
 				$diemessage = basename($sourcefile).' depends on '.$filename.', which has errors';

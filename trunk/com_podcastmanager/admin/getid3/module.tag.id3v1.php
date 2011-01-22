@@ -51,7 +51,7 @@ class getid3_id3v1
 			if (!empty($ParsedID3v1['genre'])) {
 				unset($ParsedID3v1['genreid']);
 			}
-			if (empty($ParsedID3v1['genre']) || (@$ParsedID3v1['genre'] == 'Unknown')) {
+			if (isset($ParsedID3v1['genre']) && (empty($ParsedID3v1['genre']) || ($ParsedID3v1['genre'] == 'Unknown'))) {
 				unset($ParsedID3v1['genre']);
 			}
 
@@ -67,7 +67,7 @@ class getid3_id3v1
 											$ParsedID3v1['year'],
 											(isset($ParsedID3v1['genre']) ? $this->LookupGenreID($ParsedID3v1['genre']) : false),
 											$ParsedID3v1['comment'],
-											@$ParsedID3v1['track']);
+											(!empty($ParsedID3v1['track']) ? $ParsedID3v1['track'] : ''));
 			$ParsedID3v1['padding_valid'] = true;
 			if ($id3v1tag !== $GoodFormatID3v1tag) {
 				$ParsedID3v1['padding_valid'] = false;

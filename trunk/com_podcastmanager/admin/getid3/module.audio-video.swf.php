@@ -48,25 +48,26 @@ class getid3_swf
 		$ThisFileInfo['swf']['header']['version'] = getid3_lib::LittleEndian2Int(substr($SWFfileData, 3, 1));
 		$ThisFileInfo['swf']['header']['length']  = getid3_lib::LittleEndian2Int(substr($SWFfileData, 4, 4));
 
-//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
-
 		if ($ThisFileInfo['swf']['header']['compressed']) {
 
 			$SWFHead     = substr($SWFfileData, 0, 8);
 			$SWFfileData = substr($SWFfileData, 8);
-			if ($decompressed = @gzuncompress($SWFfileData)) {
+			ob_start();
+			if ($decompressed = gzuncompress($SWFfileData)) {
 
+				ob_end_clean();
 				$SWFfileData = $SWFHead.$decompressed;
 
 			} else {
 
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 				$ThisFileInfo['error'][] = 'Error decompressing compressed SWF data ('.strlen($SWFfileData).' bytes compressed, should be '.($ThisFileInfo['swf']['header']['length'] - 8).' bytes uncompressed)';
 				return false;
 
 			}
 
 		}
-//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
 
 		$FrameSizeBitsPerValue = (ord(substr($SWFfileData, 8, 1)) & 0xF8) >> 3;
 		$FrameSizeDataLength   = ceil((5 + (4 * $FrameSizeBitsPerValue)) / 8);

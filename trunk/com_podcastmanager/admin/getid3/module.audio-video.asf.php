@@ -347,7 +347,7 @@ class getid3_asf
 									$thisfile_audio['bitrate'] = (int) (trim(str_replace('kbps', '', $AudioCodecBitrate)) * 1000);
 								}
 								//if (!isset($thisfile_video['bitrate']) && isset($thisfile_audio['bitrate']) && isset($thisfile_asf['file_properties_object']['max_bitrate']) && ($thisfile_asf_codeclistobject['codec_entries_count'] > 1)) {
-								if (!@$thisfile_video['bitrate'] && @$thisfile_audio['bitrate'] && @$ThisFileInfo['bitrate']) {
+								if (empty($thisfile_video['bitrate']) && !empty($thisfile_audio['bitrate']) && !empty($ThisFileInfo['bitrate'])) {
 									//$thisfile_video['bitrate'] = $thisfile_asf['file_properties_object']['max_bitrate'] - $thisfile_audio['bitrate'];
 									$thisfile_video['bitrate'] = $ThisFileInfo['bitrate'] - $thisfile_audio['bitrate'];
 								}
@@ -807,8 +807,8 @@ class getid3_asf
 							case 'id3':
 								// id3v2 module might not be loaded
 								if (class_exists('getid3_id3v2')) {
-								    $tempfile         = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3');
-								    $tempfilehandle   = fopen($tempfile, "wb");
+									$tempfile         = tempnam(GETID3_TEMP_DIR, 'getID3');
+									$tempfilehandle   = fopen($tempfile, "wb");
 									$tempThisfileInfo = array('encoding'=>$ThisFileInfo['encoding']);
 									fwrite($tempfilehandle, $thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['value']);
 									fclose($tempfilehandle);
@@ -1013,16 +1013,16 @@ class getid3_asf
 
 						if (!empty($thisfile_asf['stream_bitrate_properties_object']['bitrate_records'])) {
 							foreach ($thisfile_asf['stream_bitrate_properties_object']['bitrate_records'] as $dummy => $dataarray) {
-								if (@$dataarray['flags']['stream_number'] == $streamnumber) {
+								if (isset($dataarray['flags']['stream_number']) && ($dataarray['flags']['stream_number'] == $streamnumber)) {
 									$thisfile_asf_audiomedia_currentstream['bitrate'] = $dataarray['bitrate'];
 									$thisfile_audio['bitrate'] += $dataarray['bitrate'];
 									break;
 								}
 							}
 						} else {
-							if (@$thisfile_asf_audiomedia_currentstream['bytes_sec']) {
+							if (!empty($thisfile_asf_audiomedia_currentstream['bytes_sec'])) {
 								$thisfile_audio['bitrate'] += $thisfile_asf_audiomedia_currentstream['bytes_sec'] * 8;
-							} elseif (@$thisfile_asf_audiomedia_currentstream['bitrate']) {
+							} elseif (!empty($thisfile_asf_audiomedia_currentstream['bitrate'])) {
 								$thisfile_audio['bitrate'] += $thisfile_asf_audiomedia_currentstream['bitrate'];
 							}
 						}
@@ -1099,7 +1099,7 @@ class getid3_asf
 
 						if (!empty($thisfile_asf['stream_bitrate_properties_object']['bitrate_records'])) {
 							foreach ($thisfile_asf['stream_bitrate_properties_object']['bitrate_records'] as $dummy => $dataarray) {
-								if (@$dataarray['flags']['stream_number'] == $streamnumber) {
+								if (isset($dataarray['flags']['stream_number']) && ($dataarray['flags']['stream_number'] == $streamnumber)) {
 									$thisfile_asf_videomedia_currentstream['bitrate'] = $dataarray['bitrate'];
 									$thisfile_video['streams'][$streamnumber]['bitrate'] = $dataarray['bitrate'];
 									$thisfile_video['bitrate'] += $dataarray['bitrate'];
@@ -1312,12 +1312,12 @@ class getid3_asf
 					case 'WMV1':
 					case 'WMV2':
 					case 'WMV3':
-                    case 'MSS1':
-                    case 'MSS2':
-                    case 'WMVA':
-                    case 'WVC1':
-                    case 'WMVP':
-                    case 'WVP2':
+					case 'MSS1':
+					case 'MSS2':
+					case 'WMVA':
+					case 'WVC1':
+					case 'WMVP':
+					case 'WVP2':
 						$thisfile_video['dataformat'] = 'wmv';
 						$ThisFileInfo['mime_type']    = 'video/x-ms-wmv';
 						break;
@@ -1356,7 +1356,7 @@ class getid3_asf
 			}
 		}
 
-		switch (@$thisfile_audio['codec']) {
+		switch (isset($thisfile_audio['codec']) ? $thisfile_audio['codec'] : '') {
 			case 'MPEG Layer-3':
 				$thisfile_audio['dataformat'] = 'mp3';
 				break;
@@ -1409,7 +1409,7 @@ class getid3_asf
 				}
 			}
 		}
-		$ThisFileInfo['bitrate'] = @$thisfile_audio['bitrate'] + @$thisfile_video['bitrate'];
+		$ThisFileInfo['bitrate'] = (isset($thisfile_audio['bitrate']) ? $thisfile_audio['bitrate'] : 0) + (isset($thisfile_video['bitrate']) ? $thisfile_video['bitrate'] : 0);
 
 		if ((!isset($ThisFileInfo['playtime_seconds']) || ($ThisFileInfo['playtime_seconds'] <= 0)) && ($ThisFileInfo['bitrate'] > 0)) {
 			$ThisFileInfo['playtime_seconds'] = ($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']) / ($ThisFileInfo['bitrate'] / 8);
@@ -1653,27 +1653,20 @@ class getid3_asf
 			$WMpictureTypeLookup[0x13] = getid3_lib::iconv_fallback('ISO-8859-1', 'UTF-16LE', 'Band Logotype');
 			$WMpictureTypeLookup[0x14] = getid3_lib::iconv_fallback('ISO-8859-1', 'UTF-16LE', 'Publisher Logotype');
 		}
-		return @$WMpictureTypeLookup[$WMpictureType];
+		return (isset($WMpictureTypeLookup[$WMpictureType]) ? $WMpictureTypeLookup[$WMpictureType] : '');
 	}
 
 
 	// Remove terminator 00 00 and convert UNICODE to Latin-1
 	static function TrimConvert($string) {
-
-		// remove terminator, only if present (it should be, but...)
-		if (substr($string, strlen($string) - 2, 2) == "\x00\x00") {
-			$string = substr($string, 0, strlen($string) - 2);
-		}
-
-		// convert
-		return trim(getid3_lib::iconv_fallback('UTF-16LE', 'ISO-8859-1', $string), ' ');
+		return trim(getid3_lib::iconv_fallback('UTF-16LE', 'ISO-8859-1', getid3_asf::TrimTerm($string)), ' ');
 	}
 
 
+	// Remove terminator 00 00
 	static function TrimTerm($string) {
-
 		// remove terminator, only if present (it should be, but...)
-		if (substr($string, -2) == "\x00\x00") {
+		if (substr($string, -2) === "\x00\x00") {
 			$string = substr($string, 0, -2);
 		}
 		return $string;
@@ -1681,6 +1674,5 @@ class getid3_asf
 
 
 }
-
 
 ?>

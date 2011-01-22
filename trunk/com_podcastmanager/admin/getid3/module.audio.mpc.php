@@ -321,12 +321,12 @@ class getid3_mpc
 		$thisfile_mpc_header = &$ThisFileInfo['mpc']['header'];
 		$offset = 0;
 
-        $thisfile_mpc_header['size'] = 8;
+		$thisfile_mpc_header['size'] = 8;
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$MPCheaderData = fread($fd, $thisfile_mpc_header['size']);
 
-        // add size of file header to avdataoffset - calc bitrate correctly + MD5 data
-	    $ThisFileInfo['avdataoffset'] += $thisfile_mpc_header['size'];
+		// add size of file header to avdataoffset - calc bitrate correctly + MD5 data
+		$ThisFileInfo['avdataoffset'] += $thisfile_mpc_header['size'];
 
 		// Most of this code adapted from Jurgen Faul's MPEGplus source code - thanks Jurgen! :)
 		$HeaderDWORD[0] = getid3_lib::LittleEndian2Int(substr($MPCheaderData, 0, 4));

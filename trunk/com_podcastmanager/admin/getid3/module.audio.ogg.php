@@ -450,7 +450,7 @@ class getid3_ogg
 
 				$commentexploded = explode('=', $commentstring, 2);
 				$ThisFileInfo['ogg']['comments_raw'][$i]['key']   = strtoupper($commentexploded[0]);
-				$ThisFileInfo['ogg']['comments_raw'][$i]['value'] = @$commentexploded[1];
+				$ThisFileInfo['ogg']['comments_raw'][$i]['value'] = (isset($commentexploded[1]) ? $commentexploded[1] : '');
 				$ThisFileInfo['ogg']['comments_raw'][$i]['data']  = base64_decode($ThisFileInfo['ogg']['comments_raw'][$i]['value']);
 
 				$ThisFileInfo['ogg']['comments'][strtolower($ThisFileInfo['ogg']['comments_raw'][$i]['key'])][] = $ThisFileInfo['ogg']['comments_raw'][$i]['value'];

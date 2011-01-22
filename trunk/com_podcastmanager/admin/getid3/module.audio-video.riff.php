@@ -109,7 +109,7 @@ class getid3_riff
 
 					$thisfile_riff_audio[$streamindex] = getid3_riff::RIFFparseWAVEFORMATex($thisfile_riff_WAVE['fmt '][0]['data']);
 					$thisfile_audio['wformattag'] = $thisfile_riff_audio[$streamindex]['raw']['wFormatTag'];
-					if (@$thisfile_riff_audio[$streamindex]['bitrate'] == 0) {
+					if (!isset($thisfile_riff_audio[$streamindex]['bitrate']) || ($thisfile_riff_audio[$streamindex]['bitrate'] == 0)) {
 						$ThisFileInfo['error'][] = 'Corrupt RIFF file: bitrate_audio == zero';
 						return false;
 					}
@@ -214,15 +214,17 @@ class getid3_riff
 					$thisfile_riff_WAVE_bext_0['bwf_version']    = getid3_lib::LittleEndian2Int(substr($thisfile_riff_WAVE_bext_0['data'], 346,   1));
 					$thisfile_riff_WAVE_bext_0['reserved']       = getid3_lib::LittleEndian2Int(substr($thisfile_riff_WAVE_bext_0['data'], 347, 254));
 					$thisfile_riff_WAVE_bext_0['coding_history'] =         explode("\r\n", trim(substr($thisfile_riff_WAVE_bext_0['data'], 601)));
-
-					$thisfile_riff_WAVE_bext_0['origin_date_unix'] = gmmktime(
-																				substr($thisfile_riff_WAVE_bext_0['origin_time'], 0, 2),
-																				substr($thisfile_riff_WAVE_bext_0['origin_time'], 3, 2),
-																				substr($thisfile_riff_WAVE_bext_0['origin_time'], 6, 2),
-																				substr($thisfile_riff_WAVE_bext_0['origin_date'], 5, 2),
-																				substr($thisfile_riff_WAVE_bext_0['origin_date'], 8, 2),
-																				substr($thisfile_riff_WAVE_bext_0['origin_date'], 0, 4));
-
+					if (preg_match('#^([0-9]{4}).([0-9]{2}).([0-9]{2})$#', $thisfile_riff_WAVE_bext_0['origin_date'], $matches_bext_date)) {
+						if (preg_match('#^([0-9]{2}).([0-9]{2}).([0-9]{2})$#', $thisfile_riff_WAVE_bext_0['origin_time'], $matches_bext_time)) {
+							list($dummy, $bext_timestamp['year'], $bext_timestamp['month'],  $bext_timestamp['day'])    = $matches_bext_date;
+							list($dummy, $bext_timestamp['hour'], $bext_timestamp['minute'], $bext_timestamp['second']) = $matches_bext_time;
+							$thisfile_riff_WAVE_bext_0['origin_date_unix'] = gmmktime($bext_timestamp['hour'], $bext_timestamp['minute'], $bext_timestamp['second'], $bext_timestamp['month'], $bext_timestamp['day'], $bext_timestamp['year']);
+						} else {
+							$ThisFileInfo['warning'][] = 'RIFF.WAVE.BEXT.origin_time is invalid';
+						}
+					} else {
+						$ThisFileInfo['warning'][] = 'RIFF.WAVE.BEXT.origin_date is invalid';
+					}
 					$thisfile_riff['comments']['author'][] = $thisfile_riff_WAVE_bext_0['author'];
 					$thisfile_riff['comments']['title'][]  = $thisfile_riff_WAVE_bext_0['title'];
 				}
@@ -310,8 +312,7 @@ class getid3_riff
 						$SNDM_startoffset += $SNDM_thisTagSize;
 
 						$thisfile_riff_WAVE_SNDM_0['parsed_raw'][$SNDM_thisTagKey] = $SNDM_thisTagDataText;
-						$parsedkey = $this->RIFFwaveSNDMtagLookup($SNDM_thisTagKey);
-						if ($parsedkey) {
+						if ($parsedkey = $this->RIFFwaveSNDMtagLookup($SNDM_thisTagKey)) {
 							$thisfile_riff_WAVE_SNDM_0['parsed'][$parsedkey] = $SNDM_thisTagDataText;
 						} else {
 							$ThisFileInfo['warning'][] = 'RIFF.WAVE.SNDM contains unknown tag "'.$SNDM_thisTagKey.'" at offset '.$SNDM_startoffset.' (file offset '.($thisfile_riff_WAVE_SNDM_0['offset'] + $SNDM_startoffset).')';
@@ -417,7 +418,7 @@ class getid3_riff
 					}
 				}
 				if ($thisfile_avdataend > $ThisFileInfo['filesize']) {
-					switch (@$thisfile_audio_dataformat) {
+					switch (!empty($thisfile_audio_dataformat) ? $thisfile_audio_dataformat : '') {
 						case 'wavpack': // WavPack
 						case 'lpac':    // LPAC
 						case 'ofr':     // OptimFROG
@@ -457,7 +458,7 @@ class getid3_riff
 						$ThisFileInfo['warning'][] = 'Extra null byte at end of MP3 data assumed to be RIFF padding and therefore ignored';
 					}
 				}
-				if (@$thisfile_audio_dataformat == 'ac3') {
+				if (isset($thisfile_audio_dataformat) && ($thisfile_audio_dataformat == 'ac3')) {
 					unset($thisfile_audio['bits_per_sample']);
 					if (!empty($ThisFileInfo['ac3']['bitrate']) && ($ThisFileInfo['ac3']['bitrate'] != $thisfile_audio['bitrate'])) {
 						$thisfile_audio['bitrate'] = $ThisFileInfo['ac3']['bitrate'];
@@ -500,8 +501,8 @@ class getid3_riff
 						$thisfile_riff_raw['indx'][$streamnumber]['dwChunkId']      =                                              substr($thisfile_riff_avi_hdrl_strl_indx_stream_data,  8, 4);
 						$thisfile_riff_raw['indx'][$streamnumber]['dwReserved']     = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($thisfile_riff_avi_hdrl_strl_indx_stream_data, 12, 4));
 
-						//$thisfile_riff_raw['indx'][$streamnumber]['bIndexType_name']    =    @$bIndexType[$thisfile_riff_raw['indx'][$streamnumber]['bIndexType']];
-						//$thisfile_riff_raw['indx'][$streamnumber]['bIndexSubType_name'] = @$bIndexSubtype[$thisfile_riff_raw['indx'][$streamnumber]['bIndexType']][$thisfile_riff_raw['indx'][$streamnumber]['bIndexSubType']];
+						//$thisfile_riff_raw['indx'][$streamnumber]['bIndexType_name']    =    $bIndexType[$thisfile_riff_raw['indx'][$streamnumber]['bIndexType']];
+						//$thisfile_riff_raw['indx'][$streamnumber]['bIndexSubType_name'] = $bIndexSubtype[$thisfile_riff_raw['indx'][$streamnumber]['bIndexType']][$thisfile_riff_raw['indx'][$streamnumber]['bIndexSubType']];
 
 						unset($thisfile_riff_avi_hdrl_strl_indx_stream_data);
 					}
@@ -992,7 +993,7 @@ class getid3_riff
 				break;
 		}
 
-		if (@$thisfile_riff_raw['fmt ']['wFormatTag'] == 1) {
+		if (isset($thisfile_riff_raw['fmt ']['wFormatTag']) && ($thisfile_riff_raw['fmt ']['wFormatTag'] == 1)) {
 			// http://www.mega-nerd.com/erikd/Blog/Windiots/dts.html
 			fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 			$FirstFourBytes = fread($fd, 4);
@@ -1161,7 +1162,11 @@ class getid3_riff
 			if (isset($RIFFinfoArray[$key])) {
 				foreach ($RIFFinfoArray[$key] as $commentid => $commentdata) {
 					if (trim($commentdata['data']) != '') {
-						@$CommentsTargetArray[$value][] = trim($commentdata['data']);
+						if (isset($CommentsTargetArray[$value])) {
+							$CommentsTargetArray[$value][] =     trim($commentdata['data']);
+						} else {
+							$CommentsTargetArray[$value] = array(trim($commentdata['data']));
+						}
 					}
 				}
 			}
@@ -1269,9 +1274,9 @@ class getid3_riff
 						fseek($fd, $chunksize - 4, SEEK_CUR);
 
 					//} elseif (preg_match('#^[0-9]{2}(wb|pc|dc|db)$#i', $listname)) {
-                    //
+					//
 					//	// data chunk, ignore
-                    //
+					//
 					} else {
 
 						if (!isset($RIFFchunk[$listname])) {
@@ -1319,9 +1324,9 @@ class getid3_riff
 									$dummy = $ThisFileInfo; // copy info array, only use if there's no error
 									$getid3_mp3->getOnlyMPEGaudioInfo($fd, $dummy, $RIFFchunk[$chunkname][$thisindex]['offset'], false);
 
-                                    // use dummy array unless error
+									// use dummy array unless error
 									if (empty($dummy['error'])) {
-									    $ThisFileInfo = $dummy;
+										$ThisFileInfo = $dummy;
 									}
 								}
 
@@ -1459,8 +1464,8 @@ class getid3_riff
 	static function ParseRIFFdata(&$RIFFdata, &$ThisFileInfo) {
 		if ($RIFFdata) {
 
-		    $tempfile = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3');
-            $fp_temp  = fopen($tempfile, "wb");
+			$tempfile = tempnam(GETID3_TEMP_DIR, 'getID3');
+			$fp_temp  = fopen($tempfile, 'wb');
 			$RIFFdataLength = strlen($RIFFdata);
 			$NewLengthString = getid3_lib::LittleEndian2String($RIFFdataLength, 4);
 			for ($i = 0; $i < 4; $i++) {
@@ -1469,7 +1474,7 @@ class getid3_riff
 			fwrite($fp_temp, $RIFFdata);
 			fclose($fp_temp);
 
-			$fp_temp  = fopen($tempfile, "rb");
+			$fp_temp  = fopen($tempfile, 'rb');
 			$dummy = array('filesize'=>$RIFFdataLength, 'filenamepath'=>$ThisFileInfo['filenamepath'], 'tags'=>$ThisFileInfo['tags'], 'avdataoffset'=>0, 'avdataend'=>$RIFFdataLength, 'warning'=>$ThisFileInfo['warning'], 'error'=>$ThisFileInfo['error'], 'comments'=>$ThisFileInfo['comments'], 'audio'=>(isset($ThisFileInfo['audio']) ? $ThisFileInfo['audio'] : array()), 'video'=>(isset($ThisFileInfo['video']) ? $ThisFileInfo['video'] : array()));
 			$riff = new getid3_riff($fp_temp, $dummy);
 			$ThisFileInfo['riff']     = $dummy['riff'];

@@ -129,11 +129,13 @@ class getid3_cue
 	*/
 	function parseComment($line, $track_on)
 	{
-		@list($comment_REM, $comment_type, $comment_data) = explode(' ', $line, 3);
-		if (($comment_REM == 'REM') && $comment_type)
-		{
+		$explodedline = explode(' ', $line, 3);
+		$comment_REM  = (isset($explodedline[0]) ? $explodedline[0] : '');
+		$comment_type = (isset($explodedline[1]) ? $explodedline[1] : '');
+		$comment_data = (isset($explodedline[2]) ? $explodedline[2] : '');
+		if (($comment_REM == 'REM') && $comment_type) {
 			$comment_type  = strtolower($comment_type);
-			$commment_data =       trim($comment_data, ' "');
+			$commment_data = trim($comment_data, ' "');
 			if ($track_on != -1) {
 				$this->cuesheet['tracks'][$track_on]['comments'][$comment_type][] = $comment_data;
 			} else {
@@ -240,7 +242,10 @@ class getid3_cue
 		}
 
 		//extract the minutes, seconds, and frames
-		@list($minutes, $seconds, $frames) = explode(':', $line);
+		$explodedline = explode(':', $line);
+		$minutes = (isset($explodedline[0]) ? $explodedline[0] : '');
+		$seconds = (isset($explodedline[1]) ? $explodedline[1] : '');
+		$frames  = (isset($explodedline[2]) ? $explodedline[2] : '');
 
 		switch ($type) {
 			case 'index':

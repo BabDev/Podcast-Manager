@@ -34,8 +34,10 @@ class getid3_write_id3v1
 
 		// File MUST be writeable - CHMOD(646) at least
 		if (is_writeable($this->filename)) {
-			if ($fp_source = @fopen($this->filename, 'r+b')) {
+			ob_start();
+			if ($fp_source = fopen($this->filename, 'r+b')) {
 
+				ob_end_clean();
 				fseek($fp_source, -128, SEEK_END);
 				if (fread($fp_source, 3) == 'TAG') {
 					fseek($fp_source, -128, SEEK_END); // overwrite existing ID3v1 tag
@@ -45,18 +47,20 @@ class getid3_write_id3v1
 				$this->tag_data['track'] = (isset($this->tag_data['track']) ? $this->tag_data['track'] : (isset($this->tag_data['track_number']) ? $this->tag_data['track_number'] : (isset($this->tag_data['tracknumber']) ? $this->tag_data['tracknumber'] : '')));
 
 				$new_id3v1_tag_data = getid3_id3v1::GenerateID3v1Tag(
-														@$this->tag_data['title'],
-														@$this->tag_data['artist'],
-														@$this->tag_data['album'],
-														@$this->tag_data['year'],
-														@$this->tag_data['genreid'],
-														@$this->tag_data['comment'],
-														@$this->tag_data['track']);
+														(isset($this->tag_data['title']  ) ? $this->tag_data['title']   : ''),
+														(isset($this->tag_data['artist'] ) ? $this->tag_data['artist']  : ''),
+														(isset($this->tag_data['album']  ) ? $this->tag_data['album']   : ''),
+														(isset($this->tag_data['year']   ) ? $this->tag_data['year']    : ''),
+														(isset($this->tag_data['genreid']) ? $this->tag_data['genreid'] : ''),
+														(isset($this->tag_data['comment']) ? $this->tag_data['comment'] : ''),
+														(isset($this->tag_data['track']  ) ? $this->tag_data['track']   : ''));
 				fwrite($fp_source, $new_id3v1_tag_data, 128);
 				fclose($fp_source);
 				return true;
 
 			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 				$this->errors[] = 'Could not open '.$this->filename.' mode "r+b"';
 				return false;
 			}
@@ -94,8 +98,10 @@ class getid3_write_id3v1
 
 		// File MUST be writeable - CHMOD(646) at least
 		if (is_writeable($this->filename)) {
-			if ($fp_source = @fopen($this->filename, 'r+b')) {
+			ob_start();
+			if ($fp_source = fopen($this->filename, 'r+b')) {
 
+				ob_end_clean();
 				fseek($fp_source, -128, SEEK_END);
 				if (fread($fp_source, 3) == 'TAG') {
 					ftruncate($fp_source, filesize($this->filename) - 128);
@@ -106,6 +112,8 @@ class getid3_write_id3v1
 				return true;
 
 			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 				$this->errors[] = 'Could not open '.$this->filename.' mode "r+b"';
 			}
 		} else {

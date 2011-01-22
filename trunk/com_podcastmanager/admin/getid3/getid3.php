@@ -10,8 +10,51 @@
 /////////////////////////////////////////////////////////////////
 
 // Defines
-define('GETID3_VERSION', '1.8.2-20101206');
+define('GETID3_VERSION', '1.8.3-20110118');
 define('GETID3_FREAD_BUFFER_SIZE', 16384); // read buffer size in bytes
+
+
+// attempt to define temp dir as something flexible but reliable
+$temp_dir = ini_get('upload_tmp_dir');
+if ($temp_dir && (!is_dir($temp_dir) || !is_readable($temp_dir))) {
+	$temp_dir = '';
+}
+if (!$temp_dir && function_exists('sys_get_temp_dir')) {
+	// PHP v5.2.1+
+	// sys_get_temp_dir() may give inaccessible temp dir, e.g. with open_basedir on virtual hosts
+	$temp_dir = sys_get_temp_dir();
+}
+$temp_dir = realpath($temp_dir);
+$open_basedir = ini_get('open_basedir');
+if ($open_basedir) {
+	// e.g. "/var/www/vhosts/getid3.org/httpdocs/:/tmp/"
+	$temp_dir     = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $temp_dir);
+	$open_basedir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $open_basedir);
+	if (substr($temp_dir, -1, 1) != DIRECTORY_SEPARATOR) {
+		$temp_dir .= DIRECTORY_SEPARATOR;
+	}
+	$found_valid_tempdir = false;
+	$open_basedirs = explode(':', $open_basedir);
+	foreach ($open_basedirs as $basedir) {
+		if (substr($basedir, -1, 1) != DIRECTORY_SEPARATOR) {
+			$basedir .= DIRECTORY_SEPARATOR;
+		}
+		if (preg_match('#^'.preg_quote($basedir).'#', $temp_dir)) {
+			$found_valid_tempdir = true;
+			break;
+		}
+	}
+	if (!$found_valid_tempdir) {
+		$temp_dir = '';
+	}
+	unset($open_basedirs, $found_valid_tempdir, $basedir);
+}
+if (!$temp_dir) {
+	$temp_dir = '*'; // invalid directory name should force tempnam() to use system default temp dir
+}
+// $temp_dir = '/something/else/';  // feel free to override temp dir here if it works better for your system
+define('GETID3_TEMP_DIR', $temp_dir);
+unset($open_basedir, $temp_dir);
 
 
 
@@ -19,11 +62,11 @@ class getID3
 {
 	// public: Settings
 	var $encoding        = 'ISO-8859-1';   // CASE SENSITIVE! - i.e. (must be supported by iconv())
-	                                       // Examples:  ISO-8859-1  UTF-8  UTF-16  UTF-16BE
+										   // Examples:  ISO-8859-1  UTF-8  UTF-16  UTF-16BE
 
 	var $encoding_id3v1  = 'ISO-8859-1';   // Should always be 'ISO-8859-1', but some tags may be written in other encodings such as 'EUC-CN'
 
-	var $tempdir         = '*';            // default '*' should use system temp dir
+	var $tempdir         = GETID3_TEMP_DIR;
 
 	// public: Optional tag checks - disable for speed.
 	var $option_tag_id3v1         = true;  // Read and process ID3v1 tags
@@ -55,10 +98,10 @@ class getID3
 
 		// Check for PHP version >= 4.2.0
 		if (PHP_VERSION < '4.2.0') { // version_compare not available before PHP v4.1.0, do not use for initial version check
-		    $this->startup_error .= 'getID3() requires PHP v4.2.0 or higher - you are running v'.PHP_VERSION;
+			$this->startup_error .= 'getID3() requires PHP v4.2.0 or higher - you are running v'.PHP_VERSION;
 		}
 		if (version_compare(PHP_VERSION, '5.0.0', '<')) {
-		    $this->startup_warning .= 'getID3() v1.8+ recommends PHP v5.0.0 or higher - you are running v'.PHP_VERSION;
+			$this->startup_warning .= 'getID3() v1.8+ recommends PHP v5.0.0 or higher - you are running v'.PHP_VERSION;
 		}
 
 		// Check memory
@@ -73,18 +116,18 @@ class getID3
 		if ($memory_limit <= 0) {
 			// memory limits probably disabled
 		} elseif ($memory_limit <= 3145728) {
-	    	$this->startup_error .= 'PHP has less than 3MB available memory and will very likely run out. Increase memory_limit in php.ini';
+			$this->startup_error .= 'PHP has less than 3MB available memory and will very likely run out. Increase memory_limit in php.ini';
 		} elseif ($memory_limit <= 12582912) {
-	    	$this->startup_warning .= 'PHP has less than 12MB available memory and might run out if all modules are loaded. Increase memory_limit in php.ini';
+			$this->startup_warning .= 'PHP has less than 12MB available memory and might run out if all modules are loaded. Increase memory_limit in php.ini';
 		}
 
 		// Check safe_mode off
 		if (preg_match('#(1|ON)#i', ini_get('safe_mode'))) {
-		    $this->warning('WARNING: Safe mode is on, shorten support disabled, md5data/sha1data for ogg vorbis disabled, ogg vorbos/flac tag writing disabled.');
+			$this->warning('WARNING: Safe mode is on, shorten support disabled, md5data/sha1data for ogg vorbis disabled, ogg vorbos/flac tag writing disabled.');
 		}
 
 		if (intval(ini_get('mbstring.func_overload')) > 0) {
-		    $this->warning('WARNING: php.ini contains "mbstring.func_overload = '.ini_get('mbstring.func_overload').'", this may break things.');
+			$this->warning('WARNING: php.ini contains "mbstring.func_overload = '.ini_get('mbstring.func_overload').'", this may break things.');
 		}
 
 		// Check timezone config setting
@@ -101,6 +144,13 @@ class getID3
 		if (function_exists('get_magic_quotes_runtime')) {
 			if (get_magic_quotes_runtime()) {
 				return $this->startup_error('magic_quotes_runtime must be disabled before running getID3(). Surround getid3 block by set_magic_quotes_runtime(0) and set_magic_quotes_runtime(1).');
+			}
+		}
+
+		// Check for magic_quotes_gpc
+		if (function_exists('magic_quotes_gpc')) {
+			if (get_magic_quotes_gpc()) {
+				return $this->startup_error('magic_quotes_gpc must be disabled before running getID3(). Surround getid3 block by set_magic_quotes_gpc(0) and set_magic_quotes_gpc(1).');
 			}
 		}
 
@@ -140,7 +190,7 @@ class getID3
 			$helperappsdir = GETID3_INCLUDEPATH.'..'.DIRECTORY_SEPARATOR.'helperapps'; // must not have any space in this path
 
 			if (!is_dir($helperappsdir)) {
-				@$startup_error .= '"'.$helperappsdir.'" cannot be defined as GETID3_HELPERAPPSDIR because it does not exist';
+				$this->startup_error .= '"'.$helperappsdir.'" cannot be defined as GETID3_HELPERAPPSDIR because it does not exist';
 			} elseif (strpos(realpath($helperappsdir), ' ') !== false) {
 				$DirPieces = explode(DIRECTORY_SEPARATOR, realpath($helperappsdir));
 				$path_so_far = array();
@@ -153,14 +203,14 @@ class getID3
 							foreach ($lines as $line) {
 								$line = trim($line);
 								if (preg_match('#^([0-9/]{10}) +([0-9:]{4,5}( [AP]M)?) +(<DIR>|[0-9,]+) +([^ ]{0,11}) +(.+)$#', $line, $matches)) {
-									@list($dummy, $date, $time, $ampm, $filesize, $shortname, $filename) = $matches;
+									list($dummy, $date, $time, $ampm, $filesize, $shortname, $filename) = $matches;
 									if ((strtoupper($filesize) == '<DIR>') && (strtolower($filename) == strtolower($value))) {
 										$value = $shortname;
 									}
 								}
 							}
 						} else {
-							@$startup_error .= 'GETID3_HELPERAPPSDIR must not have any spaces in it - use 8dot3 naming convention if neccesary. You can run "dir /x" from the commandline to see the correct 8.3-style names.';
+							$this->startup_error .= 'GETID3_HELPERAPPSDIR must not have any spaces in it - use 8dot3 naming convention if neccesary. You can run "dir /x" from the commandline to see the correct 8.3-style names.';
 						}
 					}
 					$path_so_far[] = $value;
@@ -210,7 +260,7 @@ class getID3
 			} else {
 				$errormessage .= 'PHP is not compiled with iconv() support. Please recompile with the --with-iconv switch';
 			}
-	    	return $this->error($errormessage);
+			return $this->error($errormessage);
 		}
 
 		// remote files not supported
@@ -224,7 +274,7 @@ class getID3
 		// open local file
 		if (file_exists($filename)) {
 			ob_start();
-			if ($fp = @fopen($filename, 'rb')) {
+			if ($fp = fopen($filename, 'rb')) {
 				// great
 				ob_end_clean();
 			} else {
@@ -299,7 +349,6 @@ class getID3
 		if ($this->option_tag_id3v2) {
 
 			$GETID3_ERRORARRAY = &$this->info['warning'];
-//die("die line ".basename(__FILE__).":".__LINE__." for filename (".@$filename.")");
 			if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.tag.id3v2.php', __FILE__, false)) {
 				$tag = new getid3_id3v2($fp, $this->info);
 				unset($tag);
@@ -325,7 +374,7 @@ class getID3
 
 		// handle ID3v1 tag
 		if ($this->option_tag_id3v1) {
-			if (!@include_once(GETID3_INCLUDEPATH.'module.tag.id3v1.php')) {
+			if (!file_exists(GETID3_INCLUDEPATH.'module.tag.id3v1.php') || !include_once(GETID3_INCLUDEPATH.'module.tag.id3v1.php')) {
 				return $this->error('module.tag.id3v1.php is missing - you may disable option_tag_id3v1.');
 			}
 			$tag = new getid3_id3v1($fp, $this->info);
@@ -334,7 +383,7 @@ class getID3
 
 		// handle APE tag
 		if ($this->option_tag_apetag) {
-			if (!@include_once(GETID3_INCLUDEPATH.'module.tag.apetag.php')) {
+			if (!file_exists(GETID3_INCLUDEPATH.'module.tag.apetag.php') || !include_once(GETID3_INCLUDEPATH.'module.tag.apetag.php')) {
 				return $this->error('module.tag.apetag.php is missing - you may disable option_tag_apetag.');
 			}
 			$tag = new getid3_apetag($fp, $this->info);
@@ -343,7 +392,7 @@ class getID3
 
 		// handle lyrics3 tag
 		if ($this->option_tag_lyrics3) {
-			if (!@include_once(GETID3_INCLUDEPATH.'module.tag.lyrics3.php')) {
+			if (!file_exists(GETID3_INCLUDEPATH.'module.tag.lyrics3.php') || !include_once(GETID3_INCLUDEPATH.'module.tag.lyrics3.php')) {
 				return $this->error('module.tag.lyrics3.php is missing - you may disable option_tag_lyrics3.');
 			}
 			$tag = new getid3_lyrics3($fp, $this->info);
@@ -393,8 +442,8 @@ class getID3
 		}
 
 		// module requires iconv support
-        if (!function_exists('iconv') && @$determined_format['iconv_req']) {
-		    return $this->error('iconv support is required for this module ('.$determined_format['include'].').');
+		if (!function_exists('iconv') && !empty($determined_format['iconv_req'])) {
+			return $this->error('iconv support is required for this module ('.$determined_format['include'].').');
 		}
 
 		// include module
@@ -889,7 +938,7 @@ class getID3
 						),
 
 
-                // SVG  - still image - Scalable Vector Graphics (SVG)
+				// SVG  - still image - Scalable Vector Graphics (SVG)
 				'svg'  => array(
 							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="http:\/\/www\.w3\.org\/2000\/svg")',
 							'group'     => 'graphic',
@@ -977,10 +1026,10 @@ class getID3
 
 				// Misc other formats
 
-                // PAR2 - data        - Parity Volume Set Specification 2.0
-                'par2' => array (
-                			'pattern'   => '^PAR2\x00PKT',
-                			'group'     => 'misc',
+				// PAR2 - data        - Parity Volume Set Specification 2.0
+				'par2' => array (
+							'pattern'   => '^PAR2\x00PKT',
+							'group'     => 'misc',
 							'module'    => 'par2',
 							'mime_type' => 'application/octet-stream',
 							'fail_id3'  => 'ERROR',
@@ -1007,13 +1056,13 @@ class getID3
 							'fail_ape'  => 'ERROR',
 						),
 
-                 // CUE  - data       - CUEsheet (index to single-file disc images)
-                 'cue' => array(
-                            'pattern'   => '', // empty pattern means cannot be automatically detected, will fall through all other formats and match based on filename and very basic file contents
-                            'group'     => 'misc',
-                            'module'    => 'cue',
-                            'mime_type' => 'application/octet-stream',
-                           ),
+				 // CUE  - data       - CUEsheet (index to single-file disc images)
+				 'cue' => array(
+							'pattern'   => '', // empty pattern means cannot be automatically detected, will fall through all other formats and match based on filename and very basic file contents
+							'group'     => 'misc',
+							'module'    => 'cue',
+							'mime_type' => 'application/octet-stream',
+						   ),
 
 			);
 		}
@@ -1033,7 +1082,7 @@ class getID3
 		foreach ($this->GetFileFormatArray() as $format_name => $info) {
 			// The /s switch on preg_match() forces preg_match() NOT to treat
 			// newline (0x0A) characters as special chars but do a binary match
-			if (@$info['pattern'] && preg_match('#'.$info['pattern'].'#s', $filedata)) {
+			if (!empty($info['pattern']) && preg_match('#'.$info['pattern'].'#s', $filedata)) {
 				$info['include'] = 'module.'.$info['group'].'.'.$info['module'].'.php';
 				return $info;
 			}
@@ -1167,7 +1216,7 @@ class getID3
 				break;
 		}
 
-		if ((@$this->info['fileformat'] == 'ogg') && (@$this->info['audio']['dataformat'] == 'vorbis')) {
+		if (!empty($this->info['fileformat']) && !empty($this->info['dataformat']) && ($this->info['fileformat'] == 'ogg') && ($this->info['audio']['dataformat'] == 'vorbis')) {
 
 			// We cannot get an identical md5_data value for Ogg files where the comments
 			// span more than 1 Ogg page (compared to the same audio data with smaller
@@ -1198,12 +1247,11 @@ class getID3
 				$old_abort = ignore_user_abort(true);
 
 				// Create empty file
-				$empty = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3');
+				$empty = tempnam(GETID3_TEMP_DIR, 'getID3');
 				touch($empty);
 
-
 				// Use vorbiscomment to make temp file without comments
-				$temp = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3');
+				$temp = tempnam(GETID3_TEMP_DIR, 'getID3');
 				$file = $this->info['filenamepath'];
 
 				if (GETID3_OS_ISWINDOWS) {
@@ -1284,9 +1332,11 @@ class getID3
 	function ChannelsBitratePlaytimeCalculations() {
 
 		// set channelmode on audio
-		if (@$this->info['audio']['channels'] == '1') {
+		if (!isset($this->info['audio']['channels'])) {
+			// ignore
+		} elseif ($this->info['audio']['channels'] == 1) {
 			$this->info['audio']['channelmode'] = 'mono';
-		} elseif (@$this->info['audio']['channels'] == '2') {
+		} elseif ($this->info['audio']['channels'] == 2) {
 			$this->info['audio']['channelmode'] = 'stereo';
 		}
 

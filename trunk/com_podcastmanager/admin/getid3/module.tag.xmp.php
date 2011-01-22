@@ -23,9 +23,9 @@
 /**************************************************************************************************
  * SWISScenter Source                                                              Nigel Barnes
  *
- * 	Provides functions for reading information from the 'APP1' Extensible Metadata 
- *	Platform (XMP) segment of JPEG format files. 
- *	This XMP segment is XML based and contains the Resource Description Framework (RDF) 
+ * 	Provides functions for reading information from the 'APP1' Extensible Metadata
+ *	Platform (XMP) segment of JPEG format files.
+ *	This XMP segment is XML based and contains the Resource Description Framework (RDF)
  *	data, which itself can contain the Dublin Core Metadata Initiative (DCMI) information.
  *
  * 	This code uses segments from the JPEG Metadata Toolkit project by Evan Hunter.
@@ -91,7 +91,10 @@ class Image_XMP
 		// Attempt to open the jpeg file - the at symbol supresses the error message about
 		// not being able to open files. The file_exists would have been used, but it
 		// does not work with files fetched over http or ftp.
-		$filehnd = @fopen($filename, 'rb');
+		ob_start();
+		$filehnd = fopen($filename, 'rb');
+		$errormessage = ob_get_contents();
+		ob_end_clean();
 
 		// Check if the file opened successfully
 		if (!$filehnd)
@@ -191,7 +194,7 @@ class Image_XMP
 
 
 	/**
-	* Retrieves XMP information from an APP1 JPEG segment and returns the raw XML text as a string. 
+	* Retrieves XMP information from an APP1 JPEG segment and returns the raw XML text as a string.
 	*
 	* @param string $filename - the filename of the JPEG file to read
 	* @return string $xmp_data - the string of raw XML text
@@ -223,7 +226,7 @@ class Image_XMP
 	}
 
 	/**
-	* Parses a string containing XMP data (XML), and returns an array 
+	* Parses a string containing XMP data (XML), and returns an array
 	* which contains all the XMP (XML) information.
 	*
 	* @param string $xml_text - a string containing the XMP data (XML) to be parsed
@@ -278,7 +281,7 @@ class Image_XMP
 		$xmp_array = array();
 
 		// The XMP data has now been parsed into an array ...
-		
+
 		// Cycle through each of the array elements
 		$current_property = ''; // current property being processed
 		$container_index = -1; // -1 = no container open, otherwise index of container content
@@ -290,11 +293,11 @@ class Image_XMP
 				case 'x:xmpmeta':
 					// only defined attribute is x:xmptk written by Adobe XMP Toolkit; value is the version of the toolkit
 					break;
-					
+
 				case 'rdf:RDF':
 					// required element immediately within x:xmpmeta; no data here
 					break;
-					
+
 				case 'rdf:Description':
 					switch ($xml_elem['type'])
 					{
@@ -317,7 +320,7 @@ class Image_XMP
 						case 'close':
 							break;
 					}
-					
+
 				case 'rdf:ID':
 				case 'rdf:nodeID':
 					// Attributes are ignored
@@ -360,7 +363,7 @@ class Image_XMP
 							break;
 					}
 					break;
-					
+
 				default:
 					// Check whether we want the details from this attribute
 					if (in_array($xml_elem['tag'], $GLOBALS['XMP_tag_captions']))
@@ -371,17 +374,17 @@ class Image_XMP
 								// open current element
 								$current_property = $xml_elem['tag'];
 								break;
-								
+
 							case 'close':
 								// close current element
 								$current_property = '';
 								break;
-								
+
 							case 'complete':
 								// store attribute value
-								$xmp_array[$xml_elem['tag']] = @$xml_elem['value'];
+								$xmp_array[$xml_elem['tag']] = (isset($xml_elem['value']) ? $xml_elem['value'] : '');
 								break;
-								
+
 							case 'cdata':
 								// ignore
 								break;
@@ -389,7 +392,7 @@ class Image_XMP
 					}
 					break;
 			}
-			
+
 		}
 		return $xmp_array;
 	}
@@ -424,7 +427,7 @@ class Image_XMP
 * The Property names of all known XMP fields.
 * Note: this is a full list with unrequired properties commented out.
 */
-$GLOBALS['XMP_tag_captions'] = array( 
+$GLOBALS['XMP_tag_captions'] = array(
 // IPTC Core
 	'Iptc4xmpCore:CiAdrCity',
 	'Iptc4xmpCore:CiAdrCtry',
@@ -467,7 +470,7 @@ $GLOBALS['XMP_tag_captions'] = array(
 	'xmp:ModifyDate',
 	'xmp:Nickname',
 	'xmp:Rating',
-	'xmp:Thumbnails', 
+	'xmp:Thumbnails',
 	'xmpidq:Scheme',
 // XMP Rights Management Schema
 	'xmpRights:Certificate',
@@ -538,7 +541,7 @@ $GLOBALS['XMP_tag_captions'] = array(
 	'photoshop:State',
 	'photoshop:SupplementalCategories',
 	'photoshop:TransmissionReference',
-	'photoshop:Urgency', 
+	'photoshop:Urgency',
 // EXIF Schemas
 	'tiff:ImageWidth',
 	'tiff:ImageLength',

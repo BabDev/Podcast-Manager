@@ -51,7 +51,7 @@ class getid3_write_id3v2
 					$this->tag_data = $this->array_join_merge($OldThisFileInfo['id3v2'], $this->tag_data);
 				}
 			}
-			$this->paddedlength = max(@$OldThisFileInfo['id3v2']['headerlength'], $this->paddedlength);
+			$this->paddedlength = (isset($OldThisFileInfo['id3v2']['headerlength']) ? max($OldThisFileInfo['id3v2']['headerlength'], $this->paddedlength) : $this->paddedlength);
 
 			if ($NewID3v2Tag = $this->GenerateID3v2Tag()) {
 
@@ -86,7 +86,7 @@ class getid3_write_id3v2
 
 				} else {
 
-					if ($tempfilename = tempnam((function_exists('sys_get_temp_dir') ? sys_get_temp_dir() : ini_get('upload_tmp_dir')), 'getID3')) {
+					if ($tempfilename = tempnam(GETID3_TEMP_DIR, 'getID3')) {
 						ob_start();
 						if ($fp_source = fopen($this->filename, 'rb')) {
 							if ($fp_temp = fopen($tempfilename, 'wb')) {
@@ -150,7 +150,9 @@ class getid3_write_id3v2
 
 			// preferred method - only one copying operation, minimal chance of corrupting
 			// original file if script is interrupted, but required directory to be writeable
-			if ($fp_source = @fopen($this->filename, 'rb')) {
+			ob_start();
+			if ($fp_source = fopen($this->filename, 'rb')) {
+				ob_end_clean();
 				// Initialize getID3 engine
 				$getID3 = new getID3;
 				$OldThisFileInfo = $getID3->analyze($this->filename);
@@ -163,16 +165,22 @@ class getid3_write_id3v2
 				if ($OldThisFileInfo['avdataoffset'] !== false) {
 					fseek($fp_source, $OldThisFileInfo['avdataoffset'], SEEK_SET);
 				}
-				if ($fp_temp = @fopen($this->filename.'getid3tmp', 'w+b')) {
+				ob_start();
+				if ($fp_temp = fopen($this->filename.'getid3tmp', 'w+b')) {
+					ob_end_clean();
 					while ($buffer = fread($fp_source, GETID3_FREAD_BUFFER_SIZE)) {
 						fwrite($fp_temp, $buffer, strlen($buffer));
 					}
 					fclose($fp_temp);
 				} else {
+					$errormessage = ob_get_contents();
+					ob_end_clean();
 					$this->errors[] = 'Could not open '.$this->filename.'getid3tmp mode "w+b"';
 				}
 				fclose($fp_source);
 			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 				$this->errors[] = 'Could not open '.$this->filename.' mode "rb"';
 			}
 			if (file_exists($this->filename)) {
@@ -184,7 +192,9 @@ class getid3_write_id3v2
 
 			// less desirable alternate method - double-copies the file, overwrites original file
 			// and could corrupt source file if the script is interrupted or an error occurs.
-			if ($fp_source = @fopen($this->filename, 'rb')) {
+			ob_start();
+			if ($fp_source = fopen($this->filename, 'rb')) {
+				ob_end_clean();
 				// Initialize getID3 engine
 				$getID3 = new getID3;
 				$OldThisFileInfo = $getID3->analyze($this->filename);
@@ -202,7 +212,9 @@ class getid3_write_id3v2
 						fwrite($fp_temp, $buffer, strlen($buffer));
 					}
 					fclose($fp_source);
-					if ($fp_source = @fopen($this->filename, 'wb')) {
+					ob_start();
+					if ($fp_source = fopen($this->filename, 'wb')) {
+						ob_end_clean();
 						rewind($fp_temp);
 						while ($buffer = fread($fp_temp, GETID3_FREAD_BUFFER_SIZE)) {
 							fwrite($fp_source, $buffer, strlen($buffer));
@@ -210,6 +222,8 @@ class getid3_write_id3v2
 						fseek($fp_temp, -128, SEEK_END);
 						fclose($fp_source);
 					} else {
+						$errormessage = ob_get_contents();
+						ob_end_clean();
 						$this->errors[] = 'Could not open '.$this->filename.' mode "wb"';
 					}
 					fclose($fp_temp);
@@ -217,6 +231,8 @@ class getid3_write_id3v2
 					$this->errors[] = 'Could not create tmpfile()';
 				}
 			} else {
+				$errormessage = ob_get_contents();
+				ob_end_clean();
 				$this->errors[] = 'Could not open '.$this->filename.' mode "rb"';
 			}
 
@@ -237,25 +253,25 @@ class getid3_write_id3v2
 		switch ($this->majorversion) {
 			case 4:
 				// %abcd0000
-				$flag  = (@$flags['unsynchronisation'] ? '1' : '0'); // a - Unsynchronisation
-				$flag .= (@$flags['extendedheader']    ? '1' : '0'); // b - Extended header
-				$flag .= (@$flags['experimental']      ? '1' : '0'); // c - Experimental indicator
-				$flag .= (@$flags['footer']            ? '1' : '0'); // d - Footer present
+				$flag  = (!empty($flags['unsynchronisation']) ? '1' : '0'); // a - Unsynchronisation
+				$flag .= (!empty($flags['extendedheader']   ) ? '1' : '0'); // b - Extended header
+				$flag .= (!empty($flags['experimental']     ) ? '1' : '0'); // c - Experimental indicator
+				$flag .= (!empty($flags['footer']           ) ? '1' : '0'); // d - Footer present
 				$flag .= '0000';
 				break;
 
 			case 3:
 				// %abc00000
-				$flag  = (@$flags['unsynchronisation'] ? '1' : '0'); // a - Unsynchronisation
-				$flag .= (@$flags['extendedheader']    ? '1' : '0'); // b - Extended header
-				$flag .= (@$flags['experimental']      ? '1' : '0'); // c - Experimental indicator
+				$flag  = (!empty($flags['unsynchronisation']) ? '1' : '0'); // a - Unsynchronisation
+				$flag .= (!empty($flags['extendedheader']   ) ? '1' : '0'); // b - Extended header
+				$flag .= (!empty($flags['experimental']     ) ? '1' : '0'); // c - Experimental indicator
 				$flag .= '00000';
 				break;
 
 			case 2:
 				// %ab000000
-				$flag  = (@$flags['unsynchronisation'] ? '1' : '0'); // a - Unsynchronisation
-				$flag .= (@$flags['compression']       ? '1' : '0'); // b - Compression
+				$flag  = (!empty($flags['unsynchronisation']) ? '1' : '0'); // a - Unsynchronisation
+				$flag .= (!empty($flags['compression']      ) ? '1' : '0'); // b - Compression
 				$flag .= '000000';
 				break;
 
@@ -777,7 +793,7 @@ class getid3_write_id3v2
 						$framedata .= chr($source_data_array['encodingid']);
 						$framedata .= str_replace("\x00", '', $source_data_array['mime'])."\x00";
 						$framedata .= chr($source_data_array['picturetypeid']);
-						$framedata .= @$source_data_array['description'].getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
+						$framedata .= !empty($source_data_array['description']) ? $source_data_array['description'] : '').getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
 						$framedata .= $source_data_array['data'];
 					}
 					break;
@@ -1624,7 +1640,9 @@ class getid3_write_id3v2
 			if (!$footer && ($this->paddedlength > (strlen($tagstring) + getid3_id3v2::ID3v2HeaderLength($this->majorversion)))) {
 				// pad up to $paddedlength bytes if unpadded tag is shorter than $paddedlength
 				// "Furthermore it MUST NOT have any padding when a tag footer is added to the tag."
-				$tagstring .= @str_repeat("\x00", $this->paddedlength - strlen($tagstring) - getid3_id3v2::ID3v2HeaderLength($this->majorversion));
+				if (($this->paddedlength - strlen($tagstring) - getid3_id3v2::ID3v2HeaderLength($this->majorversion)) > 0) {
+					$tagstring .= str_repeat("\x00", $this->paddedlength - strlen($tagstring) - getid3_id3v2::ID3v2HeaderLength($this->majorversion));
+				}
 			}
 			if ($this->id3v2_use_unsynchronisation && (substr($tagstring, strlen($tagstring) - 1, 1) == "\xFF")) {
 				// special unsynchronisation case:
@@ -1797,7 +1815,7 @@ class getid3_write_id3v2
 	}
 
 	function is_hash($var) {
-		// written by dev-nullØchristophe*vg
+		// written by dev-nullï¿½christophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($var)) {
 			$keys = array_keys($var);
@@ -1812,7 +1830,7 @@ class getid3_write_id3v2
 	}
 
 	function array_join_merge($arr1, $arr2) {
-		// written by dev-nullØchristophe*vg
+		// written by dev-nullï¿½christophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($arr1) && is_array($arr2)) {
 			// the same -> merge
@@ -1822,7 +1840,7 @@ class getid3_write_id3v2
 				// hashes -> merge based on keys
 				$keys = array_merge(array_keys($arr1), array_keys($arr2));
 				foreach ($keys as $key) {
-					$new_array[$key] = $this->array_join_merge(@$arr1[$key], @$arr2[$key]);
+					$new_array[$key] = $this->array_join_merge((isset($arr1[$key]) ? $arr1[$key] : ''), (isset($arr2[$key]) ? $arr2[$key] : ''));
 				}
 			} else {
 				// two real arrays -> merge
@@ -1856,7 +1874,10 @@ class getid3_write_id3v2
 	}
 
 	function safe_parse_url($url) {
-		$parts = @parse_url($url);
+		ob_start();
+		$parts = parse_url($url);
+		$errormessage = ob_get_contents();
+		ob_end_clean();
 		$parts['scheme'] = (isset($parts['scheme']) ? $parts['scheme'] : '');
 		$parts['host']   = (isset($parts['host'])   ? $parts['host']   : '');
 		$parts['user']   = (isset($parts['user'])   ? $parts['user']   : '');
@@ -2045,7 +2066,7 @@ class getid3_write_id3v2
 			$ID3v2ShortFrameNameLookup[4]['title_sort_order']                                 = 'TSOT';
 			$ID3v2ShortFrameNameLookup[4]['set_subtitle']                                     = 'TSST';
 		}
-		return @$ID3v2ShortFrameNameLookup[$majorversion][strtolower($long_description)];
+		return (isset($ID3v2ShortFrameNameLookup[$majorversion][strtolower($long_description)]) ? $ID3v2ShortFrameNameLookup[$majorversion][strtolower($long_description)] : '');
 
 	}
 
