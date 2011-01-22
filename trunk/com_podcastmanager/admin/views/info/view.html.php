@@ -41,7 +41,7 @@ class PodcastManagerViewInfo extends JView {
 	{
 		$canDo	= PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_INFO_TITLE'), '');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_INFO_TITLE'), 'podcastmanager.png');
 
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_podcastmanager');

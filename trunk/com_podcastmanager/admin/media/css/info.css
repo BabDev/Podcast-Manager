@@ -1,15 +1,20 @@
-.podcastheader{
-	font-family: Georgia, serif;
-	font-size: 18pt;
-	color: #333333;
+/**
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+.podMan-welcome {
+	padding-bottom: 10px;
+}
+
+.podMan-header {
+	font-size: 14pt;
 }
 
 .divider {
 	border: 1px dotted #000000;
-}
-
-.podcastmessage {
-	text-align: left;
-	font-family: Tahoma, Arial, serif;
-	font-size: 12pt;
 }
