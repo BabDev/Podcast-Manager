@@ -37,11 +37,11 @@ class PodcastManagerViewPodcasts extends JView
 			return false;
 		}
 
-		$params = JComponentHelper::getParams('com_podcastmanager');
-		$this->assignRef('params', $params);
-		
-		$this->addToolbar();
-		
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal') {
+			$this->addToolbar();
+		}
+				
 		parent::display($tpl);
 	}
 
@@ -52,7 +52,6 @@ class PodcastManagerViewPodcasts extends JView
 	 */
 	protected function addToolbar()
 	{
-		$state	= $this->get('State');
 		$canDo	= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
@@ -75,7 +74,7 @@ class PodcastManagerViewPodcasts extends JView
 			JToolBarHelper::archiveList('podcasts.archive','JTOOLBAR_ARCHIVE');
 			JToolBarHelper::custom('podcasts.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 		}
-		if ($state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
 			JToolBarHelper::deleteList('', 'podcasts.delete','JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		} else if ($canDo->get('core.edit.state')) {
