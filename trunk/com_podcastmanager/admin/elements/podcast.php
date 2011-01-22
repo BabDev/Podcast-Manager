@@ -27,7 +27,7 @@ class PodcastManagerElementPodcast extends JElement
 		$doc		= JFactory::getDocument();
 		$template	= $app->getTemplate();
 		$fieldName	= $control_name.'['.$name.']';
-		$podcast = JTable::getInstance('podcast');
+		$podcast = JTable::getInstance('Podcast', 'PodcastManagerTable', array());
 		if ($value) {
 			$podcast->load($value);
 		} else {
