@@ -11,7 +11,7 @@
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
 	<version>1.6 Alpha</version>
-	<license>GNU/GPL</license>
+	<license>GNU/GPL Version 2 or later</license>
 	<description>MOD_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<files>
 		<folder>media</folder>

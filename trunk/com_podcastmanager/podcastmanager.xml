@@ -8,7 +8,7 @@
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
 	<version>1.6 Alpha</version>
-	<license>GNU/GPL</license>
+	<license>GNU/GPL Version 2 or later</license>
 	<description>COM_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<menu link="option=com_podcastmanager">COM_PODCASTMANAGER</menu>
 	<files folder="site">
@@ -33,7 +33,6 @@
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
-			<filename>LICENSE</filename>
 			<filename>index.html</filename>
 			<filename>podcastmanager.php</filename>
 			<folder>controllers</folder>

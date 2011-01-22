@@ -9,7 +9,7 @@
 	<packageremail>mbabker@flbab.com</packageremail>
 	<packagerurl>http://www.flbab.com</packagerurl>
 	<version>1.6 Alpha</version>
-	<license>GNU/GPL</license>
+	<license>GNU/GPL Version 2 or later</license>
 	<description>Podcast Manager extension suite for Joomla!</description>
 	<update>http://www.flbab.com/updates/pkg_podcastmanager</update>
 	<files folder="packages">
