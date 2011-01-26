@@ -46,7 +46,7 @@ class plgButtonPodcastManager extends JPlugin
 		 */
 		$js = "
 		function PodcastManagerSelectPodcast(id, title, filename, object) {
-			var tag = '{podcast '+title+'}';
+			var tag = '{podcast '+title+'}{/podcast}';
 			jInsertEditorText(tag, '".$name."');
 			SqueezeBox.close();
 		}";
