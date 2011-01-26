@@ -14,8 +14,4 @@
 		<file>index.html</file>
 		<folder>getid3</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.lib_getid3.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.lib_getid3.sys.ini</language>
-	</languages>
 </extension>
