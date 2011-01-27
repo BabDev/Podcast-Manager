@@ -12,9 +12,9 @@
 	<description>COM_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<menu link="option=com_podcastmanager">COM_PODCASTMANAGER</menu>
 	<files folder="site">
+		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
-		<folder>media</folder>
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
