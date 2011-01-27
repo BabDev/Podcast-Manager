@@ -8,28 +8,13 @@
 * 
 */
 
-// Restricted access
-defined('_JEXEC') or die();
+// No direct access.
+defined('_JEXEC') or die;
 
+//TODO: Router
 jimport('joomla.application.component.controller');
+//require_once JPATH_COMPONENT.'/helpers/route.php';
 
-class PodcastManagerController extends JController
-{
-	function display()
-	{		
-		$view = JRequest::getVar('view', '');
-		
-		if ($view == '') {
-			JRequest::setVar('view', 'feed');
-		}
-		
-		parent::display();
-	}
-}
-
-$document =& JFactory::getDocument();
-$document->setType('raw');
-
-$controller = new PodcastManagerController();
-$controller->execute(JRequest::getVar('task', null));
+$controller	= JController::getInstance('PodcastManager');
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
