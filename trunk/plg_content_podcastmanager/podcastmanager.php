@@ -17,7 +17,7 @@ $app->registerEvent( 'onPrepareContent', 'plgContentPodcastManager' );
 
 function plgContentPodcastManager( &$row, &$params, $page=0 )
 {	
-	// Performance check: don't go any farther if we don't have an {enclose ...} tag
+	// Performance check: don't go any farther if we don't have a {podcast ...} tag
 	if ( JString::strpos( $row->text, 'podcast' ) === false && JString::strpos( $row->text, 'player' ) === false) {
 		return true;
 	}

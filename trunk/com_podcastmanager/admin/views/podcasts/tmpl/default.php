@@ -78,25 +78,25 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js'
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php //if ($item->checked_out) : ?>
-						<?php //echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
-					<?php //endif; ?>
-					<?php if ($canEdit) : ?>
+					<?php //if ($item->checked_out) {
+						//echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin);
+					//} ?>
+					<?php if ($canEdit) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id='.(int) $item->id); ?>">
 							<?php echo $this->escape($item->title); ?></a>
-					<?php else : ?>
-							<?php echo $this->escape($item->title); ?>
-					<?php endif; ?>
+					<?php } else { 
+							echo $this->escape($item->title);
+					} ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcastmanager.', $canChange); ?>
+					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language=='*'):?>
-						<?php echo JText::alt('JALL','language'); ?>
-					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
-					<?php endif;?>
+					<?php if ($item->language=='*') {
+						echo JText::alt('JALL','language');
+					} else {
+						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
+					} ?>
 				</td>
 				<td class="center">
 					<?php echo (int) $item->id; ?>
