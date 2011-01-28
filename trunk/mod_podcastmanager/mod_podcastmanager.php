@@ -35,4 +35,3 @@ if($params->get('urischeme') == 'http') {
 }
 
 require(JModuleHelper::getLayoutPath('mod_podcastmanager'));
-?>

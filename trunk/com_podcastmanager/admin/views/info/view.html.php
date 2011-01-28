@@ -13,7 +13,8 @@ defined('_JEXEC') or die();
 
 jimport( 'joomla.application.component.view');
 
-class PodcastManagerViewInfo extends JView {
+class PodcastManagerViewInfo extends JView
+{
 	/**
 	 * Display the view
 	 *

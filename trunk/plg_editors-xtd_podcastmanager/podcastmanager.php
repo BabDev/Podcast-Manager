@@ -15,9 +15,6 @@ jimport('joomla.plugin.plugin');
 
 /**
  * Editor Podcast buton
- *
- * @package pkg_podcastmanager
- * @since 1.6
  */
 class plgButtonPodcastManager extends JPlugin
 {
@@ -29,7 +26,6 @@ class plgButtonPodcastManager extends JPlugin
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 	}
-
 
 	/**
 	 * Display the button

@@ -18,9 +18,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager')) {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-// Include dependencies
-jimport('joomla.application.component.controller');
-
 $controller = JController::getInstance('PodcastManager');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

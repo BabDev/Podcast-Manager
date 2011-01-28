@@ -14,11 +14,7 @@ defined('JPATH_BASE') or die;
 jimport('joomla.form.formfield');
 
 /**
- * Supports a modal article picker.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_content
- * @since		1.6
+ * Supports a modal podcast selection.
  */
 class JFormFieldModal_Podcast extends JFormField
 {
@@ -86,7 +82,7 @@ class JFormFieldModal_Podcast extends JFormField
 		$html[] = '  </div>';
 		$html[] = '</div>';
 
-		// The active article id field.
+		// The active podcast id field.
 		if (0 == (int)$this->value) {
 			$value = '';
 		} else {

@@ -22,20 +22,21 @@ class PodcastManagerElementPodcast extends JElement
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
+		// Initialise variables
 		$app		= JFactory::getApplication();
 		$db			= JFactory::getDbo();
 		$doc		= JFactory::getDocument();
 		$template	= $app->getTemplate();
 		$fieldName	= $control_name.'['.$name.']';
 		$podcast = JTable::getInstance('Podcast', 'PodcastManagerTable', array());
+		
 		if ($value) {
 			$podcast->load($value);
 		} else {
 			$podcast->title = JText::_('COM_PODCASTMANAGER_SELECT_A_PODCAST');
 		}
 
-		$js = "
-		function PodcastManagerSelectPodcast_".$name."(id, title, filename, object) {
+		$js = "function PodcastManagerSelectPodcast_".$name."(id, title, filename, object) {
 			document.getElementById(object + '_id').value = id;
 			document.getElementById(object + '_name').value = title;
 			SqueezeBox.close();
@@ -46,7 +47,6 @@ class PodcastManagerElementPodcast extends JElement
 
 		JHtml::_('behavior.modal', 'a.modal');
 		$html = "\n".'<div class="fltlft"><input type="text" id="'.$name.'_name" value="'.htmlspecialchars($podcast->title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" /></div>';
-//		$html .= "\n &#160; <input class=\"inputbox modal-button\" type=\"button\" value=\"".JText::_('JSELECT')."\" />";
 		$html .= '<div class="button2-left"><div class="blank"><a class="modal" title="'.JText::_('COM_PODCASTMANAGER_SELECT_A_PODCAST').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 650, y: 375}}">'.JText::_('JSELECT').'</a></div></div>'."\n";
 		$html .= "\n".'<input type="hidden" id="'.$name.'_id" name="'.$fieldName.'" value="'.(int)$value.'" />';
 

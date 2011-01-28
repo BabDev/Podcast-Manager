@@ -13,7 +13,9 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controllerform');
 
+/**
+ * Podcast edit view controller class.
+ */
 class PodcastManagerControllerPodcast extends JControllerForm
 {
-
 }

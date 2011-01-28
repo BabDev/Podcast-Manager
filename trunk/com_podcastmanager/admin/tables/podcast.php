@@ -11,7 +11,8 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-class PodcastManagerTablePodcast extends JTable {
+class PodcastManagerTablePodcast extends JTable
+{
 	
 	var $id;
 	var $filename;
@@ -26,8 +27,8 @@ class PodcastManagerTablePodcast extends JTable {
 	var $itSubtitle;
 	var $language;
 	
-	function __construct( &$db )
+	function __construct(&$db)
 	{
-		parent::__construct( '#__podcastmanager', 'id', $db );
+		parent::__construct('#__podcastmanager', 'id', $db);
 	}
 }
