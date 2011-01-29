@@ -52,14 +52,14 @@
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
 		</languages>
-		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">Podcast Manager</menu>
+		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_podcastmanager&amp;view=podcasts" view="podcasts" alt="Podcast-Manager/Podcasts" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">Podcasts</menu>
-			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">Information</menu>
+			<menu link="option=com_podcastmanager&amp;view=podcasts" view="podcasts" alt="Podcast-Manager/Podcasts" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_PODCASTS</menu>
+			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
 		</submenu>
 	</administration>
 </extension>
