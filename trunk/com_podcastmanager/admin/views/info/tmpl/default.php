@@ -22,9 +22,10 @@ JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/templat
 <div class="podMan-header">How Podcast Manager Works</div>
 <div class="divider"></div>
 <div>
-	<p>Podcast Manager allows you to manage a podcast feed via your Joomla! website.  The suite is bundled with four extensions:</p>
+	<p>Podcast Manager allows you to manage a podcast feed via your Joomla! website.  The suite is bundled with five extensions:</p>
 	<ul>
 		<li>Component - Used to upload all podcast files, edit podcast metadata, and manage whether podcasts are published or not</li>
+		<li>getID3 Library - The getID3 library is used to extract metadata from uploaded files to pre-fill your metadata form.</li>
 		<li>Module - Displays a link to the podcast feed</li>
 		<li>Content Plugin - The content plugin allows users to add a podcast player directly into an article by adding {podcast title}{/podcast} into the article editor</li>
 		<li>Editor Plugin - Integrates into the article editor by adding a "Podcast" button, allowing the user to select a podcast to insert into an article</li>
