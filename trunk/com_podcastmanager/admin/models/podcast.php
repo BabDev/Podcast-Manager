@@ -40,16 +40,34 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		// Modify the form based on access controls.
 		if (!$this->canEditState((object) $data)) {
 			// Disable fields for display.
+			$form->setFieldAttribute('publish_up', 'disabled', 'true');
 			$form->setFieldAttribute('published', 'disabled', 'true');
 
 			// Disable fields while saving.
 			// The controller has already verified this is a record you can edit.
+			$form->setFieldAttribute('publish_up', 'filter', 'unset');
 			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
 		return $form;
 	}
 
+	/**
+	 * Prepare and sanitise the table data prior to saving.
+	 *
+	 * @param	JTable	A JTable object.
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
+	protected function prepareTable(&$table)
+	{
+		// Set the publish date to now
+		if($table->published == 1 && intval($table->publish_up) == 0) {
+			$table->publish_up = JFactory::getDate()->toMySQL();
+		}
+	}
+	
 	/**
 	 * Returns a Table object, always creating it.
 	 *

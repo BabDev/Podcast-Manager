@@ -70,17 +70,17 @@ JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js'
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate	= $user->authorise('core.create',		'com_podcastmanager');
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager');
-			//$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager');
+			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
+			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager') && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php //if ($item->checked_out) {
-						//echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin);
-					//} ?>
+					<?php if ($item->checked_out) {
+						echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'podcasts.', $canCheckin);
+					} ?>
 					<?php if ($canEdit) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id='.(int) $item->id); ?>">
 							<?php echo $this->escape($item->title); ?></a>

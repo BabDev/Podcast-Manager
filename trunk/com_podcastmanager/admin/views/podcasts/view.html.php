@@ -70,8 +70,6 @@ class PodcastManagerViewPodcasts extends JView
 
 
 			JToolBarHelper::divider();
-			//TODO: Do we want to be able to archive?
-			JToolBarHelper::archiveList('podcasts.archive','JTOOLBAR_ARCHIVE');
 			JToolBarHelper::custom('podcasts.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 		}
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {

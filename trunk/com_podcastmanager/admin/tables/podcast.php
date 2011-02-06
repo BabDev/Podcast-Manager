@@ -18,6 +18,12 @@ class PodcastManagerTablePodcast extends JTable
 	var $filename;
 	var $title;
 	var $published;
+	var $created;
+	var $modified;
+	var $modified_by;
+	var $checked_out;
+	var $checked_out_time;
+	var $publish_up;
 	var $itAuthor;
 	var $itBlock;
 	var $itCategory;
@@ -30,5 +36,33 @@ class PodcastManagerTablePodcast extends JTable
 	function __construct(&$db)
 	{
 		parent::__construct('#__podcastmanager', 'id', $db);
+	}
+
+
+	/**
+	 * Overriden JTable::store to set modified data and user id.
+	 *
+	 * @param	boolean	True to update fields even if they are null.
+	 *
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function store($updateNulls = false)
+	{
+		$date	= JFactory::getDate();
+		$user	= JFactory::getUser();
+
+		if ($this->id) {
+			// Existing item
+			$this->modified		= $date->toMySQL();
+			$this->modified_by	= $user->get('id');
+		} else {
+			// New item. A podcast's created field can be set by the user,
+			// so we don't touch it if it is set.
+			if (!intval($this->created)) {
+				$this->created = $date->toMySQL();
+			}
+		}
+		return parent::store($updateNulls);
 	}
 }

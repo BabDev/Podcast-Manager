@@ -80,8 +80,9 @@ class PodcastManagerModelPodcasts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.filename, a.title, a.published, a.itAuthor, a.itBlock, a.itCategory, a.itDuration,' .
-				'a.itExplicit, a.itKeywords, a.itSubtitle, a.language'
+				'a.id, a.filename, a.title, a.published, a.created, a.modified, a.modified_by, a.itAuthor,' .
+				'a.checked_out, a.checked_out_time, a.publish_up, a.itBlock, a.itCategory, a.itDuration,a.itExplicit,' .
+				'a.itKeywords, a.itSubtitle, a.language'
 			)
 		);
 		$query->from('`#__podcastmanager` AS a');
@@ -89,6 +90,10 @@ class PodcastManagerModelPodcasts extends JModelList
 		// Join over the language
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
