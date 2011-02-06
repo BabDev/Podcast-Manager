@@ -19,8 +19,6 @@
 			<option
 				value="0">JUNPUBLISHED</option>
 			<option
-				value="2">JARCHIVED</option>
-			<option
 				value="-2">JTRASH</option>
 		</field>
 		<field name="created" type="calendar" label="COM_PODCASTMANAGER_FIELD_CREATED_LABEL"
