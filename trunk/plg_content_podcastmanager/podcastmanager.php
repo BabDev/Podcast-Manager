@@ -11,6 +11,37 @@
 // Restricted access
 defined('_JEXEC') or die();
 
+jimport('joomla.plugin.plugin');
+
+class plgContentPodcastManager extends JPlugin
+{
+	/**
+	 * Plugin that loads a podcast player within content
+	 *
+	 * @param	string	The context of the content being passed to the plugin.
+	 * @param	object	The article object.  Note $article->text is also available
+	 * @param	object	The article params
+	 * @param	int		The 'page' number
+	 */
+	public function onContentPrepare($context, &$article, &$params, $page = 0)
+	{
+		// simple performance check to determine whether plugin should process further
+		if (strpos($article->text, 'podcast') === false) {
+			return true;
+		}
+		
+		// expression to search for
+		$regex		= '/{podcast\s+(.*?)}/i';
+		$matches	= array();
+
+		// find all instances of plugin and put in $matches
+		preg_match_all($regex, $article->text, $matches);
+
+	}
+}
+
+/** 1.5 Content Plugin
+ * 
 $app	= JFactory::getApplication();
 
 $app->registerEvent( 'onPrepareContent', 'plgContentPodcastManager' );
@@ -37,7 +68,7 @@ function plgContentPodcastManager( &$row, &$params, $page=0 )
 		 * $podcast[2] file mime type
 		 * 
 		 * We're only interested in $podcast[0] here
-		 */
+		 
 		$enclose = explode(' ', $podcast);
 
 		$player = new PodcastManagerPlayer($podManParams, $enclose, $row->title);
@@ -47,7 +78,7 @@ function plgContentPodcastManager( &$row, &$params, $page=0 )
 	
 	return true;
 }
-
+*/
 class PodcastManagerPlayer
 {
 	private $playerType = null;
@@ -103,19 +134,18 @@ class PodcastManagerPlayer
 	
 	private function determineURL($filename)
 	{
-		$mediapath = $this->podManParams->get('mediapath', 'components/com_podcastmanager/media');
 		
 		// If we have a full URL, stop.
 		// Otherwise, see if the file is the normal mediapath and build URL
 		// Else, just assume Joomla! root
 		if (!preg_match('/^https?:\/\//', $filename)) {
 
-			$fullPath = JPATH_BASE . DS . $mediapath . DS . $filename;
+			$fullPath = JPATH_BASE.'/media/com_podcastmanager/'.$filename;
 
 			if (JFile::exists($fullPath)) {
-				$filename = JURI::base() . $mediapath . '/' . $filename;
+				$filename = JURI::base().'/media/com_podcastmanager/'.$filename;
 			} else {
-				$filename = JURI::base() . $filename;
+				$filename = JURI::base().'/'.$filename;
 			}
 
 		} 
@@ -125,7 +155,7 @@ class PodcastManagerPlayer
 	
 	private function links()
 	{
-		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podManParams->get('linktitle', JText::_('Listen Now!'))) . '</a>';
+		return '<a href="'.$this->fileURL.'">'.htmlspecialchars($this->podManParams->get('linktitle', JText::_('Listen Now!'))).'</a>';
 	}
 	
 	private function player()
@@ -133,9 +163,9 @@ class PodcastManagerPlayer
 		$width = $this->podManParams->get( 'playerwidth', 400);
 		$height = $this->podManParams->get( 'playerheight', 15);
 
-		$playerURL = JURI::base() . 'plugins/content/podcastmanager/xspf_player_slim.swf';
+		$playerURL = JURI::base().'plugins/content/podcastmanager/xspf_player_slim.swf';
 
-		return '<object type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" data="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->title . '&player_title=' . $this->title . '"><param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->title . '&player_title=' . $this->title . '" /></object>';
+		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'" /></object>';
 	}
 	
 	private function html()
@@ -151,15 +181,15 @@ class PodcastManagerPlayer
 		$width = $this->podManParams->get( 'playerwidth', 320);
 		$height = $this->podManParams->get( 'playerheight', 240);
 		
-		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $width . '" height="' . $height . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
-		. '<param name="src" value="' . $this->fileURL . '" />'
-		. '<param name="href" value="' . $this->fileURL . '" />'
+		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$width.'" height="'.$height.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
+		. '<param name="src" value="'.$this->fileURL.'" />'
+		. '<param name="href" value="'.$this->fileURL.'" />'
 		. '<param name="scale" value="aspect" />'
 		. '<param name="controller" value="true" />'
 		. '<param name="autoplay" value="false" />'
 		. '<param name="bgcolor" value="000000" />'
 		. '<param name="pluginspage" value="http://www.apple.com/quicktime/download/" />'
-		. '<embed src="' . $this->fileURL . '" width="' . $width . '" height="' . $height . '" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="' . $this->fileURL .'" type="' . $this->fileTypes[$ext] . '" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
+		. '<embed src="'.$this->fileURL.'" width="'.$width.'" height="'.$height.'" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="'.$this->fileURL.'" type="'.$this->fileTypes[$ext].'" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
 		. '</object>';
 		
 		return $player;
