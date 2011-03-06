@@ -146,14 +146,14 @@ class PodcastManagerViewFeed extends JView
 			if(preg_match('/^http/', $filename)) { // external url
 				$fileFullPath = $fileURL = $filename;
 			} else {
-				$fileFullPath = JPATH_ROOT . DS . $params->get('mediapath', 'components/com_podcastmanager/media') . DS . $filename;
+				$fileFullPath = JPATH_ROOT.'/'.$params->get('mediapath', 'media/com_podcastmanager').'/'.$filename;
 				if(!JFile::exists($fileFullPath)) {
-					$fileFullPath = JPATH_ROOT . DS . $filename; // try fallback
+					$fileFullPath = JPATH_ROOT.'/'.$filename; // try fallback
 					if(!JFile::exists($fileFullPath))
 						continue;
-					$fileURL = JURI::root() . $filename;
+					$fileURL = JURI::root().$filename;
 				} else {
-					$fileURL = JURI::root() . $params->get('mediapath', 'components/com_podcastmanager/media') . '/' . $filename;
+					$fileURL = JURI::root().$params->get('mediapath', 'media/com_podcastmanager').'/'.$filename;
 				}
 			}
 			

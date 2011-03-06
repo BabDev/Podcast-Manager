@@ -25,7 +25,7 @@
 			name="mediapath"
 			type="text"
 			size="60"
-			default="components/com_podcastmanager/media"
+			default="media/com_podcastmanager"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_MEDIAPATH_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_MEDIAPATH_DESCRIPTION" />
 		<field
