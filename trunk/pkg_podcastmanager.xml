@@ -14,6 +14,7 @@
 	<update>http://www.flbab.com/updates/pkg_podcastmanager</update>
 	<files folder="packages">
 		<file type="component" id="com_podcastmanager" >com_podcastmanager.zip</file>
+		<file type="component" id="com_podcastmedia" >com_podcastmedia.zip</file>
 		<file type="library" id="lib_getid3" >lib_getid3.zip</file>
 		<file type="module" id="mod_podcastmanager" client="site">mod_podcastmanager.zip</file>
 		<file type="plugin" id="podcastmanager" group="content">plg_content_podcastmanager.zip</file>

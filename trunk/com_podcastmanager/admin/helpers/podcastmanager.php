@@ -36,6 +36,10 @@ class PodcastManagerHelper
 			JText::_('COM_PODCASTMANAGER_SUBMENU_INFO'),
 			'index.php?option=com_podcastmanager&view=info',
 			$vName == 'info');
+		JSubMenuHelper::addEntry(
+			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
+			'index.php?option=com_podcastmedia&view=media',
+			$vName == 'media');
 	}
 	
 	/**
