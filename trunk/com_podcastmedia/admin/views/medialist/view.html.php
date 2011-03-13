@@ -1,9 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -11,13 +14,13 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the Media component
+ * HTML View class for the Podcast Media component
  *
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @since 1.0
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
-class MediaViewMediaList extends JView
+class PodcastMediaViewMediaList extends JView
 {
 	function display($tpl = null)
 	{
@@ -25,7 +28,7 @@ class MediaViewMediaList extends JView
 		JResponse::allowCache(false);
 
 		$app	= JFactory::getApplication();
-		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$lang	= JFactory::getLanguage();
 		
@@ -48,13 +51,13 @@ class MediaViewMediaList extends JView
 			});
 		});");
 
-		$images = $this->get('images');
-		$documents = $this->get('documents');
-		$folders = $this->get('folders');
-		$state = $this->get('state');
+		$audio		= $this->get('audio');
+		$documents	= $this->get('documents');
+		$folders	= $this->get('folders');
+		$state		= $this->get('state');
 
 		$this->assign('baseURL', JURI::root());
-		$this->assignRef('images', $images);
+		$this->assignRef('audio', $audio);
 		$this->assignRef('documents', $documents);
 		$this->assignRef('folders', $folders);
 		$this->assignRef('state', $state);
@@ -71,10 +74,10 @@ class MediaViewMediaList extends JView
 		}
 	}
 
-	function setImage($index = 0)
+	function setAudio($index = 0)
 	{
-		if (isset($this->images[$index])) {
-			$this->_tmp_img = &$this->images[$index];
+		if (isset($this->audio[$index])) {
+			$this->_tmp_img = &$this->audio[$index];
 		} else {
 			$this->_tmp_img = new JObject;
 		}

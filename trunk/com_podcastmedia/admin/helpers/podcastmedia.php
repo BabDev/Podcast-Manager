@@ -37,16 +37,6 @@ abstract class PodcastMediaHelper
 			'index.php?option=com_podcastmedia&view=media',
 			$vName == 'media');
 	}
-	/**
-	 * Checks if the file is an image
-	 * @param string The filename
-	 * @return boolean
-	 */
-	public static function isImage($fileName)
-	{
-		static $imageTypes = 'xcf|odg|gif|jpg|png|bmp';
-		return preg_match("/\.(?:$imageTypes)$/i",$fileName);
-	}
 
 	/**
 	 * Checks if the file is an image
@@ -85,7 +75,7 @@ abstract class PodcastMediaHelper
 
 		$format = strtolower(JFile::getExt($file['name']));
 
-		$allowable = explode(',', $medmanparams->get('upload_extensions'));
+		$allowable = explode(',', $podmedparams->get('upload_extensions'));
 		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
 		if (!in_array($format, $allowable) && !in_array($format,$ignored))
 		{
@@ -103,21 +93,9 @@ abstract class PodcastMediaHelper
 		$user = JFactory::getUser();
 		$imginfo = null;
 		if ($medmanparams->get('restrict_uploads',1)) {
-			$images = explode(',', $medmanparams->get('image_extensions'));
-			if (in_array($format, $images)) { // if its an image run it through getimagesize
-				// if tmp_name is empty, then the file was bigger than the PHP limit
-				if (!empty($file['tmp_name'])) {
-					if (($imginfo = getimagesize($file['tmp_name'])) === FALSE) {
-						$err = 'COM_PODCASTMEDIA_ERROR_WARNINVALID_IMG';
-						return false;
-					}
-				} else {
-					$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE';
-					return false;
-				}
-			} else if (!in_array($format, $ignored)) {
+			if (!in_array($format, $ignored)) {
 				// if its not an image...and we're not ignoring it
-				$allowed_mime = explode(',', $medmanparams->get('upload_mime'));
+				$allowed_mime = explode(',', $podmedparams->get('upload_mime'));
 				$illegal_mime = explode(',', $medmanparams->get('upload_mime_illegal'));
 				if (function_exists('finfo_open') && $medmanparams->get('check_mime',1)) {
 					// We have fileinfo
@@ -167,24 +145,6 @@ abstract class PodcastMediaHelper
 		}
 	}
 
-	public static function imageResize($width, $height, $target)
-	{
-		//takes the larger size of the width and height and applies the
-		//formula accordingly...this is so this script will work
-		//dynamically with any size image
-		if ($width > $height) {
-			$percentage = ($target / $width);
-		} else {
-			$percentage = ($target / $height);
-		}
-
-		//gets the new value and applies the percentage, then rounds the value
-		$width = round($width * $percentage);
-		$height = round($height * $percentage);
-
-		return array($width, $height);
-	}
-
 	public static function countFiles($dir)
 	{
 		$total_file = 0;
@@ -192,20 +152,17 @@ abstract class PodcastMediaHelper
 
 		if (is_dir($dir)) {
 			$d = dir($dir);
-
 			while (false !== ($entry = $d->read())) {
-				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false && strpos($entry, '.php') === false) {
+				if (substr($entry, 0, 1) != '.' && is_file($dir.DIRECTORY_SEPARATOR.$entry) && strpos($entry, '.html') === false && strpos($entry, '.php') === false) {
 					$total_file++;
 				}
-				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry)) {
+				if (substr($entry, 0, 1) != '.' && is_dir($dir.DIRECTORY_SEPARATOR.$entry)) {
 					$total_dir++;
 				}
 			}
 
 			$d->close();
 		}
-
 		return array ($total_file, $total_dir);
 	}
-
 }

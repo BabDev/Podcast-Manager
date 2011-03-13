@@ -1,9 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // no direct access
 defined('_JEXEC') or die;
@@ -11,13 +14,13 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controller');
 
 /**
- * Media Manager Component Controller
+ * Podcast Media Manager Component Controller
  *
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @version 1.5
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmedia
+ * @version		1.6
  */
-class MediaController extends JController
+class PodcastMediaController extends JController
 {
 	/**
 	 * Method to display a view.
@@ -26,7 +29,7 @@ class MediaController extends JController
 	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return	JController		This object to support chaining.
-	 * @since	1.5
+	 * @since	1.6
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -34,13 +37,13 @@ class MediaController extends JController
 		$vName = JRequest::getCmd('view', 'media');
 		switch ($vName)
 		{
-			case 'images':
+			case 'audio':
 				$vLayout = JRequest::getCmd('layout', 'default');
 				$mName = 'manager';
 
 				break;
 
-			case 'imagesList':
+			case 'audioList':
 				$mName = 'list';
 				$vLayout = JRequest::getCmd('layout', 'default');
 
@@ -49,7 +52,7 @@ class MediaController extends JController
 			case 'mediaList':
 				$app	= JFactory::getApplication();
 				$mName = 'list';
-				$vLayout = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+				$vLayout = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 				break;
 

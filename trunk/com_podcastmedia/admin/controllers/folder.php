@@ -28,7 +28,7 @@ class PodcastMediaControllerFolder extends JController
 	 * Deletes paths from the current path
 	 *
 	 * @param string $listFolder The image directory to delete a file from
-	 * @since 1.5
+	 * @since 1.6
 	 */
 	function delete()
 	{
@@ -43,7 +43,7 @@ class PodcastMediaControllerFolder extends JController
 
 		if ($tmpl == 'component') {
 			// We are inside the iframe
-			$this->setRedirect('index.php?option=com_podcastmedia&view=mediaList&folder='.$folder.'&tmpl=component');
+			$this->setRedirect('index.php?option=com_podcastmedia&view=medialist&folder='.$folder.'&tmpl=component');
 		} else {
 			$this->setRedirect('index.php?option=com_podcastmedia&folder='.$folder);
 		}
@@ -69,7 +69,7 @@ class PodcastMediaControllerFolder extends JController
 				foreach ($paths as $path) {
 					if ($path !== JFile::makeSafe($path)) {
 						$dirname = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-						JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_PODCASTMEDIA_BASE))));
+						JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_PODCASTMEDIA_BASE))));
 						continue;
 					}
 
@@ -78,41 +78,41 @@ class PodcastMediaControllerFolder extends JController
 					if (is_file($fullPath))
 					{
 						// Trigger the onContentBeforeDelete event.
-						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_media.file', &$object_file));
+						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
 						if (in_array(false, $result, true)) {
 							// There are some errors in the plugins
-							JError::raiseWarning(100, JText::plural('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+							JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 							continue;
 						}
 
 						$ret &= JFile::delete($fullPath);
 
 						// Trigger the onContentAfterDelete event.
-						$dispatcher->trigger('onContentAfterDelete', array('com_media.file', &$object_file));
-						$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+						$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
+						$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 					}
 					else if (is_dir($fullPath))
 					{
 						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS','.DS_Store','__MACOSX'), array('index.html', '^\..*','.*~'))) == 0)
 						{
 							// Trigger the onContentBeforeDelete event.
-							$result = $dispatcher->trigger('onContentBeforeDelete', array('com_media.folder', &$object_file));
+							$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
 							if (in_array(false, $result, true)) {
 								// There are some errors in the plugins
-								JError::raiseWarning(100, JText::plural('COM_MEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+								JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 								continue;
 							}
 
 							$ret &= !JFolder::delete($fullPath);
 
 							// Trigger the onContentAfterDelete event.
-							$dispatcher->trigger('onContentAfterDelete', array('com_media.folder', &$object_file));
-							$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+							$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
+							$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
 						else
 						{
 							//This makes no sense...
-							JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
 					}
 				}
@@ -125,7 +125,7 @@ class PodcastMediaControllerFolder extends JController
 	 * Create a folder
 	 *
 	 * @param string $path Path of the folder to create
-	 * @since 1.5
+	 * @since 1.6
 	 */
 	function create()
 	{
@@ -156,7 +156,7 @@ class PodcastMediaControllerFolder extends JController
 			JRequest::setVar('folder', $parent);
 
 			if (($folderCheck !== null) && ($folder !== $folderCheck)) {
-				$this->setMessage(JText::_('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
+				$this->setMessage(JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
 				return false;
 			}
 
@@ -170,7 +170,7 @@ class PodcastMediaControllerFolder extends JController
 				$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.folder', &$object_file));
 				if (in_array(false, $result, true)) {
 					// There are some errors in the plugins
-					JError::raiseWarning(100, JText::plural('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
+					JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 					continue;
 				}
 
@@ -180,7 +180,7 @@ class PodcastMediaControllerFolder extends JController
 
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
-				$this->setMessage(JText::sprintf('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(COM_PODCASTMEDIA_BASE))));
+				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($path, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 			JRequest::setVar('folder', ($parent) ? $parent.'/'.$folder : $folder);
 		}

@@ -20,7 +20,7 @@ jimport('joomla.filesystem.file');
  *
  * @package		Podcast Manager
  * @subpackage	com_podcastmedia
- * @since 1.5
+ * @since		1.6
  */
 class PodcastMediaModelList extends JModel
 {
@@ -41,13 +41,6 @@ class PodcastMediaModelList extends JModel
 		return parent::getState($property, $default);
 	}
 
-	function getImages()
-	{
-		$list = $this->getList();
-
-		return $list['images'];
-	}
-
 	function getFolders()
 	{
 		$list = $this->getList();
@@ -55,18 +48,18 @@ class PodcastMediaModelList extends JModel
 		return $list['folders'];
 	}
 
-	function getDocuments()
+	function getAudio()
 	{
 		$list = $this->getList();
 
-		return $list['docs'];
+		return $list['audio'];
 	}
 
 	/**
-	 * Build imagelist
+	 * Build audiolist
 	 *
-	 * @param string $listFolder The image directory to display
-	 * @since 1.5
+	 * @param string $listFolder The directory to display
+	 * @since 1.6
 	 */
 	function getList()
 	{
@@ -118,48 +111,10 @@ class PodcastMediaModelList extends JModel
 					$ext = strtolower(JFile::getExt($file));
 					switch ($ext)
 					{
-						// Image
-						case 'jpg':
-						case 'png':
-						case 'gif':
-						case 'xcf':
-						case 'odg':
-						case 'bmp':
-						case 'jpeg':
-							$info = @getimagesize($tmp->path);
-							$tmp->width		= @$info[0];
-							$tmp->height	= @$info[1];
-							$tmp->type		= @$info[2];
-							$tmp->mime		= @$info['mime'];
-
-							if (($info[0] > 60) || ($info[1] > 60)) {
-								$dimensions = MediaHelper::imageResize($info[0], $info[1], 60);
-								$tmp->width_60 = $dimensions[0];
-								$tmp->height_60 = $dimensions[1];
-							}
-							else {
-								$tmp->width_60 = $tmp->width;
-								$tmp->height_60 = $tmp->height;
-							}
-
-							if (($info[0] > 16) || ($info[1] > 16)) {
-								$dimensions = MediaHelper::imageResize($info[0], $info[1], 16);
-								$tmp->width_16 = $dimensions[0];
-								$tmp->height_16 = $dimensions[1];
-							}
-							else {
-								$tmp->width_16 = $tmp->width;
-								$tmp->height_16 = $tmp->height;
-							}
-
-							$images[] = $tmp;
-							break;
-
-						// Non-image document
-						default:
+						case 'mp3':
 							$tmp->icon_32 = "media/mime-icon-32/".$ext.".png";
 							$tmp->icon_16 = "media/mime-icon-16/".$ext.".png";
-							$docs[] = $tmp;
+							$audio[] = $tmp;
 							break;
 					}
 				}
@@ -182,7 +137,7 @@ class PodcastMediaModelList extends JModel
 			}
 		}
 
-		$list = array('folders' => $folders, 'docs' => $docs, 'images' => $images);
+		$list = array('folders' => $folders, 'audio' => $audio);
 
 		return $list;
 	}

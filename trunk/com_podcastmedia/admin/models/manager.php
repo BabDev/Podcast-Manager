@@ -18,7 +18,7 @@ jimport('joomla.application.component.model');
  *
  * @package		Podcast Manager
  * @subpackage	com_podcastmedia
- * @since 1.5
+ * @since		1.6
  */
 class PodcastMediaModelManager extends JModel
 {
@@ -47,7 +47,7 @@ class PodcastMediaModelManager extends JModel
 	 * Image Manager Popup
 	 *
 	 * @param string $listFolder The image directory to display
-	 * @since 1.5
+	 * @since 1.6
 	 */
 	function getFolderList($base = null)
 	{
@@ -61,7 +61,7 @@ class PodcastMediaModelManager extends JModel
 		$folders = JFolder::folders($base, '.', true, true);
 
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MEDIA_INSERT_IMAGE'));
+		$document->setTitle(JText::_('COM_PODCASTMEDIA_INSERT_IMAGE'));
 
 		// Build the array of select options for the folder list
 		$options[] = JHtml::_('select.option', "","/");
@@ -129,7 +129,7 @@ class PodcastMediaModelManager extends JModel
 				}
 			}
 		}
-		$tree['data'] = (object) array('name' => JText::_('COM_MEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
+		$tree['data'] = (object) array('name' => JText::_('COM_PODCASTMEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
 
 		return $tree;
 	}

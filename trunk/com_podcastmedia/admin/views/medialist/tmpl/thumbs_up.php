@@ -1,11 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access.
 defined('_JEXEC') or die;
@@ -13,7 +14,7 @@ defined('_JEXEC') or die;
 		<div class="imgOutline">
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
-					<a href="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
+					<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
 						<?php echo JHTML::_('image','media/folderup_32.png', '..', array('width' => 32, 'height' => 32), true); ?></a>
 				</div>
 			</div>
@@ -21,6 +22,6 @@ defined('_JEXEC') or die;
 				<span>&#160;</span>
 			</div>
 			<div class="imginfoBorder">
-				<a href="index.php?option=com_media&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
+				<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
 			</div>
 		</div>

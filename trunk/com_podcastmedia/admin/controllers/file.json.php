@@ -26,7 +26,7 @@ class PodcastMediaControllerFile extends JController
 	/**
 	 * Upload a file
 	 *
-	 * @since 1.5
+	 * @since 1.6
 	 */
 	function upload()
 	{
@@ -85,7 +85,7 @@ class PodcastMediaControllerFile extends JController
 				$log->addEntry(array('comment' => 'Errors before save: '.$filepath.' : '.implode(', ', $object_file->getErrors())));
 				$response = array(
 					'status' => '0',
-					'error' => JText::plural('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
+					'error' => JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
 				);
 				echo json_encode($response);
 				return;
@@ -97,7 +97,7 @@ class PodcastMediaControllerFile extends JController
 				$log->addEntry(array('comment' => 'File exists: '.$filepath.' by user_id '.$user->id));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_FILE_EXISTS')
+					'error' => JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS')
 				);
 				echo json_encode($response);
 				return;
@@ -108,7 +108,7 @@ class PodcastMediaControllerFile extends JController
 				$log->addEntry(array('comment' => 'Create not permitted: '.$filepath.' by user_id '.$user->id));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_CREATE_NOT_PERMITTED')
+					'error' => JText::_('COM_PODCASTMEDIA_ERROR_CREATE_NOT_PERMITTED')
 				);
 				echo json_encode($response);
 				return;
@@ -121,7 +121,7 @@ class PodcastMediaControllerFile extends JController
 				$log->addEntry(array('comment' => 'Error on upload: '.$filepath));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
+					'error' => JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
 				);
 				echo json_encode($response);
 				return;
@@ -133,7 +133,7 @@ class PodcastMediaControllerFile extends JController
 				$log->addEntry(array('comment' => $folder));
 				$response = array(
 					'status' => '1',
-					'error' => JText::sprintf('COM_MEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE)))
+					'error' => JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE)))
 				);
 				echo json_encode($response);
 				return;
@@ -143,7 +143,7 @@ class PodcastMediaControllerFile extends JController
 		{
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('COM_MEDIA_ERROR_BAD_REQUEST')
+				'error' => JText::_('COM_PODCASTMEDIA_ERROR_BAD_REQUEST')
 			);
 
 			echo json_encode($response);

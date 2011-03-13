@@ -1,26 +1,27 @@
 <?php
 /**
- * @version		$Id$
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access.
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
 ?>
-<form target="_parent" action="index.php?option=com_media&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
+<form target="_parent" action="index.php?option=com_podcastmedia&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
 	<div class="manager">
 	<table width="100%" cellspacing="0">
 	<thead>
 		<tr>
 			<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
-			<th><?php echo JText::_('COM_MEDIA_NAME'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_MEDIA_PIXEL_DIMENSIONS'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_MEDIA_FILESIZE'); ?></th>
-		<?php if ($user->authorise('core.delete','com_media')):?>
+			<th><?php echo JText::_('COM_PODCASTMEDIA_NAME'); ?></th>
+			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_PIXEL_DIMENSIONS'); ?></th>
+			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_FILESIZE'); ?></th>
+		<?php if ($user->authorise('core.delete','com_podcastmanager')):?>
 			<th width="8%"><?php echo JText::_('JACTION_DELETE'); ?></th>
 		<?php endif;?>
 		</tr>

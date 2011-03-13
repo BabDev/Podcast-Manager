@@ -20,7 +20,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_podcastmedia
  * @since		1.6
  */
-class MediaViewImages extends JView
+class PodcastMediaViewAudio extends JView
 {
 	function display($tpl = null)
 	{
@@ -40,7 +40,7 @@ class MediaViewImages extends JView
 		}
 
 		if ($medmanparams->get('enable_flash', 1)) {
-			$fileTypes = $medmanparams->get('image_extensions', 'bmp,gif,jpg,png,jpeg');
+			$fileTypes = $podmedparams->get('upload_extensions', 'mp3,MP3');
 			$types = explode(',', $fileTypes);
 			$displayTypes = '';		// this is what the user sees
 			$filterTypes = '';		// this is what controls the logic
@@ -60,7 +60,7 @@ class MediaViewImages extends JView
 				$filterTypes .= '*.'.$type;
 			}
 
-			$typeString = '{ \''.JText::_('COM_MEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
+			$typeString = '{ \''.JText::_('COM_PODCASTMEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
 
 			JHtml::_('behavior.uploader', 'upload-flash',
 				array(
@@ -82,6 +82,8 @@ class MediaViewImages extends JView
 
 		$this->assignRef('session',			JFactory::getSession());
 		$this->assignRef('medmanparams',	$medmanparams);
+		$this->assignRef('podmanparams',	$podmanparams);
+		$this->assignRef('podmedparams',	$podmedparams);
 		$this->assignRef('state',			$this->get('state'));
 		$this->assignRef('folderList',		$this->get('folderList'));
 		$this->assign('require_ftp', $ftp);

@@ -32,6 +32,9 @@
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
 	</languages>
+	<media destination="com_podcastmanager">
+		<filename>index.html</filename>
+	</media>
 	<administration>
 		<files folder="admin">
 			<filename>access.xml</filename>

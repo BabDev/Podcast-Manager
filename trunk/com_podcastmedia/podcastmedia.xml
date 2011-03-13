@@ -23,8 +23,8 @@
 			<folder>views</folder>
 		</files>
 		<languages folder="admin/language">
-			<language tag="en-GB">en-GB.com_podcastmedia.ini</language>
-			<language tag="en-GB">en-GB.com_podcastmedia.sys.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.sys.ini</language>
 		</languages>
 	</administration>
 </extension>

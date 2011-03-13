@@ -1,9 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -11,13 +14,13 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the Media component
+ * HTML View class for the Podcast Media component
  *
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @since 1.0
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
-class MediaViewImagesList extends JView
+class PodcastMediaViewAudioList extends JView
 {
 	function display($tpl = null)
 	{
@@ -36,12 +39,12 @@ class MediaViewImagesList extends JView
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
 
-		$images = $this->get('images');
-		$folders = $this->get('folders');
-		$state = $this->get('state');
+		$audio		= $this->get('audio');
+		$folders	= $this->get('folders');
+		$state		= $this->get('state');
 
-		$this->assign('baseURL', COM_MEDIA_BASEURL);
-		$this->assignRef('images', $images);
+		$this->assign('baseURL', COM_PODCASTMEDIA_BASEURL);
+		$this->assignRef('audio', $audio);
 		$this->assignRef('folders', $folders);
 		$this->assignRef('state', $state);
 
@@ -58,12 +61,12 @@ class MediaViewImagesList extends JView
 		}
 	}
 
-	function setImage($index = 0)
+	function setAudio($index = 0)
 	{
-		if (isset($this->images[$index])) {
-			$this->_tmp_img = &$this->images[$index];
+		if (isset($this->audio[$index])) {
+			$this->_tmp_audio = &$this->audio[$index];
 		} else {
-			$this->_tmp_img = new JObject;
+			$this->_tmp_audio = new JObject;
 		}
 	}
 }

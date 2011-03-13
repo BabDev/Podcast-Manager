@@ -1,9 +1,12 @@
 <?php
 /**
- * @version		$Id$
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @version		$Id$
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -11,32 +14,34 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the Media component
+ * HTML View class for the Podcast Media component
  *
- * @package		Joomla.Administrator
- * @subpackage	com_media
- * @since 1.0
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
-class MediaViewMedia extends JView
+class PodcastMediaViewMedia extends JView
 {
 	function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
-		$config = JComponentHelper::getParams('com_media');
+		$app			= JFactory::getApplication();
+		$medmanparams	= JComponentHelper::getParams('com_media');
+		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
+		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
 		
 		$lang	= JFactory::getLanguage();
 
-		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$document = JFactory::getDocument();
 		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 		JHtml::_('behavior.framework', true);
 
-		JHTML::_('script','media/mediamanager.js', true, true);
-		JHTML::_('stylesheet','media/mediamanager.css', array(), true);
+		JHtml::_('script','media/mediamanager.js', true, true);
+		JHtml::_('stylesheet','media/mediamanager.css', array(), true);
 		if ($lang->isRTL()) :
-			JHTML::_('stylesheet','media/mediamanager_rtl.css', array(), true);
+			JHtml::_('stylesheet','media/mediamanager_rtl.css', array(), true);
 		endif;
 
 		JHtml::_('behavior.modal');
@@ -45,14 +50,14 @@ class MediaViewMedia extends JView
 			document.preview = SqueezeBox;
 		});");
 
-		JHTML::_('script','system/mootree.js', true, true, false, false);
-		JHTML::_('stylesheet','system/mootree.css', array(), true);	
+		JHtml::_('script','system/mootree.js', true, true, false, false);
+		JHtml::_('stylesheet','system/mootree.css', array(), true);	
 		if ($lang->isRTL()) :
-			JHTML::_('stylesheet','media/mootree_rtl.css', array(), true);
+			JHtml::_('stylesheet','media/mootree_rtl.css', array(), true);
 		endif;
 
-		if ($config->get('enable_flash', 1)) {
-			$fileTypes = $config->get('upload_extensions', 'bmp,gif,jpg,png,jpeg');
+		if ($medmanparams->get('enable_flash', 1)) {
+			$fileTypes = $podmedparams->get('upload_extensions', 'mp3');
 			$types = explode(',', $fileTypes);
 			$displayTypes = '';		// this is what the user sees
 			$filterTypes = '';		// this is what controls the logic
@@ -67,7 +72,7 @@ class MediaViewMedia extends JView
 				$displayTypes .= '*.'.$type;
 				$filterTypes .= '*.'.$type;
 			}
-			$typeString = '{ \''.JText::_('COM_MEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
+			$typeString = '{ \''.JText::_('COM_PODCASTMEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
 
 			JHtml::_('behavior.uploader', 'upload-flash',
 				array(
@@ -75,16 +80,16 @@ class MediaViewMedia extends JView
 					'onComplete' 	=> 'function(){ MediaManager.refreshFrame(); }',
 					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
 					'typeFilter' 	=> $typeString,
-					'fileSizeMax'	=> (int) ($config->get('upload_maxsize',0) * 1024 * 1024),
+					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),
 				)
 			);
 		}
 
 		if (DS == '\\')
 		{
-			$base = str_replace(DS,"\\\\",COM_MEDIA_BASE);
+			$base = str_replace(DS,"\\\\",COM_PODCASTMEDIA_BASE);
 		} else {
-			$base = COM_MEDIA_BASE;
+			$base = COM_PODCASTMEDIA_BASE;
 		}
 
 		$js = "
@@ -103,7 +108,9 @@ class MediaViewMedia extends JView
 		$session	= JFactory::getSession();
 		$state		= $this->get('state');
 		$this->assignRef('session', $session);
-		$this->assignRef('config', $config);
+		$this->assignRef('medmanparams', $medmanparams);
+		$this->assignRef('podmanparams', $podmanparams);
+		$this->assignRef('podmedparams', $podmedparams);
 		$this->assignRef('state', $state);
 		$this->assign('require_ftp', $ftp);
 		$this->assign('folders_id', ' id="media-tree"');
@@ -128,10 +135,10 @@ class MediaViewMedia extends JView
 		$user = JFactory::getUser();
 
 		// Set the titlebar text
-		JToolBarHelper::title(JText::_('COM_MEDIA'), 'mediamanager.png');
+		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'mediamanager.png');
 
 		// Add a delete button
-		if ($user->authorise('core.delete','com_media'))
+		if ($user->authorise('core.delete','com_podcastmanager'))
 		{
 			$title = JText::_('JTOOLBAR_DELETE');
 			$dhtml = "<a href=\"#\" onclick=\"MediaManager.submit('folder.delete')\" class=\"toolbar\">
@@ -140,10 +147,10 @@ class MediaViewMedia extends JView
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}
-		// Add a delete button
-		if ($user->authorise('core.admin','com_media'))
+		// Add the options button
+		if ($user->authorise('core.admin','com_podcastmedia'))
 		{
-			JToolBarHelper::preferences('com_media', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+			JToolBarHelper::preferences('com_podcastmedia', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
 			JToolBarHelper::divider();
 		}
 		JToolBarHelper::help('JHELP_CONTENT_MEDIA_MANAGER');
