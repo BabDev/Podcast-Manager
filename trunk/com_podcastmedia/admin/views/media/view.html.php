@@ -34,14 +34,14 @@ class PodcastMediaViewMedia extends JView
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$document = JFactory::getDocument();
-		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+		//$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 		JHtml::_('behavior.framework', true);
 
-		JHtml::_('script','media/mediamanager.js', true, true);
-		JHtml::_('stylesheet','media/mediamanager.css', array(), true);
+		JHTML::_('script','media/mediamanager.js', true, true);
+		JHTML::_('stylesheet','media/mediamanager.css', array(), true);
 		if ($lang->isRTL()) :
-			JHtml::_('stylesheet','media/mediamanager_rtl.css', array(), true);
+			JHTML::_('stylesheet','media/mediamanager_rtl.css', array(), true);
 		endif;
 
 		JHtml::_('behavior.modal');
@@ -50,10 +50,10 @@ class PodcastMediaViewMedia extends JView
 			document.preview = SqueezeBox;
 		});");
 
-		JHtml::_('script','system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet','system/mootree.css', array(), true);	
+		JHTML::_('script','system/mootree.js', true, true, false, false);
+		JHTML::_('stylesheet','system/mootree.css', array(), true);	
 		if ($lang->isRTL()) :
-			JHtml::_('stylesheet','media/mootree_rtl.css', array(), true);
+			JHTML::_('stylesheet','media/mootree_rtl.css', array(), true);
 		endif;
 
 		if ($medmanparams->get('enable_flash', 1)) {
@@ -148,7 +148,7 @@ class PodcastMediaViewMedia extends JView
 			JToolBarHelper::divider();
 		}
 		// Add the options button
-		if ($user->authorise('core.admin','com_podcastmedia'))
+		if ($user->authorise('core.admin','com_podcastmanager'))
 		{
 			JToolBarHelper::preferences('com_podcastmedia', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
 			JToolBarHelper::divider();

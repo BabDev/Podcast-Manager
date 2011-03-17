@@ -39,12 +39,9 @@ $popup_upload = JRequest::getCmd('pop_up',null);
 $path = "file_path";
 
 $view = JRequest::getCmd('view');
-if (substr(strtolower($view),0,6) == "images" || $popup_upload == 1) {
-	$path = "image_path";
-}
 
-define('COM_PODCASTMEDIA_BASE',	JPATH_ROOT.'/media/com_podcastmanager');
-define('COM_PODCASTMEDIA_BASEURL', JURI::root().'media/com_podcastmanager');
+define('COM_PODCASTMEDIA_BASE',		JPATH_ROOT.'/'.$podmedparams->get($path, 'media/com_podcastmanager'));
+define('COM_PODCASTMEDIA_BASEURL',	JURI::root().$podmedparams->get($path, 'media/com_podcastmanager'));
 
 // Include dependancies
 jimport('joomla.application.component.controller');

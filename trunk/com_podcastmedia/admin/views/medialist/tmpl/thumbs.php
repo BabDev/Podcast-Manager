@@ -30,6 +30,11 @@ defined('_JEXEC') or die;
 			echo $this->loadTemplate('img');
 		endfor; ?>
 
+		<?php for ($i=0,$n=count($this->audio); $i<$n; $i++) :
+			$this->setAudio($i);
+			echo $this->loadTemplate('audio');
+		endfor; ?>
+
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="username" value="" />
 		<input type="hidden" name="password" value="" />

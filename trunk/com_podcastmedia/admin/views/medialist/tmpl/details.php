@@ -44,6 +44,11 @@ $user = JFactory::getUser();
 			echo $this->loadTemplate('img');
 		endfor; ?>
 
+		<?php for ($i=0,$n=count($this->audio); $i<$n; $i++) :
+			$this->setAudio($i);
+			echo $this->loadTemplate('audio');
+		endfor; ?>
+
 	</tbody>
 	</table>
 	<input type="hidden" name="task" value="list" />
