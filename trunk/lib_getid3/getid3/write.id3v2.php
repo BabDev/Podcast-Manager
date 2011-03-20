@@ -36,12 +36,12 @@ class getid3_write_id3v2
 		// File MUST be writeable - CHMOD(646) at least. It's best if the
 		// directory is also writeable, because that method is both faster and less susceptible to errors.
 
-		if (is_writeable($this->filename) || (!file_exists($this->filename) && is_writeable(dirname($this->filename)))) {
+		if (!empty($this->filename) && (is_writeable($this->filename) || (!file_exists($this->filename) && is_writeable(dirname($this->filename))))) {
 			// Initialize getID3 engine
 			$getID3 = new getID3;
 			$OldThisFileInfo = $getID3->analyze($this->filename);
-			if ($OldThisFileInfo['filesize'] >= pow(2, 31)) {
-				$this->errors[] = 'Unable to write ID3v2 because file is larger than 2GB';
+			if (!getid3_lib::intValueSupported($OldThisFileInfo['filesize'])) {
+				$this->errors[] = 'Unable to write ID3v2 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 				fclose($fp_source);
 				return false;
 			}
@@ -138,7 +138,7 @@ class getid3_write_id3v2
 			}
 			return true;
 		} else {
-			$this->errors[] = '!is_writeable('.$this->filename.')';
+			$this->errors[] = 'WriteID3v2() failed: !is_writeable('.$this->filename.')';
 		}
 		return false;
 	}
@@ -156,8 +156,8 @@ class getid3_write_id3v2
 				// Initialize getID3 engine
 				$getID3 = new getID3;
 				$OldThisFileInfo = $getID3->analyze($this->filename);
-				if ($OldThisFileInfo['filesize'] >= pow(2, 31)) {
-					$this->errors[] = 'Unable to remove ID3v2 because file is larger than 2GB';
+				if (!getid3_lib::intValueSupported($OldThisFileInfo['filesize'])) {
+					$this->errors[] = 'Unable to remove ID3v2 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 					fclose($fp_source);
 					return false;
 				}
@@ -198,8 +198,8 @@ class getid3_write_id3v2
 				// Initialize getID3 engine
 				$getID3 = new getID3;
 				$OldThisFileInfo = $getID3->analyze($this->filename);
-				if ($OldThisFileInfo['filesize'] >= pow(2, 31)) {
-					$this->errors[] = 'Unable to remove ID3v2 because file is larger than 2GB';
+				if (!getid3_lib::intValueSupported($OldThisFileInfo['filesize'])) {
+					$this->errors[] = 'Unable to remove ID3v2 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 					fclose($fp_source);
 					return false;
 				}
@@ -793,7 +793,7 @@ class getid3_write_id3v2
 						$framedata .= chr($source_data_array['encodingid']);
 						$framedata .= str_replace("\x00", '', $source_data_array['mime'])."\x00";
 						$framedata .= chr($source_data_array['picturetypeid']);
-						$framedata .= !empty($source_data_array['description']) ? $source_data_array['description'] : ''.getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
+						$framedata .= (!empty($source_data_array['description']) ? $source_data_array['description'] : '').getid3_id3v2::TextEncodingTerminatorLookup($source_data_array['encodingid']);
 						$framedata .= $source_data_array['data'];
 					}
 					break;
@@ -1162,7 +1162,9 @@ class getid3_write_id3v2
 					break;
 
 				default:
-					if ($frame_name{0} == 'T') {
+					if ((($this->majorversion == 2) && (strlen($frame_name) != 3)) || (($this->majorversion > 2) && (strlen($frame_name) != 4))) {
+						$this->errors[] = 'Invalid frame name "'.$frame_name.'" for ID3v2.'.$this->majorversion;
+					} elseif ($frame_name{0} == 'T') {
 						// 4.2. T???  Text information frames
 						// Text encoding                $xx
 						// Information                  <text string(s) according to encoding>
@@ -1815,7 +1817,7 @@ class getid3_write_id3v2
 	}
 
 	function is_hash($var) {
-		// written by dev-nullï¿½christophe*vg
+		// written by dev-nullØchristophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($var)) {
 			$keys = array_keys($var);
@@ -1830,7 +1832,7 @@ class getid3_write_id3v2
 	}
 
 	function array_join_merge($arr1, $arr2) {
-		// written by dev-nullï¿½christophe*vg
+		// written by dev-nullØchristophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($arr1) && is_array($arr2)) {
 			// the same -> merge
@@ -1901,7 +1903,7 @@ class getid3_write_id3v2
 		if ($parts = $this->safe_parse_url($url)) {
 			if (($parts['scheme'] != 'http') && ($parts['scheme'] != 'https') && ($parts['scheme'] != 'ftp') && ($parts['scheme'] != 'gopher')) {
 				return false;
-			} elseif (!preg_match("#^[[:alnum:]]([-.]?[0-9a-z])*\.[a-z]{2,3}#i$", $parts['host'], $regs) && !IsValidDottedIP($parts['host'])) {
+			} elseif (!preg_match("#^[[:alnum:]]([-.]?[0-9a-z])*\.[a-z]{2,3}#i$", $parts['host'], $regs) && !preg_match('#^[0-9]{1,3}(\.[0-9]{1,3}){3}$#', $parts['host'])) {
 				return false;
 			} elseif (!preg_match("#^([[:alnum:]-]|[\_])*$#i", $parts['user'], $regs)) {
 				return false;
@@ -1918,7 +1920,7 @@ class getid3_write_id3v2
 		return false;
 	}
 
-	function ID3v2ShortFrameNameLookup($majorversion, $long_description) {
+	static function ID3v2ShortFrameNameLookup($majorversion, $long_description) {
 		$long_description = str_replace(' ', '_', strtolower(trim($long_description)));
 		static $ID3v2ShortFrameNameLookup = array();
 		if (empty($ID3v2ShortFrameNameLookup)) {

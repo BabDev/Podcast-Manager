@@ -862,7 +862,18 @@ class getid3_asf
 								$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['dataoffset'] = $wm_picture_offset;
 								$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['data'] = substr($thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['value'], $wm_picture_offset);
 								unset($thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['value']);
-								$thisfile_asf_comments['picture'] = array($thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['data']);
+
+								$imageinfo = array();
+								$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['image_mime'] = '';
+								$imagechunkcheck = getid3_lib::GetDataImageSize($thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['data'], $imageinfo);
+								unset($imageinfo);
+								if (!empty($imagechunkcheck)) {
+									$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['image_mime'] = image_type_to_mime_type($imagechunkcheck[2]);
+								}
+								if (!isset($thisfile_asf_comments['picture'])) {
+									$thisfile_asf_comments['picture'] = array();
+								}
+								$thisfile_asf_comments['picture'][] = array('data'=>$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['data'], 'mime_type'=>$thisfile_asf_extendedcontentdescriptionobject_contentdescriptor_current['image_mime']);
 								break;
 
 							default:

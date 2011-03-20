@@ -269,10 +269,17 @@ A: You're generally free to use getID3 however you see fit. The only
 
 
 
+Why is it called "getID3()" if it does so much more than just that?
+===========================================================================
+
+v0.1 did in fact just do that. I don't have a copy of code that old, but I
+could essentially write it today with a one-line function:
+  function getID3($filename) { return unpack('a3TAG/a30title/a30artist/a30album/a4year/a28comment/c1track/c1genreid', substr(file_get_contents($filename), -128)); }
+
+
 Future Plans
 ===========================================================================
 
-* Writing support for Real
 * Better support for MP4 container format
 * Scan for appended ID3v2 tag at end of file per ID3v2.4 specs (Section 5.0)
 * Support for JPEG-2000 (http://www.morgan-multimedia.com/jpeg2000_overview.htm)
@@ -406,6 +413,10 @@ Known Bugs/Issues in getID3() that cannot be fixed
 Known Bugs/Issues in other programs
 -----------------------------------
 
+* Windows Media Player (up to v11) and iTunes (up to v10+) do
+    not correctly handle ID3v2.3 tags with UTF-16BE+BOM
+    encoding (they assume the data is UTF-16LE+BOM and either
+    crash (WMP) or output Asian character set (iTunes)
 * Winamp (up to v2.80 at least) does not support ID3v2.4 tags,
     only ID3v2.3
     see: http://forums.winamp.com/showthread.php?postid=387524
@@ -511,9 +522,9 @@ Reference material:
 * http://www.lossless-audio.com/
 * http://download.microsoft.com/download/winmediatech40/Doc/1.0/WIN98MeXP/EN-US/ASF_Specification_v.1.0.exe
 * http://mediaxw.sourceforge.net/files/doc/Active%20Streaming%20Format%20(ASF)%201.0%20Specification.pdf
-* http://www.uni-jena.de/~pfk/mpp/sv8/
+* http://www.uni-jena.de/~pfk/mpp/sv8/ (archived at http://www.hydrogenaudio.org/musepack/klemm/www.personal.uni-jena.de/~pfk/mpp/sv8/)
 * http://jfaul.de/atl/
-* http://www.uni-jena.de/~pfk/mpp/
+* http://www.uni-jena.de/~pfk/mpp/ (archived at http://www.hydrogenaudio.org/musepack/klemm/www.personal.uni-jena.de/~pfk/mpp/)
 * http://www.libpng.org/pub/png/spec/png-1.2-pdg.html
 * http://www.real.com/devzone/library/creating/rmsdk/doc/rmff.htm
 * http://www.fastgraph.com/help/bmp_os2_header_format.html

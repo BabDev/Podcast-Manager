@@ -19,8 +19,8 @@ class getid3_id3v1
 
 	function getid3_id3v1(&$fd, &$ThisFileInfo) {
 
-		if ($ThisFileInfo['filesize'] >= pow(2, 31)) {
-			$ThisFileInfo['warning'][] = 'Unable to check for ID3v1 because file is larger than 2GB';
+		if (!getid3_lib::intValueSupported($ThisFileInfo['filesize'])) {
+			$ThisFileInfo['warning'][] = 'Unable to check for ID3v1 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 			return false;
 		}
 
@@ -323,7 +323,7 @@ class getid3_id3v1
 		return $OriginalGenre;
 	}
 
-	function GenerateID3v1Tag($title, $artist, $album, $year, $genreid, $comment, $track='') {
+	static function GenerateID3v1Tag($title, $artist, $album, $year, $genreid, $comment, $track='') {
 		$ID3v1Tag  = 'TAG';
 		$ID3v1Tag .= str_pad(trim(substr($title,  0, 30)), 30, "\x00", STR_PAD_RIGHT);
 		$ID3v1Tag .= str_pad(trim(substr($artist, 0, 30)), 30, "\x00", STR_PAD_RIGHT);

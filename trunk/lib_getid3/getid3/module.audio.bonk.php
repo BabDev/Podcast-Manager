@@ -22,12 +22,12 @@ class getid3_bonk
 		$ThisFileInfo['bonk'] = array();
 		$thisfile_bonk        = &$ThisFileInfo['bonk'];
 
-		$thisfile_bonk['dataoffset']      = $ThisFileInfo['avdataoffset'];
-		$thisfile_bonk['dataend']         = $ThisFileInfo['avdataend'];
+		$thisfile_bonk['dataoffset'] = $ThisFileInfo['avdataoffset'];
+		$thisfile_bonk['dataend']    = $ThisFileInfo['avdataend'];
 
-		if ($thisfile_bonk['dataend'] >= pow(2, 31)) {
+		if (!getid3_lib::intValueSupported($thisfile_bonk['dataend'])) {
 
-			$ThisFileInfo['warning'][] = 'Unable to parse BONK file from end (v0.6+ preferred method) because PHP filesystem functions only support up to 2GB';
+			$ThisFileInfo['warning'][] = 'Unable to parse BONK file from end (v0.6+ preferred method) because PHP filesystem functions only support up to '.round(PHP_INT_MAX / 1073741824).'GB';
 
 		} else {
 

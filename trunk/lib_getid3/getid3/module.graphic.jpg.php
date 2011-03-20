@@ -60,26 +60,21 @@ class getid3_jpg
 				$ThisFileInfo['video']['resolution_y'] = $height;
 
 				if (isset($imageinfo['APP1'])) {
-					if (version_compare(phpversion(), '4.2.0', '>=')) {
-						if (function_exists('exif_read_data')) {
-							if (substr($imageinfo['APP1'], 0, 4) == 'Exif') {
-								ob_start();
-								$ThisFileInfo['jpg']['exif'] = exif_read_data($ThisFileInfo['filenamepath'], '', true, false);
-								$errors = ob_get_contents();
-								if ($errors) {
-									$ThisFileInfo['warning'][] = strip_tags($errors);
-									//unset($ThisFileInfo['jpg']['exif']);
-								}
-								ob_end_clean();
-							} else {
-								$ThisFileInfo['warning'][] = 'exif_read_data() cannot parse non-EXIF data in APP1 (expected "Exif", found "'.substr($imageinfo['APP1'], 0, 4).'")';
+					if (function_exists('exif_read_data')) {
+						if (substr($imageinfo['APP1'], 0, 4) == 'Exif') {
+							ob_start();
+							$ThisFileInfo['jpg']['exif'] = exif_read_data($ThisFileInfo['filenamepath'], '', true, false);
+							$errors = ob_get_contents();
+							if ($errors) {
+								$ThisFileInfo['warning'][] = strip_tags($errors);
+								//unset($ThisFileInfo['jpg']['exif']);
 							}
-
+							ob_end_clean();
 						} else {
-							$ThisFileInfo['warning'][] = 'EXIF parsing only available when '.(GETID3_OS_ISWINDOWS ? 'php_exif.dll enabled' : 'compiled with --enable-exif');
+							$ThisFileInfo['warning'][] = 'exif_read_data() cannot parse non-EXIF data in APP1 (expected "Exif", found "'.substr($imageinfo['APP1'], 0, 4).'")';
 						}
 					} else {
-						$ThisFileInfo['warning'][] = 'EXIF parsing only available in PHP v4.2.0 and higher compiled with --enable-exif (or php_exif.dll enabled for Windows). You are using PHP v'.phpversion();
+						$ThisFileInfo['warning'][] = 'EXIF parsing only available when '.(GETID3_OS_ISWINDOWS ? 'php_exif.dll enabled' : 'compiled with --enable-exif');
 					}
 				}
 				$returnOK = true;

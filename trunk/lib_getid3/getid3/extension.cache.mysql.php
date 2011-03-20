@@ -82,18 +82,18 @@ class getID3_cached_mysql extends getID3
 
 		// Check for mysql support
 		if (!function_exists('mysql_pconnect')) {
-			die('PHP not compiled with mysql support.');
+			throw new Exception('PHP not compiled with mysql support.');
 		}
 
 		// Connect to database
 		$this->connection = mysql_pconnect($host, $username, $password);
 		if (!$this->connection) {
-			die('mysql_pconnect() failed - check permissions and spelling.');
+			throw new Exception('mysql_pconnect() failed - check permissions and spelling.');
 		}
 
 		// Select database
 		if (!mysql_select_db($database, $this->connection)) {
-			die('Cannot use database '.$database);
+			throw new Exception('Cannot use database '.$database);
 		}
 
 		// Create cache table if not exists

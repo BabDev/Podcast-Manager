@@ -22,8 +22,8 @@ class getid3_dss
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$DSSheader  = fread($fd, 1256);
 
-		if (substr($DSSheader, 0, 4) != "\x02".'dss') {
-			$ThisFileInfo['error'][] = 'Expecting "[x02]dss" at offset '.$ThisFileInfo['avdataoffset'].', found "'.substr($DSSheader, 0, 4).'"';
+		if (!preg_match('#^(\x02|\x03)dss', $DSSheader)) {
+			$ThisFileInfo['error'][] = 'Expecting "[x02-x03]dss" at offset '.$ThisFileInfo['avdataoffset'].', found "'.substr($DSSheader, 0, 4).'"';
 			return false;
 		}
 
@@ -38,6 +38,7 @@ class getid3_dss
 		$ThisFileInfo['audio']['bitrate_mode'] = 'cbr';
 		//$thisfile_dss['encoding']              = 'ISO-8859-1';
 
+		$thisfile_dss['version']        =                            ord(substr($DSSheader,   0,   1));
 		$thisfile_dss['date_create']    = $this->DSSdateStringToUnixDate(substr($DSSheader,  38,  12));
 		$thisfile_dss['date_complete']  = $this->DSSdateStringToUnixDate(substr($DSSheader,  50,  12));
 		//$thisfile_dss['length']         =                         intval(substr($DSSheader,  62,   6)); // I thought time was in seconds, it's actually HHMMSS

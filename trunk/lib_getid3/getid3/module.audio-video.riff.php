@@ -33,51 +33,87 @@ class getid3_riff
 		$thisfile_riff_raw         = &$thisfile_riff['raw'];
 		$thisfile_audio            = &$ThisFileInfo['audio'];
 		$thisfile_video            = &$ThisFileInfo['video'];
-		$thisfile_avdataoffset     = &$ThisFileInfo['avdataoffset'];
-		$thisfile_avdataend        = &$ThisFileInfo['avdataend'];
 		$thisfile_audio_dataformat = &$thisfile_audio['dataformat'];
 		$thisfile_riff_audio       = &$thisfile_riff['audio'];
 		$thisfile_riff_video       = &$thisfile_riff['video'];
 
 
-		$Original['avdataoffset'] = $thisfile_avdataoffset;
-		$Original['avdataend']    = $thisfile_avdataend;
+		$Original['avdataoffset'] = $ThisFileInfo['avdataoffset'];
+		$Original['avdataend']    = $ThisFileInfo['avdataend'];
 
-		fseek($fd, $thisfile_avdataoffset, SEEK_SET);
+		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$RIFFheader = fread($fd, 12);
 		$RIFFsubtype = substr($RIFFheader, 8, 4);
 		switch (substr($RIFFheader, 0, 4)) {
 			case 'FORM':
 				$ThisFileInfo['fileformat']   = 'aiff';
-				$RIFFheaderSize               = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($RIFFheader, 4, 4));
-				$thisfile_riff[$RIFFsubtype]  = getid3_riff::ParseRIFF($fd, $thisfile_avdataoffset + 12, $thisfile_avdataoffset + $RIFFheaderSize, $ThisFileInfo);
-				$thisfile_riff['header_size'] = $RIFFheaderSize;
+				$thisfile_riff['header_size'] = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($RIFFheader, 4, 4));
+				$thisfile_riff[$RIFFsubtype]  = getid3_riff::ParseRIFF($fd, $ThisFileInfo['avdataoffset'] + 12, $ThisFileInfo['avdataoffset'] + $thisfile_riff['header_size'], $ThisFileInfo);
 				break;
 
-			case 'RIFF':
+			case 'RIFF':  // AVI, WAV, etc
 			case 'SDSS':  // SDSS is identical to RIFF, just renamed. Used by SmartSound QuickTracks (www.smartsound.com)
 			case 'RMP3':  // RMP3 is identical to RIFF, just renamed. Used by [unknown program] when creating RIFF-MP3s
+				$ThisFileInfo['fileformat']   = 'riff';
+				$thisfile_riff['header_size'] = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($RIFFheader, 4, 4));
 				if ($RIFFsubtype == 'RMP3') {
 					// RMP3 is identical to WAVE, just renamed. Used by [unknown program] when creating RIFF-MP3s
 					$RIFFsubtype = 'WAVE';
 				}
+				$thisfile_riff[$RIFFsubtype]  = getid3_riff::ParseRIFF($fd, $ThisFileInfo['avdataoffset'] + 12, $ThisFileInfo['avdataoffset'] + $thisfile_riff['header_size'], $ThisFileInfo);
 
-				$ThisFileInfo['fileformat']   = 'riff';
-				$RIFFheaderSize               = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($RIFFheader, 4, 4));
-				$thisfile_riff['header_size'] = $RIFFheaderSize;
-				$thisfile_riff[$RIFFsubtype]  = getid3_riff::ParseRIFF($fd, $thisfile_avdataoffset + 12, $thisfile_avdataoffset + $RIFFheaderSize, $ThisFileInfo);
+				$nextRIFFoffset = $Original['avdataoffset'] + 8 + $thisfile_riff['header_size']; // 8 = "RIFF" + 32-bit offset
+				while ($nextRIFFoffset < $ThisFileInfo['filesize']) {
+					if (!getid3_lib::intValueSupported($nextRIFFoffset + 1024)) {
+						$ThisFileInfo['error'][]   = 'AVI extends beyond '.round(PHP_INT_MAX / 1073741824).'GB and PHP filesystem functions cannot read that far, playtime is probably wrong';
+						$ThisFileInfo['warning'][] = '[avdataend] value may be incorrect, multiple AVIX chunks may be present';
+						break;
+					} else {
+						fseek($fd, $nextRIFFoffset, SEEK_SET);
+						$nextRIFFheader = fread($fd, 12);
+						$nextRIFFheaderID =                                              substr($nextRIFFheader, 0, 4);
+						$nextRIFFsize     = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($nextRIFFheader, 4, 4));
+						$nextRIFFtype     =                                              substr($nextRIFFheader, 8, 4);
+						$chunkdata = array();
+						$chunkdata['offset'] = $nextRIFFoffset + 8;
+						$chunkdata['size']   = $nextRIFFsize;
+						$nextRIFFoffset = $chunkdata['offset'] + $chunkdata['size'];
+						switch ($nextRIFFheaderID) {
+							case 'RIFF':
+								$ThisFileInfo['avdataend'] = $nextRIFFoffset;
+								if (!getid3_lib::intValueSupported($ThisFileInfo['avdataend'])) {
+									$ThisFileInfo['error'][]   = 'AVI extends beyond '.round(PHP_INT_MAX / 1073741824).'GB and PHP filesystem functions cannot read that far, playtime is probably wrong';
+									$ThisFileInfo['warning'][] = '[avdataend] value may be incorrect, multiple AVIX chunks may be present';
+								}
+								$chunkdata['chunks'] = getid3_riff::ParseRIFF($fd, $chunkdata['offset'] + 4, $chunkdata['offset'] + $chunkdata['size'], $ThisFileInfo);
 
-				fseek($fd, $thisfile_avdataoffset + $RIFFheaderSize);
-				$nextRIFFheader = fread($fd, 20);
-				if (substr($nextRIFFheader, 8, 4) == 'RIFF') {
-					$nextRIFFsize = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($nextRIFFheader, 12, 4));
-					$nextRIFFtype = substr($nextRIFFheader, 16, 4).'<br>';
-					$thisfile_riff[$nextRIFFtype]['offset'] = ftell($fd) - 4;
-					$thisfile_riff[$nextRIFFtype]['size']   = $nextRIFFsize;
-					$ThisFileInfo['avdataend'] = $thisfile_riff[$nextRIFFtype]['offset'] + $thisfile_riff[$nextRIFFtype]['size'];
-					$ThisFileInfo['error'][]   = 'AVI extends beyond 2GB and PHP filesystem functions cannot read that far, playtime is probably wrong';
-					$ThisFileInfo['warning'][] = '[avdataend] value may be incorrect, multiple AVIX chunks may be present';
-					$thisfile_riff[$nextRIFFtype]  = getid3_riff::ParseRIFF($fd, $thisfile_riff[$nextRIFFtype]['offset'] + 4, $thisfile_riff[$nextRIFFtype]['offset'] + $thisfile_riff[$nextRIFFtype]['size'], $ThisFileInfo);
+								if (!isset($thisfile_riff[$nextRIFFtype])) {
+									$thisfile_riff[$nextRIFFtype] = array();
+								}
+								$thisfile_riff[$nextRIFFtype][] = $chunkdata;
+								break;
+							case 'JUNK':
+								// ignore
+								$thisfile_riff[$nextRIFFheaderID][] = $chunkdata;
+								break;
+							default:
+								if ($ThisFileInfo['filesize'] == ($chunkdata['offset'] - 8 + 128)) {
+									$DIVXTAG = $nextRIFFheader.fread($fd, 128 - 12);
+									if (substr($DIVXTAG, -7) == 'DIVXTAG') {
+										// DIVXTAG is supposed to be inside an IDVX chunk in a LIST chunk, but some bad encoders just slap it on the end of a file
+										$thisfile_riff['DIVXTAG'] = $this->ParseDIVXTAG($DIVXTAG);
+										foreach ($thisfile_riff['DIVXTAG'] as $key => $value) {
+											if ($value && !preg_match('#_id$#', $key)) {
+												$thisfile_riff['comments'][$key][] = $value;
+											}
+										}
+										break 2;
+									}
+								}
+								$ThisFileInfo['warning'][] = 'expecting "RIFF" or "JUNK" at '.$nextRIFFoffset.', found '.substr($nextRIFFheader, 0, 4).' - skipping rest of file';
+								break 2;
+						}
+					}
 				}
 				if ($RIFFsubtype == 'WAVE') {
 					$thisfile_riff_WAVE = &$thisfile_riff['WAVE'];
@@ -102,8 +138,8 @@ class getid3_riff
 				}
 
 				if (isset($thisfile_riff_WAVE['data'][0]['offset'])) {
-					$thisfile_avdataoffset = $thisfile_riff_WAVE['data'][0]['offset'] + 8;
-					$thisfile_avdataend    = $thisfile_avdataoffset + $thisfile_riff_WAVE['data'][0]['size'];
+					$ThisFileInfo['avdataoffset'] = $thisfile_riff_WAVE['data'][0]['offset'] + 8;
+					$ThisFileInfo['avdataend']    = $ThisFileInfo['avdataoffset'] + $thisfile_riff_WAVE['data'][0]['size'];
 				}
 				if (isset($thisfile_riff_WAVE['fmt '][0]['data'])) {
 
@@ -123,7 +159,7 @@ class getid3_riff
 					}
 					$thisfile_audio['bitrate'] = $thisfile_riff_audio[$streamindex]['bitrate'];
 
-					$ThisFileInfo['playtime_seconds'] = (float) ((($thisfile_avdataend - $thisfile_avdataoffset) * 8) / $thisfile_audio['bitrate']);
+					$ThisFileInfo['playtime_seconds'] = (float) ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) * 8) / $thisfile_audio['bitrate']);
 
 					$thisfile_audio['lossless'] = false;
 					if (isset($thisfile_riff_WAVE['data'][0]['offset']) && isset($thisfile_riff_raw['fmt ']['wFormatTag'])) {
@@ -334,7 +370,7 @@ class getid3_riff
 
 				if (!isset($thisfile_audio['bitrate']) && isset($thisfile_riff_audio[$streamindex]['bitrate'])) {
 					$thisfile_audio['bitrate'] = $thisfile_riff_audio[$streamindex]['bitrate'];
-					$ThisFileInfo['playtime_seconds'] = (float) ((($thisfile_avdataend - $thisfile_avdataoffset) * 8) / $thisfile_audio['bitrate']);
+					$ThisFileInfo['playtime_seconds'] = (float) ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) * 8) / $thisfile_audio['bitrate']);
 				}
 
 				if (!empty($ThisFileInfo['wavpack'])) {
@@ -343,17 +379,17 @@ class getid3_riff
 					$thisfile_audio['encoder']      = 'WavPack v'.$ThisFileInfo['wavpack']['version'];
 
 					// Reset to the way it was - RIFF parsing will have messed this up
-					$thisfile_avdataend        = $Original['avdataend'];
-					$thisfile_audio['bitrate'] = (($thisfile_avdataend - $thisfile_avdataoffset) * 8) / $ThisFileInfo['playtime_seconds'];
+					$ThisFileInfo['avdataend']        = $Original['avdataend'];
+					$thisfile_audio['bitrate'] = (($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) * 8) / $ThisFileInfo['playtime_seconds'];
 
-					fseek($fd, $thisfile_avdataoffset - 44, SEEK_SET);
+					fseek($fd, $ThisFileInfo['avdataoffset'] - 44, SEEK_SET);
 					$RIFFdata = fread($fd, 44);
 					$OrignalRIFFheaderSize = getid3_lib::LittleEndian2Int(substr($RIFFdata,  4, 4)) +  8;
 					$OrignalRIFFdataSize   = getid3_lib::LittleEndian2Int(substr($RIFFdata, 40, 4)) + 44;
 
 					if ($OrignalRIFFheaderSize > $OrignalRIFFdataSize) {
-						$thisfile_avdataend -= ($OrignalRIFFheaderSize - $OrignalRIFFdataSize);
-						fseek($fd, $thisfile_avdataend, SEEK_SET);
+						$ThisFileInfo['avdataend'] -= ($OrignalRIFFheaderSize - $OrignalRIFFdataSize);
+						fseek($fd, $ThisFileInfo['avdataend'], SEEK_SET);
 						$RIFFdata .= fread($fd, $OrignalRIFFheaderSize - $OrignalRIFFdataSize);
 					}
 
@@ -417,7 +453,7 @@ class getid3_riff
 							break;
 					}
 				}
-				if ($thisfile_avdataend > $ThisFileInfo['filesize']) {
+				if ($ThisFileInfo['avdataend'] > $ThisFileInfo['filesize']) {
 					switch (!empty($thisfile_audio_dataformat) ? $thisfile_audio_dataformat : '') {
 						case 'wavpack': // WavPack
 						case 'lpac':    // LPAC
@@ -427,34 +463,34 @@ class getid3_riff
 							break;
 
 						case 'litewave':
-							if (($thisfile_avdataend - $ThisFileInfo['filesize']) == 1) {
+							if (($ThisFileInfo['avdataend'] - $ThisFileInfo['filesize']) == 1) {
 								// LiteWave appears to incorrectly *not* pad actual output file
 								// to nearest WORD boundary so may appear to be short by one
 								// byte, in which case - skip warning
 							} else {
 								// Short by more than one byte, throw warning
-								$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' (short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $thisfile_avdataoffset)).' bytes)';
-								$thisfile_avdataend = $ThisFileInfo['filesize'];
+								$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' (short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset'])).' bytes)';
+								$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'];
 							}
 							break;
 
 						default:
-							if ((($thisfile_avdataend - $ThisFileInfo['filesize']) == 1) && (($thisfile_riff[$RIFFsubtype]['data'][0]['size'] % 2) == 0) && ((($ThisFileInfo['filesize'] - $thisfile_avdataoffset) % 2) == 1)) {
+							if ((($ThisFileInfo['avdataend'] - $ThisFileInfo['filesize']) == 1) && (($thisfile_riff[$RIFFsubtype]['data'][0]['size'] % 2) == 0) && ((($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']) % 2) == 1)) {
 								// output file appears to be incorrectly *not* padded to nearest WORD boundary
 								// Output less severe warning
-								$ThisFileInfo['warning'][] = 'File should probably be padded to nearest WORD boundary, but it is not (expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' therefore short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $thisfile_avdataoffset)).' bytes)';
-								$thisfile_avdataend = $ThisFileInfo['filesize'];
-								break;
+								$ThisFileInfo['warning'][] = 'File should probably be padded to nearest WORD boundary, but it is not (expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' therefore short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset'])).' bytes)';
+								$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'];
+							} else {
+								// Short by more than one byte, throw warning
+								$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' (short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset'])).' bytes)';
+								$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'];
 							}
-							// Short by more than one byte, throw warning
-							$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.$thisfile_riff[$RIFFsubtype]['data'][0]['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' (short by '.($thisfile_riff[$RIFFsubtype]['data'][0]['size'] - ($ThisFileInfo['filesize'] - $thisfile_avdataoffset)).' bytes)';
-							$thisfile_avdataend = $ThisFileInfo['filesize'];
 							break;
 					}
 				}
 				if (!empty($ThisFileInfo['mpeg']['audio']['LAME']['audio_bytes'])) {
-					if ((($thisfile_avdataend - $thisfile_avdataoffset) - $ThisFileInfo['mpeg']['audio']['LAME']['audio_bytes']) == 1) {
-						$thisfile_avdataend--;
+					if ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) - $ThisFileInfo['mpeg']['audio']['LAME']['audio_bytes']) == 1) {
+						$ThisFileInfo['avdataend']--;
 						$ThisFileInfo['warning'][] = 'Extra null byte at end of MP3 data assumed to be RIFF padding and therefore ignored';
 					}
 				}
@@ -472,11 +508,15 @@ class getid3_riff
 				$ThisFileInfo['mime_type']      = 'video/avi';
 
 				if (isset($thisfile_riff[$RIFFsubtype]['movi']['offset'])) {
-					$thisfile_avdataoffset = $thisfile_riff[$RIFFsubtype]['movi']['offset'] + 8;
-					$thisfile_avdataend    = $thisfile_avdataoffset + $thisfile_riff[$RIFFsubtype]['movi']['size'];
-					if ($thisfile_avdataend > $ThisFileInfo['filesize']) {
-						$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.$thisfile_riff[$RIFFsubtype]['movi']['size'].' bytes of data, only found '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' (short by '.($thisfile_riff[$RIFFsubtype]['movi']['size'] - ($ThisFileInfo['filesize'] - $thisfile_avdataoffset)).' bytes)';
-						$thisfile_avdataend = $ThisFileInfo['filesize'];
+					$ThisFileInfo['avdataoffset'] = $thisfile_riff[$RIFFsubtype]['movi']['offset'] + 8;
+					if (isset($thisfile_riff['AVIX'])) {
+						$ThisFileInfo['avdataend'] = $thisfile_riff['AVIX'][(count($thisfile_riff['AVIX']) - 1)]['chunks']['movi']['offset'] + $thisfile_riff['AVIX'][(count($thisfile_riff['AVIX']) - 1)]['chunks']['movi']['size'];
+					} else {
+						$ThisFileInfo['avdataend'] = $thisfile_riff['AVI ']['movi']['offset'] + $thisfile_riff['AVI ']['movi']['size'];
+					}
+					if ($ThisFileInfo['avdataend'] > $ThisFileInfo['filesize']) {
+						$ThisFileInfo['warning'][] = 'Probably truncated file - expecting '.($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']).' bytes of data, only found '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' (short by '.($ThisFileInfo['avdataend'] - $ThisFileInfo['filesize']).' bytes)';
+						$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'];
 					}
 				}
 
@@ -752,7 +792,7 @@ class getid3_riff
 				$thisfile_audio['lossless']     = true;
 				unset($ThisFileInfo['mime_type']);
 
-				$thisfile_avdataoffset = 44;
+				$ThisFileInfo['avdataoffset'] = 44;
 
 				if (isset($thisfile_riff['CDDA']['fmt '][0]['data'])) {
 					// shortcut
@@ -789,16 +829,16 @@ class getid3_riff
 				$ThisFileInfo['mime_type']      = 'audio/x-aiff';
 
 				if (isset($thisfile_riff[$RIFFsubtype]['SSND'][0]['offset'])) {
-					$thisfile_avdataoffset = $thisfile_riff[$RIFFsubtype]['SSND'][0]['offset'] + 8;
-					$thisfile_avdataend    = $thisfile_avdataoffset + $thisfile_riff[$RIFFsubtype]['SSND'][0]['size'];
-					if ($thisfile_avdataend > $ThisFileInfo['filesize']) {
-						if (($thisfile_avdataend == ($ThisFileInfo['filesize'] + 1)) && (($ThisFileInfo['filesize'] % 2) == 1)) {
+					$ThisFileInfo['avdataoffset'] = $thisfile_riff[$RIFFsubtype]['SSND'][0]['offset'] + 8;
+					$ThisFileInfo['avdataend']    = $ThisFileInfo['avdataoffset'] + $thisfile_riff[$RIFFsubtype]['SSND'][0]['size'];
+					if ($ThisFileInfo['avdataend'] > $ThisFileInfo['filesize']) {
+						if (($ThisFileInfo['avdataend'] == ($ThisFileInfo['filesize'] + 1)) && (($ThisFileInfo['filesize'] % 2) == 1)) {
 							// structures rounded to 2-byte boundary, but dumb encoders
 							// forget to pad end of file to make this actually work
 						} else {
-							$ThisFileInfo['warning'][] = 'Probable truncated AIFF file: expecting '.$thisfile_riff[$RIFFsubtype]['SSND'][0]['size'].' bytes of audio data, only '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' bytes found';
+							$ThisFileInfo['warning'][] = 'Probable truncated AIFF file: expecting '.$thisfile_riff[$RIFFsubtype]['SSND'][0]['size'].' bytes of audio data, only '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' bytes found';
 						}
-						$thisfile_avdataend = $ThisFileInfo['filesize'];
+						$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'];
 					}
 				}
 
@@ -894,10 +934,10 @@ class getid3_riff
 				$ThisFileInfo['mime_type']                = 'audio/x-aiff';
 
 				if (isset($thisfile_riff[$RIFFsubtype]['BODY'][0]['offset'])) {
-					$thisfile_avdataoffset = $thisfile_riff[$RIFFsubtype]['BODY'][0]['offset'] + 8;
-					$thisfile_avdataend    = $thisfile_avdataoffset + $thisfile_riff[$RIFFsubtype]['BODY'][0]['size'];
-					if ($thisfile_avdataend > $ThisFileInfo['filesize']) {
-						$ThisFileInfo['warning'][] = 'Probable truncated AIFF file: expecting '.$thisfile_riff[$RIFFsubtype]['BODY'][0]['size'].' bytes of audio data, only '.($ThisFileInfo['filesize'] - $thisfile_avdataoffset).' bytes found';
+					$ThisFileInfo['avdataoffset'] = $thisfile_riff[$RIFFsubtype]['BODY'][0]['offset'] + 8;
+					$ThisFileInfo['avdataend']    = $ThisFileInfo['avdataoffset'] + $thisfile_riff[$RIFFsubtype]['BODY'][0]['size'];
+					if ($ThisFileInfo['avdataend'] > $ThisFileInfo['filesize']) {
+						$ThisFileInfo['warning'][] = 'Probable truncated AIFF file: expecting '.$thisfile_riff[$RIFFsubtype]['BODY'][0]['size'].' bytes of audio data, only '.($ThisFileInfo['filesize'] - $ThisFileInfo['avdataoffset']).' bytes found';
 					}
 				}
 
@@ -962,7 +1002,7 @@ class getid3_riff
 
 				$thisfile_audio['bitrate'] = $thisfile_audio['sample_rate'] * $ActualBitsPerSample * $thisfile_audio['channels'];
 				if (!empty($thisfile_audio['bitrate'])) {
-					$ThisFileInfo['playtime_seconds'] = ($thisfile_avdataend - $thisfile_avdataoffset) / ($thisfile_audio['bitrate'] / 8);
+					$ThisFileInfo['playtime_seconds'] = ($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / ($thisfile_audio['bitrate'] / 8);
 				}
 				break;
 
@@ -1013,6 +1053,9 @@ class getid3_riff
 		if (isset($thisfile_riff_WAVE['INFO']) && is_array($thisfile_riff_WAVE['INFO'])) {
 			$this->RIFFcommentsParse($thisfile_riff_WAVE['INFO'], $thisfile_riff['comments']);
 		}
+		if (isset($thisfile_riff['AVI ']['INFO']) && is_array($thisfile_riff['AVI ']['INFO'])) {
+			$this->RIFFcommentsParse($thisfile_riff['AVI ']['INFO'], $thisfile_riff['comments']);
+		}
 
 		if (empty($thisfile_audio['encoder']) && !empty($ThisFileInfo['mpeg']['audio']['LAME']['short_version'])) {
 			$thisfile_audio['encoder'] = $ThisFileInfo['mpeg']['audio']['LAME']['short_version'];
@@ -1021,7 +1064,10 @@ class getid3_riff
 		if (!isset($ThisFileInfo['playtime_seconds'])) {
 			$ThisFileInfo['playtime_seconds'] = 0;
 		}
-		if (isset($thisfile_riff_raw['avih']['dwTotalFrames']) && isset($thisfile_riff_raw['avih']['dwMicroSecPerFrame'])) {
+		if (isset($thisfile_riff_raw['strh'][0]['dwLength']) && isset($thisfile_riff_raw['avih']['dwMicroSecPerFrame'])) {
+			// needed for >2GB AVIs where 'avih' chunk only lists number of frames in that chunk, not entire movie
+			$ThisFileInfo['playtime_seconds'] = $thisfile_riff_raw['strh'][0]['dwLength'] * ($thisfile_riff_raw['avih']['dwMicroSecPerFrame'] / 1000000);
+		} elseif (isset($thisfile_riff_raw['avih']['dwTotalFrames']) && isset($thisfile_riff_raw['avih']['dwMicroSecPerFrame'])) {
 			$ThisFileInfo['playtime_seconds'] = $thisfile_riff_raw['avih']['dwTotalFrames'] * ($thisfile_riff_raw['avih']['dwMicroSecPerFrame'] / 1000000);
 		}
 
@@ -1029,19 +1075,19 @@ class getid3_riff
 			if (isset($thisfile_riff_audio) && isset($thisfile_riff_video)) {
 
 				if (!isset($ThisFileInfo['bitrate'])) {
-					$ThisFileInfo['bitrate'] = ((($thisfile_avdataend - $thisfile_avdataoffset) / $ThisFileInfo['playtime_seconds']) * 8);
+					$ThisFileInfo['bitrate'] = ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds']) * 8);
 				}
 
 			} elseif (isset($thisfile_riff_audio) && !isset($thisfile_riff_video)) {
 
 				if (!isset($thisfile_audio['bitrate'])) {
-					$thisfile_audio['bitrate'] = ((($thisfile_avdataend - $thisfile_avdataoffset) / $ThisFileInfo['playtime_seconds']) * 8);
+					$thisfile_audio['bitrate'] = ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds']) * 8);
 				}
 
 			} elseif (!isset($thisfile_riff_audio) && isset($thisfile_riff_video)) {
 
 				if (!isset($thisfile_video['bitrate'])) {
-					$thisfile_video['bitrate'] = ((($thisfile_avdataend - $thisfile_avdataoffset) / $ThisFileInfo['playtime_seconds']) * 8);
+					$thisfile_video['bitrate'] = ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds']) * 8);
 				}
 
 			}
@@ -1050,7 +1096,7 @@ class getid3_riff
 
 		if (isset($thisfile_riff_video) && isset($thisfile_audio['bitrate']) && ($thisfile_audio['bitrate'] > 0) && ($ThisFileInfo['playtime_seconds'] > 0)) {
 
-			$ThisFileInfo['bitrate'] = ((($thisfile_avdataend - $thisfile_avdataoffset) / $ThisFileInfo['playtime_seconds']) * 8);
+			$ThisFileInfo['bitrate'] = ((($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds']) * 8);
 			$thisfile_audio['bitrate'] = 0;
 			$thisfile_video['bitrate'] = $ThisFileInfo['bitrate'];
 			foreach ($thisfile_riff_audio as $channelnumber => $audioinfoarray) {
@@ -1180,23 +1226,31 @@ class getid3_riff
 		$RIFFchunk = false;
 		$FoundAllChunksWeNeed = false;
 
-		if (($startoffset < 0) || ($startoffset >= pow(2, 31))) {
-			$ThisFileInfo['warning'][] = 'Unable to ParseRIFF() at '.$startoffset.' because beyond 2GB limit of PHP filesystem functions';
+		if (($startoffset < 0) || !getid3_lib::intValueSupported($startoffset)) {
+			$ThisFileInfo['warning'][] = 'Unable to ParseRIFF() at '.$startoffset.' because beyond '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
 			return false;
+		}
+		$max_usable_offset = min(PHP_INT_MAX - 1024, $maxoffset);
+		if ($maxoffset > $max_usable_offset) {
+			$ThisFileInfo['warning'][] = 'ParseRIFF() may return incomplete data for chunk starting at '.$startoffset.' because beyond it extends to '.$maxoffset.', which is beyond the '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
 		}
 		fseek($fd, $startoffset, SEEK_SET);
 
-		while (ftell($fd) < $maxoffset) {
-			$chunkname = fread($fd, 4);
+		while (ftell($fd) < $max_usable_offset) {
+			$chunknamesize = fread($fd, 8);
+			$chunkname =                                              substr($chunknamesize, 0, 4);
+			$chunksize = getid3_riff::EitherEndian2Int($ThisFileInfo, substr($chunknamesize, 4, 4));
 			if (strlen($chunkname) < 4) {
 				$ThisFileInfo['error'][] = 'Expecting chunk name at offset '.(ftell($fd) - 4).' but found nothing. Aborting RIFF parsing.';
 				break;
 			}
-
-			$chunksize = getid3_riff::EitherEndian2Int($ThisFileInfo, fread($fd, 4));
 			if ($chunksize == 0) {
-				$ThisFileInfo['warning'][] = 'Chunk size at offset '.(ftell($fd) - 4).' is zero. Aborting RIFF parsing.';
-				continue;
+				if ($chunkname == 'JUNK') {
+					// we'll allow zero-size JUNK frames
+				} else {
+					$ThisFileInfo['warning'][] = 'Chunk size at offset '.(ftell($fd) - 4).' is zero. Aborting RIFF parsing.';
+					break;
+				}
 			}
 			if (($chunksize % 2) != 0) {
 				// all structures are packed on word boundaries
@@ -1216,7 +1270,7 @@ class getid3_riff
 
 						} else {
 
-							$WhereWeWere = ftell($fd);
+							$WhereWeWere      = ftell($fd);
 							$AudioChunkHeader = fread($fd, 12);
 							$AudioChunkStreamNum  =                              substr($AudioChunkHeader, 0, 2);
 							$AudioChunkStreamType =                              substr($AudioChunkHeader, 2, 2);
@@ -1292,10 +1346,10 @@ class getid3_riff
 					break;
 
 				default:
-					if (preg_match('#^[0-9]{2}(wb|pc|dc|db)$#i', $chunkname)) {
+					if (preg_match('#^[0-9]{2}(wb|pc|dc|db)$#', $chunkname)) {
 						$nextoffset = ftell($fd) + $chunksize;
-						if (($nextoffset < 0) || ($nextoffset >= pow(2, 31))) {
-							$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond 2GB limit of PHP filesystem functions';
+						if (($nextoffset < 0) || !getid3_lib::intValueSupported($nextoffset)) {
+							$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
 							break 2;
 						}
 						fseek($fd, $nextoffset, SEEK_SET);
@@ -1406,8 +1460,8 @@ class getid3_riff
 
 							}
 							$nextoffset = $RIFFchunk[$chunkname][$thisindex]['offset'] + 8 + $chunksize;
-							if (($nextoffset < 0) || ($nextoffset >= pow(2, 31))) {
-								$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond 2GB limit of PHP filesystem functions';
+							if (($nextoffset < 0) || !getid3_lib::intValueSupported($nextoffset)) {
+								$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
 								break 3;
 							}
 							fseek($fd, $RIFFchunk[$chunkname][$thisindex]['offset'] + 8 + $chunksize, SEEK_SET);
@@ -1425,6 +1479,16 @@ class getid3_riff
 							$RIFFchunk[$chunkname][$thisindex]['data'] = fread($fd, $chunksize);
 							break;
 
+						case 'JUNK':
+							// never read data in
+							$nextoffset = ftell($fd) + $chunksize;
+							if (($nextoffset < 0) || !getid3_lib::intValueSupported($nextoffset)) {
+								$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
+								break 3;
+							}
+							fseek($fd, $nextoffset, SEEK_SET);
+							break;
+
 						default:
 							if (!preg_match('#^[0-9]{2}(wb|pc|dc|db)$#', $chunkname) && !empty($LISTchunkParent) && (($RIFFchunk[$chunkname][$thisindex]['offset'] + $RIFFchunk[$chunkname][$thisindex]['size']) <= $LISTchunkMaxOffset)) {
 								$RIFFchunk[$LISTchunkParent][$chunkname][$thisindex]['offset'] = $RIFFchunk[$chunkname][$thisindex]['offset'];
@@ -1438,13 +1502,13 @@ class getid3_riff
 									unset($RIFFchunk[$chunkname]);
 								}
 								$RIFFchunk[$LISTchunkParent][$chunkname][$thisindex]['data'] = fread($fd, $chunksize);
-							} elseif ($chunksize < 2048) {
+							} elseif (($chunksize > 0) && ($chunksize < 2048)) {
 								// only read data in if smaller than 2kB
 								$RIFFchunk[$chunkname][$thisindex]['data'] = fread($fd, $chunksize);
 							} else {
 								$nextoffset = ftell($fd) + $chunksize;
-								if (($nextoffset < 0) || ($nextoffset >= pow(2, 31))) {
-									$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond 2GB limit of PHP filesystem functions';
+								if (($nextoffset < 0) || !getid3_lib::intValueSupported($nextoffset)) {
+									$ThisFileInfo['warning'][] = 'Unable to parse chunk at offset '.$nextoffset.' because beyond '.round(PHP_INT_MAX / 1073741824).'GB limit of PHP filesystem functions';
 									break 3;
 								}
 								fseek($fd, $nextoffset, SEEK_SET);
@@ -1591,6 +1655,66 @@ class getid3_riff
 		$parsed['biYPelsPerMeter'] = $getid3_lib->$functionname(substr($BITMAPINFOHEADER, 28, 4)); // vertical resolution, in pixels per metre, of the target device
 		$parsed['biClrUsed']       = $getid3_lib->$functionname(substr($BITMAPINFOHEADER, 32, 4)); // actual number of color indices in the color table used by the bitmap. If this value is zero, the bitmap uses the maximum number of colors corresponding to the value of the biBitCount member for the compression mode specified by biCompression
 		$parsed['biClrImportant']  = $getid3_lib->$functionname(substr($BITMAPINFOHEADER, 36, 4)); // number of color indices that are considered important for displaying the bitmap. If this value is zero, all colors are important
+		return $parsed;
+	}
+
+	static function ParseDIVXTAG($DIVXTAG) {
+		// structure from "IDivX" source, Form1.frm, by "Greg Frazier of Daemonic Software Group", email: gfrazier@icestorm.net, web: http://dsg.cjb.net/
+		// source available at http://files.divx-digest.com/download/c663efe7ef8ad2e90bf4af4d3ea6188a/on0SWN2r/edit/IDivX.zip
+		// 'Byte Layout:                   '1111111111111111
+		// '32 for Movie - 1               '1111111111111111
+		// '28 for Author - 6              '6666666666666666
+		// '4  for year - 2                '6666666666662222
+		// '3  for genre - 3               '7777777777777777
+		// '48 for Comments - 7            '7777777777777777
+		// '1  for Rating - 4              '7777777777777777
+		// '5  for Future Additions - 0    '333400000DIVXTAG
+		// '128 bytes total
+
+		static $DIVXTAGgenre  = array(
+			 0 => 'Action',
+			 1 => 'Action/Adventure',
+			 2 => 'Adventure',
+			 3 => 'Adult',
+			 4 => 'Anime',
+			 5 => 'Cartoon',
+			 6 => 'Claymation',
+			 7 => 'Comedy',
+			 8 => 'Commercial',
+			 9 => 'Documentary',
+			10 => 'Drama',
+			11 => 'Home Video',
+			12 => 'Horror',
+			13 => 'Infomercial',
+			14 => 'Interactive',
+			15 => 'Mystery',
+			16 => 'Music Video',
+			17 => 'Other',
+			18 => 'Religion',
+			19 => 'Sci Fi',
+			20 => 'Thriller',
+			21 => 'Western',
+		);
+		static $DIVXTAGrating = array(
+			0=>'Unrated',
+			1=>'G',
+			2=>'PG',
+			3=>'PG-13',
+			4=>'R',
+			5=>'NC-17'
+		);
+
+		$parsed['title']     =        trim(substr($DIVXTAG,   0, 32));
+		$parsed['artist']    =        trim(substr($DIVXTAG,  32, 28));
+		$parsed['year']      = intval(trim(substr($DIVXTAG,  60,  4)));
+		$parsed['comment']   =        trim(substr($DIVXTAG,  64, 48));
+		$parsed['genre_id']  = intval(trim(substr($DIVXTAG, 112,  3)));
+		$parsed['rating_id'] =         ord(substr($DIVXTAG, 115,  1));
+		//$parsed['padding'] =             substr($DIVXTAG, 116,  5);  // 5-byte null
+		//$parsed['magic']   =             substr($DIVXTAG, 121,  7);  // "DIVXTAG"
+
+		$parsed['genre']  = (isset($DIVXTAGgenre[$parsed['genre_id']])   ? $DIVXTAGgenre[$parsed['genre_id']]   : $parsed['genre_id']);
+		$parsed['rating'] = (isset($DIVXTAGrating[$parsed['rating_id']]) ? $DIVXTAGrating[$parsed['rating_id']] : $parsed['rating_id']);
 		return $parsed;
 	}
 

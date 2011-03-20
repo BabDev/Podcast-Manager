@@ -417,7 +417,7 @@ class getid3_id3v2
 		if (isset($thisfile_id3v2['comments']['genre'])) {
 			foreach ($thisfile_id3v2['comments']['genre'] as $key => $value) {
 				unset($thisfile_id3v2['comments']['genre'][$key]);
-				$thisfile_id3v2['comments'] = getid3_lib::array_merge_noclobber($thisfile_id3v2['comments'], $this->ParseID3v2GenreString($value));
+				$thisfile_id3v2['comments'] = getid3_lib::array_merge_noclobber($thisfile_id3v2['comments'], array('genre'=>$this->ParseID3v2GenreString($value)));
 			}
 		}
 
@@ -448,65 +448,22 @@ class getid3_id3v2
 		// Parse genres into arrays of genreName and genreID
 		// ID3v2.2.x, ID3v2.3.x: '(21)' or '(4)Eurodisco' or '(51)(39)' or '(55)((I think...)'
 		// ID3v2.4.x: '21' $00 'Eurodisco' $00
-
-		$genrestring = trim($genrestring); // trailing nulls will cause an infinite loop
-		$returnarray = array();
-		if (strpos($genrestring, "\x00") !== false) {
-			// remove duplicate nulls
-			$unprocessed = trim($genrestring); // remove trailing nulls
-			while (strpos($unprocessed, "\x00\x00") !== false) {
-				$unprocessed = str_replace("\x00\x00", "\x00", $unprocessed);
-			}
-			$genrestring = '';
-			while (($endpos = strpos($unprocessed, "\x00")) !== false) {
-				// convert null-seperated v2.4-format into v2.3 ()-seperated format
-				$genrestring .= '('.trim(substr($unprocessed, 0, $endpos), '()').')'; // use trim() to avoid duplicate bracets
-				$unprocessed = substr($unprocessed, $endpos + 1);
-			}
-			unset($unprocessed);
-		} elseif (preg_match('#^([0-9]+|CR|RX)$#i', $genrestring)) {
-			// some tagging program (including some that use TagLib) fail to include null byte after numeric genre
-			$genrestring = '('.$genrestring.')';
+		$clean_genres = array();
+		if (strpos($genrestring, "\x00") === false) {
+			$genrestring = preg_replace('#\(([0-9]{1,3})\)#', '$1'."\x00", $genrestring);
 		}
-		if (getid3_id3v1::LookupGenreID($genrestring)) {
-
-			$returnarray['genre'][] = $genrestring;
-
-		} else {
-
-			if ((strpos($genrestring, '(') !== false) && (strpos($genrestring, ')') !== false)) {
-				do {
-					$startpos = strpos($genrestring, '(');
-					$endpos   = strpos($genrestring, ')');
-					if (substr($genrestring, $startpos + 1, 1) == '(') {
-						$genrestring = substr($genrestring, 0, $startpos).substr($genrestring, $startpos + 1);
-						$endpos--;
-					}
-					$element     = substr($genrestring, $startpos + 1, $endpos - ($startpos + 1));
-					$genrestring = substr($genrestring, 0, $startpos).substr($genrestring, $endpos + 1);
-					if (getid3_id3v1::LookupGenreName($element)) { // $element is a valid genre id/abbreviation
-
-						if (empty($returnarray['genre']) || !in_array(getid3_id3v1::LookupGenreName($element), $returnarray['genre'])) { // avoid duplicate entires
-							$returnarray['genre'][] = getid3_id3v1::LookupGenreName($element);
-						}
-
-					} else {
-
-						if (empty($returnarray['genre']) || !in_array($element, $returnarray['genre'])) { // avoid duplicate entires
-							$returnarray['genre'][] = $element;
-						}
-
-					}
-				} while ($endpos > $startpos);
+		$genre_elements = explode("\x00", $genrestring);
+		foreach ($genre_elements as $element) {
+			$element = trim($element);
+			if ($element) {
+				if (preg_match('#^[0-9]{1,3}#', $element)) {
+					$clean_genres[] = getid3_id3v1::LookupGenreName($element);
+				} else {
+					$clean_genres[] = str_replace('((', '(', $element);
+				}
 			}
 		}
-		if ($genrestring) {
-			if (empty($returnarray['genre']) || !in_array($genrestring, $returnarray['genre'])) { // avoid duplicate entires
-				$returnarray['genre'][]   = $genrestring;
-			}
-		}
-
-		return $returnarray;
+		return $clean_genres;
 	}
 
 
@@ -1283,6 +1240,7 @@ class getid3_id3v2
 			$parsedFrame['description']      = $frame_description;
 			$parsedFrame['data']             = substr($parsedFrame['data'], $frame_terminatorpos + strlen($this->TextEncodingTerminatorLookup($frame_textencoding)));
 
+			$parsedFrame['image_mime'] = '';
 			$imageinfo = array();
 			$imagechunkcheck = getid3_lib::GetDataImageSize($parsedFrame['data'], $imageinfo);
 			if (($imagechunkcheck[2] >= 1) && ($imagechunkcheck[2] <= 3)) {
@@ -1296,6 +1254,12 @@ class getid3_id3v2
 				$parsedFrame['image_bytes']      = strlen($parsedFrame['data']);
 			}
 
+			if (!empty($parsedFrame['framenameshort']) && !empty($parsedFrame['data'])) {
+				if (!isset($ThisFileInfo['id3v2']['comments']['picture'])) {
+					$ThisFileInfo['id3v2']['comments']['picture'] = array();
+				}
+				$ThisFileInfo['id3v2']['comments']['picture'][] = array('data'=>$parsedFrame['data'], 'image_mime'=>$parsedFrame['image_mime']);
+			}
 
 		} elseif ((($id3v2_majorversion >= 3) && ($parsedFrame['frame_name'] == 'GEOB')) || // 4.15  GEOB General encapsulated object
 				(($id3v2_majorversion == 2) && ($parsedFrame['frame_name'] == 'GEO'))) {     // 4.16  GEO  General encapsulated object
@@ -2196,7 +2160,7 @@ class getid3_id3v2
 
 
 
-	function LanguageLookup($languagecode, $casesensitive=false) {
+	static function LanguageLookup($languagecode, $casesensitive=false) {
 
 		if (!$casesensitive) {
 			$languagecode = strtolower($languagecode);
@@ -2652,7 +2616,7 @@ class getid3_id3v2
 	}
 
 
-	function ETCOEventLookup($index) {
+	static function ETCOEventLookup($index) {
 		if (($index >= 0x17) && ($index <= 0xDF)) {
 			return 'reserved for future use';
 		}
@@ -2695,7 +2659,7 @@ class getid3_id3v2
 		return (isset($EventLookup[$index]) ? $EventLookup[$index] : '');
 	}
 
-	function SYTLContentTypeLookup($index) {
+	static function SYTLContentTypeLookup($index) {
 		static $SYTLContentTypeLookup = array(
 			0x00 => 'other',
 			0x01 => 'lyrics',
@@ -2711,7 +2675,7 @@ class getid3_id3v2
 		return (isset($SYTLContentTypeLookup[$index]) ? $SYTLContentTypeLookup[$index] : '');
 	}
 
-	function APICPictureTypeLookup($index, $returnarray=false) {
+	static function APICPictureTypeLookup($index, $returnarray=false) {
 		static $APICPictureTypeLookup = array(
 			0x00 => 'Other',
 			0x01 => '32x32 pixels \'file icon\' (PNG only)',
@@ -2741,7 +2705,7 @@ class getid3_id3v2
 		return (isset($APICPictureTypeLookup[$index]) ? $APICPictureTypeLookup[$index] : '');
 	}
 
-	function COMRReceivedAsLookup($index) {
+	static function COMRReceivedAsLookup($index) {
 		static $COMRReceivedAsLookup = array(
 			0x00 => 'Other',
 			0x01 => 'Standard CD album with other songs',
@@ -2757,7 +2721,7 @@ class getid3_id3v2
 		return (isset($COMRReceivedAsLookup[$index]) ? $COMRReceivedAsLookup[$index] : '');
 	}
 
-	function RVA2ChannelTypeLookup($index) {
+	static function RVA2ChannelTypeLookup($index) {
 		static $RVA2ChannelTypeLookup = array(
 			0x00 => 'Other',
 			0x01 => 'Master volume',
@@ -2773,7 +2737,7 @@ class getid3_id3v2
 		return (isset($RVA2ChannelTypeLookup[$index]) ? $RVA2ChannelTypeLookup[$index] : '');
 	}
 
-	function FrameNameLongLookup($framename) {
+	static function FrameNameLongLookup($framename) {
 
 		$begin = __LINE__;
 
@@ -2957,7 +2921,7 @@ class getid3_id3v2
 	}
 
 
-	function FrameNameShortLookup($framename) {
+	static function FrameNameShortLookup($framename) {
 
 		$begin = __LINE__;
 
@@ -3136,29 +3100,33 @@ class getid3_id3v2
 		return getid3_lib::EmbeddedLookup($framename, $begin, __LINE__, __FILE__, 'id3v2-framename_short');
 	}
 
-	function TextEncodingTerminatorLookup($encoding) {
+	static function TextEncodingTerminatorLookup($encoding) {
 		// http://www.id3.org/id3v2.4.0-structure.txt
 		// Frames that allow different types of text encoding contains a text encoding description byte. Possible encodings:
-		// $00  ISO-8859-1. Terminated with $00.
-		// $01  UTF-16 encoded Unicode with BOM. All strings in the same frame SHALL have the same byteorder. Terminated with $00 00.
-		// $02  UTF-16BE encoded Unicode without BOM. Terminated with $00 00.
-		// $03  UTF-8 encoded Unicode. Terminated with $00.
-		static $TextEncodingTerminatorLookup = array(0=>"\x00", 1=>"\x00\x00", 2=>"\x00\x00", 3=>"\x00", 255=>"\x00\x00");
+		static $TextEncodingTerminatorLookup = array(
+			0   => "\x00",     // $00  ISO-8859-1. Terminated with $00.
+			1   => "\x00\x00", // $01  UTF-16 encoded Unicode with BOM. All strings in the same frame SHALL have the same byteorder. Terminated with $00 00.
+			2   => "\x00\x00", // $02  UTF-16BE encoded Unicode without BOM. Terminated with $00 00.
+			3   => "\x00",     // $03  UTF-8 encoded Unicode. Terminated with $00.
+			255 => "\x00\x00"
+		);
 		return (isset($TextEncodingTerminatorLookup[$encoding]) ? $TextEncodingTerminatorLookup[$encoding] : '');
 	}
 
-	function TextEncodingNameLookup($encoding) {
+	static function TextEncodingNameLookup($encoding) {
 		// http://www.id3.org/id3v2.4.0-structure.txt
 		// Frames that allow different types of text encoding contains a text encoding description byte. Possible encodings:
-		// $00  ISO-8859-1. Terminated with $00.
-		// $01  UTF-16 encoded Unicode with BOM. All strings in the same frame SHALL have the same byteorder. Terminated with $00 00.
-		// $02  UTF-16BE encoded Unicode without BOM. Terminated with $00 00.
-		// $03  UTF-8 encoded Unicode. Terminated with $00.
-		static $TextEncodingNameLookup = array(0=>'ISO-8859-1', 1=>'UTF-16', 2=>'UTF-16BE', 3=>'UTF-8', 255=>'UTF-16BE');
+		static $TextEncodingNameLookup = array(
+			0   => 'ISO-8859-1', // $00  ISO-8859-1. Terminated with $00.
+			1   => 'UTF-16',     // $01  UTF-16 encoded Unicode with BOM. All strings in the same frame SHALL have the same byteorder. Terminated with $00 00.
+			2   => 'UTF-16BE',   // $02  UTF-16BE encoded Unicode without BOM. Terminated with $00 00.
+			3   => 'UTF-8',      // $03  UTF-8 encoded Unicode. Terminated with $00.
+			255 => 'UTF-16BE'
+		);
 		return (isset($TextEncodingNameLookup[$encoding]) ? $TextEncodingNameLookup[$encoding] : 'ISO-8859-1');
 	}
 
-	function IsValidID3v2FrameName($framename, $id3v2majorversion) {
+	static function IsValidID3v2FrameName($framename, $id3v2majorversion) {
 		switch ($id3v2majorversion) {
 			case 2:
 				return preg_match('#[A-Z][A-Z0-9]{2}#', $framename);
@@ -3172,7 +3140,7 @@ class getid3_id3v2
 		return false;
 	}
 
-	function IsANumber($numberstring, $allowdecimal=false, $allownegative=false) {
+	static function IsANumber($numberstring, $allowdecimal=false, $allownegative=false) {
 		for ($i = 0; $i < strlen($numberstring); $i++) {
 			if ((chr($numberstring{$i}) < chr('0')) || (chr($numberstring{$i}) > chr('9'))) {
 				if (($numberstring{$i} == '.') && $allowdecimal) {
@@ -3187,7 +3155,7 @@ class getid3_id3v2
 		return true;
 	}
 
-	function IsValidDateStampString($datestamp) {
+	static function IsValidDateStampString($datestamp) {
 		if (strlen($datestamp) != 8) {
 			return false;
 		}
@@ -3215,7 +3183,7 @@ class getid3_id3v2
 		return true;
 	}
 
-	function ID3v2HeaderLength($majorversion) {
+	static function ID3v2HeaderLength($majorversion) {
 		return (($majorversion == 2) ? 6 : 10);
 	}
 

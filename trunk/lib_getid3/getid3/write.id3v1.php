@@ -18,6 +18,7 @@ getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.tag.id3v1.php', __FILE_
 class getid3_write_id3v1
 {
 	var $filename;
+	var $filesize;
 	var $tag_data;
 	var $warnings = array(); // any non-critical errors will be stored here
 	var $errors   = array(); // any critical errors will be stored here
@@ -27,13 +28,13 @@ class getid3_write_id3v1
 	}
 
 	function WriteID3v1() {
-		if ((filesize($this->filename) >= (pow(2, 31) - 128)) || (filesize($this->filename) < 0)) {
-			$this->errors[] = 'Unable to write ID3v1 because file is larger than 2GB';
-			return false;
-		}
-
 		// File MUST be writeable - CHMOD(646) at least
-		if (is_writeable($this->filename)) {
+		if (!empty($this->filename) && is_writeable($this->filename)) {
+			$this->setRealFileSize();
+			if (($this->filesize <= 0) || !getid3_lib::intValueSupported($this->filesize)) {
+				$this->errors[] = 'Unable to WriteID3v1('.$this->filename.') because filesize ('.$this->filesize.') is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+				return false;
+			}
 			ob_start();
 			if ($fp_source = fopen($this->filename, 'r+b')) {
 
@@ -75,11 +76,12 @@ class getid3_write_id3v1
 
 		// Initialize getID3 engine
 		$getID3 = new getID3;
+		$getID3->option_tag_id3v2  = false;
+		$getID3->option_tag_apetag = false;
+		$getID3->option_tags_html  = false;
+		$getID3->option_extra_info = false;
+		$getID3->option_tag_id3v1  = true;
 		$ThisFileInfo = $getID3->analyze($this->filename);
-		if ($ThisFileInfo['filesize'] >= (pow(2, 31) - 128)) {
-			// cannot write tags on files > 2GB
-			return false;
-		}
 		if (isset($ThisFileInfo['tags']['id3v1'])) {
 			foreach ($ThisFileInfo['tags']['id3v1'] as $key => $value) {
 				$id3v1data[$key] = implode(',', $value);
@@ -91,20 +93,20 @@ class getid3_write_id3v1
 	}
 
 	function RemoveID3v1() {
-		if ($ThisFileInfo['filesize'] >= pow(2, 31)) {
-			$this->errors[] = 'Unable to write ID3v1 because file is larger than 2GB';
-			return false;
-		}
-
 		// File MUST be writeable - CHMOD(646) at least
-		if (is_writeable($this->filename)) {
+		if (!empty($this->filename) && is_writeable($this->filename)) {
+			$this->setRealFileSize();
+			if (($this->filesize <= 0) || !getid3_lib::intValueSupported($this->filesize)) {
+				$this->errors[] = 'Unable to RemoveID3v1('.$this->filename.') because filesize ('.$this->filesize.') is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+				return false;
+			}
 			ob_start();
 			if ($fp_source = fopen($this->filename, 'r+b')) {
 
 				ob_end_clean();
 				fseek($fp_source, -128, SEEK_END);
 				if (fread($fp_source, 3) == 'TAG') {
-					ftruncate($fp_source, filesize($this->filename) - 128);
+					ftruncate($fp_source, $this->filesize - 128);
 				} else {
 					// no ID3v1 tag to begin with - do nothing
 				}
@@ -120,6 +122,24 @@ class getid3_write_id3v1
 			$this->errors[] = $this->filename.' is not writeable';
 		}
 		return false;
+	}
+
+	function setRealFileSize() {
+		if (PHP_INT_MAX > 2147483647) {
+			$this->filesize = filesize($this->filename);
+			return true;
+		}
+		// 32-bit PHP will not return correct values for filesize() if file is >=2GB
+		// but getID3->analyze() has workarounds to get actual filesize
+		$getID3 = new getID3;
+		$getID3->option_tag_id3v1  = false;
+		$getID3->option_tag_id3v2  = false;
+		$getID3->option_tag_apetag = false;
+		$getID3->option_tags_html  = false;
+		$getID3->option_extra_info = false;
+		$ThisFileInfo = $getID3->analyze($this->filename);
+		$this->filesize = $ThisFileInfo['filesize'];
+		return true;
 	}
 
 }

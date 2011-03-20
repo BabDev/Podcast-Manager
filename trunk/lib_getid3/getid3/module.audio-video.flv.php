@@ -274,8 +274,9 @@ class getid3_flv
 			$tagParsed++;
 		}
 
-		if ($ThisFileInfo['playtime_seconds'] = $Duration / 1000) {
-			$ThisFileInfo['bitrate'] = ($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds'];
+		$ThisFileInfo['playtime_seconds'] = $Duration / 1000;
+		if ($ThisFileInfo['playtime_seconds'] > 0) {
+			$ThisFileInfo['bitrate'] = (($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) * 8) / $ThisFileInfo['playtime_seconds'];
 		}
 
 		if ($ThisFileInfo['flv']['header']['hasAudio']) {
@@ -296,6 +297,7 @@ class getid3_flv
 		// Set information from meta
 		if (isset($ThisFileInfo['flv']['meta']['onMetaData']['duration'])) {
 			$ThisFileInfo['playtime_seconds'] = $ThisFileInfo['flv']['meta']['onMetaData']['duration'];
+			$ThisFileInfo['bitrate'] = (($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) * 8) / $ThisFileInfo['playtime_seconds'];
 		}
 		if (isset($ThisFileInfo['flv']['meta']['onMetaData']['audiocodecid'])) {
 			$ThisFileInfo['audio']['codec'] = $this->FLVaudioFormat($ThisFileInfo['flv']['meta']['onMetaData']['audiocodecid']);

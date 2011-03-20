@@ -27,7 +27,10 @@ class getid3_zip
 		$ThisFileInfo['zip']['uncompressed_size'] = 0;
 		$ThisFileInfo['zip']['entries_count']     = 0;
 
-		if ($ThisFileInfo['filesize'] < pow(2, 31)) {
+		if (!getid3_lib::intValueSupported($ThisFileInfo['filesize'])) {
+			$ThisFileInfo['error'][] = 'File is larger than '.round(PHP_INT_MAX / 1073741824).'GB, not supported by PHP';
+			return false;
+		} else {
 			$EOCDsearchData    = '';
 			$EOCDsearchCounter = 0;
 			while ($EOCDsearchCounter++ < 512) {

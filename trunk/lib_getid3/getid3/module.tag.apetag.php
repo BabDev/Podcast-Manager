@@ -18,8 +18,8 @@ class getid3_apetag
 
 	function getid3_apetag(&$fd, &$ThisFileInfo, $overrideendoffset=0) {
 
-		if ($ThisFileInfo['filesize'] >= pow(2, 31)) {
-			$ThisFileInfo['warning'][] = 'Unable to check for APEtags because file is larger than 2GB';
+		if (!getid3_lib::intValueSupported($ThisFileInfo['filesize'])) {
+			$ThisFileInfo['warning'][] = 'Unable to check for APEtags because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 			return false;
 		}
 
@@ -125,6 +125,8 @@ class getid3_apetag
 			$thisfile_ape['items'][$item_key] = array();
 			$thisfile_ape_items_current = &$thisfile_ape['items'][$item_key];
 
+			$thisfile_ape_items_current['offset'] = $thisfile_ape['tag_offset_start'] + $offset;
+
 			$offset += ($ItemKeyLength + 1); // skip 0x00 terminator
 			$thisfile_ape_items_current['data'] = substr($APEtagData, $offset, $value_size);
 			$offset += $value_size;
@@ -192,6 +194,42 @@ class getid3_apetag
 							$thisfile_ape['comments']['track'][] = $comment;
 						}
 					}
+					break;
+
+				case 'cover art (artist)':
+				case 'cover art (back)':
+				case 'cover art (band logo)':
+				case 'cover art (band)':
+				case 'cover art (colored fish)':
+				case 'cover art (composer)':
+				case 'cover art (conductor)':
+				case 'cover art (front)':
+				case 'cover art (icon)':
+				case 'cover art (illustration)':
+				case 'cover art (lead)':
+				case 'cover art (leaflet)':
+				case 'cover art (lyricist)':
+				case 'cover art (media)':
+				case 'cover art (movie scene)':
+				case 'cover art (other icon)':
+				case 'cover art (other)':
+				case 'cover art (performance)':
+				case 'cover art (publisher logo)':
+				case 'cover art (recording)':
+				case 'cover art (studio)':
+					// list of possible cover arts from http://taglib-sharp.sourcearchive.com/documentation/2.0.3.0-2/Ape_2Tag_8cs-source.html
+					list($thisfile_ape_items_current['filename'], $thisfile_ape_items_current['data']) = explode("\x00", $thisfile_ape_items_current['data'], 2);
+					$thisfile_ape_items_current['dataoffset'] = $thisfile_ape_items_current['offset'] + strlen($thisfile_ape_items_current['filename']."\x00");
+
+					$thisfile_ape_items_current['image_mime'] = '';
+					$imageinfo = array();
+					$imagechunkcheck = getid3_lib::GetDataImageSize($thisfile_ape_items_current['data'], $imageinfo);
+					$thisfile_ape_items_current['image_mime'] = image_type_to_mime_type($imagechunkcheck[2]);
+
+					if (!isset($ThisFileInfo['ape']['comments']['picture'])) {
+						$ThisFileInfo['ape']['comments']['picture'] = array();
+					}
+					$ThisFileInfo['ape']['comments']['picture'][] = array('data'=>$thisfile_ape_items_current['data'], 'image_mime'=>$thisfile_ape_items_current['image_mime']);
 					break;
 
 				default:
