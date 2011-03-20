@@ -28,7 +28,7 @@ JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/templat
 		<li>Podcast Media Component - Used to manage the podcast files; based off the Joomla! Media Manager with modifications specific to this suite's operation</li>
 		<li>getID3 Library - The getID3 library is used to extract metadata from uploaded files to pre-fill your metadata form</li>
 		<li>Module - Displays a link to the podcast feed</li>
-		<li>Content Plugin - The content plugin allows users to add a podcast player directly into an article by adding {podcast title}{/podcast} into the article editor</li>
+		<li>Content Plugin - The content plugin allows users to add a podcast player directly into an article by adding {podcast title} into the article editor</li>
 		<li>Editor Plugin - Integrates into the article editor by adding a "Podcast" button, allowing the user to select a podcast to insert into an article</li>
 	</ul>
 </div>

@@ -13,7 +13,7 @@
 			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
 			size="30" required="true" />
 		<field name="published" type="list" class="inputbox"
-			label="JGLOBAL_STATE" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
+			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
 			<option
 				value="1">JPUBLISHED</option>
