@@ -15,8 +15,8 @@ $dispatcher	= JDispatcher::getInstance();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
 ?>
 		<div class="item">
-			<a href="javascript:ImageManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>" >
-				<?php echo JHTML::_('image',$this->baseURL.'/'.$this->_tmp_audio->path_relative, JText::sprintf('COM_PODCASTMEDIA_IMAGE_TITLE', $this->_tmp_audio->title, PodcastMediaHelper::parseSize($this->_tmp_audio->size)), array('width' => $this->_tmp_img->width_32, 'height' => $this->_tmp_img->height_32)); ?>
+			<a href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>" >
+				<?php echo JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->title, NULL, true) : JHTML::_('image','media/con_info.png', $this->_tmp_audio->name, NULL, true) ; ?>
 				<span title="<?php echo $this->_tmp_audio->name; ?>"><?php echo $this->_tmp_audio->title; ?></span></a>
 		</div>
 <?php

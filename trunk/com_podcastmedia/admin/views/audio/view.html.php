@@ -32,7 +32,7 @@ class PodcastMediaViewAudio extends JView
 		$append 		= '';
 
 		JHtml::_('behavior.framework', true);
-		JHTML::_('script','media/popup-imagemanager.js', true, true);
+		JHTML::script('administrator/components/com_podcastmedia/media/js/popup-audiomanager.js', false, false);
 		JHTML::_('stylesheet','media/popup-imagemanager.css', array(), true);
 
 		if ($lang->isRTL()) {
@@ -65,7 +65,7 @@ class PodcastMediaViewAudio extends JView
 			JHtml::_('behavior.uploader', 'upload-flash',
 				array(
 					'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'imageForm\').folderlist.value}); }',
-					'onComplete' 	=> 'function(){ window.frames[\'imageframe\'].location.href = window.frames[\'imageframe\'].location.href; }',
+					'onComplete' 	=> 'function(){ window.frames[\'audioframe\'].location.href = window.frames[\'audioframe\'].location.href; }',
 					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
 					'typeFilter' 	=> $typeString,
 					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),

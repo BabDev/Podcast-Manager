@@ -23,9 +23,6 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 			<td class="description"  title="<?php echo $this->_tmp_audio->name; ?>">
 				<?php echo $this->_tmp_audio->title; ?>
 			</td>
-			<td>&#160;
-
-			</td>
 			<td class="filesize">
 				<?php echo MediaHelper::parseSize($this->_tmp_audio->size); ?>
 			</td>

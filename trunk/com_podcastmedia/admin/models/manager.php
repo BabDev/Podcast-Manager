@@ -44,9 +44,9 @@ class PodcastMediaModelManager extends JModel
 	}
 
 	/**
-	 * Image Manager Popup
+	 * Audio Manager Popup
 	 *
-	 * @param string $listFolder The image directory to display
+	 * @param string $listFolder The directory to display
 	 * @since 1.6
 	 */
 	function getFolderList($base = null)
@@ -82,7 +82,7 @@ class PodcastMediaModelManager extends JModel
 		// Create the drop-down folder select list
 		$asset = JRequest::getVar('asset');
 		$author = JRequest::getVar('author');
-		$list = JHtml::_('select.genericlist',  $options, 'folderlist', "class=\"inputbox\" size=\"1\" onchange=\"ImageManager.setFolder(this.options[this.selectedIndex].value,'".$asset."','$author'".")\" ", 'value', 'text', $base);
+		$list = JHtml::_('select.genericlist',  $options, 'folderlist', "class=\"inputbox\" size=\"1\" onchange=\"AudioManager.setFolder(this.options[this.selectedIndex].value,'".$asset."','$author'".")\" ", 'value', 'text', $base);
 
 		return $list;
 	}

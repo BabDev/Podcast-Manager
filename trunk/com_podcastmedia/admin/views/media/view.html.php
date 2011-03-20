@@ -38,7 +38,7 @@ class PodcastMediaViewMedia extends JView
 
 		JHtml::_('behavior.framework', true);
 
-		JHTML::_('script','media/mediamanager.js', true, true);
+		JHTML::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
 		JHTML::_('stylesheet','media/mediamanager.css', array(), true);
 		if ($lang->isRTL()) :
 			JHTML::_('stylesheet','media/mediamanager_rtl.css', array(), true);
@@ -77,7 +77,7 @@ class PodcastMediaViewMedia extends JView
 			JHtml::_('behavior.uploader', 'upload-flash',
 				array(
 					'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'mediamanager-form\').folder.value}); }',
-					'onComplete' 	=> 'function(){ MediaManager.refreshFrame(); }',
+					'onComplete' 	=> 'function(){ PodcastMediaManager.refreshFrame(); }',
 					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
 					'typeFilter' 	=> $typeString,
 					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),
@@ -141,7 +141,7 @@ class PodcastMediaViewMedia extends JView
 		if ($user->authorise('core.delete','com_podcastmanager'))
 		{
 			$title = JText::_('JTOOLBAR_DELETE');
-			$dhtml = "<a href=\"#\" onclick=\"MediaManager.submit('folder.delete')\" class=\"toolbar\">
+			$dhtml = "<a href=\"#\" onclick=\"PodcastMediaManager.submit('folder.delete')\" class=\"toolbar\">
 						<span class=\"icon-32-delete\" title=\"$title\"></span>
 						$title</a>";
 			$bar->appendButton('Custom', $dhtml, 'delete');

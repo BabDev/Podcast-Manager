@@ -12,11 +12,6 @@
 	<license>GNU/GPL Version 2 or later</license>
 	<description>COM_PODCASTMEDIA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">sql/install.mysql.sql</file>
-		</sql>
-	</install>
 	<administration>
 		<files folder="admin">
 			<filename>config.xml</filename>
@@ -25,8 +20,8 @@
 			<filename>podcastmedia.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
+			<folder>media</folder>
 			<folder>models</folder>
-			<folder>sql</folder>
 			<folder>views</folder>
 		</files>
 		<languages folder="admin/language">

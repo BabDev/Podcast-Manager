@@ -51,16 +51,12 @@ class PodcastMediaViewMediaList extends JView
 			});
 		});");
 
-		$images		= $this->get('images');
 		$audio		= $this->get('audio');
-		$documents	= $this->get('documents');
 		$folders	= $this->get('folders');
 		$state		= $this->get('state');
 
 		$this->assign('baseURL', JURI::root());
-		$this->assignRef('images', $images);
 		$this->assignRef('audio', $audio);
-		$this->assignRef('documents', $documents);
 		$this->assignRef('folders', $folders);
 		$this->assignRef('state', $state);
 
@@ -73,24 +69,6 @@ class PodcastMediaViewMediaList extends JView
 			$this->_tmp_folder = &$this->folders[$index];
 		} else {
 			$this->_tmp_folder = new JObject;
-		}
-	}
-
-	function setImage($index = 0)
-	{
-		if (isset($this->images[$index])) {
-			$this->_tmp_img = &$this->images[$index];
-		} else {
-			$this->_tmp_img = new JObject;
-		}
-	}
-
-	function setDoc($index = 0)
-	{
-		if (isset($this->documents[$index])) {
-			$this->_tmp_doc = &$this->documents[$index];
-		} else {
-			$this->_tmp_doc = new JObject;
 		}
 	}
 

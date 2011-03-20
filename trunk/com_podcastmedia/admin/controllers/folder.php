@@ -27,7 +27,7 @@ class PodcastMediaControllerFolder extends JController
 	/**
 	 * Deletes paths from the current path
 	 *
-	 * @param string $listFolder The image directory to delete a file from
+	 * @param string $listFolder The directory to delete a file from
 	 * @since 1.6
 	 */
 	function delete()
@@ -43,7 +43,7 @@ class PodcastMediaControllerFolder extends JController
 
 		if ($tmpl == 'component') {
 			// We are inside the iframe
-			$this->setRedirect('index.php?option=com_podcastmedia&view=medialist&folder='.$folder.'&tmpl=component');
+			$this->setRedirect('index.php?option=com_podcastmedia&view=mediaList&folder='.$folder.'&tmpl=component');
 		} else {
 			$this->setRedirect('index.php?option=com_podcastmedia&folder='.$folder);
 		}

@@ -39,7 +39,8 @@ abstract class PodcastMediaHelper
 	}
 
 	/**
-	 * Checks if the file is an image
+	 * Gets the icon type
+	 * 
 	 * @param string The filename
 	 * @return boolean
 	 */

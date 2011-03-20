@@ -12,6 +12,10 @@
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
 ?>
+<script type='text/javascript'>
+var audio_base_path = '<?php $params = JComponentHelper::getParams('com_podcastmedia');
+echo $params->get('file_path', 'media/com_podcastmanager');?>/';
+</script>
 <form action="index.php?option=com_podcastmedia&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
 		<span id="message"></span><?php echo JHTML::_('image','media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
@@ -23,37 +27,19 @@ $user = JFactory::getUser();
 			<button type="button" id="upbutton" title="<?php echo JText::_('COM_PODCASTMEDIA_DIRECTORY_UP') ?>"><?php echo JText::_('COM_PODCASTMEDIA_UP') ?></button>
 		</div>
 		<div class="fltrt">
-			<button type="button" onclick="<?php if ($this->state->get('field.id')):?>window.parent.jInsertFieldValue(document.id('f_url').value,'<?php echo $this->state->get('field.id');?>');<?php else:?>ImageManager.onok();<?php endif;?>window.parent.SqueezeBox.close();"><?php echo JText::_('COM_PODCASTMEDIA_INSERT') ?></button>
+			<button type="button" onclick="<?php if ($this->state->get('field.id')):?>window.parent.jInsertFieldValue(document.id('f_url').value,'<?php echo $this->state->get('field.id');?>');<?php else:?>AudioManager.onok();<?php endif;?>window.parent.SqueezeBox.close();"><?php echo JText::_('COM_PODCASTMEDIA_INSERT') ?></button>
 			<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('JCANCEL') ?></button>
 		</div>
 	</fieldset>
 
-	<iframe id="imageframe" name="imageframe" src="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>"></iframe>
+	<iframe id="audioframe" name="audioframe" src="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>"></iframe>
 
 	<fieldset>
 		<table class="properties">
 			<tr>
-				<td><label for="f_url"><?php echo JText::_('COM_PODCASTMEDIA_IMAGE_URL') ?></label></td>
+				<td><label for="f_url"><?php echo JText::_('COM_PODCASTMEDIA_FILE_URL') ?></label></td>
 				<td><input type="text" id="f_url" value="" /></td>
 			</tr>
-			<?php if (!$this->state->get('field.id')):?>
-				<tr>
-					<td><label for="f_alt"><?php echo JText::_('COM_PODCASTMEDIA_IMAGE_DESCRIPTION') ?></label></td>
-					<td><input type="text" id="f_alt" value="" /></td>
-				</tr>
-				<tr>
-					<td><label for="f_title"><?php echo JText::_('COM_PODCASTMEDIA_TITLE') ?></label></td>
-					<td><input type="text" id="f_title" value="" /></td>
-					<td><label for="f_caption"><?php echo JText::_('COM_PODCASTMEDIA_CAPTION') ?></label></td>
-					<td>
-						<select size="1" id="f_caption" title="caption">
-							<option value="" selected="selected" ><?php echo JText::_('JNO') ?></option>
-							<option value="1"><?php echo JText::_('JYES') ?></option>
-						</select>
-					</td>
-					<td> <?php echo JText::_('COM_PODCASTMEDIA_CAPTION_DESC');?> </td>
-				</tr>
-			<?php endif;?>
 		</table>
 
 		<input type="hidden" id="dirPath" name="dirPath" />

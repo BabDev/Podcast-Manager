@@ -23,9 +23,6 @@ $user = JFactory::getUser();
 			<td>&#160;
 
 			</td>
-			<td>&#160;
-
-			</td>
 		<?php if ($user->authorise('core.delete','com_podcastmanager')):?>
 			<td>
 				<a class="delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=folder.delete&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>&amp;<?php echo JUtility::getToken(); ?>=1&amp;rm[]=<?php echo $this->_tmp_folder->name; ?>" rel="<?php echo $this->_tmp_folder->name; ?>' :: <?php echo $this->_tmp_folder->files+$this->_tmp_folder->folders; ?>"><?php echo JHTML::_('image','media/remove.png', JText::_('Delete'), array('width' => 16, 'height' => 16), true); ?></a>

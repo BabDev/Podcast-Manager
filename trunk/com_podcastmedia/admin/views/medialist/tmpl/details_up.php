@@ -21,7 +21,6 @@ $user = JFactory::getUser();
 				<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
 			</td>
 			<td>&#160;</td>
-			<td>&#160;</td>
 		<?php if ($user->authorise('core.delete','com_podcastmanager')):?>
 			<td>&#160;</td>
 		<?php endif;?>

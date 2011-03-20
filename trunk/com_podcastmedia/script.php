@@ -11,7 +11,8 @@
 class PodcastMediaInstallerScript {
 
 	function postflight($type, $parent) {
-		$query	= 'DELETE FROM `#__menu` WHERE `title` = `com_podcastmedia`';
+		$db = JFactory::getDBO();
+		$query	= 'DELETE FROM `#__menu` WHERE `title` = "com_podcastmedia"';
 		$db->setQuery($query);
 		$db->query();
 	}

@@ -37,7 +37,7 @@ class PodcastMediaViewAudioList extends JView
 		endif;
 
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
+		$document->addScriptDeclaration("var AudioManager = window.parent.AudioManager;");
 
 		$audio		= $this->get('audio');
 		$folders	= $this->get('folders');

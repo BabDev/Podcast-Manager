@@ -19,7 +19,6 @@ $user = JFactory::getUser();
 		<tr>
 			<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
 			<th><?php echo JText::_('COM_PODCASTMEDIA_NAME'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_PIXEL_DIMENSIONS'); ?></th>
 			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_FILESIZE'); ?></th>
 		<?php if ($user->authorise('core.delete','com_podcastmanager')):?>
 			<th width="8%"><?php echo JText::_('JACTION_DELETE'); ?></th>
@@ -32,16 +31,6 @@ $user = JFactory::getUser();
 		<?php for ($i=0,$n=count($this->folders); $i<$n; $i++) :
 			$this->setFolder($i);
 			echo $this->loadTemplate('folder');
-		endfor; ?>
-
-		<?php for ($i=0,$n=count($this->documents); $i<$n; $i++) :
-			$this->setDoc($i);
-			echo $this->loadTemplate('doc');
-		endfor; ?>
-
-		<?php for ($i=0,$n=count($this->images); $i<$n; $i++) :
-			$this->setImage($i);
-			echo $this->loadTemplate('img');
 		endfor; ?>
 
 		<?php for ($i=0,$n=count($this->audio); $i<$n; $i++) :

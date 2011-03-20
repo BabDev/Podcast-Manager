@@ -20,16 +20,6 @@ defined('_JEXEC') or die;
 			echo $this->loadTemplate('folder');
 		endfor; ?>
 
-		<?php for ($i=0,$n=count($this->documents); $i<$n; $i++) :
-			$this->setDoc($i);
-			echo $this->loadTemplate('doc');
-		endfor; ?>
-
-		<?php for ($i=0,$n=count($this->images); $i<$n; $i++) :
-			$this->setImage($i);
-			echo $this->loadTemplate('img');
-		endfor; ?>
-
 		<?php for ($i=0,$n=count($this->audio); $i<$n; $i++) :
 			$this->setAudio($i);
 			echo $this->loadTemplate('audio');
