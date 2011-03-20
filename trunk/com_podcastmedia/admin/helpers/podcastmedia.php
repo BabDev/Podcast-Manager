@@ -15,30 +15,6 @@
 abstract class PodcastMediaHelper
 {
 	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param	string	$vName	The name of the active view.
-	 *
-	 * @return	void
-	 * @since	1.6
-	 */
-	public static function addSubmenu($vName)
-	{
-		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMEDIA_SUBMENU_PODCASTS'),
-			'index.php?option=com_podcastmanager&view=podcasts',
-			$vName == 'podcasts');
-		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMEDIA_SUBMENU_INFO'),
-			'index.php?option=com_podcastmanager&view=info',
-			$vName == 'info');
-		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMEDIA_SUBMENU_FILES'),
-			'index.php?option=com_podcastmedia&view=media',
-			$vName == 'media');
-	}
-
-	/**
 	 * Gets the icon type
 	 * 
 	 * @param string The filename

@@ -34,7 +34,7 @@ class PodcastMediaViewMedia extends JView
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$document = JFactory::getDocument();
-		//$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
+		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 		JHtml::_('behavior.framework', true);
 

@@ -33,10 +33,6 @@ class PodcastMediaController extends JController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		// Load the submenu.
-		PodcastMediaHelper::addSubmenu(JRequest::getWord('view', 'media'));
-
-		
 		JPluginHelper::importPlugin('content');
 		$vName = JRequest::getCmd('view', 'media');
 		switch ($vName)
