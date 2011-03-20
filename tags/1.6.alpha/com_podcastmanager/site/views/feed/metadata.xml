@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<view title="Podcast Feed">
+		<message>PODCAST FEED DESC</message>
+		<options var="format">
+			<option value="raw" name="Feed" msg="PODCAST FEED DESC" />
+		</options>
+	</view>
+</metadata>
+

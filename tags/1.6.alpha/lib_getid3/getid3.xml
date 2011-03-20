@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" version="1.6" method="upgrade">
+	<name>getID3</name>
+	<libraryname>getid3</libraryname>
+	<creationDate>4 May 2001</creationDate>
+	<author>James Heinrich</author>
+	<copyright>(C) James Heinrich</copyright>
+	<authorEmail>info@getid3.org</authorEmail>
+	<authorUrl>http://www.getid3.org</authorUrl>
+	<version>1.8.5</version>
+	<license>GNU/GPL Version 2</license>
+	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
+	<files folder="getid3">
+		<file>changelog.txt</file>
+		<file>extension.cache.dbm.php</file>
+		<file>extension.cache.mysql.php</file>
+		<file>getid3.lib.php</file>
+		<file>getid3.php</file>
+		<file>index.html</file>
+		<file>license.commercial.txt</file>
+		<file>license.txt</file>
+		<file>module.archive.gzip.php</file>
+		<file>module.archive.rar.php</file>
+		<file>module.archive.szip.php</file>
+		<file>module.archive.tar.php</file>
+		<file>module.archive.zip.php</file>
+		<file>module.audio-video.asf.php</file>
+		<file>module.audio-video.bink.php</file>
+		<file>module.audio-video.flv.php</file>
+		<file>module.audio-video.matroska.php</file>
+		<file>module.audio-video.mpeg.php</file>
+		<file>module.audio-video.nsv.php</file>
+		<file>module.audio-video.quicktime.php</file>
+		<file>module.audio-video.real.php</file>
+		<file>module.audio-video.riff.php</file>
+		<file>module.audio-video.swf.php</file>
+		<file>module.audio.aa.php</file>
+		<file>module.audio.aac.php</file>
+		<file>module.audio.ac3.php</file>
+		<file>module.audio.au.php</file>
+		<file>module.audio.avr.php</file>
+		<file>module.audio.bonk.php</file>
+		<file>module.audio.dss.php</file>
+		<file>module.audio.dts.php</file>
+		<file>module.audio.flac.php</file>
+		<file>module.audio.la.php</file>
+		<file>module.audio.lpac.php</file>
+		<file>module.audio.midi.php</file>
+		<file>module.audio.mod.php</file>
+		<file>module.audio.monkey.php</file>
+		<file>module.audio.mp3.php</file>
+		<file>module.audio.mpc.php</file>
+		<file>module.audio.ogg.php</file>
+		<file>module.audio.optimfrog.php</file>
+		<file>module.audio.rkau.php</file>
+		<file>module.audio.shorten.php</file>
+		<file>module.audio.tta.php</file>
+		<file>module.audio.voc.php</file>
+		<file>module.audio.vqf.php</file>
+		<file>module.audio.wavpack.php</file>
+		<file>module.graphic.bmp.php</file>
+		<file>module.graphic.gif.php</file>
+		<file>module.graphic.jpg.php</file>
+		<file>module.graphic.pcd.php</file>
+		<file>module.graphic.png.php</file>
+		<file>module.graphic.svg.php</file>
+		<file>module.graphic.tiff.php</file>
+		<file>module.misc.cue.php</file>
+		<file>module.misc.doc.php</file>
+		<file>module.misc.exe.php</file>
+		<file>module.misc.iso.php</file>
+		<file>module.misc.msoffice.php</file>
+		<file>module.misc.par2.php</file>
+		<file>module.misc.pdf.php</file>
+		<file>module.tag.apetag.php</file>
+		<file>module.tag.id3v1.php</file>
+		<file>module.tag.id3v2.php</file>
+		<file>module.tag.lyrics3.php</file>
+		<file>module.tag.xmp.php</file>
+		<file>readme.txt</file>
+		<file>write.apetag.php</file>
+		<file>write.id3v1.php</file>
+		<file>write.id3v2.php</file>
+		<file>write.lyrics3.php</file>
+		<file>write.metaflac.php</file>
+		<file>write.php</file>
+		<file>write.real.php</file>
+		<file>write.vorbiscomment.php</file>
+	</files>
+</extension>
