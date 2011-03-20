@@ -54,7 +54,7 @@ class PodcastManagerModelFeed extends JModel
 		$articles = $this->_getList($query);
 		
 		foreach ($articles as &$row) {
-			preg_match('/\{enclose\s(.*)\}/', $row->introtext, $matches);
+			preg_match('/\{podcast\s(.*)\}/', $row->introtext, $matches);
 			
 			$pieces = explode(' ', $matches[1]);
 			
@@ -77,7 +77,7 @@ class PodcastManagerModelFeed extends JModel
 		$nullDate = $this->_db->Quote($this->_db->getNullDate());
 		
 		$query = "SELECT * FROM #__content"
-		. "\n WHERE state = '1' AND introtext LIKE '%{enclose%}%'"
+		. "\n WHERE state = '1' AND introtext LIKE '%{podcast%}%'"
 		. "\n AND access = 0"
 		. "\n AND ( publish_up = {$nullDate} OR publish_up <= '" . $now . "' )"
 		. "\n AND ( publish_down = {$nullDate} OR publish_down >= '". $now ."' )";
