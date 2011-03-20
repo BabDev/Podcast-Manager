@@ -8,6 +8,9 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<packageremail>mbabker@flbab.com</packageremail>
 	<packagerurl>http://www.flbab.com</packagerurl>
+	<author>Michael Babker</author>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.flbab.com</authorUrl>
 	<version>1.6 Alpha</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>Podcast Manager extension suite for Joomla! distributed with the getID3 Library</description>
