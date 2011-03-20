@@ -52,7 +52,7 @@ abstract class PodcastMediaHelper
 
 		$format = strtolower(JFile::getExt($file['name']));
 
-		$allowable = explode(',', $podmedparams->get('upload_extensions'));
+		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
 		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
 		if (!in_array($format, $allowable) && !in_array($format,$ignored))
 		{
@@ -72,7 +72,7 @@ abstract class PodcastMediaHelper
 		if ($medmanparams->get('restrict_uploads',1)) {
 			if (!in_array($format, $ignored)) {
 				// if its not an image...and we're not ignoring it
-				$allowed_mime = explode(',', $podmedparams->get('upload_mime'));
+				$allowed_mime = explode(',', 'audio/mpeg,audio/x-m4a,video/mp4,video/x-m4v,video/quicktime');
 				$illegal_mime = explode(',', $medmanparams->get('upload_mime_illegal'));
 				if (function_exists('finfo_open') && $medmanparams->get('check_mime',1)) {
 					// We have fileinfo

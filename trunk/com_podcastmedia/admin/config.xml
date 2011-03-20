@@ -5,25 +5,11 @@
 		label="COM_PODCASTMEDIA_FIELDSET_CONFIG_OPTIONS_LABEL"
 		description="COM_PODCASTMEDIA_FIELDSET_CONFIG_OPTIONS_DESCRIPTION">
 		<field
-			name="upload_extensions"
-			type="text"
-			size="50"
-			default="mp3,MP3"
-			label="COM_PODCASTMEDIA_FIELD_LEGAL_EXTENSIONS_LABEL"
-			description="COM_PODCASTMEDIA_FIELD_LEGAL_EXTENSIONS_DESC" />
-		<field
 			name="file_path"
 			type="text"
 			size="50"
 			default="media/com_podcastmanager"
 			label="COM_PODCASTMEDIA_FIELD_PATH_FILE_FOLDER_LABEL"
 			description="COM_PODCASTMEDIA_FIELD_PATH_FILE_FOLDER_DESC" />
-		<field
-			name="upload_mime"
-			type="text"
-			size="50"
-			default="audio/mpeg"
-			label="COM_PODCASTMEDIA_FIELD_LEGAL_MIME_TYPES_LABEL"
-			description="COM_PODCASTMEDIA_FIELD_LEGAL_MIME_TYPES_DESC" />
 	</fieldset>
 </config>

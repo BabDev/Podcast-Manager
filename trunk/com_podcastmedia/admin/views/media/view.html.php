@@ -57,7 +57,7 @@ class PodcastMediaViewMedia extends JView
 		endif;
 
 		if ($medmanparams->get('enable_flash', 1)) {
-			$fileTypes = $podmedparams->get('upload_extensions', 'mp3');
+			$fileTypes = 'mp3,m4a,mov,mp4,m4v';
 			$types = explode(',', $fileTypes);
 			$displayTypes = '';		// this is what the user sees
 			$filterTypes = '';		// this is what controls the logic

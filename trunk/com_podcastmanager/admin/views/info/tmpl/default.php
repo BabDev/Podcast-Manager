@@ -33,6 +33,16 @@ JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/templat
 	</ul>
 </div>
 
+<div class="podMan-header">Allowed File Types</div>
+<div class="divider"></div>
+<div>
+	<p>iTunes only allows certain file types as podcast items.  Therefore, the media component has been hard coded to only allow the following file types:</p>
+	<ul>
+		<li>Audio - MP3, M4A</li>
+		<li>Video - MP4, M4V, MOV</li>
+	</ul>
+</div>
+
 <div class="podMan-header">What to expect</div>
 <div class="divider"></div>
 <div>

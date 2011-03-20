@@ -112,6 +112,10 @@ class PodcastMediaModelList extends JModel
 					{
 						// Audio file
 						case 'mp3':
+						case 'm4a':
+						case 'mov':
+						case 'mp4':
+						case 'm4v':
 							$tmp->icon_32 = "media/mime-icon-32/".$ext.".png";
 							$tmp->icon_16 = "media/mime-icon-16/".$ext.".png";
 							$audio[] = $tmp;
