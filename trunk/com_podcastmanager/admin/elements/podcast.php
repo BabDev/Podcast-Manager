@@ -28,7 +28,7 @@ class PodcastManagerElementPodcast extends JElement
 		$doc		= JFactory::getDocument();
 		$template	= $app->getTemplate();
 		$fieldName	= $control_name.'['.$name.']';
-		$podcast = JTable::getInstance('Podcast', 'PodcastManagerTable', array());
+		$podcast	= JTable::getInstance('Podcast', 'PodcastManagerTable', array());
 		
 		if ($value) {
 			$podcast->load($value);
@@ -38,7 +38,7 @@ class PodcastManagerElementPodcast extends JElement
 
 		$js = "function PodcastManagerSelectPodcast_".$name."(id, title, filename, object) {
 			document.getElementById(object + '_id').value = id;
-			document.getElementById(object + '_name').value = title;
+			document.getElementById(object + '_title').value = title;
 			SqueezeBox.close();
 		}";
 		$doc->addScriptDeclaration($js);

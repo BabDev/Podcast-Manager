@@ -147,10 +147,8 @@ class PodcastMediaViewMedia extends JView
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}
-		// Add the options button
-		if ($user->authorise('core.admin','com_podcastmanager'))
-		{
-			JToolBarHelper::preferences('com_podcastmedia', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+		if ($canDo->get('core.admin')) {
+			JToolBarHelper::preferences('com_podcastmedia');
 			JToolBarHelper::divider();
 		}
 		JToolBarHelper::help('JHELP_CONTENT_MEDIA_MANAGER');
