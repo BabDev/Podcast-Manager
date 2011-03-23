@@ -40,20 +40,11 @@ class plgContentPodcastManager extends JPlugin
 	
 	foreach ($matches as $id => $podcast) {
 
-		/*
-		 * $podcast contents:
-		 * $podcast[0] filename (required)
-		 * $podcast[1] file length in bytes
-		 * $podcast[2] file mime type
-		 * 
-		 * We're only interested in $podcast[0] here
-		 */
-		 
-		$enclose = explode(' ', $podcast);
-
-		// Retreive the title string from the $matches array and convert it to an object
-		$podtitle	= (object) $matches[2];
-		
+		// Retrieve the title and convert it to a useable string
+		// 9 offset for {podcast marker
+		// -1 offset for closing }
+		$podtitle	= substr(implode(' ', $podcast), 9, -1);
+						
 		// Query the DB for the title string, returning the filename
 		$db = JFactory::getDBO();
 		$db->setQuery(
@@ -64,11 +55,11 @@ class plgContentPodcastManager extends JPlugin
 		$podfilepath = $db->loadObject();
 		
 		// Get the player
-		$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $enclose, $article->title);
+		$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
 		
 		// Replace the {podcast marker with the player
 		$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
-	}
+		}
 	
 	return true;
 	}
