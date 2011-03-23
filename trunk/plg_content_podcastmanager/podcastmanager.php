@@ -51,8 +51,22 @@ class plgContentPodcastManager extends JPlugin
 		 
 		$enclose = explode(' ', $podcast);
 
+		// Retreive the title string from the $matches array and convert it to an object
+		$podtitle	= (object) $matches[2];
+		
+		// Query the DB for the title string, returning the filename
+		$db = JFactory::getDBO();
+		$db->setQuery(
+			'SELECT `filename`' .
+			' FROM `#__podcastmanager`' .
+			' WHERE `title` = "'.$podtitle.'"'
+		);
+		$podfilepath = $db->loadObject();
+		
+		// Get the player
 		$player = new PodcastManagerPlayer($podmanparams, $enclose, $article->title);
-				
+		
+		// Replace the {podcast marker with the player
 		$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
 	}
 	
