@@ -31,7 +31,7 @@ class plgContentPodcastManager extends JPlugin
 		}
 		
 		// Expression to search for
-		$regex		= '/\{(podcast) (.*)\}/i';
+		$regex	= '/\{(podcast) (.*)\}/i';
 		
 		// Find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches);
@@ -64,7 +64,7 @@ class plgContentPodcastManager extends JPlugin
 		$podfilepath = $db->loadObject();
 		
 		// Get the player
-		$player = new PodcastManagerPlayer($podmanparams, $enclose, $article->title);
+		$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $enclose, $article->title);
 		
 		// Replace the {podcast marker with the player
 		$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
@@ -81,6 +81,7 @@ class PodcastManagerPlayer
 	private $fileURL = null;
 	private $title = null;
 	private $podmanparams = null;
+	private $podfilepath = null;
 	private $validTypes = array('links', 'player', 'html', 'QTplayer');
 	private $fileTypes = array (
 		'm4a' => 'audio/x-m4a',
@@ -90,10 +91,11 @@ class PodcastManagerPlayer
 		'mp4' => 'video/mp4',
 	);
 	
-	function __construct(&$podmanparams, $enclose, $title)
+	function __construct(&$podmanparams, $podfilepath, $enclose, $title)
 	{	
 		$this->podmanparams = $podmanparams;
-		$playerType = $this->podmanparams->get('linkhandling', 'player');
+		$this->podfilepath	= $podfilepath;
+		$playerType			= $this->podmanparams->get('linkhandling', 'player');
 		
 		if (in_array($playerType, $this->validTypes)) {
 			$this->playerType = $playerType;
@@ -101,9 +103,9 @@ class PodcastManagerPlayer
 			$this->playerType = 'player';
 		}
 		
-		$this->fileURL = $this->determineURL($enclose[0]);
-		$this->title = $title;
-		$this->enclose = $enclose;
+		$this->fileURL	= $this->determineURL($podfilepath);
+		$this->title	= $title;
+		$this->enclose	= $enclose;
 	}
 	
 	public function generate()
@@ -113,21 +115,23 @@ class PodcastManagerPlayer
 		return $this->$func();
 	}
 	
+	/**
+	 * Function to create the URL for a podcast episode file
+	 *
+	 * @param	string	The filename of the podcast file relative to the site root.
+	 * 
+	 * @return	string	The URL to the file
+	 */
 	private function determineURL($filename)
 	{
-		// If we have a full URL, stop.
-		// Otherwise, see if the file is the normal mediapath and build URL
-		// Else, just assume Joomla! root
-		if (!preg_match('/^https?:\/\//', $filename)) {
-
-			$fullPath = JPATH_BASE.'media/com_podcastmanager/'.$filename;
-
-			if (JFile::exists($fullPath)) {
-				$filename = JURI::base().'media/com_podcastmanager/'.$filename;
-			} else {
-				$filename = JURI::base().'/'.$filename;
-			}
-		} 
+		// Set the file path based on the server
+		$fullPath = JPATH_BASE.$filename;
+		
+		// Check if the file exists
+		if (JFile::exists($fullPath)) {
+			$filename = JURI::base().$filename;
+		}
+		
 		return $filename;
 	}
 	
@@ -141,7 +145,7 @@ class PodcastManagerPlayer
 		$width = $this->podmanparams->get('playerwidth', 400);
 		$height = $this->podmanparams->get('playerheight', 15);
 
-		$playerURL = JURI::base().'plugins/content/podcastmanager/xspf_player_slim.swf';
+		$playerURL = JURI::base().'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
 		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'" /></object>';
 	}
