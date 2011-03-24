@@ -68,7 +68,7 @@ class plgContentPodcastManager extends JPlugin
 class PodcastManagerPlayer
 {
 	private $playerType = null;
-	private $enclose = null;
+	private $podtitle = null;
 	private $fileURL = null;
 	private $title = null;
 	private $podmanparams = null;
@@ -82,7 +82,7 @@ class PodcastManagerPlayer
 		'mp4' => 'video/mp4',
 	);
 	
-	function __construct(&$podmanparams, $podfilepath, $enclose, $title)
+	function __construct(&$podmanparams, $podfilepath, $podtitle, $title)
 	{	
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath	= $podfilepath;
@@ -94,9 +94,9 @@ class PodcastManagerPlayer
 			$this->playerType = 'player';
 		}
 		
-		$this->fileURL	= $this->determineURL($podfilepath);
-		$this->title	= $title;
-		$this->enclose	= $enclose;
+		$this->fileURL		= $this->determineURL($podfilepath);
+		$this->title		= $title;
+		$this->podtitle		= $podtitle;
 	}
 	
 	public function generate()
@@ -115,12 +115,16 @@ class PodcastManagerPlayer
 	 */
 	private function determineURL($filename)
 	{
+		// Convert the file path to a string
+		$tempfile	= get_object_vars($filename);
+		$filepath	= substr(implode('', $tempfile), 0);
+		
 		// Set the file path based on the server
-		$fullPath = JPATH_BASE.$filename;
+		$fullPath = JPATH_BASE.'/'.$filepath;
 		
 		// Check if the file exists
 		if (JFile::exists($fullPath)) {
-			$filename = JURI::base().$filename;
+			$filename = JURI::base().$filepath;
 		}
 		
 		return $filename;
@@ -138,7 +142,7 @@ class PodcastManagerPlayer
 
 		$playerURL = JURI::base().'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
-		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->title.'&player_title='.$this->title.'" /></object>';
+		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'" /></object>';
 	}
 	
 	private function html()
@@ -149,7 +153,7 @@ class PodcastManagerPlayer
 	
 	private function QTplayer()
 	{
-		$ext = substr($this->enclose[0], strlen($this->enclose[0]) - 3);
+		$ext = substr($this->podfilepath, strlen($this->podfilepath) - 3);
 
 		$width = $this->podmanparams->get('playerwidth', 320);
 		$height = $this->podmanparams->get('playerheight', 240);
