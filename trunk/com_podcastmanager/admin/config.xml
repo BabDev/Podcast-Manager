@@ -34,9 +34,8 @@
 			default="links"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
-			<option value="links">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_LINKS</option>
+			<option value="link">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_LINK</option>
 			<option value="player">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_FLASH</option>
-			<option value="html">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_HTML</option>
 			<option value="QTplayer">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_QUICKTIME</option>
 		</field>
 		<field
@@ -57,14 +56,6 @@
 			default="Listen Now!"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
-		<field
-			name="linkcode"
-			type="textarea"
-			rows="5"
-			cols="30"
-			default=""
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKCODE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKCODE_DESCRIPTION" />
 		<field
 			name="mimetype"
 			type="text"

@@ -130,7 +130,7 @@ class PodcastManagerPlayer
 		return $filename;
 	}
 	
-	private function links()
+	private function link()
 	{
 		return '<a href="'.$this->fileURL.'">'.htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))).'</a>';
 	}
@@ -143,12 +143,6 @@ class PodcastManagerPlayer
 		$playerURL = JURI::base().'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
 		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'" /></object>';
-	}
-	
-	private function html()
-	{
-		$linkcode = $this->podmanparams->get('linkcode', '');
-		return preg_replace('/\{filename\}/', $this->fileURL, $linkcode);
 	}
 	
 	private function QTplayer()
