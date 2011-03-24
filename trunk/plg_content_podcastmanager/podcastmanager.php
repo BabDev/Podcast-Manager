@@ -147,8 +147,10 @@ class PodcastManagerPlayer
 	
 	private function QTplayer()
 	{
-		$ext = substr($this->podfilepath, strlen($this->podfilepath) - 3);
-
+		$tempfile	= get_object_vars($this->podfilepath);
+		$filepath	= substr(implode('', $tempfile), 0);
+		$ext = substr($filepath, strlen($filepath) - 3);
+		
 		$width = $this->podmanparams->get('playerwidth', 320);
 		$height = $this->podmanparams->get('playerheight', 240);
 		
