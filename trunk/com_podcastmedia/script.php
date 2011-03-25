@@ -8,8 +8,12 @@
 * 
 */
 
-class PodcastMediaInstallerScript {
+class Com_PodcastMediaInstallerScript {
 
+	function install($parent) {
+		echo '<p>Removing Podcast Media - File Manager menu item</p>';
+	}
+	
 	function postflight($type, $parent) {
 		$db = JFactory::getDBO();
 		$query	= 'DELETE FROM `#__menu` WHERE `title` = "com_podcastmedia"';
