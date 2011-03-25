@@ -16,24 +16,16 @@ var AudioManager = this.AudioManager = {
 		q = new Hash(this._getQueryObject(o.query));
 		this.editor = decodeURIComponent(q.get('e_name'));
 
-		// Setup image manager fields object
-		this.fields			= new Object();
-		this.fields.url		= document.id("f_url");
-		this.fields.alt		= document.id("f_alt");
-		this.fields.align	= document.id("f_align");
-		this.fields.title	= document.id("f_title");
-		this.fields.caption	= document.id("f_caption");
-
-		// Setup image listing objects
+		// Setup audio listing objects
 		this.folderlist = document.id('folderlist');
 
 		this.frame		= window.frames['audioframe'];
 		this.frameurl	= this.frame.location.href;
 
-		// Setup imave listing frame
+		// Setup audio listing frame
 		this.audioframe = document.id('audioframe');
 		this.audioframe.manager = this;
-		this.audioframe.addEvent('load', function(){ AudioManager.onloadimageview(); });
+		this.audioframe.addEvent('load', function(){ AudioManager.onloadaudioview(); });
 
 		// Setup folder up button
 		this.upbutton = document.id('upbutton');
@@ -41,12 +33,12 @@ var AudioManager = this.AudioManager = {
 		this.upbutton.addEvent('click', function(){ AudioManager.upFolder(); });
 	},
 
-	onloadimageview: function()
+	onloadaudioview: function()
 	{
 		// Update the frame url
 		this.frameurl = this.frame.location.href;
 
-		var folder = this.getImageFolder();
+		var folder = this.getAudioFolder();
 		for(var i = 0; i < this.folderlist.length; i++)
 		{
 			if(folder == this.folderlist.options[i].value) {
@@ -73,49 +65,12 @@ var AudioManager = this.AudioManager = {
 		document.id('uploadForm').setProperty('action', a.scheme+'://'+a.domain+portString+a.path+'?'+a.query);
 	},
 
-	getImageFolder: function()
+	getAudioFolder: function()
 	{
 		var url 	= this.frame.location.search.substring(1);
 		var args	= this.parseQuery(url);
 
 		return args['folder'];
-	},
-
-	onok: function()
-	{
-		extra = '';
-		// Get the image tag field information
-		var url		= this.fields.url.get('value');
-		var alt		= this.fields.alt.get('value');
-		var align	= this.fields.align.get('value');
-		var title	= this.fields.title.get('value');
-		var caption	= this.fields.caption.get('value');
-
-		if (url != '') {
-			// Set alt attribute
-			if (alt != '') {
-				extra = extra + 'alt="'+alt+'" ';
-			} else {
-				extra = extra + 'alt="" ';
-			}
-			// Set align attribute
-			if (align != '') {
-				extra = extra + 'align="'+align+'" ';
-			}
-			// Set align attribute
-			if (title != '') {
-				extra = extra + 'title="'+title+'" ';
-			}
-			// Set align attribute
-			if (caption != '') {
-				extra = extra + 'class="caption" ';
-			}
-
-			var tag = "<img src=\""+url+"\" "+extra+"/>";
-		}
-
-		window.parent.jInsertEditorText(tag, this.editor);
-		return false;
 	},
 
 	setFolder: function(folder,asset,author)
