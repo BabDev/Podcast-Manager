@@ -61,8 +61,11 @@ class PodcastMediaControllerFile extends JController
 			// The request is valid
 			$err = null;
 
-			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.strtolower($file['name']));
-
+			// Remove spaces from the file name for RSS validation
+			$filename	= str_replace(' ', '_', $file[name]);
+			
+			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.strtolower($filename));
+			
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{
 				$log->addEntry(array('comment' => 'Invalid: '.$filepath.': '.$err));
