@@ -41,8 +41,6 @@
 						value="http">http://</option>
 					<option
 						value="itpc">itpc://</option>
-					<option
-						value="pcast">pcast://</option>
 				</field>
 				<field
 					name="plainlink"
