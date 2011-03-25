@@ -67,15 +67,15 @@ class PodcastManagerViewFeed extends JView
 		
 		$itBlock = $params->get('itBlock', 0);
 		
-		if ($itBlock) {
+		if ($itBlock == 1) {
 			$xw->writeElement('itunes:block', 'yes');
 		}
 		
 		$itExplicit = $params->get('itExplicit', 0);
 		
-		if ($itExplicit = 1) {
+		if ($itExplicit == 1) {
 			$xw->writeElement('itunes:explicit', 'yes');
-		} else if ($itExplicit = 2) {
+		} else if ($itExplicit == 2) {
 			$xw->writeElement('itunes:explicit', 'clean');
 		} else {
 			$xw->writeElement('itunes:explicit', 'no');
@@ -98,7 +98,7 @@ class PodcastManagerViewFeed extends JView
 		
 		if (!preg_match('/^http/', $imageURL))
 		{
-			$imageURL = JURI::root(false) . $imageURL;
+			$imageURL = JURI::root().$imageURL;
 		}
 				
 		$xw->writeAttribute('href', $imageURL);
@@ -169,11 +169,14 @@ class PodcastManagerViewFeed extends JView
 
 			$xw->writeElement('guid', $filename);
 			
-			if ($item->itBlock) {
+			$itBlock	= $item->itBlock;
+			$itExplicit	= $item->itExplicit;
+			
+			if ($itBlock == 1) {
 				$xw->writeElement('itunes:block', 'yes');
 			}
 
-			if ($item->itExplicit) {
+			if ($itExplicit == 1) {
 				$xw->writeElement('itunes:explicit', 'yes');
 			}
 			
