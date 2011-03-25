@@ -32,6 +32,9 @@ JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/templat
 				<li><?php echo $this->form->getLabel('published'); ?>
 				<?php echo $this->form->getInput('published'); ?></li>
 
+				<li><?php echo $this->form->getLabel('itSummary'); ?>
+				<?php echo $this->form->getInput('itSummary'); ?></li>
+
 				<li><?php echo $this->form->getLabel('itAuthor'); ?>
 				<?php echo $this->form->getInput('itAuthor'); ?></li>
 

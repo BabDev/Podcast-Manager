@@ -69,6 +69,9 @@
 		<field name="itSubtitle" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION"
 			size="30" />
+		<field name="itSummary" type="textarea" filter="safehtml"
+			rows="3" cols="40"
+			label="COM_PODCASTMANAGER_FIELD_ITSUMMARY_LABEL" description="COM_PODCASTMANAGER_FIELD_ITSUMMARY_DESCRIPTION" />
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
 			<option value="*">JALL</option>

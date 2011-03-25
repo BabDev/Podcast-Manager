@@ -156,10 +156,9 @@ class PodcastManagerViewFeed extends JView
 			$xw->writeElement('title', $item->title);
 			$xw->writeElement('itunes:author', $item->itAuthor);
 			$xw->writeElement('itunes:subtitle', $item->itSubtitle);
-			//TODO: Add a summary field
-			//$xw->writeElement('itunes:summary', $item->itSummary));
+			$xw->writeElement('itunes:summary', $item->itSummary);
 			
-			//$xw->writeElement('description', $item->itSummary));
+			$xw->writeElement('description', $item->itSummary);
 			
 			// Write the enclosure element
 			$xw->startElement('enclosure');
