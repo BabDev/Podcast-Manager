@@ -163,7 +163,7 @@ class PodcastManagerViewFeed extends JView
 			// Write the enclosure element
 			$xw->startElement('enclosure');
 			$xw->writeAttribute('url', $filename);
-			$xw->writeAttribute('length', filesize($filename));
+			$xw->writeAttribute('length', filesize($filepath));
 			$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
 			$xw->endElement();
 
