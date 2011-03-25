@@ -81,37 +81,4 @@ class PodcastManagerViewPodcast extends JView
 			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
-	
-	private function fillMetaID3(&$row, &$title)
-	{
-		//TODO: Refactor this function (is it still needed here!?)
-		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
-		//include JPATH_COMPONENT.DS.'getid3'.DS.'getid3.php';
-				
-		$params		=& JComponentHelper::getParams('com_podcastmanager');
-		$filename	= JPATH_ROOT.DS.$row->filename;
-		$getID3		= new getID3($filename);
-		$fileInfo	= $getID3->analyze($filename);
-		
-		if (isset($fileInfo['tags_html'])) {
-			$t = $fileInfo['tags_html'];
-			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
-			if ($tags) {
-				if (isset($tags['title'])) {
-					$title = $tags['title'][0];
-				}
-				if (isset($tags['album'])) {
-					$row->itSubtitle = $tags['album'][0];
-				}
-				if (isset($tags['artist'])) {
-					$row->itAuthor = $tags['artist'][0];
-				}
-			}
-		}
-		
-		if (isset($fileInfo['playtime_string'])) {
-			$row->itDuration = $fileInfo['playtime_string'];
-		}
-	}
 }
