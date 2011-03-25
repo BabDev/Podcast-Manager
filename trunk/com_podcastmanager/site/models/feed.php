@@ -11,83 +11,61 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modellist');
 
-class PodcastManagerModelFeed extends JModel
+class PodcastManagerModelFeed extends JModelList
 {
-	private $data = array();
-	
-	public function &getData()
-	{	
-		if (empty($this->data)) {
-			$this->data['content'] =& $this->getKeyedContent();
-			$this->data['metadata'] =& $this->getMetaData();
-		}
-		
-		return $this->data;
-	}
-	
-	private function &getMetaData()
-	{
-		$metadata = array();
-		
-		if (isset($this->data['content'])) {
-			$metaList = $this->_getList("SELECT * FROM #__podcastmanager");
-			
-			foreach ($metaList as &$row) {
-				$metadata[$row->filename] =& $row;
-			}
-		}
-		
-		return $metadata;
-	}
-	
-	/*
-	 * Gets content and puts rows in an array keyed by filename
-	 * 
+	/**
+	 * Method to get a list of items.
+	 *
+	 * @return	mixed	An array of objects on success, false on failure.
 	 */
-	private function &getKeyedContent()
+	public function getItems()
 	{
-		$content = array();
-		
-		$query = $this->buildQuery();
-		$articles = $this->_getList($query);
-		
-		foreach ($articles as &$row) {
-			preg_match('/\{podcast\s(.*)\}/', $row->introtext, $matches);
-			
-			$pieces = explode(' ', $matches[1]);
-			
-			$content[$pieces[0]] =& $row;
-		}
-		
-		return $content;
+		// Invoke the parent getItems method to get the main list
+		$items = parent::getItems();
+
+		return $items;
 	}
-	
-	private function buildQuery()
+
+	/**
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return	string	An SQL query
+	 * @since	1.6
+	 */
+	protected function getListQuery()
 	{
-		$date =& JFactory::getDate();
-		$now = $date->toMySQL();
-		
-		$params =& JComponentHelper::getParams('com_podcastmanager');
-		
-		$category_id = $params->get('category_id', 0);
-		$count = $params->get('count', 5);
-		
-		$nullDate = $this->_db->Quote($this->_db->getNullDate());
-		
-		$query = "SELECT * FROM #__content"
-		. "\n WHERE state = '1' AND introtext LIKE '%{podcast%}%'"
-		. "\n AND access = 0"
-		. "\n AND ( publish_up = {$nullDate} OR publish_up <= '" . $now . "' )"
-		. "\n AND ( publish_down = {$nullDate} OR publish_down >= '". $now ."' )";
-		
-		if ($category_id != 0) {
-			$query .= "\n AND catid = '{$category_id}'";
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		// Select required fields
+		$query->select($this->getState('list.select', 'a.*'));
+		$query->from('`#__podcastmanager` AS a');
+
+		// Join over the users for the modified_by name.
+		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+
+		// Filter by state
+		$state = $this->getState('filter.published');
+		if (is_numeric($state)) {
+			$query->where('a.published = '.(int) $state);
 		}
-		
-		$query .= "\n ORDER BY publish_up DESC LIMIT {$count}";
-		
+
+		// Filter by start date.
+		$nullDate = $db->Quote($db->getNullDate());
+		$nowDate = $db->Quote(JFactory::getDate()->toMySQL());
+
+		if ($this->getState('filter.publish_date')){
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+		}
+
+		// Filter by language
+		if ($this->getState('filter.language')) {
+			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+		}
+
 		return $query;
 	}
 }

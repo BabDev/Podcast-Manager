@@ -18,9 +18,13 @@ class PodcastManagerViewFeed extends JView
 {
 	function display($tpl = null)
 	{
-		$params =& JComponentHelper::getParams('com_podcastmanager');
+		// Get the component params
+		$params = JComponentHelper::getParams('com_podcastmanager');
 		
-		$document =& JFactory::getDocument();
+		// Get the data from the model
+		$items		= $this->get('Items');
+		
+		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 		
 		if($params->get('cache', true)) {
@@ -102,7 +106,7 @@ class PodcastManagerViewFeed extends JView
 		
 		$this->setCategories($xw, $params);
 		
-		$this->setItems($xw, $params);
+		$this->setItems($xw, $params, $items);
 		
 		$xw->endElement(); // channel
 		$xw->endElement(); // rss
@@ -113,7 +117,7 @@ class PodcastManagerViewFeed extends JView
 			$cache->end(); // cache output
 	}
 	
-	private function setCategories(&$xw, &$params)
+	private function setCategories(&$xw, $params)
 	{
 		$cats = array('itCategory1', 'itCategory2', 'itCategory3');
 		
@@ -135,79 +139,51 @@ class PodcastManagerViewFeed extends JView
 		}
 	}
 	
-	private function setItems(&$xw, &$params)
+	private function setItems(&$xw, $params, $items)
 	{
-		$items =& $this->get('data');
-		
-		$content =& $items['content'];
-		$metadata =& $items['metadata'];
-		
-		foreach ($content as $filename => &$pcast) {
-			if(preg_match('/^http/', $filename)) { // external url
-				$fileFullPath = $fileURL = $filename;
-			} else {
-				$fileFullPath = JPATH_ROOT.'/'.$params->get('mediapath', 'media/com_podcastmanager').'/'.$filename;
-				if(!JFile::exists($fileFullPath)) {
-					$fileFullPath = JPATH_ROOT.'/'.$filename; // try fallback
-					if(!JFile::exists($fileFullPath))
-						continue;
-					$fileURL = JURI::root().$filename;
-				} else {
-					$fileURL = JURI::root().$params->get('mediapath', 'media/com_podcastmanager').'/'.$filename;
-				}
+		foreach ($items as $item) {
+			// Set the file path on the file structure
+			$filepath	= JPATH_ROOT.'/'.$item->filename;
+			
+			// Check if the file exists
+			if (JFile::exists($filepath)) {
+				$filename = JURI::base().$item->filename;
 			}
 			
+			// Start writing the element
 			$xw->startElement('item');
 			
-			$xw->writeElement('title', $pcast->title);
-			$xw->writeElement('itunes:author', $metadata[$filename]->itAuthor);
-			$xw->writeElement('itunes:subtitle', $metadata[$filename]->itSubtitle);
-			$xw->writeElement('itunes:summary', $this->cleanSummary($pcast->introtext));
+			$xw->writeElement('title', $item->title);
+			$xw->writeElement('itunes:author', $item->itAuthor);
+			$xw->writeElement('itunes:subtitle', $item->itSubtitle);
+			//TODO: Add a summary field
+			//$xw->writeElement('itunes:summary', $item->itSummary));
 			
-			$xw->writeElement('description', $this->cleanSummary($pcast->introtext));
+			//$xw->writeElement('description', $item->itSummary));
 			
-			$this->addEnclosure($xw, $pcast, $params, $fileURL, $fileFullPath);
-			$xw->writeElement('guid', $fileURL);
+			// Write the enclosure element
+			$xw->startElement('enclosure');
+			$xw->writeAttribute('url', $filename);
+			$xw->writeAttribute('length', filesize($filename));
+			$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
+			$xw->endElement();
+
+			$xw->writeElement('guid', $filename);
 			
-			if ($metadata[$filename]->itBlock) {
+			if ($item->itBlock) {
 				$xw->writeElement('itunes:block', 'yes');
 			}
 
-			if ($metadata[$filename]->itExplicit) {
+			if ($item->itExplicit) {
 				$xw->writeElement('itunes:explicit', 'yes');
 			}
 			
-			$xw->writeElement('pubDate', date('r', strtotime($pcast->publish_up)));
+			$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
 			
-			$xw->writeElement('itunes:duration', $metadata[$filename]->itDuration);
-			$xw->writeElement('itunes:keywords', $metadata[$filename]->itKeywords);
+			$xw->writeElement('itunes:duration', $item->itDuration);
+			$xw->writeElement('itunes:keywords', $item->itKeywords);
 			
 			$xw->endElement(); // item
 		}
-	}
-	
-	private function addEnclosure(&$xw, &$pcast, $params, $fileURL, $fileFullPath)
-	{
-		preg_match('/\{enclose (.*)\}/s', $pcast->introtext, $matches);
-		
-		$pieces = explode(' ', $matches[1]);
-		
-		if (count($pieces) < 3) {
-			$pieces[1] = filesize($fileFullPath);
-			$pieces[2] = $params->def('mimetype', 'audio/mpeg');
-		}
-		
-		$xw->startElement('enclosure');
-		$xw->writeAttribute('url', $fileURL);
-		$xw->writeAttribute('length', $pieces[1]);
-		$xw->writeAttribute('type', $pieces[2]);
-		$xw->endElement();
-	}
-	
-	private function cleanSummary($text)
-	{
-		preg_match('/\{enclose (.*)\}/s', $text, $matches);
-		
-		return strip_tags(str_replace($matches[0], '', $text));
 	}
 }
