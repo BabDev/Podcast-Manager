@@ -58,12 +58,12 @@ class PodcastManagerModelFeed extends JModelList
 		$nowDate = $db->Quote(JFactory::getDate()->toMySQL());
 
 		if ($this->getState('filter.publish_date')){
-			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+			$query->where('(a.publish_up = '.$nullDate.' OR a.publish_up <= '.$nowDate.')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language')) {
-			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+			$query->where('a.language in ('.$db->Quote(JFactory::getLanguage()->getTag()).','.$db->Quote('*').')');
 		}
 
 		return $query;

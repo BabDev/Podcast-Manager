@@ -52,7 +52,7 @@ class PodcastManagerViewPodcast extends JView
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
-		// Built the actions for new and existing records.
+		// Set the actions for new and existing records.
 		if ($isNew)  {
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) {
@@ -63,7 +63,7 @@ class PodcastManagerViewPodcast extends JView
 			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else {
-			// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+			// Since it's an existing record, check the edit permission.
 			if ($canDo->get('core.edit')) {
 				JToolBarHelper::apply('podcast.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save('podcast.save', 'JTOOLBAR_SAVE');

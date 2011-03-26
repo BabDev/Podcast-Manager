@@ -59,7 +59,7 @@ class PodcastManagerHelper
 		);
 		
 		foreach ($actions as $action) {
-			$result->set($action,	$user->authorise($action, $assetName));
+			$result->set($action, $user->authorise($action, $assetName));
 		}
 		
 		return $result;

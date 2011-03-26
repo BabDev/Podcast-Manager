@@ -48,7 +48,6 @@ class JFormFieldModal_Podcast extends JFormField
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-
 		// Setup variables for display.
 		$html	= array();
 		$link	= 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component&amp;function=PodcastManagerSelectPodcast_'.$this->id;

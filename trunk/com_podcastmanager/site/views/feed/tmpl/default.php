@@ -10,5 +10,4 @@
 
 // Restricted access
 defined('_JEXEC') or die();
-
 ?>

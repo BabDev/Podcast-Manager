@@ -31,6 +31,7 @@ class PodcastManagerTablePodcast extends JTable
 	var $itExplicit;
 	var $itKeywords;
 	var $itSubtitle;
+	var $itSummary;
 	var $language;
 	
 	function __construct(&$db)

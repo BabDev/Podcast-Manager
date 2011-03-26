@@ -90,13 +90,13 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '</div>';
 
 		$directory = (string)$this->element['directory'];
-		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value)) {
+		if ($this->value && file_exists(JPATH_ROOT.'/'.$this->value)) {
 			$folder = explode ('/',$this->value);
 			array_shift($folder);
 			array_pop($folder);
 			$folder = implode('/',$folder);
 		}
-		elseif (file_exists(JPATH_ROOT . '/media/com_podcastmanager/' . $directory)) {
+		elseif (file_exists(JPATH_ROOT.'/media/com_podcastmanager/'.$directory)) {
 			$folder = $directory;
 		}
 		else {

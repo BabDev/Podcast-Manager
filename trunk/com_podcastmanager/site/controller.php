@@ -51,24 +51,3 @@ class PodcastManagerController extends JController
 		return parent::display($cachable,$safeurlparams);
 	}
 }
-	
-	/** Podcast Suite 1.5 display function
-	 *  function display()
-	{		
-		$view = JRequest::getVar('view', '');
-		
-		if ($view == '') {
-			JRequest::setVar('view', 'feed');
-		}
-		
-		parent::display();
-	}
-}
-
-$document =& JFactory::getDocument();
-$document->setType('raw');
-
-$controller = new PodcastManagerController();
-$controller->execute(JRequest::getVar('task', null));
-$controller->redirect();
-**/

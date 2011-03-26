@@ -11,9 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-//TODO: Router
 jimport('joomla.application.component.controller');
-//require_once JPATH_COMPONENT.'/helpers/route.php';
 
 $controller	= JController::getInstance('PodcastManager');
 $controller->execute(JRequest::getCmd('task'));
