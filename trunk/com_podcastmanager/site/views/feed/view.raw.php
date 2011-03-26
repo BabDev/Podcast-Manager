@@ -49,7 +49,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->startElement('channel');
 		
 		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false) . 'index.php?option=com_podcastmanager&view=feed&format=raw');
+		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&view=feed&format=raw');
 		$xw->writeAttribute('rel', 'self');
 		$xw->writeAttribute('type', 'application/rss+xml');
 		$xw->endElement();
