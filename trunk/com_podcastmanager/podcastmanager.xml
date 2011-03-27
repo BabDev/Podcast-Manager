@@ -7,7 +7,7 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.6 Alpha</version>
+	<version>1.6 Beta</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>COM_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<menu link="option=com_podcastmanager">COM_PODCASTMANAGER</menu>
