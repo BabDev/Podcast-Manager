@@ -14,7 +14,10 @@
 	<version>1.6 Beta</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>Podcast Manager extension suite for Joomla!</description>
-	<update>http://www.flbab.com/updates/pkg_podcastmanager</update>
+	<update>http://www.flbab.com/updates/podman.xml</update>
+	<updateservers>
+		<server type="collection" name="Podcast Manager Updates" priority="2">http://www.flbab.com/updates/podman.xml</server>
+	</updateservers>
 	<files folder="packages">
 		<file type="component" id="com_podcastmanager" >com_podcastmanager.zip</file>
 		<file type="component" id="com_podcastmedia" >com_podcastmedia.zip</file>
