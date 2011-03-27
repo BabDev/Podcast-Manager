@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<extension type="component" version="1.6" method="upgrade">
+	<name>com_podcastmedia</name>
+	<author>Michael Babker</author>
+	<creationDate>March 2011</creationDate>
+	<author>Michael Babker</author>
+	<copyright>(C) 2011 Michael Babker</copyright>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.flbab.com</authorUrl>
+	<version>1.6 Beta</version>
+	<license>GNU/GPL Version 2 or later</license>
+	<description>COM_PODCASTMEDIA_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
+	<administration>
+		<files folder="admin">
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>podcastmedia.php</filename>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>media</folder>
+			<folder>models</folder>
+			<folder>views</folder>
+		</files>
+		<languages folder="admin/language">
+			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.sys.ini</language>
+		</languages>
+	</administration>
+</extension>

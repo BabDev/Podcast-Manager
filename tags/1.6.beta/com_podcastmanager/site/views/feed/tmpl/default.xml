@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_PODCASTMANAGER_FEED_VIEW_TITLE" option="COM_PODCASTMANAGER_FEED_VIEW_OPTION">
+		<message>
+			<![CDATA[COM_PODCASTMANAGER_FEED_VIEW_DESCRIPTION]]>
+		</message>
+	</layout>
+</metadata>
