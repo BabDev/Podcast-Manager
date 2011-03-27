@@ -40,7 +40,6 @@ class PodcastMediaControllerFile extends JController
 		$file		= JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder		= JRequest::getVar('folder', '', '', 'path');
 		$return		= JRequest::getVar('return-url', null, 'post', 'base64');
-		
 
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');
@@ -170,8 +169,8 @@ class PodcastMediaControllerFile extends JController
 						continue;
 					}
 
-					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.$path);
-					$object_file = new JObject(array('filepath' => $fullPath));
+					$fullPath		= JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.$path);
+					$object_file	= new JObject(array('filepath' => $fullPath));
 					if (is_file($fullPath))
 					{
 						// Trigger the onContentBeforeDelete event.

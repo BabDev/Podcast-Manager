@@ -100,12 +100,12 @@ class PodcastMediaModelList extends JModel
 			foreach ($fileList as $file)
 			{
 				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
-					$tmp = new JObject();
-					$tmp->name = $file;
-					$tmp->title = $file;
-					$tmp->path = str_replace(DS, '/', JPath::clean($basePath.DS.$file));
+					$tmp		= new JObject();
+					$tmp->name	= $file;
+					$tmp->title	= $file;
+					$tmp->path	= str_replace(DS, '/', JPath::clean($basePath.DS.$file));
 					$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-					$tmp->size = filesize($tmp->path);
+					$tmp->size	= filesize($tmp->path);
 
 					$ext = strtolower(JFile::getExt($file));
 					switch ($ext)
@@ -129,15 +129,15 @@ class PodcastMediaModelList extends JModel
 		if ($folderList !== false) {
 			foreach ($folderList as $folder)
 			{
-				$tmp = new JObject();
-				$tmp->name = basename($folder);
-				$tmp->path = str_replace(DS, '/', JPath::clean($basePath.DS.$folder));
-				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-				$count = PodcastMediaHelper::countFiles($tmp->path);
-				$tmp->files = $count[0];
-				$tmp->folders = $count[1];
+				$tmp		= new JObject();
+				$tmp->name	= basename($folder);
+				$tmp->path	= str_replace(DS, '/', JPath::clean($basePath.DS.$folder));
+				$tmp->path_relative	= str_replace($mediaBase, '', $tmp->path);
+				$count		= PodcastMediaHelper::countFiles($tmp->path);
+				$tmp->files	= $count[0];
+				$tmp->folders	= $count[1];
 
-				$folders[] = $tmp;
+				$folders[]	= $tmp;
 			}
 		}
 

@@ -15,23 +15,23 @@ $params->def('text', '');
 $params->def('urischeme', 'http');
 $params->def('plainlink', 1);
 
-$plainlink = $params->get('otherlink', '');
-$img = $params->get('otherimage', '');
+$plainlink	= $params->get('otherlink', '');
+$img		= $params->get('otherimage', '');
 
-if(!$plainlink) {
-	$plainlink = JRoute::_(JURI::root(false) . 'index.php?option=com_podcastmanager&view=feed&format=raw');
+if (!$plainlink) {
+	$plainlink = JRoute::_(JURI::root().'index.php?option=com_podcastmanager&view=feed&format=raw');
 }
 
-if($img) {
+if ($img) {
 	$img = JHTML::_('image', $img, JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
 } else {
 	$img = JHTML::_('image', 'modules/mod_podcastmanager/media/images/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
 }
 
-if($params->get('urischeme') == 'http') {
+if ($params->get('urischeme') == 'http') {
 	$link = $plainlink;
 } else {
-	$link = str_replace(array('http:', 'https:'), $params->get('urischeme') . ':', $plainlink);
+	$link = str_replace(array('http:', 'https:'), $params->get('urischeme').':', $plainlink);
 }
 
 require(JModuleHelper::getLayoutPath('mod_podcastmanager'));

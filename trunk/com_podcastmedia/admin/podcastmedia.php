@@ -12,12 +12,11 @@
 defined('_JEXEC') or die;
 
 // Access check.
-
-$user = JFactory::getUser();
-$asset = JRequest::getCmd('asset');
-$author = JRequest::getCmd('author');
+$user	= JFactory::getUser();
+$asset	= JRequest::getCmd('asset');
+$author	= JRequest::getCmd('author');
  
-if (	!$user->authorise('core.manage', 'com_podcastmanager')
+if (!$user->authorise('core.manage', 'com_podcastmanager')
 	&&	(!$asset or (
 			!$user->authorise('core.edit', $asset)
 		&&	!$user->authorise('core.create', $asset) 

@@ -53,7 +53,7 @@ class plgButtonPodcastManager extends JPlugin
 		JHTML::_('behavior.modal');
 
 		/*
-		 * Use the built-in element view to select the article.
+		 * Use the built-in element view to select the podcast.
 		 * Currently uses blank class.
 		 */
 		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component';

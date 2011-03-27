@@ -70,10 +70,9 @@ class PodcastManagerPlayer
 	private $playerType = null;
 	private $podtitle = null;
 	private $fileURL = null;
-	private $title = null;
 	private $podmanparams = null;
 	private $podfilepath = null;
-	private $validTypes = array('links', 'player', 'html', 'QTplayer');
+	private $validTypes = array('link', 'player', 'QTplayer');
 	private $fileTypes = array (
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
@@ -82,6 +81,9 @@ class PodcastManagerPlayer
 		'mp4' => 'video/mp4',
 	);
 	
+	/**
+	 * The class constructor
+	 */
 	function __construct(&$podmanparams, $podfilepath, $podtitle, $title)
 	{	
 		$this->podmanparams = $podmanparams;
@@ -95,10 +97,14 @@ class PodcastManagerPlayer
 		}
 		
 		$this->fileURL		= $this->determineURL($podfilepath);
-		$this->title		= $title;
 		$this->podtitle		= $podtitle;
 	}
 	
+	/**
+	 * Function to generate the player
+	 *
+	 * @return	object	The player for the article
+	 */
 	public function generate()
 	{
 		$func = $this->playerType;
@@ -109,9 +115,9 @@ class PodcastManagerPlayer
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
-	 * @param	string	The filename of the podcast file relative to the site root.
+	 * @param	object	The filename of the podcast file relative to the site root.
 	 * 
-	 * @return	string	The URL to the file
+	 * @return	object	The URL to the file
 	 */
 	private function determineURL($filename)
 	{
@@ -130,11 +136,21 @@ class PodcastManagerPlayer
 		return $filename;
 	}
 	
+	/**
+	 * Function to generate a link player
+	 *
+	 * @return	object	A HTML link to the podcast
+	 */
 	private function link()
 	{
 		return '<a href="'.$this->fileURL.'">'.htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))).'</a>';
 	}
 	
+	/**
+	 * Function to generate a flash player
+	 *
+	 * @return	object	A flash player containing the podcast episode
+	 */
 	private function player()
 	{
 		$width = $this->podmanparams->get('playerwidth', 400);
@@ -145,6 +161,11 @@ class PodcastManagerPlayer
 		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'" /></object>';
 	}
 	
+	/**
+	 * Function to generate a QuickTime player
+	 *
+	 * @return	object	A QuickTime player containing the podcast episode
+	 */
 	private function QTplayer()
 	{
 		$tempfile	= get_object_vars($this->podfilepath);

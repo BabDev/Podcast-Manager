@@ -54,20 +54,10 @@
 						value="1">JYES</option>
 				</field>
 				<field
-					name="@spacer"
-					type="spacer"
-					label=""
-					description="" />
-				<field
 					name="moduleclass_sfx"
 					type="text"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field
-					name="@spacer"
-					type="spacer"
-					label=""
-					description="" />
 				<field
 					name="otherlink"
 					type="text"
