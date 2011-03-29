@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="file" version="1.6" method="upgrade">
+	<name>files_podcastmanager_hathor</name>
+	<creationDate>March 2011</creationDate>
+	<author>Michael Babker</author>
+	<copyright>(C) 2011 Michael Babker</copyright>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.flbab.com</authorUrl>
+	<version>1.6 Beta</version>
+	<license>GNU/GPL Version 2 or later</license>
+	<description>FILES_PODCASTMANAGER_HATHOR_XML_DESCRIPTION</description>
+
+	<fileset>
+		<files folder="com_podcastmanager" target="administrator/templates/hathor/html/com_podcastmanager">
+			<folder>info</folder>
+			<folder>podcast</folder>
+			<folder>podcasts</folder>
+		</files>
+		<files folder="com_podcastmedia" target="administrator/templates/hathor/html/com_podcastmedia">
+			<folder>media</folder>
+		</files>
+	</fileset>
+</extension>
