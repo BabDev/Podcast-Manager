@@ -56,6 +56,10 @@ class PodcastMediaModelManager extends JModel
 			$base = COM_PODCASTMEDIA_BASE;
 		}
 
+		// Corrections for Windows paths
+		$base = str_replace(DS, '/', $base);
+		$comPodcastMediaBaseUni = str_replace(DS, '/', COM_PODCASTMEDIA_BASE);
+		
 		// Get the list of folders
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
@@ -68,7 +72,7 @@ class PodcastMediaModelManager extends JModel
 
 		foreach ($folders as $folder)
 		{
-			$folder		= str_replace(COM_PODCASTMEDIA_BASE, "", $folder);
+			$folder		= str_replace($comPodcastMediaBaseUni, "", str_replace(DS, '/', $folder));
 			$value		= substr($folder, 1);
 			$text		= str_replace(DS, "/", $folder);
 			$options[]	= JHtml::_('select.option', $value, $text);
