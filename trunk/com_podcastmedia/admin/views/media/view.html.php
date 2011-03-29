@@ -135,7 +135,7 @@ class PodcastMediaViewMedia extends JView
 		$user = JFactory::getUser();
 
 		// Set the titlebar text
-		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'mediamanager.png');
+		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
 
 		// Add a delete button
 		if ($user->authorise('core.delete','com_podcastmanager'))

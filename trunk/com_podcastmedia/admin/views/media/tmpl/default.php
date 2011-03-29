@@ -11,6 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
+JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 ?>
 <table width="100%">
 	<tr valign="top">
