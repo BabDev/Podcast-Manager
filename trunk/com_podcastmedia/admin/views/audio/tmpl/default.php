@@ -18,7 +18,7 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 </script>
 <form action="index.php?option=com_podcastmedia&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
-		<span id="message"></span><?php echo JHTML::_('image','media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
+		<span id="message"></span><?php echo JHtml::_('image','media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
 	</div>
 	<fieldset>
 		<div class="fltlft">
@@ -67,10 +67,10 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 				</ul>
 				<div class="clr"> </div>
 				<p class="overall-title"></p>
-				<?php echo JHTML::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+				<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
 				<div class="clr"> </div>
 				<p class="current-title"></p>
-				<?php echo JHTML::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+				<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
 				<p class="current-text"></p>
 			</div>
 			<ul class="upload-queue" id="upload-queue">

@@ -32,11 +32,11 @@ class PodcastMediaViewAudio extends JView
 		$append 		= '';
 
 		JHtml::_('behavior.framework', true);
-		JHTML::script('administrator/components/com_podcastmedia/media/js/popup-audiomanager.js', false, false);
-		JHTML::_('stylesheet','media/popup-imagemanager.css', array(), true);
+		JHtml::script('administrator/components/com_podcastmedia/media/js/popup-audiomanager.js', false, false);
+		JHtml::_('stylesheet','media/popup-imagemanager.css', array(), true);
 
 		if ($lang->isRTL()) {
-			JHTML::_('stylesheet','media/popup-imagemanager_rtl.css', array(), true);
+			JHtml::_('stylesheet','media/popup-imagemanager_rtl.css', array(), true);
 		}
 
 		if ($medmanparams->get('enable_flash', 1)) {

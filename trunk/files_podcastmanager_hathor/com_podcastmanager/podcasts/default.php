@@ -20,8 +20,8 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
-JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-JHTML::script('administrator/components/com_podcastmanager/media/js/podcasts.js', false, false);
+JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+JHtml::script('administrator/components/com_podcastmanager/media/js/podcasts.js', false, false);
 
 ?>
 

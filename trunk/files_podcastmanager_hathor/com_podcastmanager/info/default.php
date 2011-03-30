@@ -11,8 +11,8 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-JHTML::stylesheet('administrator/templates/hathor/html/com_podcastmanager/info/info.css', false, false, false);
-JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/info/info.css', false, false, false);
+JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
 ?>
 <div class="podMan-welcome">Thank you for installing the Podcast Manager extension suite for Joomla!  For any support issues, please visit <a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a> for documentation and links for bug reporting.</div>

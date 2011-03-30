@@ -16,7 +16,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 ?>
 		<div class="item">
 			<a href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>" >
-				<?php echo JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->title, NULL, true) : JHTML::_('image','media/con_info.png', $this->_tmp_audio->name, NULL, true) ; ?>
+				<?php echo JHtml::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHtml::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->title, NULL, true) : JHtml::_('image','media/con_info.png', $this->_tmp_audio->name, NULL, true) ; ?>
 				<span title="<?php echo $this->_tmp_audio->name; ?>"><?php echo $this->_tmp_audio->title; ?></span></a>
 		</div>
 <?php

@@ -11,8 +11,8 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-JHTML::stylesheet('administrator/templates/minima/html/com_podcastmanager/info/info.css', false, false, false);
-JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+JHtml::stylesheet('administrator/templates/minima/html/com_podcastmanager/info/info.css', false, false, false);
+JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
 //TODO: Convert this page to JText
 

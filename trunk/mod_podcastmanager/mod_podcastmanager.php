@@ -23,9 +23,9 @@ if (!$plainlink) {
 }
 
 if ($img) {
-	$img = JHTML::_('image', $img, JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
+	$img = JHtml::_('image', $img, JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
 } else {
-	$img = JHTML::_('image', 'modules/mod_podcastmanager/media/images/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
+	$img = JHtml::_('image', 'modules/mod_podcastmanager/media/images/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
 }
 
 if ($params->get('urischeme') == 'http') {

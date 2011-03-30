@@ -11,7 +11,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
-JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 ?>
 <table width="100%">
 	<tr valign="top">
@@ -80,10 +80,10 @@ JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/templat
 						</ul>
 						<div class="clr"> </div>
 						<p class="overall-title"></p>
-						<?php echo JHTML::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+						<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
 						<div class="clr"> </div>
 						<p class="current-title"></p>
-						<?php echo JHTML::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+						<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
 						<p class="current-text"></p>
 					</div>
 					<ul class="upload-queue" id="upload-queue">

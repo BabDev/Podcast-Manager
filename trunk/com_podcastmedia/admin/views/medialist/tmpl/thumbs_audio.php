@@ -19,12 +19,12 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 			<div class="imgTotal">
 				<div align="center" class="imgBorder">
 					<a style="display: block; width: 100%; height: 100%" title="<?php echo $this->_tmp_audio->name; ?>" >
-						<?php echo JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHTML::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->title, NULL, true) : JHTML::_('image','media/con_info.png', $this->_tmp_audio->name, NULL, true) ; ?></a>
+						<?php echo JHtml::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHtml::_('image',$this->_tmp_audio->icon_32, $this->_tmp_audio->title, NULL, true) : JHtml::_('image','media/con_info.png', $this->_tmp_audio->name, NULL, true) ; ?></a>
 				</div>
 			</div>
 			<div class="controls">
 			<?php if ($user->authorise('core.delete','com_podcastmanager')):?>
-				<a class="delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JUtility::getToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_audio->name; ?>" rel="<?php echo $this->_tmp_audio->name; ?>"><?php echo JHTML::_('image','media/remove.png', JText::_('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
+				<a class="delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JUtility::getToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_audio->name; ?>" rel="<?php echo $this->_tmp_audio->name; ?>"><?php echo JHtml::_('image','media/remove.png', JText::_('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_audio->name; ?>" />
 			<?php endif;?>
 			</div>
