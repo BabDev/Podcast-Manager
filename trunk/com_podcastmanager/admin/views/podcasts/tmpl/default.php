@@ -15,10 +15,6 @@ $user	= JFactory::getUser();
 $userId	= $user->get('id');
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
-
-JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-JHtml::script('administrator/components/com_podcastmanager/media/js/podcasts.js', false, false);
-
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

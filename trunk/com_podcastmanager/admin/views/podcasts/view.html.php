@@ -37,8 +37,12 @@ class PodcastManagerViewPodcasts extends JView
 			return false;
 		}
 
-		// We don't need the toolbar in the modal window.
+		// We don't need the toolbar or external media in the modal window.
 		if ($this->getLayout() !== 'modal') {
+			// Add the component media
+			JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+			JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
+
 			$this->addToolbar();
 		}
 				

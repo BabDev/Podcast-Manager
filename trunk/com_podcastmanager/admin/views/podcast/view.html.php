@@ -32,6 +32,10 @@ class PodcastManagerViewPodcast extends JView
 			return false;
 		}
 
+		// Add the component media
+		JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+		JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
+
 		$this->addToolbar();
 		parent::display($tpl);
 	}

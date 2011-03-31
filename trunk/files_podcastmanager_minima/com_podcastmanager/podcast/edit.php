@@ -18,7 +18,6 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
-JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 ?>
 
 <ul id="submenu" class="out">

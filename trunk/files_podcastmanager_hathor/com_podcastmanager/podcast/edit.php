@@ -14,9 +14,6 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-
-JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-
 ?>
 <div class="podcast-edit">
 
