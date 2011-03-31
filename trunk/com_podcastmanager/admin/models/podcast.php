@@ -100,8 +100,6 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				$data = $this->fillMetaData($data);
 			}
 		}
-		var_dump($data);
-
 		return $data;
 	}
 
