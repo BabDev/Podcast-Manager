@@ -13,7 +13,9 @@ var FileName;
 var today = new Date();
 today.setTime(today.getTime());
 
-var expires_date = new Date(today.getTime()+'120000');
+// Create a one minute cookie
+expires = 1 * 1000 * 60;
+var expires_date = new Date(today.getTime() + (expires));
 
 function makeCookie() {
 	if (document.cookie != document.cookie) {

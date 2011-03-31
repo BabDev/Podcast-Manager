@@ -92,11 +92,60 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
-
+		
 		if (empty($data)) {
 			$data = $this->getItem();
+			// If changing the selected file, process the new data through getID3
+			if (isset($_COOKIE[podManFile])) {
+				$data = $this->fillMetaData($data);
+			}
 		}
+		var_dump($data);
 
 		return $data;
 	}
+
+	/**
+	 * Method to process the file through the getID3 library to extract key data
+	 * 
+	 * @param	mixed	The data object for the form
+	 * 
+	 * @return	mixed	The processed data for the form.
+	 * @since	1.6
+	 */
+	protected function fillMetaData($data)
+	{
+		jimport('getid3.getid3');
+		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
+				
+		$params		= JComponentHelper::getParams('com_podcastmanager');
+		$filename	= JPATH_ROOT.'/'.$_COOKIE[podManFile];
+		$getID3		= new getID3($filename);
+		$fileInfo	= $getID3->analyze($filename);
+		
+		if (isset($fileInfo['tags_html'])) {
+			$t = $fileInfo['tags_html'];
+			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
+			if ($tags) {
+				if (isset($tags['title'])) {
+					$data->title = $tags['title'][0];
+				}
+				if (isset($tags['album'])) {
+					$data->itSubtitle = $tags['album'][0];
+				}
+				if (isset($tags['artist'])) {
+					$data->itAuthor = $tags['artist'][0];
+				}
+				if (isset($tags['genre'])) {
+					$data->itCategory = $tags['genre'][0];
+				}
+			}
+		}
+		
+		if (isset($fileInfo['playtime_string'])) {
+			$data->itDuration = $fileInfo['playtime_string'];
+		}
+		return $data;
+	}
 }
+	

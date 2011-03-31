@@ -14,18 +14,17 @@ defined('_JEXEC') or die();
 // Customized info CSS
 JHtml::stylesheet('administrator/templates/minima/html/com_podcastmanager/info/info.css', false, false, false);
 
-//TODO: Convert this page to JText
-
 ?>
 <p class="podMan-welcome">Thank you for installing the Podcast Manager extension suite for Joomla!  For any support issues, please visit <a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a> for documentation and links for bug reporting.</p>
 
 <div class="podMan-header">How Podcast Manager Works</div>
 <div class="divider"></div>
 <div>
-	<p>Podcast Manager allows you to manage a podcast feed via your Joomla! website.  The suite is bundled with five extensions:</p>
+	<p>Podcast Manager allows you to manage a podcast feed via your Joomla! website.  The suite is bundled with six extensions:</p>
 	<ul class="minimaList">
 		<li>Podcast Manager Component - Used to upload all podcast files, edit podcast metadata, and manage whether podcasts are published</li>
 		<li>Podcast Media Component - Used to manage the podcast files; based off the Joomla! Media Manager with modifications specific to this suite's operation</li>
+		<li>getID3 Library - The getID3 library is used to extract metadata from uploaded files to pre-fill your metadata form</li>
 		<li>Module - Displays a link to the podcast feed</li>
 		<li>Content Plugin - The content plugin allows users to add a podcast player directly into an article by adding {podcast title} into the article editor</li>
 		<li>Editor Plugin - Integrates into the article editor by adding a "Podcast" button, allowing the user to select a podcast to insert into an article</li>
@@ -46,7 +45,7 @@ JHtml::stylesheet('administrator/templates/minima/html/com_podcastmanager/info/i
 <div class="divider"></div>
 <div>
 	<p>The Podcast Manager component gives the user full flexibility over their podcast items, and can expect an experience similar to the Article Manager but fine tuned for podcasting.</p>
-	<p>Podcast Manager allows users to upload podcasts through the Joomla! interface via a refactored version of the image insertion tool found in numerous admin options specifically for this component.  Users will be able to manage their podcast files through a customized distribution of the core Media Manager as well.</p>
+	<p>Podcast Manager allows users to upload podcasts through the Joomla! interface via a refactored version of the image insertion tool found in numerous admin options specifically for this component.  On upload, information about the podcast file will be pre-populated thanks to integration from the getID3 library.  Users will be able to manage their podcast files through a customized distribution of the core Media Manager as well.</p>
 	<p>Users are able to "stage" a podcast for a feed by specifying a publish time, perfect for uploading a podcast while the feed owner is away.</p>
 	<p>Podcast Manager takes full and efficient use of the Joomla! framework and is primed for full integration and further expansion with minimal coding changes.</p>
 	<p>The final product from Podcast Manager, be it the RSS feed that can be inserted into iTunes or the feed module, is standards compliant and passes all appropriate compliance tests.</p>
@@ -63,6 +62,7 @@ JHtml::stylesheet('administrator/templates/minima/html/com_podcastmanager/info/i
 <div>
 	<p>Podcast Manager is distributed with the same license as Joomla!; the GPL v2 License.  In order to function with all the features programmed, additional projects have also been included.  These projects are:</p>
 	<ul class="minimaList">
+		<li><b><a href="http://www.getid3.org">getID3</a></b> developed by James Heinrich and released under the GPL v2 license</li>
 		<li><b><a href="http://musicplayer.sourceforge.net">XSPF Player Lite</a></b> developed by Fabricio Zuardi and released under the BSD license (see xspf_license.txt in the content plugin for license details)</li>
 	</ul>
 </div>
