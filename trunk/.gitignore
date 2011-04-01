@@ -1,0 +1,8 @@
+# Packages #
+*.zip
+
+# Packages directory #
+packages
+
+# Phing #
+build.xml
