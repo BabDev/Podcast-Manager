@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- $Id$ -->
 <extension type="package" version="1.6" method="upgrade">
 	<name>Podcast Manager</name>
 	<packagename>podcastmanager</packagename>
@@ -11,12 +10,12 @@
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.6 Beta</version>
+	<version>1.6 Beta 2</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>Podcast Manager extension suite for Joomla!</description>
 	<update>http://www.flbab.com/updates/podman.xml</update>
 	<updateservers>
-		<server type="collection" name="Podcast Manager Updates" priority="2">http://www.flbab.com/updates/podman.xml</server>
+		<server type="extension" name="Podcast Manager Updates" priority="2">http://www.flbab.com/updates/podman.xml</server>
 	</updateservers>
 	<files folder="packages">
 		<file type="component" id="com_podcastmanager" >com_podcastmanager.zip</file>
