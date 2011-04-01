@@ -1,0 +1,23 @@
+/**
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
+
+.podMan-welcome {
+	padding-bottom: 10px;
+}
+
+.podMan-header {
+	font-size: 12pt;
+}
+
+.divider {
+	border: 1px dotted #000000;
+}
+
+.hathorList {
+	margin-left: 20px;
+}
