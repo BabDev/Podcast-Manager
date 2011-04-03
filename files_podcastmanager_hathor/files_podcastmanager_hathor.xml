@@ -6,9 +6,9 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.6 Beta</version>
+	<version>1.6 Beta 2</version>
 	<license>GNU/GPL Version 2 or later</license>
-	<description>FILES_PODCASTMANAGER_HATHOR_XML_DESCRIPTION</description>
+	<description>HTML overrides for the Podcast Manager extensions for the Hathor template</description>
 
 	<fileset>
 		<files folder="com_podcastmanager" target="administrator/templates/hathor/html/com_podcastmanager">
