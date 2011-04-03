@@ -19,7 +19,7 @@ JHtml::_('behavior.formvalidation');
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="podcast-form" class="form-validate">
 <div class="col main-section">
 	<fieldset class="adminform">
-		<legend><?php echo empty($this->item->id) ? JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_ADD_PODCAST') : JText::sprintf('COM_PODCASTMANAGER_VIEW_PODCAST_EDIT_PODCAST', $this->item->id); ?></legend>
+		<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
 		<ul class="adminformlist">
 			<li><?php echo $this->form->getLabel('filename'); ?>
 			<?php echo $this->form->getInput('filename'); ?></li>

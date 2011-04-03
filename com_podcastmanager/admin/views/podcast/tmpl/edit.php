@@ -64,7 +64,7 @@ JHtml::_('behavior.formvalidation');
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start','podcastmanager-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
 
-			<?php echo JHtml::_('sliders.panel',JText::_('COM_PODCASTMANAGER_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('created'); ?>
@@ -74,11 +74,11 @@ JHtml::_('behavior.formvalidation');
 					<?php echo $this->form->getInput('publish_up'); ?></li>
 
 					<?php if ($this->item->modified_by) : ?>
-						<li><?php echo $this->form->getLabel('modified_by'); ?>
-						<?php echo $this->form->getInput('modified_by'); ?></li>
+					<li><?php echo $this->form->getLabel('modified_by'); ?>
+					<?php echo $this->form->getInput('modified_by'); ?></li>
 
-						<li><?php echo $this->form->getLabel('modified'); ?>
-						<?php echo $this->form->getInput('modified'); ?></li>
+					<li><?php echo $this->form->getLabel('modified'); ?>
+					<?php echo $this->form->getInput('modified'); ?></li>
 					<?php endif; ?>
 				</ul>
 			</fieldset>

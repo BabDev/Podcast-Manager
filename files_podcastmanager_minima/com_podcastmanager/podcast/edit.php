@@ -26,7 +26,7 @@ JHtml::_('behavior.keepalive');
     <div id="item-basic">
     <div class="width-70 fltlft">
         <fieldset class="adminform">
-            <legend><?php echo empty($this->item->id) ? JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_ADD_PODCAST') : JText::sprintf('COM_PODCASTMANAGER_VIEW_PODCAST_EDIT_PODCAST', $this->item->id); ?></legend>
+            <legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
             <ol class="adminformlist">
 				<li><?php echo $this->form->getLabel('filename'); ?>
 				<?php echo $this->form->getInput('filename'); ?></li>
@@ -73,7 +73,7 @@ JHtml::_('behavior.keepalive');
 	</div>
 	<div class="width-30 fltrt item-info">
         <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_PUBLISHING'); ?></legend>
+            <legend><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
             <ol class="adminformlist">
 				<li><?php echo $this->form->getLabel('created'); ?>
 				<?php echo $this->form->getInput('created'); ?></li>
