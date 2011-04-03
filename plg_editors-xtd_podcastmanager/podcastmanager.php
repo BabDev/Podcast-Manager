@@ -35,9 +35,9 @@ class plgButtonPodcastManager extends JPlugin
 	{
 		/*
 		 * Javascript to insert the link
-		 * View element calls PodcastManagerSelectPodcast when a podcast is clicked
+		 * Modal calls PodcastManagerSelectPodcast when a podcast is clicked
 		 * PodcastManagerSelectPodcast creates the plugin syntax, sends it to the editor,
-		 * and closes the select frame.
+		 * and closes the modal.
 		 */
 		$js = "
 		function PodcastManagerSelectPodcast(title, object) {
@@ -52,7 +52,7 @@ class plgButtonPodcastManager extends JPlugin
 		JHtml::_('behavior.modal');
 
 		/*
-		 * Use the built-in element view to select the podcast.
+		 * Use the modal view to select the podcast.
 		 * Currently uses blank class.
 		 */
 		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component';

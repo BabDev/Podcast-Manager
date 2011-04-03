@@ -42,7 +42,11 @@ $listDirn	= $this->state->get('list.direction');
 			</select>
 		</p>
 	</fieldset>
-	<?php if( $this->pagination->total > 0 ): ?><div id="pagination-top"><?php echo $this->pagination->getListFooter(); ?></div><?php endif; ?>
+	<?php if ($this->pagination->total > 0) : ?>
+	<div id="pagination-top">
+		<?php echo $this->pagination->getListFooter(); ?>
+	</div>
+	<?php endif; ?>
 
 	<table class="adminlist">
 		<thead>
@@ -58,7 +62,7 @@ $listDirn	= $this->state->get('list.direction');
 				</th>
 			</tr>
 		</thead>
-		<?php if( $this->pagination->total >= 10 ): ?>
+		<?php if ($this->pagination->total >= 10): ?>
 		<tfoot>
 			<tr>
 				<th class="title">
@@ -81,9 +85,9 @@ $listDirn	= $this->state->get('list.direction');
 						<?php echo $this->escape($item->title); ?></a>
 				</td>
 				<td class="center">
-					<?php if ($item->language=='*'):?>
+					<?php if ($item->language=='*') :?>
 						<?php echo JText::alt('JALL','language'); ?>
-					<?php else:?>
+					<?php else :?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
@@ -91,10 +95,14 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
-			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</tbody>
 	</table>
-	<?php if( $this->pagination->total > 0): ?><div id="pagination-bottom"><?php echo $this->pagination->getListFooter(); ?></div><?php endif; ?>
+	<?php if ($this->pagination->total > 0) : ?>
+	<div id="pagination-bottom">
+		<?php echo $this->pagination->getListFooter(); ?>
+	</div>
+	<?php endif; ?>
 	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

@@ -28,36 +28,36 @@ class plgContentPodcastManager extends JPlugin
 		if (strpos($article->text, 'podcast') === false) {
 			return true;
 		}
-		
+
 		// Expression to search for
 		$regex	= '/\{(podcast) (.*)\}/i';
-		
+
 		// Find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches);
 
-	$podmanparams = JComponentHelper::getParams('com_podcastmanager');
-	
-	foreach ($matches as $id => $podcast) {
+		$podmanparams = JComponentHelper::getParams('com_podcastmanager');
 
-		// Retrieve the title and convert it to a useable string
-		// 9 offset for {podcast marker
-		// -1 offset for closing }
-		$podtitle	= substr(implode(' ', $podcast), 9, -1);
-						
-		// Query the DB for the title string, returning the filename
-		$db = JFactory::getDBO();
-		$db->setQuery(
-			'SELECT `filename`' .
-			' FROM `#__podcastmanager`' .
-			' WHERE `title` = "'.$podtitle.'"'
-		);
-		$podfilepath = $db->loadObject();
-		
-		// Get the player
-		$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
-		
-		// Replace the {podcast marker with the player
-		$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
+		foreach ($matches as $id => $podcast) {
+
+			// Retrieve the title and convert it to a useable string
+			// 9 offset for {podcast marker
+			// -1 offset for closing }
+			$podtitle	= substr(implode(' ', $podcast), 9, -1);
+
+			// Query the DB for the title string, returning the filename
+			$db = JFactory::getDBO();
+			$db->setQuery(
+				'SELECT `filename`' .
+				' FROM `#__podcastmanager`' .
+				' WHERE `title` = "'.$podtitle.'"'
+			);
+			$podfilepath = $db->loadObject();
+
+			// Get the player
+			$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
+
+			// Replace the {podcast marker with the player
+			$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
 		}
 	
 	return true;
