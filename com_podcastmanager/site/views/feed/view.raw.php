@@ -21,7 +21,7 @@ class PodcastManagerViewFeed extends JView
 		$params = JComponentHelper::getParams('com_podcastmanager');
 		
 		// Get the data from the model
-		$items		= $this->get('Items');
+		$items	= $this->get('Items');
 		
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
@@ -156,7 +156,6 @@ class PodcastManagerViewFeed extends JView
 			$xw->writeElement('itunes:author', $item->itAuthor);
 			$xw->writeElement('itunes:subtitle', $item->itSubtitle);
 			$xw->writeElement('itunes:summary', $item->itSummary);
-			
 			$xw->writeElement('description', $item->itSummary);
 			
 			// Write the enclosure element
@@ -177,14 +176,18 @@ class PodcastManagerViewFeed extends JView
 
 			if ($itExplicit == 1) {
 				$xw->writeElement('itunes:explicit', 'yes');
-			}
-			
+			} else if ($itExplicit == 2) {
+				$xw->writeElement('itunes:explicit', 'clean');
+			} else {
+				$xw->writeElement('itunes:explicit', 'no');
+			}		
+					
 			$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
 			
 			$xw->writeElement('itunes:duration', $item->itDuration);
 			$xw->writeElement('itunes:keywords', $item->itKeywords);
 			
-			$xw->endElement(); // item
+			$xw->endElement();
 		}
 	}
 }
