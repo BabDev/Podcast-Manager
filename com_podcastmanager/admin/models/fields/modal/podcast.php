@@ -49,49 +49,6 @@ class JFormFieldModal_Podcast extends JFormField
 
 		// Setup variables for display.
 		$html	= array();
-		$link	= 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component&amp;function=PodcastManagerSelectPodcast_'.$this->id;
-
-		$db	= JFactory::getDBO();
-		$db->setQuery(
-			'SELECT title' .
-			' FROM #__podcastmanager' .
-			' WHERE id = '.(int) $this->value
-		);
-		$title = $db->loadResult();
-
-		if ($error = $db->getErrorMsg()) {
-			JError::raiseWarning(500, $error);
-		}
-
-		if (empty($title)) {
-			$title = JText::_('COM_PODCASTMANAGER_SELECT_A_PODCAST');
-		}
-		$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-
-		// The current user display field.
-		$html[] = '<div class="fltlft">';
-		$html[] = '  <input type="text" id="'.$this->id.'_name" value="'.$title.'" disabled="disabled" size="35" />';
-		$html[] = '</div>';
-
-		// The user select button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '  <div class="blank">';
-		$html[] = '	<a class="modal" title="'.JText::_('COM_PODCASTMANAGER_CHANGE_PODCAST').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_PODCASTMANAGER_CHANGE_PODCAST_BUTTON').'</a>';
-		$html[] = '  </div>';
-		$html[] = '</div>';
-
-		// The active podcast id field.
-		if (0 == (int)$this->value) {
-			$value = '';
-		} else {
-			$value = (int)$this->value;
-		}
-
-		// class='required' for client side validation
-		$class = '';
-		if ($this->required) {
-			$class = ' class="required modal-value"';
-		}
 
 		$html[] = '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
 
