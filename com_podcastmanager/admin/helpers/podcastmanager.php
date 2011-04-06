@@ -1,11 +1,11 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // Restricted access
 defined('_JEXEC') or die();
@@ -28,22 +28,22 @@ class PodcastManagerHelper
 	public static function addSubmenu($vName)
 	{
 		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
+		JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
 			'index.php?option=com_podcastmanager&view=podcasts',
-			$vName == 'podcasts');
+		$vName == 'podcasts');
 		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMANAGER_SUBMENU_INFO'),
+		JText::_('COM_PODCASTMANAGER_SUBMENU_INFO'),
 			'index.php?option=com_podcastmanager&view=info',
-			$vName == 'info');
+		$vName == 'info');
 		JSubMenuHelper::addEntry(
-			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
+		JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
 			'index.php?option=com_podcastmedia&view=media',
-			$vName == 'media');
+		$vName == 'media');
 	}
-	
+
 	/**
 	 * Gets a list of the actions that can be performed.
-	 * 
+	 *
 	 * @return	JObject
 	 * @since	1.6
 	 */
@@ -52,15 +52,15 @@ class PodcastManagerHelper
 		$user		= JFactory::getUser();
 		$result		= new JObject;
 		$assetName	= 'com_podcastmanager';
-		
+
 		$actions = array(
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
-		);
-		
-		foreach ($actions as $action) {
-			$result->set($action, $user->authorise($action, $assetName));
-		}
-		
-		return $result;
+			);
+
+			foreach ($actions as $action) {
+				$result->set($action, $user->authorise($action, $assetName));
+			}
+
+			return $result;
 	}
 }

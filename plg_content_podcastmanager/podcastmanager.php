@@ -1,11 +1,11 @@
-<?php 
+<?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // Restricted access
 defined('_JEXEC') or die();
@@ -50,17 +50,17 @@ class plgContentPodcastManager extends JPlugin
 				'SELECT `filename`' .
 				' FROM `#__podcastmanager`' .
 				' WHERE `title` = "'.$podtitle.'"'
-			);
-			$podfilepath = $db->loadObject();
+				);
+				$podfilepath = $db->loadObject();
 
-			// Get the player
-			$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
+				// Get the player
+				$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
 
-			// Replace the {podcast marker with the player
-			$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
+				// Replace the {podcast marker with the player
+				$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
 		}
-	
-	return true;
+
+		return true;
 	}
 }
 
@@ -79,26 +79,26 @@ class PodcastManagerPlayer
 		'mp3' => 'audio/mpeg',
 		'mp4' => 'video/mp4',
 	);
-	
+
 	/**
 	 * The class constructor
 	 */
 	function __construct(&$podmanparams, $podfilepath, $podtitle, $title)
-	{	
+	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath	= $podfilepath;
 		$playerType			= $this->podmanparams->get('linkhandling', 'player');
-		
+
 		if (in_array($playerType, $this->validTypes)) {
 			$this->playerType = $playerType;
 		} else {
 			$this->playerType = 'player';
 		}
-		
+
 		$this->fileURL		= $this->determineURL($podfilepath);
 		$this->podtitle		= $podtitle;
 	}
-	
+
 	/**
 	 * Function to generate the player
 	 *
@@ -107,15 +107,15 @@ class PodcastManagerPlayer
 	public function generate()
 	{
 		$func = $this->playerType;
-		
+
 		return $this->$func();
 	}
-	
+
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
 	 * @param	object	The filename of the podcast file relative to the site root.
-	 * 
+	 *
 	 * @return	object	The URL to the file
 	 */
 	private function determineURL($filename)
@@ -123,18 +123,18 @@ class PodcastManagerPlayer
 		// Convert the file path to a string
 		$tempfile	= get_object_vars($filename);
 		$filepath	= substr(implode('', $tempfile), 0);
-		
+
 		// Set the file path based on the server
 		$fullPath = JPATH_BASE.'/'.$filepath;
-		
+
 		// Check if the file exists
 		if (JFile::exists($fullPath)) {
 			$filename = JURI::base().$filepath;
 		}
-		
+
 		return $filename;
 	}
-	
+
 	/**
 	 * Function to generate a link player
 	 *
@@ -144,7 +144,7 @@ class PodcastManagerPlayer
 	{
 		return '<a href="'.$this->fileURL.'">'.htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))).'</a>';
 	}
-	
+
 	/**
 	 * Function to generate a flash player
 	 *
@@ -159,7 +159,7 @@ class PodcastManagerPlayer
 
 		return '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'"><param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'" /></object>';
 	}
-	
+
 	/**
 	 * Function to generate a QuickTime player
 	 *
@@ -170,10 +170,10 @@ class PodcastManagerPlayer
 		$tempfile	= get_object_vars($this->podfilepath);
 		$filepath	= substr(implode('', $tempfile), 0);
 		$ext = substr($filepath, strlen($filepath) - 3);
-		
+
 		$width = $this->podmanparams->get('playerwidth', 320);
 		$height = $this->podmanparams->get('playerheight', 240);
-		
+
 		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$width.'" height="'.$height.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
 		. '<param name="src" value="'.$this->fileURL.'" />'
 		. '<param name="href" value="'.$this->fileURL.'" />'
@@ -184,7 +184,7 @@ class PodcastManagerPlayer
 		. '<param name="pluginspage" value="http://www.apple.com/quicktime/download/" />'
 		. '<embed src="'.$this->fileURL.'" width="'.$width.'" height="'.$height.'" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="'.$this->fileURL.'" type="'.$this->fileTypes[$ext].'" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
 		. '</object>';
-		
+
 		return $player;
 	}
 }

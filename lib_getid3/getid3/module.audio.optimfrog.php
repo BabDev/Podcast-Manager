@@ -293,50 +293,50 @@ class getid3_optimfrog
 
 	function OptimFROGsampleTypeLookup($SampleType) {
 		static $OptimFROGsampleTypeLookup = array(
-			0  => 'unsigned int (8-bit)',
-			1  => 'signed int (8-bit)',
-			2  => 'unsigned int (16-bit)',
-			3  => 'signed int (16-bit)',
-			4  => 'unsigned int (24-bit)',
-			5  => 'signed int (24-bit)',
-			6  => 'unsigned int (32-bit)',
-			7  => 'signed int (32-bit)',
-			8  => 'float 0.24 (32-bit)',
-			9  => 'float 16.8 (32-bit)',
-			10 => 'float 24.0 (32-bit)'
+		0  => 'unsigned int (8-bit)',
+		1  => 'signed int (8-bit)',
+		2  => 'unsigned int (16-bit)',
+		3  => 'signed int (16-bit)',
+		4  => 'unsigned int (24-bit)',
+		5  => 'signed int (24-bit)',
+		6  => 'unsigned int (32-bit)',
+		7  => 'signed int (32-bit)',
+		8  => 'float 0.24 (32-bit)',
+		9  => 'float 16.8 (32-bit)',
+		10 => 'float 24.0 (32-bit)'
 		);
 		return (isset($OptimFROGsampleTypeLookup[$SampleType]) ? $OptimFROGsampleTypeLookup[$SampleType] : false);
 	}
 
 	function OptimFROGbitsPerSampleTypeLookup($SampleType) {
 		static $OptimFROGbitsPerSampleTypeLookup = array(
-			0  => 8,
-			1  => 8,
-			2  => 16,
-			3  => 16,
-			4  => 24,
-			5  => 24,
-			6  => 32,
-			7  => 32,
-			8  => 32,
-			9  => 32,
-			10 => 32
+		0  => 8,
+		1  => 8,
+		2  => 16,
+		3  => 16,
+		4  => 24,
+		5  => 24,
+		6  => 32,
+		7  => 32,
+		8  => 32,
+		9  => 32,
+		10 => 32
 		);
 		return (isset($OptimFROGbitsPerSampleTypeLookup[$SampleType]) ? $OptimFROGbitsPerSampleTypeLookup[$SampleType] : false);
 	}
 
 	function OptimFROGchannelConfigurationLookup($ChannelConfiguration) {
 		static $OptimFROGchannelConfigurationLookup = array(
-			0 => 'mono',
-			1 => 'stereo'
+		0 => 'mono',
+		1 => 'stereo'
 		);
 		return (isset($OptimFROGchannelConfigurationLookup[$ChannelConfiguration]) ? $OptimFROGchannelConfigurationLookup[$ChannelConfiguration] : false);
 	}
 
 	function OptimFROGchannelConfigNumChannelsLookup($ChannelConfiguration) {
 		static $OptimFROGchannelConfigNumChannelsLookup = array(
-			0 => 1,
-			1 => 2
+		0 => 1,
+		1 => 2
 		);
 		return (isset($OptimFROGchannelConfigNumChannelsLookup[$ChannelConfiguration]) ? $OptimFROGchannelConfigNumChannelsLookup[$ChannelConfiguration] : false);
 	}
@@ -357,9 +357,9 @@ class getid3_optimfrog
 		$EncoderSystemID = ($EncoderID & 0x0F);
 
 		static $OptimFROGencoderSystemLookup = array(
-			0x00 => 'Windows console',
-			0x01 => 'Linux console',
-			0x0F => 'unknown'
+		0x00 => 'Windows console',
+		0x01 => 'Linux console',
+		0x0F => 'unknown'
 		);
 		return $EncoderVersion.' ('.(isset($OptimFROGencoderSystemLookup[$EncoderSystemID]) ? $OptimFROGencoderSystemLookup[$EncoderSystemID] : 'undefined encoder type (0x'.dechex($EncoderSystemID).')').')';
 	}
@@ -372,16 +372,16 @@ class getid3_optimfrog
 		//$CompressionSpeedupID = ($CompressionID & 0x07);
 
 		static $OptimFROGencoderModeLookup = array(
-			0x00 => 'fast',
-			0x01 => 'normal',
-			0x02 => 'high',
-			0x03 => 'extra', // extranew (some versions)
-			0x04 => 'best',  // bestnew (some versions)
-			0x05 => 'ultra',
-			0x06 => 'insane',
-			0x07 => 'highnew',
-			0x08 => 'extranew',
-			0x09 => 'bestnew'
+		0x00 => 'fast',
+		0x01 => 'normal',
+		0x02 => 'high',
+		0x03 => 'extra', // extranew (some versions)
+		0x04 => 'best',  // bestnew (some versions)
+		0x05 => 'ultra',
+		0x06 => 'insane',
+		0x07 => 'highnew',
+		0x08 => 'extranew',
+		0x09 => 'bestnew'
 		);
 		return (isset($OptimFROGencoderModeLookup[$CompressionModeID]) ? $OptimFROGencoderModeLookup[$CompressionModeID] : 'undefined mode (0x'.str_pad(dechex($CompressionModeID), 2, '0', STR_PAD_LEFT).')');
 	}
@@ -394,9 +394,9 @@ class getid3_optimfrog
 		$CompressionSpeedupID = ($CompressionID & 0x07);
 
 		static $OptimFROGencoderSpeedupLookup = array(
-			0x00 => '1x',
-			0x01 => '2x',
-			0x02 => '4x'
+		0x00 => '1x',
+		0x01 => '2x',
+		0x02 => '4x'
 		);
 
 		return (isset($OptimFROGencoderSpeedupLookup[$CompressionSpeedupID]) ? $OptimFROGencoderSpeedupLookup[$CompressionSpeedupID] : 'undefined mode (0x'.dechex($CompressionSpeedupID));

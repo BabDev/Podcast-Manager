@@ -346,24 +346,24 @@ class getid3_zip
 
 	function ZIPversionOSLookup($index) {
 		static $ZIPversionOSLookup = array(
-			0  => 'MS-DOS and OS/2 (FAT / VFAT / FAT32 file systems)',
-			1  => 'Amiga',
-			2  => 'OpenVMS',
-			3  => 'Unix',
-			4  => 'VM/CMS',
-			5  => 'Atari ST',
-			6  => 'OS/2 H.P.F.S.',
-			7  => 'Macintosh',
-			8  => 'Z-System',
-			9  => 'CP/M',
-			10 => 'Windows NTFS',
-			11 => 'MVS',
-			12 => 'VSE',
-			13 => 'Acorn Risc',
-			14 => 'VFAT',
-			15 => 'Alternate MVS',
-			16 => 'BeOS',
-			17 => 'Tandem'
+		0  => 'MS-DOS and OS/2 (FAT / VFAT / FAT32 file systems)',
+		1  => 'Amiga',
+		2  => 'OpenVMS',
+		3  => 'Unix',
+		4  => 'VM/CMS',
+		5  => 'Atari ST',
+		6  => 'OS/2 H.P.F.S.',
+		7  => 'Macintosh',
+		8  => 'Z-System',
+		9  => 'CP/M',
+		10 => 'Windows NTFS',
+		11 => 'MVS',
+		12 => 'VSE',
+		13 => 'Acorn Risc',
+		14 => 'VFAT',
+		15 => 'Alternate MVS',
+		16 => 'BeOS',
+		17 => 'Tandem'
 		);
 
 		return (isset($ZIPversionOSLookup[$index]) ? $ZIPversionOSLookup[$index] : '[unknown]');
@@ -371,17 +371,17 @@ class getid3_zip
 
 	function ZIPcompressionMethodLookup($index) {
 		static $ZIPcompressionMethodLookup = array(
-			0  => 'store',
-			1  => 'shrink',
-			2  => 'reduce-1',
-			3  => 'reduce-2',
-			4  => 'reduce-3',
-			5  => 'reduce-4',
-			6  => 'implode',
-			7  => 'tokenize',
-			8  => 'deflate',
-			9  => 'deflate64',
-			10 => 'PKWARE Date Compression Library Imploding'
+		0  => 'store',
+		1  => 'shrink',
+		2  => 'reduce-1',
+		3  => 'reduce-2',
+		4  => 'reduce-3',
+		5  => 'reduce-4',
+		6  => 'implode',
+		7  => 'tokenize',
+		8  => 'deflate',
+		9  => 'deflate64',
+		10 => 'PKWARE Date Compression Library Imploding'
 		);
 
 		return (isset($ZIPcompressionMethodLookup[$index]) ? $ZIPcompressionMethodLookup[$index] : '[unknown]');

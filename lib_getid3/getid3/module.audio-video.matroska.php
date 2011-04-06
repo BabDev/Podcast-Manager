@@ -1247,18 +1247,18 @@ class getid3_matroska
 								break;
 
 							case 'A_AAC':
-$this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems parsing AAC audio in Matroska containers ['.basename(__FILE__).':'.__LINE__.']';
+								$this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems parsing AAC audio in Matroska containers ['.basename(__FILE__).':'.__LINE__.']';
 								if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.aac.php', __FILE__, false)) {
-							//		$aac_thisfileinfo = array('avdataoffset'=>$ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']]);
-							//		$getid3_aac = new getid3_aac($fd, $aac_thisfileinfo);
-							//		$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $aac_thisfileinfo;
-							//		if (isset($aac_thisfileinfo['audio']) && is_array($aac_thisfileinfo['audio'])) {
-							//			foreach ($aac_thisfileinfo['audio'] as $key => $value) {
-							//				$track_info[$key] = $value;
-							//			}
-							//		}
-							//		unset($aac_thisfileinfo);
-							//		unset($getid3_aac);
+									//		$aac_thisfileinfo = array('avdataoffset'=>$ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']]);
+									//		$getid3_aac = new getid3_aac($fd, $aac_thisfileinfo);
+									//		$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $aac_thisfileinfo;
+									//		if (isset($aac_thisfileinfo['audio']) && is_array($aac_thisfileinfo['audio'])) {
+									//			foreach ($aac_thisfileinfo['audio'] as $key => $value) {
+										//				$track_info[$key] = $value;
+										//			}
+										//		}
+										//		unset($aac_thisfileinfo);
+										//		unset($getid3_aac);
 								} else {
 									$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because cannot include "module.audio.aac.php"';
 								}
@@ -1400,7 +1400,7 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 	}
 
 
-///////////////////////////////////////
+	///////////////////////////////////////
 
 
 	function EnsureBufferHasEnoughData(&$fd, &$EBMLdata, &$offset, &$EBMLdata_offset) {

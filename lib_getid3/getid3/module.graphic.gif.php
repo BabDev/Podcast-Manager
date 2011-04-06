@@ -74,108 +74,108 @@ class getid3_gif
 			$ThisFileInfo['gif']['header']['aspect_ratio'] = ($ThisFileInfo['gif']['header']['raw']['aspect_ratio'] + 15) / 64;
 		}
 
-//		if ($ThisFileInfo['gif']['header']['flags']['global_color_table']) {
-//			$GIFcolorTable = fread($fd, 3 * $ThisFileInfo['gif']['header']['global_color_size']);
-//			$offset = 0;
-//			for ($i = 0; $i < $ThisFileInfo['gif']['header']['global_color_size']; $i++) {
-//				$red   = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
-//				$green = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
-//				$blue  = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
-//				$ThisFileInfo['gif']['global_color_table'][$i] = (($red << 16) | ($green << 8) | ($blue));
-//			}
-//		}
-//
-//		// Image Descriptor
-//		while (!feof($fd)) {
-//			$NextBlockTest = fread($fd, 1);
-//			switch ($NextBlockTest) {
-//
-//				case ',': // ',' - Image separator character
-//
-//					$ImageDescriptorData = $NextBlockTest.fread($fd, 9);
-//					$ImageDescriptor = array();
-//					$ImageDescriptor['image_left']   = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 1, 2));
-//					$ImageDescriptor['image_top']    = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 3, 2));
-//					$ImageDescriptor['image_width']  = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 5, 2));
-//					$ImageDescriptor['image_height'] = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 7, 2));
-//					$ImageDescriptor['flags_raw']    = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 9, 1));
-//					$ImageDescriptor['flags']['use_local_color_map'] = (bool) ($ImageDescriptor['flags_raw'] & 0x80);
-//					$ImageDescriptor['flags']['image_interlaced']    = (bool) ($ImageDescriptor['flags_raw'] & 0x40);
-//					$ThisFileInfo['gif']['image_descriptor'][] = $ImageDescriptor;
-//
-//					if ($ImageDescriptor['flags']['use_local_color_map']) {
-//
-//						$ThisFileInfo['warning'][] = 'This version of getID3() cannot parse local color maps for GIFs';
-//						return true;
-//
-//					}
-//echo 'Start of raster data: '.ftell($fd).'<BR>';
-//					$RasterData = array();
-//					$RasterData['code_size']        = getid3_lib::LittleEndian2Int(fread($fd, 1));
-//					$RasterData['block_byte_count'] = getid3_lib::LittleEndian2Int(fread($fd, 1));
-//					$ThisFileInfo['gif']['raster_data'][count($ThisFileInfo['gif']['image_descriptor']) - 1] = $RasterData;
-//
-//					$CurrentCodeSize = $RasterData['code_size'] + 1;
-//					for ($i = 0; $i < pow(2, $RasterData['code_size']); $i++) {
-//						$DefaultDataLookupTable[$i] = chr($i);
-//					}
-//					$DefaultDataLookupTable[pow(2, $RasterData['code_size']) + 0] = ''; // Clear Code
-//					$DefaultDataLookupTable[pow(2, $RasterData['code_size']) + 1] = ''; // End Of Image Code
-//
-//
-//					$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
-//					echo 'Clear Code: '.$NextValue.'<BR>';
-//
-//					$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
-//					echo 'First Color: '.$NextValue.'<BR>';
-//
-//					$Prefix = $NextValue;
-//$i = 0;
-//					while ($i++ < 20) {
-//						$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
-//						echo $NextValue.'<BR>';
-//					}
-//return true;
-//					break;
-//
-//				case '!':
-//					// GIF Extension Block
-//					$ExtensionBlockData = $NextBlockTest.fread($fd, 2);
-//					$ExtensionBlock = array();
-//					$ExtensionBlock['function_code']  = getid3_lib::LittleEndian2Int(substr($ExtensionBlockData, 1, 1));
-//					$ExtensionBlock['byte_length']    = getid3_lib::LittleEndian2Int(substr($ExtensionBlockData, 2, 1));
-//					$ExtensionBlock['data']           = fread($fd, $ExtensionBlock['byte_length']);
-//					$ThisFileInfo['gif']['extension_blocks'][] = $ExtensionBlock;
-//					break;
-//
-//				case ';':
-//					$ThisFileInfo['gif']['terminator_offset'] = ftell($fd) - 1;
-//					// GIF Terminator
-//					break;
-//
-//				default:
-//					break;
-//
-//
-//			}
-//		}
+		//		if ($ThisFileInfo['gif']['header']['flags']['global_color_table']) {
+		//			$GIFcolorTable = fread($fd, 3 * $ThisFileInfo['gif']['header']['global_color_size']);
+		//			$offset = 0;
+		//			for ($i = 0; $i < $ThisFileInfo['gif']['header']['global_color_size']; $i++) {
+		//				$red   = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
+		//				$green = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
+		//				$blue  = getid3_lib::LittleEndian2Int(substr($GIFcolorTable, $offset++, 1));
+		//				$ThisFileInfo['gif']['global_color_table'][$i] = (($red << 16) | ($green << 8) | ($blue));
+		//			}
+		//		}
+		//
+		//		// Image Descriptor
+		//		while (!feof($fd)) {
+		//			$NextBlockTest = fread($fd, 1);
+		//			switch ($NextBlockTest) {
+		//
+		//				case ',': // ',' - Image separator character
+		//
+		//					$ImageDescriptorData = $NextBlockTest.fread($fd, 9);
+		//					$ImageDescriptor = array();
+		//					$ImageDescriptor['image_left']   = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 1, 2));
+		//					$ImageDescriptor['image_top']    = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 3, 2));
+		//					$ImageDescriptor['image_width']  = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 5, 2));
+		//					$ImageDescriptor['image_height'] = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 7, 2));
+		//					$ImageDescriptor['flags_raw']    = getid3_lib::LittleEndian2Int(substr($ImageDescriptorData, 9, 1));
+		//					$ImageDescriptor['flags']['use_local_color_map'] = (bool) ($ImageDescriptor['flags_raw'] & 0x80);
+		//					$ImageDescriptor['flags']['image_interlaced']    = (bool) ($ImageDescriptor['flags_raw'] & 0x40);
+		//					$ThisFileInfo['gif']['image_descriptor'][] = $ImageDescriptor;
+		//
+		//					if ($ImageDescriptor['flags']['use_local_color_map']) {
+		//
+		//						$ThisFileInfo['warning'][] = 'This version of getID3() cannot parse local color maps for GIFs';
+		//						return true;
+		//
+		//					}
+		//echo 'Start of raster data: '.ftell($fd).'<BR>';
+		//					$RasterData = array();
+		//					$RasterData['code_size']        = getid3_lib::LittleEndian2Int(fread($fd, 1));
+		//					$RasterData['block_byte_count'] = getid3_lib::LittleEndian2Int(fread($fd, 1));
+		//					$ThisFileInfo['gif']['raster_data'][count($ThisFileInfo['gif']['image_descriptor']) - 1] = $RasterData;
+		//
+		//					$CurrentCodeSize = $RasterData['code_size'] + 1;
+		//					for ($i = 0; $i < pow(2, $RasterData['code_size']); $i++) {
+		//						$DefaultDataLookupTable[$i] = chr($i);
+		//					}
+		//					$DefaultDataLookupTable[pow(2, $RasterData['code_size']) + 0] = ''; // Clear Code
+		//					$DefaultDataLookupTable[pow(2, $RasterData['code_size']) + 1] = ''; // End Of Image Code
+		//
+		//
+		//					$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
+		//					echo 'Clear Code: '.$NextValue.'<BR>';
+		//
+		//					$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
+		//					echo 'First Color: '.$NextValue.'<BR>';
+		//
+		//					$Prefix = $NextValue;
+		//$i = 0;
+		//					while ($i++ < 20) {
+		//						$NextValue = $this->GetLSBits($fd, $CurrentCodeSize);
+		//						echo $NextValue.'<BR>';
+		//					}
+		//return true;
+		//					break;
+		//
+		//				case '!':
+		//					// GIF Extension Block
+		//					$ExtensionBlockData = $NextBlockTest.fread($fd, 2);
+		//					$ExtensionBlock = array();
+		//					$ExtensionBlock['function_code']  = getid3_lib::LittleEndian2Int(substr($ExtensionBlockData, 1, 1));
+		//					$ExtensionBlock['byte_length']    = getid3_lib::LittleEndian2Int(substr($ExtensionBlockData, 2, 1));
+		//					$ExtensionBlock['data']           = fread($fd, $ExtensionBlock['byte_length']);
+		//					$ThisFileInfo['gif']['extension_blocks'][] = $ExtensionBlock;
+		//					break;
+		//
+		//				case ';':
+		//					$ThisFileInfo['gif']['terminator_offset'] = ftell($fd) - 1;
+		//					// GIF Terminator
+		//					break;
+		//
+		//				default:
+		//					break;
+		//
+		//
+		//			}
+		//		}
 
 		return true;
+}
+
+
+function GetLSBits($fd, $bits) {
+	static $bitbuffer = '';
+	while (strlen($bitbuffer) < $bits) {
+		//echo 'Read another byte: '.ftell($fd).'<BR>';
+		$bitbuffer = str_pad(decbin(ord(fread($fd, 1))), 8, '0', STR_PAD_LEFT).$bitbuffer;
 	}
 
+	$value = bindec(substr($bitbuffer, 0 - $bits));
+	$bitbuffer = substr($bitbuffer, 0, 0 - $bits);
 
-	function GetLSBits($fd, $bits) {
-		static $bitbuffer = '';
-		while (strlen($bitbuffer) < $bits) {
-//echo 'Read another byte: '.ftell($fd).'<BR>';
-			$bitbuffer = str_pad(decbin(ord(fread($fd, 1))), 8, '0', STR_PAD_LEFT).$bitbuffer;
-		}
-
-		$value = bindec(substr($bitbuffer, 0 - $bits));
-		$bitbuffer = substr($bitbuffer, 0, 0 - $bits);
-
-		return $value;
-	}
+	return $value;
+}
 
 }
 

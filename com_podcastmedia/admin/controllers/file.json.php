@@ -1,11 +1,11 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // No direct access
 defined('_JEXEC') or die;
@@ -62,9 +62,9 @@ class PodcastMediaControllerFile extends JController
 
 			// Remove spaces from the file name for RSS validation
 			$filename	= str_replace(' ', '_', $file[name]);
-			
+				
 			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.strtolower($filename));
-			
+				
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{
 				$log->addEntry(array('comment' => 'Invalid: '.$filepath.': '.$err));

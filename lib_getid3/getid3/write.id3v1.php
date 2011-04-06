@@ -48,13 +48,13 @@ class getid3_write_id3v1
 				$this->tag_data['track'] = (isset($this->tag_data['track']) ? $this->tag_data['track'] : (isset($this->tag_data['track_number']) ? $this->tag_data['track_number'] : (isset($this->tag_data['tracknumber']) ? $this->tag_data['tracknumber'] : '')));
 
 				$new_id3v1_tag_data = getid3_id3v1::GenerateID3v1Tag(
-														(isset($this->tag_data['title']  ) ? $this->tag_data['title']   : ''),
-														(isset($this->tag_data['artist'] ) ? $this->tag_data['artist']  : ''),
-														(isset($this->tag_data['album']  ) ? $this->tag_data['album']   : ''),
-														(isset($this->tag_data['year']   ) ? $this->tag_data['year']    : ''),
-														(isset($this->tag_data['genreid']) ? $this->tag_data['genreid'] : ''),
-														(isset($this->tag_data['comment']) ? $this->tag_data['comment'] : ''),
-														(isset($this->tag_data['track']  ) ? $this->tag_data['track']   : ''));
+				(isset($this->tag_data['title']  ) ? $this->tag_data['title']   : ''),
+				(isset($this->tag_data['artist'] ) ? $this->tag_data['artist']  : ''),
+				(isset($this->tag_data['album']  ) ? $this->tag_data['album']   : ''),
+				(isset($this->tag_data['year']   ) ? $this->tag_data['year']    : ''),
+				(isset($this->tag_data['genreid']) ? $this->tag_data['genreid'] : ''),
+				(isset($this->tag_data['comment']) ? $this->tag_data['comment'] : ''),
+				(isset($this->tag_data['track']  ) ? $this->tag_data['track']   : ''));
 				fwrite($fp_source, $new_id3v1_tag_data, 128);
 				fclose($fp_source);
 				return true;

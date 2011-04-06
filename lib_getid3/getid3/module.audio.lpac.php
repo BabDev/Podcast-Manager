@@ -95,7 +95,7 @@ class getid3_lpac
 		}
 
 		if ($ThisFileInfo['lpac']['flags']['fast_compress']) {
-			 // fast
+			// fast
 			$ThisFileInfo['audio']['encoder_options'] = '-1';
 		} else {
 			switch ($ThisFileInfo['lpac']['max_prediction_order']) {

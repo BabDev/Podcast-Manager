@@ -20,7 +20,7 @@ class getid3_lib
 			if ($hex) {
 				$returnstring .= str_pad(dechex(ord($string{$i})), 2, '0', STR_PAD_LEFT);
 			} else {
-				$returnstring .= ' '.(preg_match("#[\x20-\x7E]#", $string{$i}) ? $string{$i} : '¤');
+				$returnstring .= ' '.(preg_match("#[\x20-\x7E]#", $string{$i}) ? $string{$i} : 'ï¿½');
 			}
 			if ($spaces) {
 				$returnstring .= ' ';
@@ -378,7 +378,7 @@ class getid3_lib
 
 
 	static function array_merge_clobber($array1, $array2) {
-		// written by kcØhireability*com
+		// written by kcï¿½hireability*com
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (!is_array($array1) || !is_array($array2)) {
 			return false;
@@ -510,7 +510,7 @@ class getid3_lib
 	}
 
 
-	// Allan Hansen <ahØartemis*dk>
+	// Allan Hansen <ahï¿½artemis*dk>
 	// getid3_lib::md5_data() - returns md5sum for a file from startuing position to absolute end position
 	static function hash_data($file, $offset, $end, $algorithm) {
 		if (!getid3_lib::intValueSupported($end)) {
@@ -689,20 +689,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 3)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) << 12) &
+				((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 2)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-							(ord($string{($offset + 1)}) & 0x3F);
+				(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb
@@ -732,20 +732,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 3)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) << 12) &
+				((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 2)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-							(ord($string{($offset + 1)}) & 0x3F);
+				(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb
@@ -775,20 +775,20 @@ class getid3_lib
 			if ((ord($string{$offset}) | 0x07) == 0xF7) {
 				// 11110bbb 10bbbbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x07) << 18) &
-						   ((ord($string{($offset + 1)}) & 0x3F) << 12) &
-						   ((ord($string{($offset + 2)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 3)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) << 12) &
+				((ord($string{($offset + 2)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 3)}) & 0x3F);
 				$offset += 4;
 			} elseif ((ord($string{$offset}) | 0x0F) == 0xEF) {
 				// 1110bbbb 10bbbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x0F) << 12) &
-						   ((ord($string{($offset + 1)}) & 0x3F) <<  6) &
-							(ord($string{($offset + 2)}) & 0x3F);
+				((ord($string{($offset + 1)}) & 0x3F) <<  6) &
+				(ord($string{($offset + 2)}) & 0x3F);
 				$offset += 3;
 			} elseif ((ord($string{$offset}) | 0x1F) == 0xDF) {
 				// 110bbbbb 10bbbbbb
 				$charval = ((ord($string{($offset + 0)}) & 0x1F) <<  6) &
-							(ord($string{($offset + 1)}) & 0x3F);
+				(ord($string{($offset + 1)}) & 0x3F);
 				$offset += 2;
 			} elseif ((ord($string{$offset}) | 0x7F) == 0x7F) {
 				// 0bbbbbbb

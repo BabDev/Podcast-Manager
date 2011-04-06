@@ -1,11 +1,11 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // No direct access
 defined('_JEXEC') or die;
@@ -32,7 +32,7 @@ class PodcastMediaViewAudioList extends JView
 
 		JHtml::_('stylesheet','media/popup-imagelist.css', array(), true);
 		if ($lang->isRTL()) :
-			JHtml::_('stylesheet','media/popup-imagelist_rtl.css', array(), true);
+		JHtml::_('stylesheet','media/popup-imagelist_rtl.css', array(), true);
 		endif;
 
 		$document = JFactory::getDocument();

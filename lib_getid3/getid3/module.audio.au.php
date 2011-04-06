@@ -69,90 +69,90 @@ class getid3_au
 
 	function AUdataFormatNameLookup($id) {
 		static $AUdataFormatNameLookup = array(
-			0  => 'unspecified format',
-			1  => '8-bit mu-law',
-			2  => '8-bit linear',
-			3  => '16-bit linear',
-			4  => '24-bit linear',
-			5  => '32-bit linear',
-			6  => 'floating-point',
-			7  => 'double-precision float',
-			8  => 'fragmented sampled data',
-			9  => 'SUN_FORMAT_NESTED',
-			10 => 'DSP program',
-			11 => '8-bit fixed-point',
-			12 => '16-bit fixed-point',
-			13 => '24-bit fixed-point',
-			14 => '32-bit fixed-point',
+		0  => 'unspecified format',
+		1  => '8-bit mu-law',
+		2  => '8-bit linear',
+		3  => '16-bit linear',
+		4  => '24-bit linear',
+		5  => '32-bit linear',
+		6  => 'floating-point',
+		7  => 'double-precision float',
+		8  => 'fragmented sampled data',
+		9  => 'SUN_FORMAT_NESTED',
+		10 => 'DSP program',
+		11 => '8-bit fixed-point',
+		12 => '16-bit fixed-point',
+		13 => '24-bit fixed-point',
+		14 => '32-bit fixed-point',
 
-			16 => 'non-audio display data',
-			17 => 'SND_FORMAT_MULAW_SQUELCH',
-			18 => '16-bit linear with emphasis',
-			19 => '16-bit linear with compression',
-			20 => '16-bit linear with emphasis + compression',
-			21 => 'Music Kit DSP commands',
-			22 => 'SND_FORMAT_DSP_COMMANDS_SAMPLES',
-			23 => 'CCITT g.721 4-bit ADPCM',
-			24 => 'CCITT g.722 ADPCM',
-			25 => 'CCITT g.723 3-bit ADPCM',
-			26 => 'CCITT g.723 5-bit ADPCM',
-			27 => 'A-Law 8-bit'
+		16 => 'non-audio display data',
+		17 => 'SND_FORMAT_MULAW_SQUELCH',
+		18 => '16-bit linear with emphasis',
+		19 => '16-bit linear with compression',
+		20 => '16-bit linear with emphasis + compression',
+		21 => 'Music Kit DSP commands',
+		22 => 'SND_FORMAT_DSP_COMMANDS_SAMPLES',
+		23 => 'CCITT g.721 4-bit ADPCM',
+		24 => 'CCITT g.722 ADPCM',
+		25 => 'CCITT g.723 3-bit ADPCM',
+		26 => 'CCITT g.723 5-bit ADPCM',
+		27 => 'A-Law 8-bit'
 		);
 		return (isset($AUdataFormatNameLookup[$id]) ? $AUdataFormatNameLookup[$id] : false);
 	}
 
 	function AUdataFormatBitsPerSampleLookup($id) {
 		static $AUdataFormatBitsPerSampleLookup = array(
-			1  => 8,
-			2  => 8,
-			3  => 16,
-			4  => 24,
-			5  => 32,
-			6  => 32,
-			7  => 64,
+		1  => 8,
+		2  => 8,
+		3  => 16,
+		4  => 24,
+		5  => 32,
+		6  => 32,
+		7  => 64,
 
-			11 => 8,
-			12 => 16,
-			13 => 24,
-			14 => 32,
+		11 => 8,
+		12 => 16,
+		13 => 24,
+		14 => 32,
 
-			18 => 16,
-			19 => 16,
-			20 => 16,
+		18 => 16,
+		19 => 16,
+		20 => 16,
 
-			23 => 16,
+		23 => 16,
 
-			25 => 16,
-			26 => 16,
-			27 => 8
+		25 => 16,
+		26 => 16,
+		27 => 8
 		);
 		return (isset($AUdataFormatBitsPerSampleLookup[$id]) ? $AUdataFormatBitsPerSampleLookup[$id] : false);
 	}
 
 	function AUdataFormatUsedBitsPerSampleLookup($id) {
 		static $AUdataFormatUsedBitsPerSampleLookup = array(
-			1  => 8,
-			2  => 8,
-			3  => 16,
-			4  => 24,
-			5  => 32,
-			6  => 32,
-			7  => 64,
+		1  => 8,
+		2  => 8,
+		3  => 16,
+		4  => 24,
+		5  => 32,
+		6  => 32,
+		7  => 64,
 
-			11 => 8,
-			12 => 16,
-			13 => 24,
-			14 => 32,
+		11 => 8,
+		12 => 16,
+		13 => 24,
+		14 => 32,
 
-			18 => 16,
-			19 => 16,
-			20 => 16,
+		18 => 16,
+		19 => 16,
+		20 => 16,
 
-			23 => 4,
+		23 => 4,
 
-			25 => 3,
-			26 => 5,
-			27 => 8,
+		25 => 3,
+		26 => 5,
+		27 => 8,
 		);
 		return (isset($AUdataFormatUsedBitsPerSampleLookup[$id]) ? $AUdataFormatUsedBitsPerSampleLookup[$id] : false);
 	}

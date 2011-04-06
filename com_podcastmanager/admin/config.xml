@@ -1,125 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Id$ -->
 <config>
-	<fieldset
-		name="component"
-		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL"
-		description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESCRIPTION">
-		<field
-			name="cache"
-			type="radio"
-			default="1"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_DESCRIPTION">
-			<option	value="0">JNO</option>
+	<fieldset name="component"
+		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL" description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESCRIPTION">
+		<field name="cache" type="radio" default="1"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_DESCRIPTION">
+			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field
-			name="cache_time"
-			type="text"
-			size="8"
-			default="3600"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_DESCRIPTION" />
-		<field
-			name="linkhandling"
-			type="radio"
-			default="link"
+		<field name="cache_time" type="text" size="8" default="3600"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_DESCRIPTION" />
+		<field name="linkhandling" type="radio" default="link"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
 			<option value="link">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_LINK</option>
 			<option value="player">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_FLASH</option>
 			<option value="QTplayer">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_QUICKTIME</option>
 		</field>
-		<field
-			name="playerwidth"
-			type="text"
-			default=""
+		<field name="playerwidth" type="text" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_DESCRIPTION" />
-		<field
-			name="playerheight"
-			type="text"
-			default=""
+		<field name="playerheight" type="text" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_DESCRIPTION" />
-		<field
-			name="linktitle"
-			type="text"
-			default="Listen Now!"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
-		<field
-			name="mimetype"
-			type="text"
-			size="30"
-			default="audio/mpeg"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
-		<field
-			name="title"
-			type="text"
-			size="40"
-			default="My Podcast"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_DESCRIPTION" />
-		<field
-			name="description"
-			type="textarea"
-			rows="5"
-			cols="30"
-			default="My regular podcast"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_LABEL"
+		<field name="linktitle" type="text" default="Listen Now!"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
+		<field name="mimetype" type="text" size="30" default="audio/mpeg"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
+		<field name="title" type="text" size="40" default="My Podcast"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_DESCRIPTION" />
+		<field name="description" type="textarea" rows="5" cols="30"
+			default="My regular podcast" label="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_DESCRIPTION" />
-		<field
-			name="copyright"
-			type="text"
-			size="30"
-			default="(C) 2011"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_DESCRIPTION" />
+		<field name="copyright" type="text" size="30" default="(C) 2011"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_DESCRIPTION" />
 	</fieldset>
-	<fieldset
-		name="itunes"
-		label="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_LABEL"
-		description="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_DESCRIPTION">
-		<field
-			name="itBlock"
-			type="radio"
-			default="0"
-			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION">
+	<fieldset name="itunes"
+		label="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_LABEL" description="COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS_DESCRIPTION">
+		<field name="itBlock" type="radio" default="0"
+			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field
-			name="itExplicit"
-			type="radio"
-			default="0"
-			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL"
-			description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION">
+		<field name="itExplicit" type="radio" default="0"
+			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 			<option value="2">COM_PODCASTMANAGER_FIELD_ITEXPLICIT_OPTION_CLEAN</option>
 		</field>
-		<field
-			name="itAuthor"
-			type="text"
-			size="30"
-			default=""
-			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL"
-			description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" />
-		<field
-			name="itImage"
-			type="text"
-			size="30"
-			default=""
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_DESCRIPTION" />
-		<field
-			name="itCategory1"
-			type="list"
-			default=""
+		<field name="itAuthor" type="text" size="30" default=""
+			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" />
+		<field name="itImage" type="text" size="30" default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_DESCRIPTION" />
+		<field name="itCategory1" type="list" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_DESCRIPTION">
 			<option value="">(none)</option>
@@ -181,7 +114,8 @@
 			<option value="Society &amp; Culture &gt; Places &amp; Travel">Society and Culture &gt; Places &amp; Travel</option>
 			<option value="Sports &amp; Recreation">Sports and Recreation</option>
 			<option value="Sports &amp; Recreation &gt; Amateur">Sports and Recreation &gt; Amateur</option>
-			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High School</option>
+			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High
+				School</option>
 			<option value="Sports &amp; Recreation &gt; Outdoor">Sports and Recreation &gt; Outdoor</option>
 			<option value="Sports &amp; Recreation &gt; Professional">Sports and Recreation &gt; Professional</option>
 			<option value="Technology">Technology</option>
@@ -191,10 +125,7 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV and Film</option>
 		</field>
-		<field
-			name="itCategory2"
-			type="list"
-			default=""
+		<field name="itCategory2" type="list" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_DESCRIPTION">
 			<option value="">(none)</option>
@@ -256,7 +187,8 @@
 			<option value="Society &amp; Culture &gt; Places &amp; Travel">Society and Culture &gt; Places &amp; Travel</option>
 			<option value="Sports &amp; Recreation">Sports and Recreation</option>
 			<option value="Sports &amp; Recreation &gt; Amateur">Sports and Recreation &gt; Amateur</option>
-			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High School</option>
+			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High
+				School</option>
 			<option value="Sports &amp; Recreation &gt; Outdoor">Sports and Recreation &gt; Outdoor</option>
 			<option value="Sports &amp; Recreation &gt; Professional">Sports and Recreation &gt; Professional</option>
 			<option value="Technology">Technology</option>
@@ -266,10 +198,7 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV and Film</option>
 		</field>
-		<field
-			name="itCategory3"
-			type="list"
-			default=""
+		<field name="itCategory3" type="list" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_DESCRIPTION">
 			<option value="">(none)</option>
@@ -331,7 +260,8 @@
 			<option value="Society &amp; Culture &gt; Places &amp; Travel">Society and Culture &gt; Places &amp; Travel</option>
 			<option value="Sports &amp; Recreation">Sports and Recreation</option>
 			<option value="Sports &amp; Recreation &gt; Amateur">Sports and Recreation &gt; Amateur</option>
-			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High School</option>
+			<option value="Sports &amp; Recreation &gt; College &amp; High School">Sports and Recreation &gt; College &amp; High
+				School</option>
 			<option value="Sports &amp; Recreation &gt; Outdoor">Sports and Recreation &gt; Outdoor</option>
 			<option value="Sports &amp; Recreation &gt; Professional">Sports and Recreation &gt; Professional</option>
 			<option value="Technology">Technology</option>
@@ -341,49 +271,22 @@
 			<option value="Technology &gt; Software How-To">Technology &gt; Software How-To</option>
 			<option value="TV &amp; Film">TV and Film</option>
 		</field>
-		<field
-			name="itKeywords"
-			type="text"
-			size="30"
-			default=""
-			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL"
-			description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
-		<field
-			name="itOwnerEmail"
-			type="text"
-			size="30"
-			default=""
+		<field name="itKeywords" type="text" size="30" default=""
+			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL" description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
+		<field name="itOwnerEmail" type="text" size="30" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
-		<field
-			name="itOwnerName"
-			type="text"
-			size="30"
-			default=""
+		<field name="itOwnerName" type="text" size="30" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_DESCRIPTION" />
-		<field
-			name="itSubtitle"
-			type="text"
-			size="30"
-			default=""
-			label="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_LABEL"
-			description="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION" />
+		<field name="itSubtitle" type="text" size="30" default=""
+			label="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_ITSUBTITLE_DESCRIPTION" />
 	</fieldset>
-	<fieldset
-		name="permissions"
-		label="JCONFIG_PERMISSIONS_LABEL"
-		description="JCONFIG_PERMISSIONS_DESC"
-		>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
 
-		<field
-			name="rules"
-			type="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
-			filter="rules"
-			validate="rules"
-			component="com_podcastmanager"
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox" filter="rules" validate="rules" component="com_podcastmanager"
 			section="component" />
 	</fieldset>
 </config>

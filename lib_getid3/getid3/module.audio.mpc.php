@@ -392,32 +392,32 @@ class getid3_mpc
 
 	function MPCprofileNameLookup($profileid) {
 		static $MPCprofileNameLookup = array(
-			0  => 'no profile',
-			1  => 'Experimental',
-			2  => 'unused',
-			3  => 'unused',
-			4  => 'unused',
-			5  => 'below Telephone (q = 0.0)',
-			6  => 'below Telephone (q = 1.0)',
-			7  => 'Telephone (q = 2.0)',
-			8  => 'Thumb (q = 3.0)',
-			9  => 'Radio (q = 4.0)',
-			10 => 'Standard (q = 5.0)',
-			11 => 'Extreme (q = 6.0)',
-			12 => 'Insane (q = 7.0)',
-			13 => 'BrainDead (q = 8.0)',
-			14 => 'above BrainDead (q = 9.0)',
-			15 => 'above BrainDead (q = 10.0)'
+		0  => 'no profile',
+		1  => 'Experimental',
+		2  => 'unused',
+		3  => 'unused',
+		4  => 'unused',
+		5  => 'below Telephone (q = 0.0)',
+		6  => 'below Telephone (q = 1.0)',
+		7  => 'Telephone (q = 2.0)',
+		8  => 'Thumb (q = 3.0)',
+		9  => 'Radio (q = 4.0)',
+		10 => 'Standard (q = 5.0)',
+		11 => 'Extreme (q = 6.0)',
+		12 => 'Insane (q = 7.0)',
+		13 => 'BrainDead (q = 8.0)',
+		14 => 'above BrainDead (q = 9.0)',
+		15 => 'above BrainDead (q = 10.0)'
 		);
 		return (isset($MPCprofileNameLookup[$profileid]) ? $MPCprofileNameLookup[$profileid] : 'invalid');
 	}
 
 	function MPCfrequencyLookup($frequencyid) {
 		static $MPCfrequencyLookup = array(
-			0 => 44100,
-			1 => 48000,
-			2 => 37800,
-			3 => 32000
+		0 => 44100,
+		1 => 48000,
+		2 => 37800,
+		3 => 32000
 		);
 		return (isset($MPCfrequencyLookup[$frequencyid]) ? $MPCfrequencyLookup[$frequencyid] : 'invalid');
 	}

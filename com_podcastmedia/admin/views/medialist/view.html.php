@@ -1,11 +1,11 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // No direct access
 defined('_JEXEC') or die;
@@ -30,13 +30,13 @@ class PodcastMediaViewMediaList extends JView
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$lang	= JFactory::getLanguage();
-		
+
 		JHtml::_('behavior.framework', true);
 
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('../media/media/css/medialist-'.$style.'.css');
 		if ($lang->isRTL()) :
-			$document->addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
+		$document->addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
 		endif;
 
 		$document->addScriptDeclaration("

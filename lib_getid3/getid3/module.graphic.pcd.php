@@ -57,9 +57,9 @@ class getid3_pcd
 			for ($y = 0; $y < $PCD_height; $y += 2) {
 				// The image-data of these subtypes start at the respective offsets of 02000h, 0b800h and 30000h.
 				// To decode the YcbYr to the more usual RGB-code, three lines of data have to be read, each
-				// consisting of ‘w’ bytes, where ‘w’ is the width of the image-subtype. The first ‘w’ bytes and
-				// the first half of the third ‘w’ bytes contain data for the first RGB-line, the second ‘w’ bytes
-				// and the second half of the third ‘w’ bytes contain data for a second RGB-line.
+				// consisting of ï¿½wï¿½ bytes, where ï¿½wï¿½ is the width of the image-subtype. The first ï¿½wï¿½ bytes and
+				// the first half of the third ï¿½wï¿½ bytes contain data for the first RGB-line, the second ï¿½wï¿½ bytes
+				// and the second half of the third ï¿½wï¿½ bytes contain data for a second RGB-line.
 
 				$PCD_data_Y1 = fread($fd, $PCD_width);
 				$PCD_data_Y2 = fread($fd, $PCD_width);
@@ -111,16 +111,16 @@ class getid3_pcd
 		$RGBcolor = array('red'=>0, 'green'=>0, 'blue'=>0);
 		foreach ($RGBcolor as $rgbname => $dummy) {
 			$RGBcolor[$rgbname] = max(0,
-										min(255,
-											intval(
-												round(
-													($YCbCr_constants[$rgbname]['Y'] * $Y) +
-													($YCbCr_constants[$rgbname]['Cb'] * ($Cb - 156)) +
-													($YCbCr_constants[$rgbname]['Cr'] * ($Cr - 137))
-												)
-											)
-										)
-									);
+			min(255,
+			intval(
+			round(
+			($YCbCr_constants[$rgbname]['Y'] * $Y) +
+			($YCbCr_constants[$rgbname]['Cb'] * ($Cb - 156)) +
+			($YCbCr_constants[$rgbname]['Cr'] * ($Cr - 137))
+			)
+			)
+			)
+			);
 		}
 		return (($RGBcolor['red'] * 65536) + ($RGBcolor['green'] * 256) + $RGBcolor['blue']);
 	}

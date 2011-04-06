@@ -419,7 +419,7 @@ class getid3_writetags
 		if ($this->overwrite_tags) {
 			// do nothing - ignore previous data
 		} else {
-throw new Exception('$this->overwrite_tags=false is known to be buggy in this version of getID3. Will be fixed in the near future, check www.getid3.org for a newer version.');
+			throw new Exception('$this->overwrite_tags=false is known to be buggy in this version of getID3. Will be fixed in the near future, check www.getid3.org for a newer version.');
 			if (!isset($this->ThisFileInfo['tags'][$TagFormat])) {
 				return false;
 			}
@@ -491,10 +491,10 @@ throw new Exception('$this->overwrite_tags=false is known to be buggy in this ve
 				case 'APIC':
 					foreach ($valuearray as $key => $apic_data_array) {
 						if (isset($apic_data_array['data']) &&
-							isset($apic_data_array['picturetypeid']) &&
-							isset($apic_data_array['description']) &&
-							isset($apic_data_array['mime'])) {
-								$tag_data_id3v2['APIC'][] = $apic_data_array;
+						isset($apic_data_array['picturetypeid']) &&
+						isset($apic_data_array['description']) &&
+						isset($apic_data_array['mime'])) {
+							$tag_data_id3v2['APIC'][] = $apic_data_array;
 						} else {
 							$this->errors[] = 'ID3v2 APIC data is not properly structured';
 							return false;

@@ -1,11 +1,11 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ */
 
 // No direct access
 defined('_JEXEC') or die;
@@ -58,7 +58,7 @@ class PodcastMediaModelManager extends JModel
 		// Corrections for Windows paths
 		$base = str_replace(DS, '/', $base);
 		$comPodcastMediaBaseUni = str_replace(DS, '/', COM_PODCASTMEDIA_BASE);
-		
+
 		// Get the list of folders
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);

@@ -439,51 +439,51 @@ class getid3_png
 
 	function PNGsRGBintentLookup($sRGB) {
 		static $PNGsRGBintentLookup = array(
-			0 => 'Perceptual',
-			1 => 'Relative colorimetric',
-			2 => 'Saturation',
-			3 => 'Absolute colorimetric'
+		0 => 'Perceptual',
+		1 => 'Relative colorimetric',
+		2 => 'Saturation',
+		3 => 'Absolute colorimetric'
 		);
 		return (isset($PNGsRGBintentLookup[$sRGB]) ? $PNGsRGBintentLookup[$sRGB] : 'invalid');
 	}
 
 	function PNGcompressionMethodLookup($compressionmethod) {
 		static $PNGcompressionMethodLookup = array(
-			0 => 'deflate/inflate'
+		0 => 'deflate/inflate'
 		);
 		return (isset($PNGcompressionMethodLookup[$compressionmethod]) ? $PNGcompressionMethodLookup[$compressionmethod] : 'invalid');
 	}
 
 	function PNGpHYsUnitLookup($unitid) {
 		static $PNGpHYsUnitLookup = array(
-			0 => 'unknown',
-			1 => 'meter'
+		0 => 'unknown',
+		1 => 'meter'
 		);
 		return (isset($PNGpHYsUnitLookup[$unitid]) ? $PNGpHYsUnitLookup[$unitid] : 'invalid');
 	}
 
 	function PNGoFFsUnitLookup($unitid) {
 		static $PNGoFFsUnitLookup = array(
-			0 => 'pixel',
-			1 => 'micrometer'
+		0 => 'pixel',
+		1 => 'micrometer'
 		);
 		return (isset($PNGoFFsUnitLookup[$unitid]) ? $PNGoFFsUnitLookup[$unitid] : 'invalid');
 	}
 
 	function PNGpCALequationTypeLookup($equationtype) {
 		static $PNGpCALequationTypeLookup = array(
-			0 => 'Linear mapping',
-			1 => 'Base-e exponential mapping',
-			2 => 'Arbitrary-base exponential mapping',
-			3 => 'Hyperbolic mapping'
+		0 => 'Linear mapping',
+		1 => 'Base-e exponential mapping',
+		2 => 'Arbitrary-base exponential mapping',
+		3 => 'Hyperbolic mapping'
 		);
 		return (isset($PNGpCALequationTypeLookup[$equationtype]) ? $PNGpCALequationTypeLookup[$equationtype] : 'invalid');
 	}
 
 	function PNGsCALUnitLookup($unitid) {
 		static $PNGsCALUnitLookup = array(
-			0 => 'meter',
-			1 => 'radian'
+		0 => 'meter',
+		1 => 'radian'
 		);
 		return (isset($PNGsCALUnitLookup[$unitid]) ? $PNGsCALUnitLookup[$unitid] : 'invalid');
 	}

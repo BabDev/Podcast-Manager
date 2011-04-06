@@ -30,13 +30,13 @@ class getid3_wavpack
 			} elseif (feof($fd)) {
 				break;
 			} elseif (
-				isset($ThisFileInfo['wavpack']['blockheader']['total_samples']) &&
-				isset($ThisFileInfo['wavpack']['blockheader']['block_samples']) &&
-				($ThisFileInfo['wavpack']['blockheader']['total_samples'] > 0) &&
-				($ThisFileInfo['wavpack']['blockheader']['block_samples'] > 0) &&
-				(!isset($ThisFileInfo['wavpack']['riff_trailer_size']) || ($ThisFileInfo['wavpack']['riff_trailer_size'] <= 0)) &&
-				((isset($ThisFileInfo['wavpack']['config_flags']['md5_checksum']) && ($ThisFileInfo['wavpack']['config_flags']['md5_checksum'] === false)) || !empty($ThisFileInfo['md5_data_source']))) {
-					break;
+			isset($ThisFileInfo['wavpack']['blockheader']['total_samples']) &&
+			isset($ThisFileInfo['wavpack']['blockheader']['block_samples']) &&
+			($ThisFileInfo['wavpack']['blockheader']['total_samples'] > 0) &&
+			($ThisFileInfo['wavpack']['blockheader']['block_samples'] > 0) &&
+			(!isset($ThisFileInfo['wavpack']['riff_trailer_size']) || ($ThisFileInfo['wavpack']['riff_trailer_size'] <= 0)) &&
+			((isset($ThisFileInfo['wavpack']['config_flags']['md5_checksum']) && ($ThisFileInfo['wavpack']['config_flags']['md5_checksum'] === false)) || !empty($ThisFileInfo['md5_data_source']))) {
+				break;
 			}
 
 			$blockheader_offset = ftell($fd) - 32;
@@ -60,9 +60,9 @@ class getid3_wavpack
 
 
 			if (empty($ThisFileInfo['wavpack']['blockheader']['block_samples']) ||
-				empty($ThisFileInfo['wavpack']['blockheader']['total_samples']) ||
-				($ThisFileInfo['wavpack']['blockheader']['block_samples'] <= 0) ||
-				($ThisFileInfo['wavpack']['blockheader']['total_samples'] <= 0)) {
+			empty($ThisFileInfo['wavpack']['blockheader']['total_samples']) ||
+			($ThisFileInfo['wavpack']['blockheader']['block_samples'] <= 0) ||
+			($ThisFileInfo['wavpack']['blockheader']['total_samples'] <= 0)) {
 				// Also, it is possible that the first block might not have
 				// any samples (block_samples == 0) and in this case you should skip blocks
 				// until you find one with samples because the other information (like
@@ -102,20 +102,20 @@ class getid3_wavpack
 				$ThisFileInfo['wavpack']['blockheader']['major_version'] = ord($wavpackheader{9});
 
 				if (($ThisFileInfo['wavpack']['blockheader']['major_version'] != 4) ||
-					(($ThisFileInfo['wavpack']['blockheader']['minor_version'] < 4) &&
-					($ThisFileInfo['wavpack']['blockheader']['minor_version'] > 16))) {
-						$ThisFileInfo['error'][] = 'Expecting WavPack version between "4.2" and "4.16", found version "'.$ThisFileInfo['wavpack']['blockheader']['major_version'].'.'.$ThisFileInfo['wavpack']['blockheader']['minor_version'].'" at offset '.$ThisFileInfo['wavpack']['blockheader']['offset'];
-						switch (isset($ThisFileInfo['audio']['dataformat']) ? $ThisFileInfo['audio']['dataformat'] : '') {
-							case 'wavpack':
-							case 'wvc':
-								break;
-							default:
-								unset($ThisFileInfo['fileformat']);
-								unset($ThisFileInfo['audio']);
-								unset($ThisFileInfo['wavpack']);
-								break;
-						}
-						return false;
+				(($ThisFileInfo['wavpack']['blockheader']['minor_version'] < 4) &&
+				($ThisFileInfo['wavpack']['blockheader']['minor_version'] > 16))) {
+					$ThisFileInfo['error'][] = 'Expecting WavPack version between "4.2" and "4.16", found version "'.$ThisFileInfo['wavpack']['blockheader']['major_version'].'.'.$ThisFileInfo['wavpack']['blockheader']['minor_version'].'" at offset '.$ThisFileInfo['wavpack']['blockheader']['offset'];
+					switch (isset($ThisFileInfo['audio']['dataformat']) ? $ThisFileInfo['audio']['dataformat'] : '') {
+						case 'wavpack':
+						case 'wvc':
+							break;
+						default:
+							unset($ThisFileInfo['fileformat']);
+							unset($ThisFileInfo['audio']);
+							unset($ThisFileInfo['wavpack']);
+							break;
+					}
+					return false;
 				}
 
 				$ThisFileInfo['wavpack']['blockheader']['track_number']  = ord($wavpackheader{10}); // unused
@@ -361,26 +361,26 @@ class getid3_wavpack
 
 	function WavPackMetablockNameLookup(&$id) {
 		static $WavPackMetablockNameLookup = array(
-			0x00 => 'Dummy',
-			0x01 => 'Encoder Info',
-			0x02 => 'Decorrelation Terms',
-			0x03 => 'Decorrelation Weights',
-			0x04 => 'Decorrelation Samples',
-			0x05 => 'Entropy Variables',
-			0x06 => 'Hybrid Profile',
-			0x07 => 'Shaping Weights',
-			0x08 => 'Float Info',
-			0x09 => 'Int32 Info',
-			0x0A => 'WV Bitstream',
-			0x0B => 'WVC Bitstream',
-			0x0C => 'WVX Bitstream',
-			0x0D => 'Channel Info',
-			0x21 => 'RIFF header',
-			0x22 => 'RIFF trailer',
-			0x23 => 'Replay Gain',
-			0x24 => 'Cuesheet',
-			0x25 => 'Config Block',
-			0x26 => 'MD5 Checksum',
+		0x00 => 'Dummy',
+		0x01 => 'Encoder Info',
+		0x02 => 'Decorrelation Terms',
+		0x03 => 'Decorrelation Weights',
+		0x04 => 'Decorrelation Samples',
+		0x05 => 'Entropy Variables',
+		0x06 => 'Hybrid Profile',
+		0x07 => 'Shaping Weights',
+		0x08 => 'Float Info',
+		0x09 => 'Int32 Info',
+		0x0A => 'WV Bitstream',
+		0x0B => 'WVC Bitstream',
+		0x0C => 'WVX Bitstream',
+		0x0D => 'Channel Info',
+		0x21 => 'RIFF header',
+		0x22 => 'RIFF trailer',
+		0x23 => 'Replay Gain',
+		0x24 => 'Cuesheet',
+		0x25 => 'Config Block',
+		0x26 => 'MD5 Checksum',
 		);
 		return (isset($WavPackMetablockNameLookup[$id]) ? $WavPackMetablockNameLookup[$id] : '');
 	}

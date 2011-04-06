@@ -12,7 +12,7 @@ var FileName;
 var today = new Date();
 today.setTime(today.getTime());
 
-// Create a thirty cookie
+// Create a thirty second cookie
 // expires = 1000 (milliseconds) * (seconds) * (minutes) etc.
 expires = 30000;
 var expires_date = new Date(today.getTime() + (expires));

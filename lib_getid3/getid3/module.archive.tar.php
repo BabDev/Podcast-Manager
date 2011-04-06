@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////
 //                                                             //
 // Module originally written by                                //
-//      Mike Mozolin <teddybearØmail*ru>                       //
+//      Mike Mozolin <teddybearï¿½mail*ru>                       //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
@@ -169,8 +169,8 @@ class getid3_tar {
 			'N' => 'LF_NAMES',
 			'S' => 'LF_SPARSE',
 			'V' => 'LF_VOLHDR'
-		);
-		return (isset($flag_types[$typflag]) ? $flag_types[$typflag] : '');
+			);
+			return (isset($flag_types[$typflag]) ? $flag_types[$typflag] : '');
 	}
 
 }

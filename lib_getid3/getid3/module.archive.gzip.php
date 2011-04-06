@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////
 //                                                             //
 // Module originally written by                                //
-//      Mike Mozolin <teddybearØmail*ru>                       //
+//      Mike Mozolin <teddybearï¿½mail*ru>                       //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
@@ -257,8 +257,8 @@ class getid3_gzip {
 			'12'  => 'QDOS',
 			'13'  => 'Acorn RISCOS',
 			'255' => 'unknown'
-		);
-		return (isset($os_type[$key]) ? $os_type[$key] : '');
+			);
+			return (isset($os_type[$key]) ? $os_type[$key] : '');
 	}
 
 	// Converts the eXtra FLags
@@ -267,8 +267,8 @@ class getid3_gzip {
 			'0' => 'unknown',
 			'2' => 'maximum compression',
 			'4' => 'fastest algorithm'
-		);
-		return (isset($xflag_type[$key]) ? $xflag_type[$key] : '');
+			);
+			return (isset($xflag_type[$key]) ? $xflag_type[$key] : '');
 	}
 }
 
