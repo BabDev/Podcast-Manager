@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.error.log');
+
 /**
  * File Media Controller
  *
@@ -62,9 +63,9 @@ class PodcastMediaControllerFile extends JController
 
 			// Remove spaces from the file name for RSS validation
 			$filename	= str_replace(' ', '_', $file[name]);
-			
+
 			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.strtolower($filename));
-			
+
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{
 				$log->addEntry(array('comment' => 'Invalid: '.$filepath.': '.$err));

@@ -11,7 +11,6 @@ var AudioManager = this.AudioManager = {
 	initialize: function()
 	{
 		o = this._getUriObject(window.self.location.href);
-		//console.log(o);
 		q = new Hash(this._getQueryObject(o.query));
 		this.editor = decodeURIComponent(q.get('e_name'));
 
@@ -47,7 +46,6 @@ var AudioManager = this.AudioManager = {
 		}
 
 		a = this._getUriObject(document.id('uploadForm').getProperty('action'));
-		//console.log(a);
 		q = new Hash(this._getQueryObject(a.query));
 		q.set('folder', folder);
 		var query = [];
@@ -74,8 +72,6 @@ var AudioManager = this.AudioManager = {
 
 	setFolder: function(folder,asset,author)
 	{
-		//this.showMessage('Loading');
-
 		for(var i = 0; i < this.folderlist.length; i++)
 		{
 			if(folder == this.folderlist.options[i].value) {

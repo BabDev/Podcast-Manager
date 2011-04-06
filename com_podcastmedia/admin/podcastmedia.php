@@ -25,8 +25,6 @@ if (!$user->authorise('core.manage', 'com_podcastmanager')
 	return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-$medmanparams	= JComponentHelper::getParams('com_media');
-$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
 $podmedparams	= JComponentHelper::getParams('com_podcastmedia');
 
 // Load the admin HTML view

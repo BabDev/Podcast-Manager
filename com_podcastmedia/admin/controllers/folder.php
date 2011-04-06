@@ -47,14 +47,11 @@ class PodcastMediaControllerFolder extends JController
 			$this->setRedirect('index.php?option=com_podcastmedia&folder='.$folder);
 		}
 
-		if (!$user->authorise('core.delete','com_podcastmanager'))
-		{
+		if (!$user->authorise('core.delete','com_podcastmanager')) {
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 			return false;
-		}
-		else
-		{
+		} else {
 			// Set FTP credentials, if given
 			jimport('joomla.client.helper');
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -74,8 +71,7 @@ class PodcastMediaControllerFolder extends JController
 
 					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.$path);
 					$object_file = new JObject(array('filepath' => $fullPath));
-					if (is_file($fullPath))
-					{
+					if (is_file($fullPath)) {
 						// Trigger the onContentBeforeDelete event.
 						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
 						if (in_array(false, $result, true)) {
@@ -89,11 +85,8 @@ class PodcastMediaControllerFolder extends JController
 						// Trigger the onContentAfterDelete event.
 						$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
 						$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-					}
-					else if (is_dir($fullPath))
-					{
-						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS','.DS_Store','__MACOSX'), array('index.html', '^\..*','.*~'))) == 0)
-						{
+					} else if (is_dir($fullPath)) {
+						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS','.DS_Store','__MACOSX'), array('index.html', '^\..*','.*~'))) == 0) {
 							// Trigger the onContentBeforeDelete event.
 							$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
 							if (in_array(false, $result, true)) {
@@ -107,9 +100,7 @@ class PodcastMediaControllerFolder extends JController
 							// Trigger the onContentAfterDelete event.
 							$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
 							$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-						}
-						else
-						{
+						} else {
 							//This makes no sense...
 							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
@@ -139,10 +130,8 @@ class PodcastMediaControllerFolder extends JController
 
 		$this->setRedirect('index.php?option=com_podcastmedia&folder='.$parent.'&tmpl='.JRequest::getCmd('tmpl', 'index'));
 
-		if (strlen($folder) > 0)
-		{
-			if (!$user->authorise('core.create','com_podcastmanager'))
-			{
+		if (strlen($folder) > 0) {
+			if (!$user->authorise('core.create','com_podcastmanager')) {
 				// User is not authorised to delete
 				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
 				return false;
@@ -160,8 +149,7 @@ class PodcastMediaControllerFolder extends JController
 			}
 
 			$path = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$parent.DS.$folder);
-			if (!is_dir($path) && !is_file($path))
-			{
+			if (!is_dir($path) && !is_file($path)) {
 				// Trigger the onContentBeforeSave event.
 				$object_file = new JObject(array('filepath' => $path));
 				JPluginHelper::importPlugin('content');

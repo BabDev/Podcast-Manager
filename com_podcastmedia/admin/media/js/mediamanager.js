@@ -18,7 +18,6 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 
 		this.frame		= window.frames['folderframe'];
 		this.frameurl	= this.frame.location.href;
-		//this.frameurl   = window.frames['folderframe'].location.href;
 
 		this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
 				function(node){

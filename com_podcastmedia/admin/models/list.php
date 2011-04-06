@@ -23,8 +23,7 @@ jimport('joomla.filesystem.file');
  */
 class PodcastMediaModelList extends JModel
 {
-	function getState($property = null, $default = null)
-	{
+	function getState($property = null, $default = null) {
 		static $set;
 
 		if (!$set) {
@@ -40,15 +39,13 @@ class PodcastMediaModelList extends JModel
 		return parent::getState($property, $default);
 	}
 
-	function getFolders()
-	{
+	function getFolders() {
 		$list = $this->getList();
 
 		return $list['folders'];
 	}
 
-	function getAudio()
-	{
+	function getAudio() {
 		$list = $this->getList();
 
 		return $list['audio'];
@@ -60,8 +57,7 @@ class PodcastMediaModelList extends JModel
 	 * @param string $listFolder The directory to display
 	 * @since 1.6
 	 */
-	function getList()
-	{
+	function getList() {
 		static $list;
 
 		// Only process the list once per request
@@ -80,8 +76,7 @@ class PodcastMediaModelList extends JModel
 		// Initialise variables.
 		if (strlen($current) > 0) {
 			$basePath = COM_PODCASTMEDIA_BASE.'/'.$current;
-		}
-		else {
+		} else {
 			$basePath = COM_PODCASTMEDIA_BASE;
 		}
 
@@ -96,8 +91,7 @@ class PodcastMediaModelList extends JModel
 
 		// Iterate over the files if they exist
 		if ($fileList !== false) {
-			foreach ($fileList as $file)
-			{
+			foreach ($fileList as $file) {
 				if (is_file($basePath.'/'.$file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
 					$tmp		= new JObject();
 					$tmp->name	= $file;
@@ -107,9 +101,8 @@ class PodcastMediaModelList extends JModel
 					$tmp->size	= filesize($tmp->path);
 
 					$ext = strtolower(JFile::getExt($file));
-					switch ($ext)
-					{
-						// Audio file
+					switch ($ext) {
+						// Allowed media file
 						case 'mp3':
 						case 'm4a':
 						case 'mov':
@@ -126,8 +119,7 @@ class PodcastMediaModelList extends JModel
 
 		// Iterate over the folders if they exist
 		if ($folderList !== false) {
-			foreach ($folderList as $folder)
-			{
+			foreach ($folderList as $folder) {
 				$tmp		= new JObject();
 				$tmp->name	= basename($folder);
 				$tmp->path	= str_replace(DS, '/', JPath::clean($basePath.DS.$folder));

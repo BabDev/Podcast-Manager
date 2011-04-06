@@ -19,8 +19,7 @@ abstract class PodcastMediaHelper
 	 * @param string The filename
 	 * @return boolean
 	 */
-	public static function getTypeIcon($fileName)
-	{
+	public static function getTypeIcon($fileName) {
 		// Get file extension
 		return strtolower(substr($fileName, strrpos($fileName, '.') + 1));
 	}
@@ -32,12 +31,9 @@ abstract class PodcastMediaHelper
 	 * @param string An error message to be returned
 	 * @return boolean
 	 */
-	public static function canUpload($file, &$err)
-	{
+	public static function canUpload($file, &$err) {
 		$medmanparams	= JComponentHelper::getParams('com_media');
-		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
-		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
-		
+
 		if (empty($file['name'])) {
 			$err = 'COM_PODCASTMEDIA_ERROR_UPLOAD_INPUT';
 			return false;
@@ -53,15 +49,13 @@ abstract class PodcastMediaHelper
 
 		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
 		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
-		if (!in_array($format, $allowable) && !in_array($format,$ignored))
-		{
+		if (!in_array($format, $allowable) && !in_array($format,$ignored)) {
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETYPE';
 			return false;
 		}
 
 		$maxSize = (int) ($medmanparams->get('upload_maxsize', 0) * 1024 * 1024);
-		if ($maxSize > 0 && (int) $file['size'] > $maxSize)
-		{
+		if ($maxSize > 0 && (int) $file['size'] > $maxSize) {
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE';
 			return false;
 		}
@@ -108,21 +102,17 @@ abstract class PodcastMediaHelper
 		return true;
 	}
 
-	public static function parseSize($size)
-	{
+	public static function parseSize($size) {
 		if ($size < 1024) {
 			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_BYTES', $size);
-		}
-		elseif ($size < 1024 * 1024) {
+		} elseif ($size < 1024 * 1024) {
 			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
-		}
-		else {
+		} else {
 			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
 		}
 	}
 
-	public static function countFiles($dir)
-	{
+	public static function countFiles($dir) {
 		$total_file = 0;
 		$total_dir = 0;
 

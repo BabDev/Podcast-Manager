@@ -22,8 +22,7 @@ jimport('joomla.application.component.model');
 class PodcastMediaModelManager extends JModel
 {
 
-	function getState($property = null, $default = null)
-	{
+	function getState($property = null, $default = null) {
 		static $set;
 
 		if (!$set) {
@@ -48,8 +47,7 @@ class PodcastMediaModelManager extends JModel
 	 * @param string $listFolder The directory to display
 	 * @since 1.6
 	 */
-	function getFolderList($base = null)
-	{
+	function getFolderList($base = null) {
 		// Get some paths from the request
 		if (empty($base)) {
 			$base = COM_PODCASTMEDIA_BASE;
@@ -58,7 +56,7 @@ class PodcastMediaModelManager extends JModel
 		// Corrections for Windows paths
 		$base = str_replace(DS, '/', $base);
 		$comPodcastMediaBaseUni = str_replace(DS, '/', COM_PODCASTMEDIA_BASE);
-		
+
 		// Get the list of folders
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
@@ -69,8 +67,7 @@ class PodcastMediaModelManager extends JModel
 		// Build the array of select options for the folder list
 		$options[] = JHtml::_('select.option', "","/");
 
-		foreach ($folders as $folder)
-		{
+		foreach ($folders as $folder) {
 			$folder		= str_replace($comPodcastMediaBaseUni, "", str_replace(DS, '/', $folder));
 			$value		= substr($folder, 1);
 			$text		= str_replace(DS, "/", $folder);
@@ -90,8 +87,7 @@ class PodcastMediaModelManager extends JModel
 		return $list;
 	}
 
-	function getFolderTree($base = null)
-	{
+	function getFolderTree($base = null) {
 		// Get some paths from the request
 		if (empty($base)) {
 			$base = COM_PODCASTMEDIA_BASE;
@@ -105,8 +101,7 @@ class PodcastMediaModelManager extends JModel
 
 		$tree = array();
 
-		foreach ($folders as $folder)
-		{
+		foreach ($folders as $folder) {
 			$folder		= str_replace(DS, '/', $folder);
 			$name		= substr($folder, strrpos($folder, '/') + 1);
 			$relative	= str_replace($mediaBase, '', $folder);
@@ -115,8 +110,7 @@ class PodcastMediaModelManager extends JModel
 			$node		= (object) array('name' => $name, 'relative' => $relative, 'absolute' => $absolute);
 
 			$tmp = &$tree;
-			for ($i=0,$n=count($path); $i<$n; $i++)
-			{
+			for ($i=0,$n=count($path); $i<$n; $i++) {
 				if (!isset($tmp['children'])) {
 					$tmp['children'] = array();
 				}
