@@ -31,7 +31,7 @@ class PodcastManagerViewInfo extends JView
 		JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
 		$this->addToolbar();
-		
+
 		parent::display($tpl);
 	}
 

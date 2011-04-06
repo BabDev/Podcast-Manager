@@ -12,10 +12,10 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 
-$user       = JFactory::getUser();
-$userId     = $user->get('id');
-$listOrder  = $this->state->get('list.ordering');
-$listDirn   = $this->state->get('list.direction');
+$user		= JFactory::getUser();
+$userId		= $user->get('id');
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

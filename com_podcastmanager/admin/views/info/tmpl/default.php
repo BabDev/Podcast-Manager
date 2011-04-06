@@ -12,7 +12,6 @@ defined('_JEXEC') or die();
 
 // Styles specific to the info view
 JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/info.css', false, false, false);
-
 ?>
 <div class="podMan-welcome">Thank you for installing the Podcast Manager extension suite for Joomla!  For any support issues, please visit <a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a> for documentation and links for bug reporting.</div>
 

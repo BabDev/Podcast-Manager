@@ -10,7 +10,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('script','system/multiselect.js',false,true);
 
@@ -31,7 +30,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</div>
 		<div class="filter-select">
 
-
 			<label class="selectlabel" for="filter_published">
 				<?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?>
 			</label>
@@ -50,7 +48,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 			<button type="button" id="filter-go" onclick="this.form.submit();">
 				<?php echo JText::_('JSUBMIT'); ?></button>
-
 		</div>
 	</fieldset>
 	<div class="clr"> </div>
@@ -119,7 +116,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</table>
 
 <?php echo $this->pagination->getListFooter(); ?>
-
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

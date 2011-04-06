@@ -40,7 +40,7 @@ class PodcastManagerHelper
 			'index.php?option=com_podcastmedia&view=media',
 			$vName == 'media');
 	}
-	
+
 	/**
 	 * Gets a list of the actions that can be performed.
 	 * 
@@ -52,15 +52,15 @@ class PodcastManagerHelper
 		$user		= JFactory::getUser();
 		$result		= new JObject;
 		$assetName	= 'com_podcastmanager';
-		
+
 		$actions = array(
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
 		);
-		
+
 		foreach ($actions as $action) {
 			$result->set($action, $user->authorise($action, $assetName));
 		}
-		
+
 		return $result;
 	}
 }
