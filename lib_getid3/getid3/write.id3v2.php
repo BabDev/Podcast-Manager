@@ -654,22 +654,22 @@ class getid3_write_id3v2
 						$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['right'], ceil($source_data_array['bitsvolume'] / 8), false);
 						$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['left'],  ceil($source_data_array['bitsvolume'] / 8), false);
 						if ($source_data_array['volumechange']['rightrear'] || $source_data_array['volumechange']['leftrear'] ||
-						$source_data_array['peakvolume']['rightrear'] || $source_data_array['peakvolume']['leftrear'] ||
-						$source_data_array['volumechange']['center'] || $source_data_array['peakvolume']['center'] ||
-						$source_data_array['volumechange']['bass'] || $source_data_array['peakvolume']['bass']) {
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['rightrear'], ceil($source_data_array['bitsvolume']/8), false);
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['leftrear'],  ceil($source_data_array['bitsvolume']/8), false);
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['rightrear'], ceil($source_data_array['bitsvolume']/8), false);
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['leftrear'],  ceil($source_data_array['bitsvolume']/8), false);
+							$source_data_array['peakvolume']['rightrear'] || $source_data_array['peakvolume']['leftrear'] ||
+							$source_data_array['volumechange']['center'] || $source_data_array['peakvolume']['center'] ||
+							$source_data_array['volumechange']['bass'] || $source_data_array['peakvolume']['bass']) {
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['rightrear'], ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['leftrear'],  ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['rightrear'], ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['leftrear'],  ceil($source_data_array['bitsvolume']/8), false);
 						}
 						if ($source_data_array['volumechange']['center'] || $source_data_array['peakvolume']['center'] ||
-						$source_data_array['volumechange']['bass'] || $source_data_array['peakvolume']['bass']) {
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['center'], ceil($source_data_array['bitsvolume']/8), false);
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['center'], ceil($source_data_array['bitsvolume']/8), false);
+							$source_data_array['volumechange']['bass'] || $source_data_array['peakvolume']['bass']) {
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['center'], ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['center'], ceil($source_data_array['bitsvolume']/8), false);
 						}
 						if ($source_data_array['volumechange']['bass'] || $source_data_array['peakvolume']['bass']) {
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['bass'], ceil($source_data_array['bitsvolume']/8), false);
-							$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['bass'], ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['volumechange']['bass'], ceil($source_data_array['bitsvolume']/8), false);
+								$framedata .= getid3_lib::BigEndian2String($source_data_array['peakvolume']['bass'], ceil($source_data_array['bitsvolume']/8), false);
 						}
 					}
 					break;
@@ -1780,9 +1780,9 @@ class getid3_write_id3v2
 
 	function ID3v2IsValidTextEncoding($textencodingbyte) {
 		static $ID3v2IsValidTextEncoding_cache = array(
-		2 => array(true, true),
-		3 => array(true, true),
-		4 => array(true, true, true, true));
+			2 => array(true, true),
+			3 => array(true, true),
+			4 => array(true, true, true, true));
 		return isset($ID3v2IsValidTextEncoding_cache[$this->majorversion][$textencodingbyte]);
 	}
 
@@ -1817,7 +1817,7 @@ class getid3_write_id3v2
 	}
 
 	function is_hash($var) {
-		// written by dev-nullï¿½christophe*vg
+		// written by dev-nullØchristophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($var)) {
 			$keys = array_keys($var);
@@ -1832,7 +1832,7 @@ class getid3_write_id3v2
 	}
 
 	function array_join_merge($arr1, $arr2) {
-		// written by dev-nullï¿½christophe*vg
+		// written by dev-nullØchristophe*vg
 		// taken from http://www.php.net/manual/en/function.array-merge-recursive.php
 		if (is_array($arr1) && is_array($arr2)) {
 			// the same -> merge

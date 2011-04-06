@@ -19,7 +19,7 @@ class getid3_bink
 
 	function getid3_bink(&$fd, &$ThisFileInfo) {
 
-		$ThisFileInfo['error'][] = 'Bink / Smacker files not properly processed by this version of getID3()';
+$ThisFileInfo['error'][] = 'Bink / Smacker files not properly processed by this version of getID3()';
 
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 		$fileTypeID = fread($fd, 3);

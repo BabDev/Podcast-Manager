@@ -18,7 +18,7 @@ class getid3_monkey
 {
 
 	function getid3_monkey(&$fd, &$ThisFileInfo) {
-		// based loosely on code from TMonkey by Jurgen Faul <jfaulï¿½gmx*de>
+		// based loosely on code from TMonkey by Jurgen Faul <jfaulØgmx*de>
 		// http://jfaul.de/atl  or  http://j-faul.virtualave.net/atl/atl.html
 
 		$ThisFileInfo['fileformat']            = 'mac';
@@ -175,12 +175,12 @@ class getid3_monkey
 
 	function MonkeyCompressionLevelNameLookup($compressionlevel) {
 		static $MonkeyCompressionLevelNameLookup = array(
-		0     => 'unknown',
-		1000  => 'fast',
-		2000  => 'normal',
-		3000  => 'high',
-		4000  => 'extra-high',
-		5000  => 'insane'
+			0     => 'unknown',
+			1000  => 'fast',
+			2000  => 'normal',
+			3000  => 'high',
+			4000  => 'extra-high',
+			5000  => 'insane'
 		);
 		return (isset($MonkeyCompressionLevelNameLookup[$compressionlevel]) ? $MonkeyCompressionLevelNameLookup[$compressionlevel] : 'invalid');
 	}

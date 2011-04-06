@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -27,7 +27,7 @@ class PodcastMediaViewMedia extends JView
 		$medmanparams	= JComponentHelper::getParams('com_media');
 		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
 		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
-
+		
 		$lang	= JFactory::getLanguage();
 
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
@@ -40,7 +40,7 @@ class PodcastMediaViewMedia extends JView
 		JHtml::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
 		JHtml::_('stylesheet','media/mediamanager.css', array(), true);
 		if ($lang->isRTL()) :
-		JHtml::_('stylesheet','media/mediamanager_rtl.css', array(), true);
+			JHtml::_('stylesheet','media/mediamanager_rtl.css', array(), true);
 		endif;
 
 		JHtml::_('behavior.modal');
@@ -50,9 +50,9 @@ class PodcastMediaViewMedia extends JView
 		});");
 
 		JHtml::_('script','system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet','system/mootree.css', array(), true);
+		JHtml::_('stylesheet','system/mootree.css', array(), true);	
 		if ($lang->isRTL()) :
-		JHtml::_('stylesheet','media/mootree_rtl.css', array(), true);
+			JHtml::_('stylesheet','media/mootree_rtl.css', array(), true);
 		endif;
 
 		if ($medmanparams->get('enable_flash', 1)) {
@@ -74,13 +74,13 @@ class PodcastMediaViewMedia extends JView
 			$typeString = '{ \''.JText::_('COM_PODCASTMEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
 
 			JHtml::_('behavior.uploader', 'upload-flash',
-			array(
+				array(
 					'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'mediamanager-form\').folder.value}); }',
 					'onComplete' 	=> 'function(){ PodcastMediaManager.refreshFrame(); }',
 					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
 					'typeFilter' 	=> $typeString,
 					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),
-			)
+				)
 			);
 		}
 
@@ -143,8 +143,8 @@ class PodcastMediaViewMedia extends JView
 			$dhtml = "<a href=\"#\" onclick=\"PodcastMediaManager.submit('folder.delete')\" class=\"toolbar\">
 						<span class=\"icon-32-delete\" title=\"$title\"></span>
 						$title</a>";
-						$bar->appendButton('Custom', $dhtml, 'delete');
-						JToolBarHelper::divider();
+			$bar->appendButton('Custom', $dhtml, 'delete');
+			JToolBarHelper::divider();
 		}
 		if ($user->authorise('core.admin', 'com_podcastmedia'))
 		{

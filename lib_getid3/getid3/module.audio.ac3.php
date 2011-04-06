@@ -147,7 +147,7 @@ class getid3_ac3
 
 			$thisfile_ac3['channels_enabled'] = $this->AC3channelsEnabledLookup($thisfile_ac3_raw_bsi['acmod'], $thisfile_ac3_raw_bsi['lfeon']);
 
-			// This indicates how far the average dialogue level is below digital 100 percent. Valid values are 1ï¿½31.
+			// This indicates how far the average dialogue level is below digital 100 percent. Valid values are 1–31.
 			// The value of 0 is reserved. The values of 1 to 31 are interpreted as -1 dB to -31 dB with respect to digital 100 percent.
 			$thisfile_ac3_raw_bsi['dialnorm'] = bindec(substr($AC3header['bsi'], $ac3_bsi_offset, 5));
 			$ac3_bsi_offset += 5;
@@ -186,7 +186,7 @@ class getid3_ac3
 				// a number of additional items are present in BSI or audblk to fully describe Ch2.
 
 
-				// This indicates how far the average dialogue level is below digital 100 percent. Valid values are 1ï¿½31.
+				// This indicates how far the average dialogue level is below digital 100 percent. Valid values are 1–31.
 				// The value of 0 is reserved. The values of 1 to 31 are interpreted as -1 dB to -31 dB with respect to digital 100 percent.
 				$thisfile_ac3_raw_bsi['dialnorm2'] = bindec(substr($AC3header['bsi'], $ac3_bsi_offset, 5));
 				$ac3_bsi_offset += 5;
@@ -261,10 +261,10 @@ class getid3_ac3
 
 	function AC3sampleRateCodeLookup($fscod) {
 		static $AC3sampleRateCodeLookup = array(
-		0 => 48000,
-		1 => 44100,
-		2 => 32000,
-		3 => 'reserved' // If the reserved code is indicated, the decoder should not attempt to decode audio and should mute.
+			0 => 48000,
+			1 => 44100,
+			2 => 32000,
+			3 => 'reserved' // If the reserved code is indicated, the decoder should not attempt to decode audio and should mute.
 		);
 		return (isset($AC3sampleRateCodeLookup[$fscod]) ? $AC3sampleRateCodeLookup[$fscod] : false);
 	}
@@ -295,14 +295,14 @@ class getid3_ac3
 		if (empty($AC3audioCodingModeLookup)) {
 			// array(channel configuration, # channels (not incl LFE), channel order)
 			$AC3audioCodingModeLookup = array (
-			0 => array('channel_config'=>'1+1', 'num_channels'=>2, 'channel_order'=>'Ch1,Ch2'),
-			1 => array('channel_config'=>'1/0', 'num_channels'=>1, 'channel_order'=>'C'),
-			2 => array('channel_config'=>'2/0', 'num_channels'=>2, 'channel_order'=>'L,R'),
-			3 => array('channel_config'=>'3/0', 'num_channels'=>3, 'channel_order'=>'L,C,R'),
-			4 => array('channel_config'=>'2/1', 'num_channels'=>3, 'channel_order'=>'L,R,S'),
-			5 => array('channel_config'=>'3/1', 'num_channels'=>4, 'channel_order'=>'L,C,R,S'),
-			6 => array('channel_config'=>'2/2', 'num_channels'=>4, 'channel_order'=>'L,R,SL,SR'),
-			7 => array('channel_config'=>'3/2', 'num_channels'=>5, 'channel_order'=>'L,C,R,SL,SR')
+				0 => array('channel_config'=>'1+1', 'num_channels'=>2, 'channel_order'=>'Ch1,Ch2'),
+				1 => array('channel_config'=>'1/0', 'num_channels'=>1, 'channel_order'=>'C'),
+				2 => array('channel_config'=>'2/0', 'num_channels'=>2, 'channel_order'=>'L,R'),
+				3 => array('channel_config'=>'3/0', 'num_channels'=>3, 'channel_order'=>'L,C,R'),
+				4 => array('channel_config'=>'2/1', 'num_channels'=>3, 'channel_order'=>'L,R,S'),
+				5 => array('channel_config'=>'3/1', 'num_channels'=>4, 'channel_order'=>'L,C,R,S'),
+				6 => array('channel_config'=>'2/2', 'num_channels'=>4, 'channel_order'=>'L,R,SL,SR'),
+				7 => array('channel_config'=>'3/2', 'num_channels'=>5, 'channel_order'=>'L,C,R,SL,SR')
 			);
 		}
 		return (isset($AC3audioCodingModeLookup[$acmod]) ? $AC3audioCodingModeLookup[$acmod] : false);
@@ -312,10 +312,10 @@ class getid3_ac3
 		static $AC3centerMixLevelLookup;
 		if (empty($AC3centerMixLevelLookup)) {
 			$AC3centerMixLevelLookup = array(
-			0 => pow(2, -3.0 / 6), // 0.707 (ï¿½3.0 dB)
-			1 => pow(2, -4.5 / 6), // 0.595 (ï¿½4.5 dB)
-			2 => pow(2, -6.0 / 6), // 0.500 (ï¿½6.0 dB)
-			3 => 'reserved'
+				0 => pow(2, -3.0 / 6), // 0.707 (–3.0 dB)
+				1 => pow(2, -4.5 / 6), // 0.595 (–4.5 dB)
+				2 => pow(2, -6.0 / 6), // 0.500 (–6.0 dB)
+				3 => 'reserved'
 			);
 		}
 		return (isset($AC3centerMixLevelLookup[$cmixlev]) ? $AC3centerMixLevelLookup[$cmixlev] : false);
@@ -325,10 +325,10 @@ class getid3_ac3
 		static $AC3surroundMixLevelLookup;
 		if (empty($AC3surroundMixLevelLookup)) {
 			$AC3surroundMixLevelLookup = array(
-			0 => pow(2, -3.0 / 6),
-			1 => pow(2, -6.0 / 6),
-			2 => 0,
-			3 => 'reserved'
+				0 => pow(2, -3.0 / 6),
+				1 => pow(2, -6.0 / 6),
+				2 => 0,
+				3 => 'reserved'
 			);
 		}
 		return (isset($AC3surroundMixLevelLookup[$surmixlev]) ? $AC3surroundMixLevelLookup[$surmixlev] : false);
@@ -336,10 +336,10 @@ class getid3_ac3
 
 	function AC3dolbySurroundModeLookup($dsurmod) {
 		static $AC3dolbySurroundModeLookup = array(
-		0 => 'not indicated',
-		1 => 'Not Dolby Surround encoded',
-		2 => 'Dolby Surround encoded',
-		3 => 'reserved'
+			0 => 'not indicated',
+			1 => 'Not Dolby Surround encoded',
+			2 => 'Dolby Surround encoded',
+			3 => 'reserved'
 		);
 		return (isset($AC3dolbySurroundModeLookup[$dsurmod]) ? $AC3dolbySurroundModeLookup[$dsurmod] : false);
 	}
@@ -376,7 +376,7 @@ class getid3_ac3
 		// We will represent the two 4-bit fields of compr as follows:
 		//   X0 X1 X2 X3 . Y4 Y5 Y6 Y7
 		// The meaning of the X values is most simply described by considering X to represent a 4-bit
-		// signed integer with values from ï¿½8 to +7. The gain indicated by X is then (X + 1) * 6.02 dB. The
+		// signed integer with values from –8 to +7. The gain indicated by X is then (X + 1) * 6.02 dB. The
 		// following table shows this in detail.
 
 		// Meaning of 4 msb of compr
@@ -389,13 +389,13 @@ class getid3_ac3
 		//  1    +12.04 dB
 		//  0     +6.02 dB
 		// -1         0 dB
-		// -2     ï¿½6.02 dB
-		// -3    ï¿½12.04 dB
-		// -4    ï¿½18.06 dB
-		// -5    ï¿½24.08 dB
-		// -6    ï¿½30.10 dB
-		// -7    ï¿½36.12 dB
-		// -8    ï¿½42.14 dB
+		// -2     –6.02 dB
+		// -3    –12.04 dB
+		// -4    –18.06 dB
+		// -5    –24.08 dB
+		// -6    –30.10 dB
+		// -7    –36.12 dB
+		// -8    –42.14 dB
 
 		$fourbit = str_pad(decbin(($compre & 0xF0) >> 4), 4, '0', STR_PAD_LEFT);
 		if ($fourbit{0} == '1') {
@@ -405,26 +405,26 @@ class getid3_ac3
 		}
 		$log_gain = ($log_gain + 1) * getid3_lib::RGADamplitude2dB(2);
 
-		// The value of Y is a linear representation of a gain change of up to ï¿½6 dB. Y is considered to
+		// The value of Y is a linear representation of a gain change of up to –6 dB. Y is considered to
 		// be an unsigned fractional integer, with a leading value of 1, or: 0.1 Y4 Y5 Y6 Y7 (base 2). Y can
 		// represent values between 0.111112 (or 31/32) and 0.100002 (or 1/2). Thus, Y can represent gain
-		// changes from ï¿½0.28 dB to ï¿½6.02 dB.
+		// changes from –0.28 dB to –6.02 dB.
 
 		$lin_gain = (16 + ($compre & 0x0F)) / 32;
 
 		// The combination of X and Y values allows compr to indicate gain changes from
-		//  48.16 ï¿½ 0.28 = +47.89 dB, to
-		// ï¿½42.14 ï¿½ 6.02 = ï¿½48.16 dB.
+		//  48.16 – 0.28 = +47.89 dB, to
+		// –42.14 – 6.02 = –48.16 dB.
 
 		return $log_gain - $lin_gain;
 	}
 
 	function AC3roomTypeLookup($roomtyp) {
 		static $AC3roomTypeLookup = array(
-		0 => 'not indicated',
-		1 => 'large room, X curve monitor',
-		2 => 'small room, flat monitor',
-		3 => 'reserved'
+			0 => 'not indicated',
+			1 => 'large room, X curve monitor',
+			2 => 'small room, flat monitor',
+			3 => 'reserved'
 		);
 		return (isset($AC3roomTypeLookup[$roomtyp]) ? $AC3roomTypeLookup[$roomtyp] : false);
 	}
@@ -436,25 +436,25 @@ class getid3_ac3
 		static $AC3frameSizeLookup = array();
 		if (empty($AC3frameSizeLookup)) {
 			$AC3frameSizeLookup = array (
-			0  => array(128, 138, 192),
-			1  => array(40, 160, 174, 240),
-			2  => array(48, 192, 208, 288),
-			3  => array(56, 224, 242, 336),
-			4  => array(64, 256, 278, 384),
-			5  => array(80, 320, 348, 480),
-			6  => array(96, 384, 416, 576),
-			7  => array(112, 448, 486, 672),
-			8  => array(128, 512, 556, 768),
-			9  => array(160, 640, 696, 960),
-			10 => array(192, 768, 834, 1152),
-			11 => array(224, 896, 974, 1344),
-			12 => array(256, 1024, 1114, 1536),
-			13 => array(320, 1280, 1392, 1920),
-			14 => array(384, 1536, 1670, 2304),
-			15 => array(448, 1792, 1950, 2688),
-			16 => array(512, 2048, 2228, 3072),
-			17 => array(576, 2304, 2506, 3456),
-			18 => array(640, 2560, 2786, 3840)
+				0  => array(128, 138, 192),
+				1  => array(40, 160, 174, 240),
+				2  => array(48, 192, 208, 288),
+				3  => array(56, 224, 242, 336),
+				4  => array(64, 256, 278, 384),
+				5  => array(80, 320, 348, 480),
+				6  => array(96, 384, 416, 576),
+				7  => array(112, 448, 486, 672),
+				8  => array(128, 512, 556, 768),
+				9  => array(160, 640, 696, 960),
+				10 => array(192, 768, 834, 1152),
+				11 => array(224, 896, 974, 1344),
+				12 => array(256, 1024, 1114, 1536),
+				13 => array(320, 1280, 1392, 1920),
+				14 => array(384, 1536, 1670, 2304),
+				15 => array(448, 1792, 1950, 2688),
+				16 => array(512, 2048, 2228, 3072),
+				17 => array(576, 2304, 2506, 3456),
+				18 => array(640, 2560, 2786, 3840)
 			);
 		}
 		if (($fscod == 1) && $padding) {
@@ -468,25 +468,25 @@ class getid3_ac3
 		$framesizeid =   floor($frmsizecod / 2);
 
 		static $AC3bitrateLookup = array(
-		0  => 32000,
-		1  => 40000,
-		2  => 48000,
-		3  => 56000,
-		4  => 64000,
-		5  => 80000,
-		6  => 96000,
-		7  => 112000,
-		8  => 128000,
-		9  => 160000,
-		10 => 192000,
-		11 => 224000,
-		12 => 256000,
-		13 => 320000,
-		14 => 384000,
-		15 => 448000,
-		16 => 512000,
-		17 => 576000,
-		18 => 640000
+			0  => 32000,
+			1  => 40000,
+			2  => 48000,
+			3  => 56000,
+			4  => 64000,
+			5  => 80000,
+			6  => 96000,
+			7  => 112000,
+			8  => 128000,
+			9  => 160000,
+			10 => 192000,
+			11 => 224000,
+			12 => 256000,
+			13 => 320000,
+			14 => 384000,
+			15 => 448000,
+			16 => 512000,
+			17 => 576000,
+			18 => 640000
 		);
 		return (isset($AC3bitrateLookup[$framesizeid]) ? $AC3bitrateLookup[$framesizeid] : false);
 	}

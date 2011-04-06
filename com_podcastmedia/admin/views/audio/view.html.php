@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -62,13 +62,13 @@ class PodcastMediaViewAudio extends JView
 			$typeString = '{ \''.JText::_('COM_PODCASTMEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
 
 			JHtml::_('behavior.uploader', 'upload-flash',
-			array(
+				array(
 					'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'imageForm\').folderlist.value}); }',
 					'onComplete' 	=> 'function(){ window.frames[\'audioframe\'].location.href = window.frames[\'audioframe\'].location.href; }',
 					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
 					'typeFilter' 	=> $typeString,
 					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),
-			)
+				)
 			);
 		}
 

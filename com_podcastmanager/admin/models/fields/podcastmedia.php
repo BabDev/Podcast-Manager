@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // No direct access
 defined('JPATH_BASE') or die;
@@ -50,9 +50,9 @@ class JFormFieldPodcastMedia extends JFormField
 		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'] ;
 
 		if ($asset == "") {
-			$asset = JRequest::getCmd('option');
+			 $asset = JRequest::getCmd('option');
 		}
-
+		
 		$link = (string) $this->element['link'];
 		if (!self::$initialised) {
 
@@ -116,7 +116,7 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '			'.JText::_('JLIB_FORM_BUTTON_SELECT').'</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
-
+		
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
 		$html[] = '		<a title="'.JText::_('JLIB_FORM_BUTTON_CLEAR').'"' .

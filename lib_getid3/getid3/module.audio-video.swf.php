@@ -18,7 +18,7 @@ class getid3_swf
 {
 
 	function getid3_swf(&$fd, &$ThisFileInfo, $ReturnAllTagData=false) {
-		//$start_time = microtime(true);
+//$start_time = microtime(true);
 		$ThisFileInfo['fileformat']          = 'swf';
 		$ThisFileInfo['video']['dataformat'] = 'swf';
 
@@ -97,7 +97,7 @@ class getid3_swf
 		if (($ThisFileInfo['swf']['header']['frame_count'] > 0) && ($ThisFileInfo['swf']['header']['frame_rate'] > 0)) {
 			$ThisFileInfo['playtime_seconds'] = $ThisFileInfo['swf']['header']['frame_count'] / $ThisFileInfo['swf']['header']['frame_rate'];
 		}
-		//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
+//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
 
 
 		// SWF tags
@@ -106,7 +106,7 @@ class getid3_swf
 		$SWFdataLength = strlen($SWFfileData);
 
 		while ($CurrentOffset < $SWFdataLength) {
-			//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
+//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
 
 			$TagIDTagLength = getid3_lib::LittleEndian2Int(substr($SWFfileData, $CurrentOffset, 2));
 			$TagID     = ($TagIDTagLength & 0xFFFC) >> 6;

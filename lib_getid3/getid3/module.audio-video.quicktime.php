@@ -40,7 +40,7 @@ class getid3_quicktime
 			$atomsize = getid3_lib::BigEndian2Int(substr($AtomHeader, 0, 4));
 			$atomname = substr($AtomHeader, 4, 4);
 
-			// 64-bit MOV patch by jlegateï¿½ktnc*com
+			// 64-bit MOV patch by jlegateØktnc*com
 			if ($atomsize == 1) {
 				$atomsize = getid3_lib::BigEndian2Int(fread($fd, 8));
 			}
@@ -249,46 +249,46 @@ class getid3_quicktime
 			case 'geID':
 			case 'plID':
 			case 'sfID': // iTunes store country
-			case 'ï¿½alb': // ALBum
-			case 'ï¿½art': // ARTist
-			case 'ï¿½ART':
-			case 'ï¿½aut':
-			case 'ï¿½cmt': // CoMmenT
-			case 'ï¿½com': // COMposer
-			case 'ï¿½cpy':
-			case 'ï¿½day': // content created year
-			case 'ï¿½dir':
-			case 'ï¿½ed1':
-			case 'ï¿½ed2':
-			case 'ï¿½ed3':
-			case 'ï¿½ed4':
-			case 'ï¿½ed5':
-			case 'ï¿½ed6':
-			case 'ï¿½ed7':
-			case 'ï¿½ed8':
-			case 'ï¿½ed9':
-			case 'ï¿½enc':
-			case 'ï¿½fmt':
-			case 'ï¿½gen': // GENre
-			case 'ï¿½grp': // GRouPing
-			case 'ï¿½hst':
-			case 'ï¿½inf':
-			case 'ï¿½lyr': // LYRics
-			case 'ï¿½mak':
-			case 'ï¿½mod':
-			case 'ï¿½nam': // full NAMe
-			case 'ï¿½ope':
-			case 'ï¿½PRD':
-			case 'ï¿½prd':
-			case 'ï¿½prf':
-			case 'ï¿½req':
-			case 'ï¿½src':
-			case 'ï¿½swr':
-			case 'ï¿½too': // encoder
-			case 'ï¿½trk': // TRacK
-			case 'ï¿½url':
-			case 'ï¿½wrn':
-			case 'ï¿½wrt': // WRiTer
+			case '©alb': // ALBum
+			case '©art': // ARTist
+			case '©ART':
+			case '©aut':
+			case '©cmt': // CoMmenT
+			case '©com': // COMposer
+			case '©cpy':
+			case '©day': // content created year
+			case '©dir':
+			case '©ed1':
+			case '©ed2':
+			case '©ed3':
+			case '©ed4':
+			case '©ed5':
+			case '©ed6':
+			case '©ed7':
+			case '©ed8':
+			case '©ed9':
+			case '©enc':
+			case '©fmt':
+			case '©gen': // GENre
+			case '©grp': // GRouPing
+			case '©hst':
+			case '©inf':
+			case '©lyr': // LYRics
+			case '©mak':
+			case '©mod':
+			case '©nam': // full NAMe
+			case '©ope':
+			case '©PRD':
+			case '©prd':
+			case '©prf':
+			case '©req':
+			case '©src':
+			case '©swr':
+			case '©too': // encoder
+			case '©trk': // TRacK
+			case '©url':
+			case '©wrn':
+			case '©wrt': // WRiTer
 			case '----': // itunes specific
 				if ($atomparent == 'udta') {
 					// User data atom handler
@@ -419,7 +419,7 @@ class getid3_quicktime
 
 
 			case 'cmvd': // Compressed MooV Data atom
-				// Code by ubergeekï¿½ubergeek*tv based on information from
+				// Code by ubergeekØubergeek*tv based on information from
 				// http://developer.apple.com/quicktime/icefloe/dispatch012.html
 				$atom_structure['unCompressedSize'] = getid3_lib::BigEndian2Int(substr($atom_data, 0, 4));
 
@@ -1121,18 +1121,18 @@ class getid3_quicktime
 			case 'meta': // METAdata atom
 				// http://www.geocities.com/xhelmboyx/quicktime/formats/qti-layout.txt
 				/*
-				$NextTagPosition = strpos($atom_data, 'ï¿½');
+				$NextTagPosition = strpos($atom_data, '©');
 				while ($NextTagPosition < strlen($atom_data)) {
-				$metaItemSize = getid3_lib::BigEndian2Int(substr($atom_data, $NextTagPosition - 4, 4)) - 4;
-				if ($metaItemSize == -4) {
-				break;
-				}
-				$metaItemRaw  = substr($atom_data, $NextTagPosition, $metaItemSize);
-				$metaItemKey  = substr($metaItemRaw, 0, 4);
-				$metaItemData = substr($metaItemRaw, 20);
-				$NextTagPosition += $metaItemSize + 4;
+					$metaItemSize = getid3_lib::BigEndian2Int(substr($atom_data, $NextTagPosition - 4, 4)) - 4;
+					if ($metaItemSize == -4) {
+						break;
+					}
+					$metaItemRaw  = substr($atom_data, $NextTagPosition, $metaItemSize);
+					$metaItemKey  = substr($metaItemRaw, 0, 4);
+					$metaItemData = substr($metaItemRaw, 20);
+					$NextTagPosition += $metaItemSize + 4;
 
-				$this->CopyToAppropriateCommentsSection($metaItemKey, $metaItemData, $ThisFileInfo);
+					$this->CopyToAppropriateCommentsSection($metaItemKey, $metaItemData, $ThisFileInfo);
 				}
 				*/
 				$atom_structure['version']   = getid3_lib::BigEndian2Int(substr($atom_data,  0, 1));
@@ -1200,15 +1200,15 @@ class getid3_quicktime
 				break;
 
 
-				// Observed-but-not-handled atom types are just listed here to prevent warnings being generated
+			// Observed-but-not-handled atom types are just listed here to prevent warnings being generated
 			case 'FXTC': // Something to do with Adobe After Effects (?)
 			case 'PrmA':
 			case 'code':
 			case 'FIEL': // this is NOT "fiel" (Field Ordering) as describe here: http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap3/chapter_4_section_2.html
 			case 'tapt': // TrackApertureModeDimensionsAID - http://developer.apple.com/documentation/QuickTime/Reference/QT7-1_Update_Reference/Constants/Constants.html
-				// tapt seems to be used to compute the video size [http://www.getid3.org/phpBB3/viewtopic.php?t=838]
-				// * http://lists.apple.com/archives/quicktime-api/2006/Aug/msg00014.html
-				// * http://handbrake.fr/irclogs/handbrake-dev/handbrake-dev20080128_pg2.html
+						// tapt seems to be used to compute the video size [http://www.getid3.org/phpBB3/viewtopic.php?t=838]
+						// * http://lists.apple.com/archives/quicktime-api/2006/Aug/msg00014.html
+						// * http://handbrake.fr/irclogs/handbrake-dev/handbrake-dev20080128_pg2.html
 			case 'ctts'://  STCompositionOffsetAID             - http://developer.apple.com/documentation/QuickTime/Reference/QTRef_Constants/Reference/reference.html
 			case 'cslg'://  STCompositionShiftLeastGreatestAID - http://developer.apple.com/documentation/QuickTime/Reference/QTRef_Constants/Reference/reference.html
 			case 'sdtp'://  STSampleDependencyAID              - http://developer.apple.com/documentation/QuickTime/Reference/QTRef_Constants/Reference/reference.html
@@ -1533,56 +1533,56 @@ class getid3_quicktime
 		static $QuicktimeIODSaudioProfileNameLookup = array();
 		if (empty($QuicktimeIODSaudioProfileNameLookup)) {
 			$QuicktimeIODSaudioProfileNameLookup = array(
-			0x00 => 'ISO Reserved (0x00)',
-			0x01 => 'Main Audio Profile @ Level 1',
-			0x02 => 'Main Audio Profile @ Level 2',
-			0x03 => 'Main Audio Profile @ Level 3',
-			0x04 => 'Main Audio Profile @ Level 4',
-			0x05 => 'Scalable Audio Profile @ Level 1',
-			0x06 => 'Scalable Audio Profile @ Level 2',
-			0x07 => 'Scalable Audio Profile @ Level 3',
-			0x08 => 'Scalable Audio Profile @ Level 4',
-			0x09 => 'Speech Audio Profile @ Level 1',
-			0x0A => 'Speech Audio Profile @ Level 2',
-			0x0B => 'Synthetic Audio Profile @ Level 1',
-			0x0C => 'Synthetic Audio Profile @ Level 2',
-			0x0D => 'Synthetic Audio Profile @ Level 3',
-			0x0E => 'High Quality Audio Profile @ Level 1',
-			0x0F => 'High Quality Audio Profile @ Level 2',
-			0x10 => 'High Quality Audio Profile @ Level 3',
-			0x11 => 'High Quality Audio Profile @ Level 4',
-			0x12 => 'High Quality Audio Profile @ Level 5',
-			0x13 => 'High Quality Audio Profile @ Level 6',
-			0x14 => 'High Quality Audio Profile @ Level 7',
-			0x15 => 'High Quality Audio Profile @ Level 8',
-			0x16 => 'Low Delay Audio Profile @ Level 1',
-			0x17 => 'Low Delay Audio Profile @ Level 2',
-			0x18 => 'Low Delay Audio Profile @ Level 3',
-			0x19 => 'Low Delay Audio Profile @ Level 4',
-			0x1A => 'Low Delay Audio Profile @ Level 5',
-			0x1B => 'Low Delay Audio Profile @ Level 6',
-			0x1C => 'Low Delay Audio Profile @ Level 7',
-			0x1D => 'Low Delay Audio Profile @ Level 8',
-			0x1E => 'Natural Audio Profile @ Level 1',
-			0x1F => 'Natural Audio Profile @ Level 2',
-			0x20 => 'Natural Audio Profile @ Level 3',
-			0x21 => 'Natural Audio Profile @ Level 4',
-			0x22 => 'Mobile Audio Internetworking Profile @ Level 1',
-			0x23 => 'Mobile Audio Internetworking Profile @ Level 2',
-			0x24 => 'Mobile Audio Internetworking Profile @ Level 3',
-			0x25 => 'Mobile Audio Internetworking Profile @ Level 4',
-			0x26 => 'Mobile Audio Internetworking Profile @ Level 5',
-			0x27 => 'Mobile Audio Internetworking Profile @ Level 6',
-			0x28 => 'AAC Profile @ Level 1',
-			0x29 => 'AAC Profile @ Level 2',
-			0x2A => 'AAC Profile @ Level 4',
-			0x2B => 'AAC Profile @ Level 5',
-			0x2C => 'High Efficiency AAC Profile @ Level 2',
-			0x2D => 'High Efficiency AAC Profile @ Level 3',
-			0x2E => 'High Efficiency AAC Profile @ Level 4',
-			0x2F => 'High Efficiency AAC Profile @ Level 5',
-			0xFE => 'Not part of MPEG-4 audio profiles',
-			0xFF => 'No audio capability required',
+			    0x00 => 'ISO Reserved (0x00)',
+			    0x01 => 'Main Audio Profile @ Level 1',
+			    0x02 => 'Main Audio Profile @ Level 2',
+			    0x03 => 'Main Audio Profile @ Level 3',
+			    0x04 => 'Main Audio Profile @ Level 4',
+			    0x05 => 'Scalable Audio Profile @ Level 1',
+			    0x06 => 'Scalable Audio Profile @ Level 2',
+			    0x07 => 'Scalable Audio Profile @ Level 3',
+			    0x08 => 'Scalable Audio Profile @ Level 4',
+			    0x09 => 'Speech Audio Profile @ Level 1',
+			    0x0A => 'Speech Audio Profile @ Level 2',
+			    0x0B => 'Synthetic Audio Profile @ Level 1',
+			    0x0C => 'Synthetic Audio Profile @ Level 2',
+			    0x0D => 'Synthetic Audio Profile @ Level 3',
+			    0x0E => 'High Quality Audio Profile @ Level 1',
+			    0x0F => 'High Quality Audio Profile @ Level 2',
+			    0x10 => 'High Quality Audio Profile @ Level 3',
+			    0x11 => 'High Quality Audio Profile @ Level 4',
+			    0x12 => 'High Quality Audio Profile @ Level 5',
+			    0x13 => 'High Quality Audio Profile @ Level 6',
+			    0x14 => 'High Quality Audio Profile @ Level 7',
+			    0x15 => 'High Quality Audio Profile @ Level 8',
+			    0x16 => 'Low Delay Audio Profile @ Level 1',
+			    0x17 => 'Low Delay Audio Profile @ Level 2',
+			    0x18 => 'Low Delay Audio Profile @ Level 3',
+			    0x19 => 'Low Delay Audio Profile @ Level 4',
+			    0x1A => 'Low Delay Audio Profile @ Level 5',
+			    0x1B => 'Low Delay Audio Profile @ Level 6',
+			    0x1C => 'Low Delay Audio Profile @ Level 7',
+			    0x1D => 'Low Delay Audio Profile @ Level 8',
+			    0x1E => 'Natural Audio Profile @ Level 1',
+			    0x1F => 'Natural Audio Profile @ Level 2',
+			    0x20 => 'Natural Audio Profile @ Level 3',
+			    0x21 => 'Natural Audio Profile @ Level 4',
+			    0x22 => 'Mobile Audio Internetworking Profile @ Level 1',
+			    0x23 => 'Mobile Audio Internetworking Profile @ Level 2',
+			    0x24 => 'Mobile Audio Internetworking Profile @ Level 3',
+			    0x25 => 'Mobile Audio Internetworking Profile @ Level 4',
+			    0x26 => 'Mobile Audio Internetworking Profile @ Level 5',
+			    0x27 => 'Mobile Audio Internetworking Profile @ Level 6',
+			    0x28 => 'AAC Profile @ Level 1',
+			    0x29 => 'AAC Profile @ Level 2',
+			    0x2A => 'AAC Profile @ Level 4',
+			    0x2B => 'AAC Profile @ Level 5',
+			    0x2C => 'High Efficiency AAC Profile @ Level 2',
+			    0x2D => 'High Efficiency AAC Profile @ Level 3',
+			    0x2E => 'High Efficiency AAC Profile @ Level 4',
+			    0x2F => 'High Efficiency AAC Profile @ Level 5',
+			    0xFE => 'Not part of MPEG-4 audio profiles',
+			    0xFF => 'No audio capability required',
 			);
 		}
 		return (isset($QuicktimeIODSaudioProfileNameLookup[$audio_profile_id]) ? $QuicktimeIODSaudioProfileNameLookup[$audio_profile_id] : 'ISO Reserved / User Private');
@@ -1593,68 +1593,68 @@ class getid3_quicktime
 		static $QuicktimeIODSvideoProfileNameLookup = array();
 		if (empty($QuicktimeIODSvideoProfileNameLookup)) {
 			$QuicktimeIODSvideoProfileNameLookup = array(
-			0x00 => 'Reserved (0x00) Profile',
-			0x01 => 'Simple Profile @ Level 1',
-			0x02 => 'Simple Profile @ Level 2',
-			0x03 => 'Simple Profile @ Level 3',
-			0x08 => 'Simple Profile @ Level 0',
-			0x10 => 'Simple Scalable Profile @ Level 0',
-			0x11 => 'Simple Scalable Profile @ Level 1',
-			0x12 => 'Simple Scalable Profile @ Level 2',
-			0x15 => 'AVC/H264 Profile',
-			0x21 => 'Core Profile @ Level 1',
-			0x22 => 'Core Profile @ Level 2',
-			0x32 => 'Main Profile @ Level 2',
-			0x33 => 'Main Profile @ Level 3',
-			0x34 => 'Main Profile @ Level 4',
-			0x42 => 'N-bit Profile @ Level 2',
-			0x51 => 'Scalable Texture Profile @ Level 1',
-			0x61 => 'Simple Face Animation Profile @ Level 1',
-			0x62 => 'Simple Face Animation Profile @ Level 2',
-			0x63 => 'Simple FBA Profile @ Level 1',
-			0x64 => 'Simple FBA Profile @ Level 2',
-			0x71 => 'Basic Animated Texture Profile @ Level 1',
-			0x72 => 'Basic Animated Texture Profile @ Level 2',
-			0x81 => 'Hybrid Profile @ Level 1',
-			0x82 => 'Hybrid Profile @ Level 2',
-			0x91 => 'Advanced Real Time Simple Profile @ Level 1',
-			0x92 => 'Advanced Real Time Simple Profile @ Level 2',
-			0x93 => 'Advanced Real Time Simple Profile @ Level 3',
-			0x94 => 'Advanced Real Time Simple Profile @ Level 4',
-			0xA1 => 'Core Scalable Profile @ Level1',
-			0xA2 => 'Core Scalable Profile @ Level2',
-			0xA3 => 'Core Scalable Profile @ Level3',
-			0xB1 => 'Advanced Coding Efficiency Profile @ Level 1',
-			0xB2 => 'Advanced Coding Efficiency Profile @ Level 2',
-			0xB3 => 'Advanced Coding Efficiency Profile @ Level 3',
-			0xB4 => 'Advanced Coding Efficiency Profile @ Level 4',
-			0xC1 => 'Advanced Core Profile @ Level 1',
-			0xC2 => 'Advanced Core Profile @ Level 2',
-			0xD1 => 'Advanced Scalable Texture @ Level1',
-			0xD2 => 'Advanced Scalable Texture @ Level2',
-			0xE1 => 'Simple Studio Profile @ Level 1',
-			0xE2 => 'Simple Studio Profile @ Level 2',
-			0xE3 => 'Simple Studio Profile @ Level 3',
-			0xE4 => 'Simple Studio Profile @ Level 4',
-			0xE5 => 'Core Studio Profile @ Level 1',
-			0xE6 => 'Core Studio Profile @ Level 2',
-			0xE7 => 'Core Studio Profile @ Level 3',
-			0xE8 => 'Core Studio Profile @ Level 4',
-			0xF0 => 'Advanced Simple Profile @ Level 0',
-			0xF1 => 'Advanced Simple Profile @ Level 1',
-			0xF2 => 'Advanced Simple Profile @ Level 2',
-			0xF3 => 'Advanced Simple Profile @ Level 3',
-			0xF4 => 'Advanced Simple Profile @ Level 4',
-			0xF5 => 'Advanced Simple Profile @ Level 5',
-			0xF7 => 'Advanced Simple Profile @ Level 3b',
-			0xF8 => 'Fine Granularity Scalable Profile @ Level 0',
-			0xF9 => 'Fine Granularity Scalable Profile @ Level 1',
-			0xFA => 'Fine Granularity Scalable Profile @ Level 2',
-			0xFB => 'Fine Granularity Scalable Profile @ Level 3',
-			0xFC => 'Fine Granularity Scalable Profile @ Level 4',
-			0xFD => 'Fine Granularity Scalable Profile @ Level 5',
-			0xFE => 'Not part of MPEG-4 Visual profiles',
-			0xFF => 'No visual capability required',
+				0x00 => 'Reserved (0x00) Profile',
+				0x01 => 'Simple Profile @ Level 1',
+				0x02 => 'Simple Profile @ Level 2',
+				0x03 => 'Simple Profile @ Level 3',
+				0x08 => 'Simple Profile @ Level 0',
+				0x10 => 'Simple Scalable Profile @ Level 0',
+				0x11 => 'Simple Scalable Profile @ Level 1',
+				0x12 => 'Simple Scalable Profile @ Level 2',
+				0x15 => 'AVC/H264 Profile',
+				0x21 => 'Core Profile @ Level 1',
+				0x22 => 'Core Profile @ Level 2',
+				0x32 => 'Main Profile @ Level 2',
+				0x33 => 'Main Profile @ Level 3',
+				0x34 => 'Main Profile @ Level 4',
+				0x42 => 'N-bit Profile @ Level 2',
+				0x51 => 'Scalable Texture Profile @ Level 1',
+				0x61 => 'Simple Face Animation Profile @ Level 1',
+				0x62 => 'Simple Face Animation Profile @ Level 2',
+				0x63 => 'Simple FBA Profile @ Level 1',
+				0x64 => 'Simple FBA Profile @ Level 2',
+				0x71 => 'Basic Animated Texture Profile @ Level 1',
+				0x72 => 'Basic Animated Texture Profile @ Level 2',
+				0x81 => 'Hybrid Profile @ Level 1',
+				0x82 => 'Hybrid Profile @ Level 2',
+				0x91 => 'Advanced Real Time Simple Profile @ Level 1',
+				0x92 => 'Advanced Real Time Simple Profile @ Level 2',
+				0x93 => 'Advanced Real Time Simple Profile @ Level 3',
+				0x94 => 'Advanced Real Time Simple Profile @ Level 4',
+				0xA1 => 'Core Scalable Profile @ Level1',
+				0xA2 => 'Core Scalable Profile @ Level2',
+				0xA3 => 'Core Scalable Profile @ Level3',
+				0xB1 => 'Advanced Coding Efficiency Profile @ Level 1',
+				0xB2 => 'Advanced Coding Efficiency Profile @ Level 2',
+				0xB3 => 'Advanced Coding Efficiency Profile @ Level 3',
+				0xB4 => 'Advanced Coding Efficiency Profile @ Level 4',
+				0xC1 => 'Advanced Core Profile @ Level 1',
+				0xC2 => 'Advanced Core Profile @ Level 2',
+				0xD1 => 'Advanced Scalable Texture @ Level1',
+				0xD2 => 'Advanced Scalable Texture @ Level2',
+				0xE1 => 'Simple Studio Profile @ Level 1',
+				0xE2 => 'Simple Studio Profile @ Level 2',
+				0xE3 => 'Simple Studio Profile @ Level 3',
+				0xE4 => 'Simple Studio Profile @ Level 4',
+				0xE5 => 'Core Studio Profile @ Level 1',
+				0xE6 => 'Core Studio Profile @ Level 2',
+				0xE7 => 'Core Studio Profile @ Level 3',
+				0xE8 => 'Core Studio Profile @ Level 4',
+				0xF0 => 'Advanced Simple Profile @ Level 0',
+				0xF1 => 'Advanced Simple Profile @ Level 1',
+				0xF2 => 'Advanced Simple Profile @ Level 2',
+				0xF3 => 'Advanced Simple Profile @ Level 3',
+				0xF4 => 'Advanced Simple Profile @ Level 4',
+				0xF5 => 'Advanced Simple Profile @ Level 5',
+				0xF7 => 'Advanced Simple Profile @ Level 3b',
+				0xF8 => 'Fine Granularity Scalable Profile @ Level 0',
+				0xF9 => 'Fine Granularity Scalable Profile @ Level 1',
+				0xFA => 'Fine Granularity Scalable Profile @ Level 2',
+				0xFB => 'Fine Granularity Scalable Profile @ Level 3',
+				0xFC => 'Fine Granularity Scalable Profile @ Level 4',
+				0xFD => 'Fine Granularity Scalable Profile @ Level 5',
+				0xFE => 'Not part of MPEG-4 Visual profiles',
+				0xFF => 'No visual capability required',
 			);
 		}
 		return (isset($QuicktimeIODSvideoProfileNameLookup[$video_profile_id]) ? $QuicktimeIODSvideoProfileNameLookup[$video_profile_id] : 'ISO Reserved Profile');
@@ -1712,58 +1712,58 @@ class getid3_quicktime
 	function CopyToAppropriateCommentsSection($keyname, $data, &$ThisFileInfo, $boxname='') {
 		static $handyatomtranslatorarray = array();
 		if (empty($handyatomtranslatorarray)) {
-			$handyatomtranslatorarray['ï¿½cpy'] = 'copyright';
-			$handyatomtranslatorarray['ï¿½day'] = 'creation_date';    // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½dir'] = 'director';
-			$handyatomtranslatorarray['ï¿½ed1'] = 'edit1';
-			$handyatomtranslatorarray['ï¿½ed2'] = 'edit2';
-			$handyatomtranslatorarray['ï¿½ed3'] = 'edit3';
-			$handyatomtranslatorarray['ï¿½ed4'] = 'edit4';
-			$handyatomtranslatorarray['ï¿½ed5'] = 'edit5';
-			$handyatomtranslatorarray['ï¿½ed6'] = 'edit6';
-			$handyatomtranslatorarray['ï¿½ed7'] = 'edit7';
-			$handyatomtranslatorarray['ï¿½ed8'] = 'edit8';
-			$handyatomtranslatorarray['ï¿½ed9'] = 'edit9';
-			$handyatomtranslatorarray['ï¿½fmt'] = 'format';
-			$handyatomtranslatorarray['ï¿½inf'] = 'information';
-			$handyatomtranslatorarray['ï¿½prd'] = 'producer';
-			$handyatomtranslatorarray['ï¿½prf'] = 'performers';
-			$handyatomtranslatorarray['ï¿½req'] = 'system_requirements';
-			$handyatomtranslatorarray['ï¿½src'] = 'source_credit';
-			$handyatomtranslatorarray['ï¿½wrt'] = 'writer';
+			$handyatomtranslatorarray['©cpy'] = 'copyright';
+			$handyatomtranslatorarray['©day'] = 'creation_date';    // iTunes 4.0
+			$handyatomtranslatorarray['©dir'] = 'director';
+			$handyatomtranslatorarray['©ed1'] = 'edit1';
+			$handyatomtranslatorarray['©ed2'] = 'edit2';
+			$handyatomtranslatorarray['©ed3'] = 'edit3';
+			$handyatomtranslatorarray['©ed4'] = 'edit4';
+			$handyatomtranslatorarray['©ed5'] = 'edit5';
+			$handyatomtranslatorarray['©ed6'] = 'edit6';
+			$handyatomtranslatorarray['©ed7'] = 'edit7';
+			$handyatomtranslatorarray['©ed8'] = 'edit8';
+			$handyatomtranslatorarray['©ed9'] = 'edit9';
+			$handyatomtranslatorarray['©fmt'] = 'format';
+			$handyatomtranslatorarray['©inf'] = 'information';
+			$handyatomtranslatorarray['©prd'] = 'producer';
+			$handyatomtranslatorarray['©prf'] = 'performers';
+			$handyatomtranslatorarray['©req'] = 'system_requirements';
+			$handyatomtranslatorarray['©src'] = 'source_credit';
+			$handyatomtranslatorarray['©wrt'] = 'writer';
 
 			// http://www.geocities.com/xhelmboyx/quicktime/formats/qtm-layout.txt
-			$handyatomtranslatorarray['ï¿½nam'] = 'title';           // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½cmt'] = 'comment';         // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½wrn'] = 'warning';
-			$handyatomtranslatorarray['ï¿½hst'] = 'host_computer';
-			$handyatomtranslatorarray['ï¿½mak'] = 'make';
-			$handyatomtranslatorarray['ï¿½mod'] = 'model';
-			$handyatomtranslatorarray['ï¿½PRD'] = 'product';
-			$handyatomtranslatorarray['ï¿½swr'] = 'software';
-			$handyatomtranslatorarray['ï¿½aut'] = 'author';
-			$handyatomtranslatorarray['ï¿½ART'] = 'artist';
-			$handyatomtranslatorarray['ï¿½trk'] = 'track';
-			$handyatomtranslatorarray['ï¿½alb'] = 'album';           // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½com'] = 'comment';
-			$handyatomtranslatorarray['ï¿½gen'] = 'genre';           // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½ope'] = 'composer';
-			$handyatomtranslatorarray['ï¿½url'] = 'url';
-			$handyatomtranslatorarray['ï¿½enc'] = 'encoder';
+			$handyatomtranslatorarray['©nam'] = 'title';           // iTunes 4.0
+			$handyatomtranslatorarray['©cmt'] = 'comment';         // iTunes 4.0
+			$handyatomtranslatorarray['©wrn'] = 'warning';
+			$handyatomtranslatorarray['©hst'] = 'host_computer';
+			$handyatomtranslatorarray['©mak'] = 'make';
+			$handyatomtranslatorarray['©mod'] = 'model';
+			$handyatomtranslatorarray['©PRD'] = 'product';
+			$handyatomtranslatorarray['©swr'] = 'software';
+			$handyatomtranslatorarray['©aut'] = 'author';
+			$handyatomtranslatorarray['©ART'] = 'artist';
+			$handyatomtranslatorarray['©trk'] = 'track';
+			$handyatomtranslatorarray['©alb'] = 'album';           // iTunes 4.0
+			$handyatomtranslatorarray['©com'] = 'comment';
+			$handyatomtranslatorarray['©gen'] = 'genre';           // iTunes 4.0
+			$handyatomtranslatorarray['©ope'] = 'composer';
+			$handyatomtranslatorarray['©url'] = 'url';
+			$handyatomtranslatorarray['©enc'] = 'encoder';
 
 			// http://atomicparsley.sourceforge.net/mpeg-4files.html
-			$handyatomtranslatorarray['ï¿½art'] = 'artist';           // iTunes 4.0
+			$handyatomtranslatorarray['©art'] = 'artist';           // iTunes 4.0
 			$handyatomtranslatorarray['aART'] = 'album_artist';
 			$handyatomtranslatorarray['trkn'] = 'track_number';     // iTunes 4.0
 			$handyatomtranslatorarray['disk'] = 'disc_number';      // iTunes 4.0
 			$handyatomtranslatorarray['gnre'] = 'genre';            // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½too'] = 'encoder';          // iTunes 4.0
+			$handyatomtranslatorarray['©too'] = 'encoder';          // iTunes 4.0
 			$handyatomtranslatorarray['tmpo'] = 'bpm';              // iTunes 4.0
 			$handyatomtranslatorarray['cprt'] = 'copyright';        // iTunes 4.0?
 			$handyatomtranslatorarray['cpil'] = 'compilation';      // iTunes 4.0
 			$handyatomtranslatorarray['covr'] = 'artwork';          // iTunes 4.0
 			$handyatomtranslatorarray['rtng'] = 'rating';           // iTunes 4.0
-			$handyatomtranslatorarray['ï¿½grp'] = 'grouping';         // iTunes 4.2
+			$handyatomtranslatorarray['©grp'] = 'grouping';         // iTunes 4.2
 			$handyatomtranslatorarray['stik'] = 'stik';             // iTunes 4.9
 			$handyatomtranslatorarray['pcst'] = 'podcast';          // iTunes 4.9
 			$handyatomtranslatorarray['catg'] = 'category';         // iTunes 4.9
@@ -1771,7 +1771,7 @@ class getid3_quicktime
 			$handyatomtranslatorarray['purl'] = 'podcast_url';      // iTunes 4.9
 			$handyatomtranslatorarray['egid'] = 'episode_guid';     // iTunes 4.9
 			$handyatomtranslatorarray['desc'] = 'description';      // iTunes 5.0
-			$handyatomtranslatorarray['ï¿½lyr'] = 'lyrics';           // iTunes 5.0
+			$handyatomtranslatorarray['©lyr'] = 'lyrics';           // iTunes 5.0
 			$handyatomtranslatorarray['tvnn'] = 'tv_network_name';  // iTunes 6.0
 			$handyatomtranslatorarray['tvsh'] = 'tv_show_name';     // iTunes 6.0
 			$handyatomtranslatorarray['tvsn'] = 'tv_season';        // iTunes 6.0

@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // Restricted access
 defined('_JEXEC') or die();
@@ -29,7 +29,7 @@ class PodcastManagerViewPodcasts extends JView
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
-
+		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode("\n", $errors));
@@ -44,7 +44,7 @@ class PodcastManagerViewPodcasts extends JView
 
 			$this->addToolbar();
 		}
-
+				
 		parent::display($tpl);
 	}
 

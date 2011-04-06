@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.6" client="site" method="upgrade">
+<extension
+	type="module"
+	version="1.6"
+	client="site"
+	method="upgrade">
 	<name>mod_podcastmanager</name>
 	<creationDate>January 2011</creationDate>
 	<author>Michael Babker</author>
@@ -22,30 +26,60 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="text" type="text" label="MOD_PODCASTMANAGER_FIELD_TEXT_LABEL"
+				<field
+					name="text"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_TEXT_LABEL"
 					description="MOD_PODCASTMANAGER_FIELD_TEXT_DESCRIPTION" />
-				<field name="urischeme" type="radio" default="http"
-					label="MOD_PODCASTMANAGER_FIELD_URISCHEME_LABEL" description="MOD_PODCASTMANAGER_FIELD_URISCHEME_DESCRIPTION">
-					<option value="http">http://</option>
-					<option value="itpc">itpc://</option>
+				<field
+					name="urischeme"
+					type="radio"
+					default="http"
+					label="MOD_PODCASTMANAGER_FIELD_URISCHEME_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_URISCHEME_DESCRIPTION">
+					<option
+						value="http">http://</option>
+					<option
+						value="itpc">itpc://</option>
 				</field>
-				<field name="plainlink" type="radio" default="1"
-					label="MOD_PODCASTMANAGER_FIELD_PLAINLINK_LABEL" description="MOD_PODCASTMANAGER_FIELD_PLAINLINK_DESCRIPTION">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+				<field
+					name="plainlink"
+					type="radio"
+					default="1"
+					label="MOD_PODCASTMANAGER_FIELD_PLAINLINK_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_PLAINLINK_DESCRIPTION">
+					<option
+						value="0">JNO</option>
+					<option
+						value="1">JYES</option>
 				</field>
-				<field name="moduleclass_sfx" type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field name="otherlink" type="text"
-					label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL" description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
-				<field name="otherimage" type="text"
-					label="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_LABEL" description="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_DESCRIPTION" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="otherlink"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
+				<field
+					name="otherimage"
+					type="text"
+					label="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_DESCRIPTION" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="0"
-					label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL" description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
+					<option
+						value="0">JNO</option>
+					<option
+						value="1">JYES</option>
 				</field>
 			</fieldset>
 		</fields>

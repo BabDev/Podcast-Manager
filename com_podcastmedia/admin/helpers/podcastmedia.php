@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 /**
  * @package		Podcast Manager
@@ -15,7 +15,7 @@ abstract class PodcastMediaHelper
 {
 	/**
 	 * Gets the icon type
-	 *
+	 * 
 	 * @param string The filename
 	 * @return boolean
 	 */
@@ -37,7 +37,7 @@ abstract class PodcastMediaHelper
 		$medmanparams	= JComponentHelper::getParams('com_media');
 		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
 		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
-
+		
 		if (empty($file['name'])) {
 			$err = 'COM_PODCASTMEDIA_ERROR_UPLOAD_INPUT';
 			return false;

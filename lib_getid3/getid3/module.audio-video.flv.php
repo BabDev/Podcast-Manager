@@ -31,7 +31,7 @@
 //  * version 0.5 (21 May 2009)                                //
 //                                                             //
 //  Better parsing of files with h264 video                    //
-//    by Evgeny Moysevich <moysevichï¿½gmail*com>                //
+//    by Evgeny Moysevich <moysevichØgmail*com>                //
 //  * version 0.6 (24 May 2009)                                //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ class getid3_flv
 {
 
 	function getid3_flv(&$fd, &$ThisFileInfo, $ReturnAllTagData=false) {
-		//$start_time = microtime(true);
+//$start_time = microtime(true);
 		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 
 		$FLVdataLength = $ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset'];
@@ -93,7 +93,7 @@ class getid3_flv
 		if ($FrameSizeDataLength > $FLVheaderFrameLength) {
 			fseek($fd, $FrameSizeDataLength - $FLVheaderFrameLength, SEEK_CUR);
 		}
-		//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
+//echo __LINE__.'='.number_format(microtime(true) - $start_time, 3).'<br>';
 
 		$Duration = 0;
 		$found_video = false;
@@ -113,7 +113,7 @@ class getid3_flv
 				$Duration = $Timestamp;
 			}
 
-			//echo __LINE__.'['.ftell($fd).']=('.$TagType.')='.number_format(microtime(true) - $start_time, 3).'<br>';
+//echo __LINE__.'['.ftell($fd).']=('.$TagType.')='.number_format(microtime(true) - $start_time, 3).'<br>';
 
 			switch ($TagType) {
 				case GETID3_FLV_TAG_AUDIO:
@@ -134,7 +134,7 @@ class getid3_flv
 						$FLVvideoHeader = fread($fd, 11);
 
 						if ($ThisFileInfo['flv']['video']['videoCodec'] == GETID3_FLV_VIDEO_H264) {
-							// this code block contributed by: moysevichï¿½gmail*com
+							// this code block contributed by: moysevichØgmail*com
 
 							$AVCPacketType = getid3_lib::BigEndian2Int(substr($FLVvideoHeader, 0, 1));
 							if ($AVCPacketType == H264_AVC_SEQUENCE_HEADER) {
@@ -160,7 +160,7 @@ class getid3_flv
 									}
 								}
 							}
-							// end: moysevichï¿½gmail*com
+							// end: moysevichØgmail*com
 
 						} elseif ($ThisFileInfo['flv']['video']['videoCodec'] == GETID3_FLV_VIDEO_H263) {
 
@@ -229,7 +229,7 @@ class getid3_flv
 					}
 					break;
 
-					// Meta tag
+				// Meta tag
 				case GETID3_FLV_TAG_META:
 					if (!$found_meta) {
 						$found_meta = true;
@@ -311,52 +311,52 @@ class getid3_flv
 
 	function FLVaudioFormat($id) {
 		$FLVaudioFormat = array(
-		0  => 'Linear PCM, platform endian',
-		1  => 'ADPCM',
-		2  => 'mp3',
-		3  => 'Linear PCM, little endian',
-		4  => 'Nellymoser 16kHz mono',
-		5  => 'Nellymoser 8kHz mono',
-		6  => 'Nellymoser',
-		7  => 'G.711A-law logarithmic PCM',
-		8  => 'G.711 mu-law logarithmic PCM',
-		9  => 'reserved',
-		10 => 'AAC',
-		11 => false, // unknown?
-		12 => false, // unknown?
-		13 => false, // unknown?
-		14 => 'mp3 8kHz',
-		15 => 'Device-specific sound',
+			0  => 'Linear PCM, platform endian',
+			1  => 'ADPCM',
+			2  => 'mp3',
+			3  => 'Linear PCM, little endian',
+			4  => 'Nellymoser 16kHz mono',
+			5  => 'Nellymoser 8kHz mono',
+			6  => 'Nellymoser',
+			7  => 'G.711A-law logarithmic PCM',
+			8  => 'G.711 mu-law logarithmic PCM',
+			9  => 'reserved',
+			10 => 'AAC',
+			11 => false, // unknown?
+			12 => false, // unknown?
+			13 => false, // unknown?
+			14 => 'mp3 8kHz',
+			15 => 'Device-specific sound',
 		);
 		return (isset($FLVaudioFormat[$id]) ? $FLVaudioFormat[$id] : false);
 	}
 
 	function FLVaudioRate($id) {
 		$FLVaudioRate = array(
-		0 =>  5500,
-		1 => 11025,
-		2 => 22050,
-		3 => 44100,
+			0 =>  5500,
+			1 => 11025,
+			2 => 22050,
+			3 => 44100,
 		);
 		return (isset($FLVaudioRate[$id]) ? $FLVaudioRate[$id] : false);
 	}
 
 	function FLVaudioBitDepth($id) {
 		$FLVaudioBitDepth = array(
-		0 =>  8,
-		1 => 16,
+			0 =>  8,
+			1 => 16,
 		);
 		return (isset($FLVaudioBitDepth[$id]) ? $FLVaudioBitDepth[$id] : false);
 	}
 
 	function FLVvideoCodec($id) {
 		$FLVvideoCodec = array(
-		GETID3_FLV_VIDEO_H263         => 'Sorenson H.263',
-		GETID3_FLV_VIDEO_SCREEN       => 'Screen video',
-		GETID3_FLV_VIDEO_VP6FLV       => 'On2 VP6',
-		GETID3_FLV_VIDEO_VP6FLV_ALPHA => 'On2 VP6 with alpha channel',
-		GETID3_FLV_VIDEO_SCREENV2     => 'Screen video v2',
-		GETID3_FLV_VIDEO_H264         => 'Sorenson H.264',
+			GETID3_FLV_VIDEO_H263         => 'Sorenson H.263',
+			GETID3_FLV_VIDEO_SCREEN       => 'Screen video',
+			GETID3_FLV_VIDEO_VP6FLV       => 'On2 VP6',
+			GETID3_FLV_VIDEO_VP6FLV_ALPHA => 'On2 VP6 with alpha channel',
+			GETID3_FLV_VIDEO_SCREENV2     => 'Screen video v2',
+			GETID3_FLV_VIDEO_H264         => 'Sorenson H.264',
 		);
 		return (isset($FLVvideoCodec[$id]) ? $FLVvideoCodec[$id] : false);
 	}
@@ -462,62 +462,62 @@ class AMFReader {
 			// Double
 			case 0:
 				$value = $this->readDouble();
-				break;
+			break;
 
-				// Boolean
+			// Boolean
 			case 1:
 				$value = $this->readBoolean();
 				break;
 
-				// String
+			// String
 			case 2:
 				$value = $this->readString();
 				break;
 
-				// Object
+			// Object
 			case 3:
 				$value = $this->readObject();
 				break;
 
-				// null
+			// null
 			case 6:
 				return null;
 				break;
 
-				// Mixed array
+			// Mixed array
 			case 8:
 				$value = $this->readMixedArray();
 				break;
 
-				// Array
+			// Array
 			case 10:
 				$value = $this->readArray();
 				break;
 
-				// Date
+			// Date
 			case 11:
 				$value = $this->readDate();
 				break;
 
-				// Long string
+			// Long string
 			case 13:
 				$value = $this->readLongString();
 				break;
 
-				// XML (handled as string)
+			// XML (handled as string)
 			case 15:
 				$value = $this->readXML();
 				break;
 
-				// Typed object (handled as object)
+			// Typed object (handled as object)
 			case 16:
 				$value = $this->readTypedObject();
 				break;
 
-				// Long string
+			// Long string
 			default:
 				$value = '(unknown or unsupported data type)';
-				break;
+			break;
 		}
 
 		return $value;
@@ -537,7 +537,7 @@ class AMFReader {
 
 	function readObject() {
 		// Get highest numerical index - ignored
-		//		$highestIndex = $this->stream->readLong();
+//		$highestIndex = $this->stream->readLong();
 
 		$data = array();
 

@@ -82,7 +82,7 @@ class getID3
 {
 	// public: Settings
 	var $encoding        = 'ISO-8859-1';   // CASE SENSITIVE! - i.e. (must be supported by iconv())
-	// Examples:  ISO-8859-1  UTF-8  UTF-16  UTF-16BE
+										   // Examples:  ISO-8859-1  UTF-8  UTF-16  UTF-16BE
 
 	var $encoding_id3v1  = 'ISO-8859-1';   // Should always be 'ISO-8859-1', but some tags may be written in other encodings such as 'EUC-CN'
 
@@ -149,17 +149,17 @@ class getID3
 		}
 
 		/*
-		 // Check timezone config setting
-		 // this is needed to prevent E_STRICT warnings with any time/date functions
-		 if (!ini_get('date.timezone')) {
+		// Check timezone config setting
+		// this is needed to prevent E_STRICT warnings with any time/date functions
+		if (!ini_get('date.timezone')) {
 			if (function_exists('date_default_timezone_set')) { // exists since PHP v5.1.0
-			$this->warning('php.ini should have "date.timezone" set, but it does not. Setting timezone to "'.date_default_timezone_get().'"');
-			date_default_timezone_set(date_default_timezone_get());
+				$this->warning('php.ini should have "date.timezone" set, but it does not. Setting timezone to "'.date_default_timezone_get().'"');
+				date_default_timezone_set(date_default_timezone_get());
 			} else {
-			$this->warning('php.ini should have "date.timezone" set, but it does not.');
+				$this->warning('php.ini should have "date.timezone" set, but it does not.');
 			}
-			}
-			*/
+		}
+		*/
 
 		// Check for magic_quotes_runtime
 		if (function_exists('get_magic_quotes_runtime')) {
@@ -303,33 +303,33 @@ class getID3
 				// ftell() returns 0 if seeking to the end is beyond the range of unsigned integer
 				$fseek = fseek($fp, 0, SEEK_END);
 				if (($fseek < 0) || (($this->info['filesize'] != 0) && (ftell($fp) == 0)) ||
-				($this->info['filesize'] < 0) ||
-				(ftell($fp) < 0)) {
-					$real_filesize = false;
-					if (GETID3_OS_ISWINDOWS) {
-						$commandline = 'dir /-C "'.str_replace('/', DIRECTORY_SEPARATOR, $filename).'"';
-						$dir_output = `$commandline`;
-						if (preg_match('#1 File\(s\)[ ]+([0-9]+) bytes#i', $dir_output, $matches)) {
-							$real_filesize = (float) $matches[1];
+					($this->info['filesize'] < 0) ||
+					(ftell($fp) < 0)) {
+						$real_filesize = false;
+						if (GETID3_OS_ISWINDOWS) {
+							$commandline = 'dir /-C "'.str_replace('/', DIRECTORY_SEPARATOR, $filename).'"';
+							$dir_output = `$commandline`;
+							if (preg_match('#1 File\(s\)[ ]+([0-9]+) bytes#i', $dir_output, $matches)) {
+								$real_filesize = (float) $matches[1];
+							}
+						} else {
+							$commandline = 'ls -o -g -G --time-style=long-iso '.escapeshellarg($filename);
+							$dir_output = `$commandline`;
+							if (preg_match('#([0-9]+) ([0-9]{4}-[0-9]{2}\-[0-9]{2} [0-9]{2}:[0-9]{2}) '.str_replace('#', '\\#', preg_quote($filename)).'$#', $dir_output, $matches)) {
+								$real_filesize = (float) $matches[1];
+							}
 						}
-					} else {
-						$commandline = 'ls -o -g -G --time-style=long-iso '.escapeshellarg($filename);
-						$dir_output = `$commandline`;
-						if (preg_match('#([0-9]+) ([0-9]{4}-[0-9]{2}\-[0-9]{2} [0-9]{2}:[0-9]{2}) '.str_replace('#', '\\#', preg_quote($filename)).'$#', $dir_output, $matches)) {
-							$real_filesize = (float) $matches[1];
+						if ($real_filesize === false) {
+							unset($this->info['filesize']);
+							fclose($fp);
+							return $this->error('Unable to determine actual filesize. File is most likely larger than '.round(PHP_INT_MAX / 1073741824).'GB and is not supported by PHP.');
+						} elseif (getid3_lib::intValueSupported($real_filesize)) {
+							unset($this->info['filesize']);
+							fclose($fp);
+							return $this->error('PHP seems to think the file is larger than '.round(PHP_INT_MAX / 1073741824).'GB, but filesystem reports it as '.number_format($real_filesize, 3).'GB, please report to info@getid3.org');
 						}
-					}
-					if ($real_filesize === false) {
-						unset($this->info['filesize']);
-						fclose($fp);
-						return $this->error('Unable to determine actual filesize. File is most likely larger than '.round(PHP_INT_MAX / 1073741824).'GB and is not supported by PHP.');
-					} elseif (getid3_lib::intValueSupported($real_filesize)) {
-						unset($this->info['filesize']);
-						fclose($fp);
-						return $this->error('PHP seems to think the file is larger than '.round(PHP_INT_MAX / 1073741824).'GB, but filesystem reports it as '.number_format($real_filesize, 3).'GB, please report to info@getid3.org');
-					}
-					$this->info['filesize'] = $real_filesize;
-					$this->error('File is larger than '.round(PHP_INT_MAX / 1073741824).'GB (filesystem reports it as '.number_format($real_filesize, 3).'GB) and is not properly supported by PHP.');
+						$this->info['filesize'] = $real_filesize;
+						$this->error('File is larger than '.round(PHP_INT_MAX / 1073741824).'GB (filesystem reports it as '.number_format($real_filesize, 3).'GB) and is not properly supported by PHP.');
 				}
 			}
 
@@ -571,17 +571,17 @@ class getID3
 		if (empty($format_info)) {
 			$format_info = array(
 
-			// Audio formats
+				// Audio formats
 
-			// AC-3   - audio      - Dolby AC-3 / Dolby Digital
+				// AC-3   - audio      - Dolby AC-3 / Dolby Digital
 				'ac3'  => array(
 							'pattern'   => '^\x0B\x77',
 							'group'     => 'audio',
 							'module'    => 'ac3',
 							'mime_type' => 'audio/ac3',
-			),
+						),
 
-			// AAC  - audio       - Advanced Audio Coding (AAC) - ADIF format
+				// AAC  - audio       - Advanced Audio Coding (AAC) - ADIF format
 				'adif' => array(
 							'pattern'   => '^ADIF',
 							'group'     => 'audio',
@@ -589,18 +589,18 @@ class getID3
 							'option'    => 'adif',
 							'mime_type' => 'application/octet-stream',
 							'fail_ape'  => 'WARNING',
-			),
+						),
 
 
-			// AA   - audio       - Audible Audiobook
+				// AA   - audio       - Audible Audiobook
 				'adts' => array(
 							'pattern'   => '^.{4}\x57\x90\x75\x36',
 							'group'     => 'audio',
 							'module'    => 'aa',
 							'mime_type' => 'audio/audible ',
-			),
+						),
 
-			// AAC  - audio       - Advanced Audio Coding (AAC) - ADTS format (very similar to MP3)
+				// AAC  - audio       - Advanced Audio Coding (AAC) - ADTS format (very similar to MP3)
 				'adts' => array(
 							'pattern'   => '^\xFF[\xF0-\xF1\xF8-\xF9]',
 							'group'     => 'audio',
@@ -608,159 +608,159 @@ class getID3
 							'option'    => 'adts',
 							'mime_type' => 'application/octet-stream',
 							'fail_ape'  => 'WARNING',
-			),
+						),
 
 
-			// AU   - audio       - NeXT/Sun AUdio (AU)
+				// AU   - audio       - NeXT/Sun AUdio (AU)
 				'au'   => array(
 							'pattern'   => '^\.snd',
 							'group'     => 'audio',
 							'module'    => 'au',
 							'mime_type' => 'audio/basic',
-			),
+						),
 
-			// AVR  - audio       - Audio Visual Research
+				// AVR  - audio       - Audio Visual Research
 				'avr'  => array(
 							'pattern'   => '^2BIT',
 							'group'     => 'audio',
 							'module'    => 'avr',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// BONK - audio       - Bonk v0.9+
+				// BONK - audio       - Bonk v0.9+
 				'bonk' => array(
 							'pattern'   => '^\x00(BONK|INFO|META| ID3)',
 							'group'     => 'audio',
 							'module'    => 'bonk',
 							'mime_type' => 'audio/xmms-bonk',
-			),
+						),
 
-			// DSS  - audio       - Digital Speech Standard
+				// DSS  - audio       - Digital Speech Standard
 				'dss'  => array(
 							'pattern'   => '^[\x02-\x03]dss',
 							'group'     => 'audio',
 							'module'    => 'dss',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// DTS  - audio       - Dolby Theatre System
+				// DTS  - audio       - Dolby Theatre System
 				'dts'  => array(
 							'pattern'   => '^\x7F\xFE\x80\x01',
 							'group'     => 'audio',
 							'module'    => 'dts',
 							'mime_type' => 'audio/dts',
-			),
+						),
 
-			// FLAC - audio       - Free Lossless Audio Codec
+				// FLAC - audio       - Free Lossless Audio Codec
 				'flac' => array(
 							'pattern'   => '^fLaC',
 							'group'     => 'audio',
 							'module'    => 'flac',
 							'mime_type' => 'audio/x-flac',
-			),
+						),
 
-			// LA   - audio       - Lossless Audio (LA)
+				// LA   - audio       - Lossless Audio (LA)
 				'la'   => array(
 							'pattern'   => '^LA0[2-4]',
 							'group'     => 'audio',
 							'module'    => 'la',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// LPAC - audio       - Lossless Predictive Audio Compression (LPAC)
+				// LPAC - audio       - Lossless Predictive Audio Compression (LPAC)
 				'lpac' => array(
 							'pattern'   => '^LPAC',
 							'group'     => 'audio',
 							'module'    => 'lpac',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// MIDI - audio       - MIDI (Musical Instrument Digital Interface)
+				// MIDI - audio       - MIDI (Musical Instrument Digital Interface)
 				'midi' => array(
 							'pattern'   => '^MThd',
 							'group'     => 'audio',
 							'module'    => 'midi',
 							'mime_type' => 'audio/midi',
-			),
+						),
 
-			// MAC  - audio       - Monkey's Audio Compressor
+				// MAC  - audio       - Monkey's Audio Compressor
 				'mac'  => array(
 							'pattern'   => '^MAC ',
 							'group'     => 'audio',
 							'module'    => 'monkey',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// has been known to produce false matches in random files (e.g. JPEGs), leave out until more precise matching available
-			//				// MOD  - audio       - MODule (assorted sub-formats)
-			//				'mod'  => array(
-			//							'pattern'   => '^.{1080}(M\\.K\\.|M!K!|FLT4|FLT8|[5-9]CHN|[1-3][0-9]CH)',
-			//							'group'     => 'audio',
-			//							'module'    => 'mod',
-			//							'option'    => 'mod',
-			//							'mime_type' => 'audio/mod',
-			//						),
+// has been known to produce false matches in random files (e.g. JPEGs), leave out until more precise matching available
+//				// MOD  - audio       - MODule (assorted sub-formats)
+//				'mod'  => array(
+//							'pattern'   => '^.{1080}(M\\.K\\.|M!K!|FLT4|FLT8|[5-9]CHN|[1-3][0-9]CH)',
+//							'group'     => 'audio',
+//							'module'    => 'mod',
+//							'option'    => 'mod',
+//							'mime_type' => 'audio/mod',
+//						),
 
-			// MOD  - audio       - MODule (Impulse Tracker)
+				// MOD  - audio       - MODule (Impulse Tracker)
 				'it'   => array(
 							'pattern'   => '^IMPM',
 							'group'     => 'audio',
 							'module'    => 'mod',
 							'option'    => 'it',
 							'mime_type' => 'audio/it',
-			),
+						),
 
-			// MOD  - audio       - MODule (eXtended Module, various sub-formats)
+				// MOD  - audio       - MODule (eXtended Module, various sub-formats)
 				'xm'   => array(
 							'pattern'   => '^Extended Module',
 							'group'     => 'audio',
 							'module'    => 'mod',
 							'option'    => 'xm',
 							'mime_type' => 'audio/xm',
-			),
+						),
 
-			// MOD  - audio       - MODule (ScreamTracker)
+				// MOD  - audio       - MODule (ScreamTracker)
 				's3m'  => array(
 							'pattern'   => '^.{44}SCRM',
 							'group'     => 'audio',
 							'module'    => 'mod',
 							'option'    => 's3m',
 							'mime_type' => 'audio/s3m',
-			),
+						),
 
-			// MPC  - audio       - Musepack / MPEGplus
+				// MPC  - audio       - Musepack / MPEGplus
 				'mpc'  => array(
 							'pattern'   => '^(MPCK|MP\+|[\x00\x01\x10\x11\x40\x41\x50\x51\x80\x81\x90\x91\xC0\xC1\xD0\xD1][\x20-37][\x00\x20\x40\x60\x80\xA0\xC0\xE0])',
 							'group'     => 'audio',
 							'module'    => 'mpc',
 							'mime_type' => 'audio/x-musepack',
-			),
+						),
 
-			// MP3  - audio       - MPEG-audio Layer 3 (very similar to AAC-ADTS)
+				// MP3  - audio       - MPEG-audio Layer 3 (very similar to AAC-ADTS)
 				'mp3'  => array(
 							'pattern'   => '^\xFF[\xE2-\xE7\xF2-\xF7\xFA-\xFF][\x00-\x0B\x10-\x1B\x20-\x2B\x30-\x3B\x40-\x4B\x50-\x5B\x60-\x6B\x70-\x7B\x80-\x8B\x90-\x9B\xA0-\xAB\xB0-\xBB\xC0-\xCB\xD0-\xDB\xE0-\xEB\xF0-\xFB]',
 							'group'     => 'audio',
 							'module'    => 'mp3',
 							'mime_type' => 'audio/mpeg',
-			),
+						),
 
-			// OFR  - audio       - OptimFROG
+				// OFR  - audio       - OptimFROG
 				'ofr'  => array(
 							'pattern'   => '^(\*RIFF|OFR)',
 							'group'     => 'audio',
 							'module'    => 'optimfrog',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// RKAU - audio       - RKive AUdio compressor
+				// RKAU - audio       - RKive AUdio compressor
 				'rkau' => array(
 							'pattern'   => '^RKA',
 							'group'     => 'audio',
 							'module'    => 'rkau',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// SHN  - audio       - Shorten
+				// SHN  - audio       - Shorten
 				'shn'  => array(
 							'pattern'   => '^ajkg',
 							'group'     => 'audio',
@@ -768,93 +768,93 @@ class getID3
 							'mime_type' => 'audio/xmms-shn',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// TTA  - audio       - TTA Lossless Audio Compressor (http://tta.corecodec.org)
+				// TTA  - audio       - TTA Lossless Audio Compressor (http://tta.corecodec.org)
 				'tta'  => array(
 							'pattern'   => '^TTA',  // could also be '^TTA(\x01|\x02|\x03|2|1)'
 							'group'     => 'audio',
 							'module'    => 'tta',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// VOC  - audio       - Creative Voice (VOC)
+				// VOC  - audio       - Creative Voice (VOC)
 				'voc'  => array(
 							'pattern'   => '^Creative Voice File',
 							'group'     => 'audio',
 							'module'    => 'voc',
 							'mime_type' => 'audio/voc',
-			),
+						),
 
-			// VQF  - audio       - transform-domain weighted interleave Vector Quantization Format (VQF)
+				// VQF  - audio       - transform-domain weighted interleave Vector Quantization Format (VQF)
 				'vqf'  => array(
 							'pattern'   => '^TWIN',
 							'group'     => 'audio',
 							'module'    => 'vqf',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// WV  - audio        - WavPack (v4.0+)
+				// WV  - audio        - WavPack (v4.0+)
 				'wv'   => array(
 							'pattern'   => '^wvpk',
 							'group'     => 'audio',
 							'module'    => 'wavpack',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
 
-			// Audio-Video formats
+				// Audio-Video formats
 
-			// ASF  - audio/video - Advanced Streaming Format, Windows Media Video, Windows Media Audio
+				// ASF  - audio/video - Advanced Streaming Format, Windows Media Video, Windows Media Audio
 				'asf'  => array(
 							'pattern'   => '^\x30\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C',
 							'group'     => 'audio-video',
 							'module'    => 'asf',
 							'mime_type' => 'video/x-ms-asf',
 							'iconv_req' => false,
-			),
+						),
 
-			// BINK - audio/video - Bink / Smacker
+				// BINK - audio/video - Bink / Smacker
 				'bink' => array(
 							'pattern'   => '^(BIK|SMK)',
 							'group'     => 'audio-video',
 							'module'    => 'bink',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// FLV  - audio/video - FLash Video
+				// FLV  - audio/video - FLash Video
 				'flv' => array(
 							'pattern'   => '^FLV\x01',
 							'group'     => 'audio-video',
 							'module'    => 'flv',
 							'mime_type' => 'video/x-flv',
-			),
+						),
 
-			// MKAV - audio/video - Mastroka
+				// MKAV - audio/video - Mastroka
 				'matroska' => array(
 							'pattern'   => '^\x1A\x45\xDF\xA3',
 							'group'     => 'audio-video',
 							'module'    => 'matroska',
 							'mime_type' => 'video/x-matroska', // may also be audio/x-matroska
-			),
+						),
 
-			// MPEG - audio/video - MPEG (Moving Pictures Experts Group)
+				// MPEG - audio/video - MPEG (Moving Pictures Experts Group)
 				'mpeg' => array(
 							'pattern'   => '^\x00\x00\x01(\xBA|\xB3)',
 							'group'     => 'audio-video',
 							'module'    => 'mpeg',
 							'mime_type' => 'video/mpeg',
-			),
+						),
 
-			// NSV  - audio/video - Nullsoft Streaming Video (NSV)
+				// NSV  - audio/video - Nullsoft Streaming Video (NSV)
 				'nsv'  => array(
 							'pattern'   => '^NSV[sf]',
 							'group'     => 'audio-video',
 							'module'    => 'nsv',
 							'mime_type' => 'application/octet-stream',
-			),
+						),
 
-			// Ogg  - audio/video - Ogg (Ogg-Vorbis, Ogg-FLAC, Speex, Ogg-Theora(*), Ogg-Tarkin(*))
+				// Ogg  - audio/video - Ogg (Ogg-Vorbis, Ogg-FLAC, Speex, Ogg-Theora(*), Ogg-Tarkin(*))
 				'ogg'  => array(
 							'pattern'   => '^OggS',
 							'group'     => 'audio',
@@ -862,45 +862,45 @@ class getID3
 							'mime_type' => 'application/ogg',
 							'fail_id3'  => 'WARNING',
 							'fail_ape'  => 'WARNING',
-			),
+						),
 
-			// QT   - audio/video - Quicktime
+				// QT   - audio/video - Quicktime
 				'quicktime' => array(
 							'pattern'   => '^.{4}(cmov|free|ftyp|mdat|moov|pnot|skip|wide)',
 							'group'     => 'audio-video',
 							'module'    => 'quicktime',
 							'mime_type' => 'video/quicktime',
-			),
+						),
 
-			// RIFF - audio/video - Resource Interchange File Format (RIFF) / WAV / AVI / CD-audio / SDSS = renamed variant used by SmartSound QuickTracks (www.smartsound.com) / FORM = Audio Interchange File Format (AIFF)
+				// RIFF - audio/video - Resource Interchange File Format (RIFF) / WAV / AVI / CD-audio / SDSS = renamed variant used by SmartSound QuickTracks (www.smartsound.com) / FORM = Audio Interchange File Format (AIFF)
 				'riff' => array(
 							'pattern'   => '^(RIFF|SDSS|FORM)',
 							'group'     => 'audio-video',
 							'module'    => 'riff',
 							'mime_type' => 'audio/x-wave',
 							'fail_ape'  => 'WARNING',
-			),
+						),
 
-			// Real - audio/video - RealAudio, RealVideo
+				// Real - audio/video - RealAudio, RealVideo
 				'real' => array(
 							'pattern'   => '^(\\.RMF|\\.ra)',
 							'group'     => 'audio-video',
 							'module'    => 'real',
 							'mime_type' => 'audio/x-realaudio',
-			),
+						),
 
-			// SWF - audio/video - ShockWave Flash
+				// SWF - audio/video - ShockWave Flash
 				'swf' => array(
 							'pattern'   => '^(F|C)WS',
 							'group'     => 'audio-video',
 							'module'    => 'swf',
 							'mime_type' => 'application/x-shockwave-flash',
-			),
+						),
 
 
-			// Still-Image formats
+				// Still-Image formats
 
-			// BMP  - still image - Bitmap (Windows, OS/2; uncompressed, RLE8, RLE4)
+				// BMP  - still image - Bitmap (Windows, OS/2; uncompressed, RLE8, RLE4)
 				'bmp'  => array(
 							'pattern'   => '^BM',
 							'group'     => 'graphic',
@@ -908,9 +908,9 @@ class getID3
 							'mime_type' => 'image/bmp',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// GIF  - still image - Graphics Interchange Format
+				// GIF  - still image - Graphics Interchange Format
 				'gif'  => array(
 							'pattern'   => '^GIF',
 							'group'     => 'graphic',
@@ -918,9 +918,9 @@ class getID3
 							'mime_type' => 'image/gif',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// JPEG - still image - Joint Photographic Experts Group (JPEG)
+				// JPEG - still image - Joint Photographic Experts Group (JPEG)
 				'jpg'  => array(
 							'pattern'   => '^\xFF\xD8\xFF',
 							'group'     => 'graphic',
@@ -928,9 +928,9 @@ class getID3
 							'mime_type' => 'image/jpeg',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// PCD  - still image - Kodak Photo CD
+				// PCD  - still image - Kodak Photo CD
 				'pcd'  => array(
 							'pattern'   => '^.{2048}PCD_IPI\x00',
 							'group'     => 'graphic',
@@ -938,10 +938,10 @@ class getID3
 							'mime_type' => 'image/x-photo-cd',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
 
-			// PNG  - still image - Portable Network Graphics (PNG)
+				// PNG  - still image - Portable Network Graphics (PNG)
 				'png'  => array(
 							'pattern'   => '^\x89\x50\x4E\x47\x0D\x0A\x1A\x0A',
 							'group'     => 'graphic',
@@ -949,10 +949,10 @@ class getID3
 							'mime_type' => 'image/png',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
 
-			// SVG  - still image - Scalable Vector Graphics (SVG)
+				// SVG  - still image - Scalable Vector Graphics (SVG)
 				'svg'  => array(
 							'pattern'   => '(<!DOCTYPE svg PUBLIC |xmlns="http:\/\/www\.w3\.org\/2000\/svg")',
 							'group'     => 'graphic',
@@ -960,10 +960,10 @@ class getID3
 							'mime_type' => 'image/svg+xml',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
 
-			// TIFF  - still image - Tagged Information File Format (TIFF)
+				// TIFF  - still image - Tagged Information File Format (TIFF)
 				'tiff' => array(
 							'pattern'   => '^(II\x2A\x00|MM\x00\x2A)',
 							'group'     => 'graphic',
@@ -971,12 +971,12 @@ class getID3
 							'mime_type' => 'image/tiff',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
 
-			// Data formats
+				// Data formats
 
-			// ISO  - data        - International Standards Organization (ISO) CD-ROM Image
+				// ISO  - data        - International Standards Organization (ISO) CD-ROM Image
 				'iso'  => array(
 							'pattern'   => '^.{32769}CD001',
 							'group'     => 'misc',
@@ -985,9 +985,9 @@ class getID3
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
 							'iconv_req' => false,
-			),
+						),
 
-			// RAR  - data        - RAR compressed data
+				// RAR  - data        - RAR compressed data
 				'rar'  => array(
 							'pattern'   => '^Rar\!',
 							'group'     => 'archive',
@@ -995,9 +995,9 @@ class getID3
 							'mime_type' => 'application/octet-stream',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// SZIP - audio/data  - SZIP compressed data
+				// SZIP - audio/data  - SZIP compressed data
 				'szip' => array(
 							'pattern'   => '^SZ\x0A\x04',
 							'group'     => 'archive',
@@ -1005,9 +1005,9 @@ class getID3
 							'mime_type' => 'application/octet-stream',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// TAR  - data        - TAR compressed data
+				// TAR  - data        - TAR compressed data
 				'tar'  => array(
 							'pattern'   => '^.{100}[0-9\x20]{7}\x00[0-9\x20]{7}\x00[0-9\x20]{7}\x00[0-9\x20\x00]{12}[0-9\x20\x00]{12}',
 							'group'     => 'archive',
@@ -1015,9 +1015,9 @@ class getID3
 							'mime_type' => 'application/x-tar',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// GZIP  - data        - GZIP compressed data
+				// GZIP  - data        - GZIP compressed data
 				'gz'  => array(
 							'pattern'   => '^\x1F\x8B\x08',
 							'group'     => 'archive',
@@ -1025,9 +1025,9 @@ class getID3
 							'mime_type' => 'application/x-gzip',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// ZIP  - data         - ZIP compressed data
+				// ZIP  - data         - ZIP compressed data
 				'zip'  => array(
 							'pattern'   => '^PK\x03\x04',
 							'group'     => 'archive',
@@ -1035,12 +1035,12 @@ class getID3
 							'mime_type' => 'application/zip',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
 
-			// Misc other formats
+				// Misc other formats
 
-			// PAR2 - data        - Parity Volume Set Specification 2.0
+				// PAR2 - data        - Parity Volume Set Specification 2.0
 				'par2' => array (
 							'pattern'   => '^PAR2\x00PKT',
 							'group'     => 'misc',
@@ -1048,9 +1048,9 @@ class getID3
 							'mime_type' => 'application/octet-stream',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// PDF  - data        - Portable Document Format
+				// PDF  - data        - Portable Document Format
 				'pdf'  => array(
 							'pattern'   => '^\x25PDF',
 							'group'     => 'misc',
@@ -1058,9 +1058,9 @@ class getID3
 							'mime_type' => 'application/pdf',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// MSOFFICE  - data   - ZIP compressed data
+				// MSOFFICE  - data   - ZIP compressed data
 				'msoffice' => array(
 							'pattern'   => '^\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1', // D0CF11E == DOCFILE == Microsoft Office Document
 							'group'     => 'misc',
@@ -1068,15 +1068,15 @@ class getID3
 							'mime_type' => 'application/octet-stream',
 							'fail_id3'  => 'ERROR',
 							'fail_ape'  => 'ERROR',
-			),
+						),
 
-			// CUE  - data       - CUEsheet (index to single-file disc images)
+				 // CUE  - data       - CUEsheet (index to single-file disc images)
 				 'cue' => array(
 							'pattern'   => '', // empty pattern means cannot be automatically detected, will fall through all other formats and match based on filename and very basic file contents
 							'group'     => 'misc',
 							'module'    => 'cue',
 							'mime_type' => 'application/octet-stream',
-			),
+						   ),
 
 			);
 		}
@@ -1516,7 +1516,7 @@ class getID3
 
 class getid3_exception extends Exception
 {
-	public $message;
+    public $message;
 }
 
 ?>

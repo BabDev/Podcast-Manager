@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////
 //                                                             //
 // Module originally written [2009-Mar-26] by                  //
-//      Nigel Barnes <ngbarnesï¿½hotmail*com>                    //
+//      Nigel Barnes <ngbarnesØhotmail*com>                    //
 // Bundled into getID3 with permission                         //
 //   called by getID3 in module.graphic.jpg.php                //
 //                                                            ///
@@ -33,56 +33,56 @@
 class Image_XMP
 {
 	/**
-	 * @var string
-	 * The name of the image file that contains the XMP fields to extract and modify.
-	 * @see Image_XMP()
-	 */
+	* @var string
+	* The name of the image file that contains the XMP fields to extract and modify.
+	* @see Image_XMP()
+	*/
 	var $_sFilename = null;
 
 	/**
-	 * @var array
-	 * The XMP fields that were extracted from the image or updated by this class.
-	 * @see getAllTags()
-	 */
+	* @var array
+	* The XMP fields that were extracted from the image or updated by this class.
+	* @see getAllTags()
+	*/
 	var $_aXMP = array();
 
 	/**
-	 * @var boolean
-	 * True if an APP1 segment was found to contain XMP metadata.
-	 * @see isValid()
-	 */
+	* @var boolean
+	* True if an APP1 segment was found to contain XMP metadata.
+	* @see isValid()
+	*/
 	var $_bXMPParse = false;
 
 	/**
-	 * Returns the status of XMP parsing during instantiation
-	 *
-	 * You'll normally want to call this method before trying to get XMP fields.
-	 *
-	 * @return boolean
-	 * Returns true if an APP1 segment was found to contain XMP metadata.
-	 */
+	* Returns the status of XMP parsing during instantiation
+	*
+	* You'll normally want to call this method before trying to get XMP fields.
+	*
+	* @return boolean
+	* Returns true if an APP1 segment was found to contain XMP metadata.
+	*/
 	function isValid()
 	{
 		return $this->_bXMPParse;
 	}
 
 	/**
-	 * Get a copy of all XMP tags extracted from the image
-	 *
-	 * @return array - An array of XMP fields as it extracted by the XMPparse() function
-	 */
+	* Get a copy of all XMP tags extracted from the image
+	*
+	* @return array - An array of XMP fields as it extracted by the XMPparse() function
+	*/
 	function getAllTags()
 	{
 		return $this->_aXMP;
 	}
 
 	/**
-	 * Reads all the JPEG header segments from an JPEG image file into an array
-	 *
-	 * @param string $filename - the filename of the JPEG file to read
-	 * @return array $headerdata - Array of JPEG header segments
-	 * @return boolean FALSE - if headers could not be read
-	 */
+	* Reads all the JPEG header segments from an JPEG image file into an array
+	*
+	* @param string $filename - the filename of the JPEG file to read
+	* @return array $headerdata - Array of JPEG header segments
+	* @return boolean FALSE - if headers could not be read
+	*/
 	function _get_jpeg_header_data($filename)
 	{
 		// prevent refresh from aborting file operations and hosing file
@@ -194,12 +194,12 @@ class Image_XMP
 
 
 	/**
-	 * Retrieves XMP information from an APP1 JPEG segment and returns the raw XML text as a string.
-	 *
-	 * @param string $filename - the filename of the JPEG file to read
-	 * @return string $xmp_data - the string of raw XML text
-	 * @return boolean FALSE - if an APP 1 XMP segment could not be found, or if an error occured
-	 */
+	* Retrieves XMP information from an APP1 JPEG segment and returns the raw XML text as a string.
+	*
+	* @param string $filename - the filename of the JPEG file to read
+	* @return string $xmp_data - the string of raw XML text
+	* @return boolean FALSE - if an APP 1 XMP segment could not be found, or if an error occured
+	*/
 	function _get_XMP_text($filename)
 	{
 		//Get JPEG header data
@@ -226,13 +226,13 @@ class Image_XMP
 	}
 
 	/**
-	 * Parses a string containing XMP data (XML), and returns an array
-	 * which contains all the XMP (XML) information.
-	 *
-	 * @param string $xml_text - a string containing the XMP data (XML) to be parsed
-	 * @return array $xmp_array - an array containing all xmp details retrieved.
-	 * @return boolean FALSE - couldn't parse the XMP data
-	 */
+	* Parses a string containing XMP data (XML), and returns an array
+	* which contains all the XMP (XML) information.
+	*
+	* @param string $xml_text - a string containing the XMP data (XML) to be parsed
+	* @return array $xmp_array - an array containing all xmp details retrieved.
+	* @return boolean FALSE - couldn't parse the XMP data
+	*/
 	function read_XMP_array_from_text($xmltext)
 	{
 		// Check if there actually is any text to parse
@@ -343,7 +343,7 @@ class Image_XMP
 							$xmp_array[$current_property][$container_index] = $xml_elem['value'];
 							$container_index += 1;
 						}
-						//else unidentified attribute!!
+					//else unidentified attribute!!
 					}
 					break;
 
@@ -354,8 +354,8 @@ class Image_XMP
 					switch ($xml_elem['type'])
 					{
 						case 'open':
-							$container_index = 0;
-							break;
+ 							$container_index = 0;
+ 							break;
 						case 'close':
 							$container_index = -1;
 							break;
@@ -399,10 +399,10 @@ class Image_XMP
 
 
 	/**
-	 * Constructor
-	 *
-	 * @param string - Name of the image file to access and extract XMP information from.
-	 */
+	* Constructor
+	*
+	* @param string - Name of the image file to access and extract XMP information from.
+	*/
 	function Image_XMP($sFilename)
 	{
 		$this->_sFilename = $sFilename;
@@ -422,11 +422,11 @@ class Image_XMP
 }
 
 /**
- * Global Variable: XMP_tag_captions
- *
- * The Property names of all known XMP fields.
- * Note: this is a full list with unrequired properties commented out.
- */
+* Global Variable: XMP_tag_captions
+*
+* The Property names of all known XMP fields.
+* Note: this is a full list with unrequired properties commented out.
+*/
 $GLOBALS['XMP_tag_captions'] = array(
 // IPTC Core
 	'Iptc4xmpCore:CiAdrCity',
@@ -698,76 +698,76 @@ $GLOBALS['XMP_tag_captions'] = array(
 
 
 /**
- * Global Variable: JPEG_Segment_Names
- *
- * The names of the JPEG segment markers, indexed by their marker number
- */
+* Global Variable: JPEG_Segment_Names
+*
+* The names of the JPEG segment markers, indexed by their marker number
+*/
 $GLOBALS['JPEG_Segment_Names'] = array(
-0x01 => 'TEM',
-0x02 => 'RES',
-0xC0 => 'SOF0',
-0xC1 => 'SOF1',
-0xC2 => 'SOF2',
-0xC3 => 'SOF4',
-0xC4 => 'DHT',
-0xC5 => 'SOF5',
-0xC6 => 'SOF6',
-0xC7 => 'SOF7',
-0xC8 => 'JPG',
-0xC9 => 'SOF9',
-0xCA => 'SOF10',
-0xCB => 'SOF11',
-0xCC => 'DAC',
-0xCD => 'SOF13',
-0xCE => 'SOF14',
-0xCF => 'SOF15',
-0xD0 => 'RST0',
-0xD1 => 'RST1',
-0xD2 => 'RST2',
-0xD3 => 'RST3',
-0xD4 => 'RST4',
-0xD5 => 'RST5',
-0xD6 => 'RST6',
-0xD7 => 'RST7',
-0xD8 => 'SOI',
-0xD9 => 'EOI',
-0xDA => 'SOS',
-0xDB => 'DQT',
-0xDC => 'DNL',
-0xDD => 'DRI',
-0xDE => 'DHP',
-0xDF => 'EXP',
-0xE0 => 'APP0',
-0xE1 => 'APP1',
-0xE2 => 'APP2',
-0xE3 => 'APP3',
-0xE4 => 'APP4',
-0xE5 => 'APP5',
-0xE6 => 'APP6',
-0xE7 => 'APP7',
-0xE8 => 'APP8',
-0xE9 => 'APP9',
-0xEA => 'APP10',
-0xEB => 'APP11',
-0xEC => 'APP12',
-0xED => 'APP13',
-0xEE => 'APP14',
-0xEF => 'APP15',
-0xF0 => 'JPG0',
-0xF1 => 'JPG1',
-0xF2 => 'JPG2',
-0xF3 => 'JPG3',
-0xF4 => 'JPG4',
-0xF5 => 'JPG5',
-0xF6 => 'JPG6',
-0xF7 => 'JPG7',
-0xF8 => 'JPG8',
-0xF9 => 'JPG9',
-0xFA => 'JPG10',
-0xFB => 'JPG11',
-0xFC => 'JPG12',
-0xFD => 'JPG13',
-0xFE => 'COM',
+	0x01 => 'TEM',
+	0x02 => 'RES',
+	0xC0 => 'SOF0',
+	0xC1 => 'SOF1',
+	0xC2 => 'SOF2',
+	0xC3 => 'SOF4',
+	0xC4 => 'DHT',
+	0xC5 => 'SOF5',
+	0xC6 => 'SOF6',
+	0xC7 => 'SOF7',
+	0xC8 => 'JPG',
+	0xC9 => 'SOF9',
+	0xCA => 'SOF10',
+	0xCB => 'SOF11',
+	0xCC => 'DAC',
+	0xCD => 'SOF13',
+	0xCE => 'SOF14',
+	0xCF => 'SOF15',
+	0xD0 => 'RST0',
+	0xD1 => 'RST1',
+	0xD2 => 'RST2',
+	0xD3 => 'RST3',
+	0xD4 => 'RST4',
+	0xD5 => 'RST5',
+	0xD6 => 'RST6',
+	0xD7 => 'RST7',
+	0xD8 => 'SOI',
+	0xD9 => 'EOI',
+	0xDA => 'SOS',
+	0xDB => 'DQT',
+	0xDC => 'DNL',
+	0xDD => 'DRI',
+	0xDE => 'DHP',
+	0xDF => 'EXP',
+	0xE0 => 'APP0',
+	0xE1 => 'APP1',
+	0xE2 => 'APP2',
+	0xE3 => 'APP3',
+	0xE4 => 'APP4',
+	0xE5 => 'APP5',
+	0xE6 => 'APP6',
+	0xE7 => 'APP7',
+	0xE8 => 'APP8',
+	0xE9 => 'APP9',
+	0xEA => 'APP10',
+	0xEB => 'APP11',
+	0xEC => 'APP12',
+	0xED => 'APP13',
+	0xEE => 'APP14',
+	0xEF => 'APP15',
+	0xF0 => 'JPG0',
+	0xF1 => 'JPG1',
+	0xF2 => 'JPG2',
+	0xF3 => 'JPG3',
+	0xF4 => 'JPG4',
+	0xF5 => 'JPG5',
+	0xF6 => 'JPG6',
+	0xF7 => 'JPG7',
+	0xF8 => 'JPG8',
+	0xF9 => 'JPG9',
+	0xFA => 'JPG10',
+	0xFB => 'JPG11',
+	0xFC => 'JPG12',
+	0xFD => 'JPG13',
+	0xFE => 'COM',
 );
 
 ?>

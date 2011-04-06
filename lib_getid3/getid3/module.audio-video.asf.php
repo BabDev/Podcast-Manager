@@ -690,12 +690,12 @@ class getid3_asf
 					// * Descriptor Name Length     WORD         16              // size in bytes of Descriptor Name field
 					// * Descriptor Name            WCHAR        variable        // array of Unicode characters - Descriptor Name
 					// * Descriptor Value Data Type WORD         16              // Lookup array:
-					// 0x0000 = Unicode String (variable length)
-					// 0x0001 = BYTE array     (variable length)
-					// 0x0002 = BOOL           (DWORD, 32 bits)
-					// 0x0003 = DWORD          (DWORD, 32 bits)
-					// 0x0004 = QWORD          (QWORD, 64 bits)
-					// 0x0005 = WORD           (WORD,  16 bits)
+																					// 0x0000 = Unicode String (variable length)
+																					// 0x0001 = BYTE array     (variable length)
+																					// 0x0002 = BOOL           (DWORD, 32 bits)
+																					// 0x0003 = DWORD          (DWORD, 32 bits)
+																					// 0x0004 = QWORD          (QWORD, 64 bits)
+																					// 0x0005 = WORD           (WORD,  16 bits)
 					// * Descriptor Value Length    WORD         16              // number of bytes stored in Descriptor Value field
 					// * Descriptor Value           variable     variable        // value for Content Descriptor
 
@@ -1248,10 +1248,10 @@ class getid3_asf
 					// Index Specifiers                 array of:    varies          //
 					// * Stream Number                  WORD         16              // Specifies the stream number that the Index Specifiers refer to. Valid values are between 1 and 127.
 					// * Index Type                     WORD         16              // Specifies Index Type values as follows:
-					//   1 = Nearest Past Data Packet - indexes point to the data packet whose presentation time is closest to the index entry time.
-					//   2 = Nearest Past Media Object - indexes point to the closest data packet containing an entire object or first fragment of an object.
-					//   3 = Nearest Past Cleanpoint. - indexes point to the closest data packet containing an entire object (or first fragment of an object) that has the Cleanpoint Flag set.
-					//   Nearest Past Cleanpoint is the most common type of index.
+																					//   1 = Nearest Past Data Packet - indexes point to the data packet whose presentation time is closest to the index entry time.
+																					//   2 = Nearest Past Media Object - indexes point to the closest data packet containing an entire object or first fragment of an object.
+																					//   3 = Nearest Past Cleanpoint. - indexes point to the closest data packet containing an entire object (or first fragment of an object) that has the Cleanpoint Flag set.
+																					//   Nearest Past Cleanpoint is the most common type of index.
 					// Index Entry Count                DWORD        32              // Specifies the number of Index Entries in the block.
 					// * Block Positions                QWORD        varies          // Specifies a list of byte offsets of the beginnings of the blocks relative to the beginning of the first Data Packet (i.e., the beginning of the Data Object + 50 bytes). The number of entries in this list is specified by the value of the Index Specifiers Count field. The order of those byte offsets is tied to the order in which Index Specifiers are listed.
 					// * Index Entries                  array of:    varies          //

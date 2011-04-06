@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // Restricted access
 defined('_JEXEC') or die();
@@ -31,7 +31,7 @@ class PodcastManagerViewInfo extends JView
 		JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
 		$this->addToolbar();
-
+		
 		parent::display($tpl);
 	}
 

@@ -48,8 +48,8 @@ class getid3_exe
 		$ThisFileInfo['exe']['mz']['memory_minimum']     = $ThisFileInfo['exe']['mz']['raw']['min_memory_paragraphs'] * 16;
 		$ThisFileInfo['exe']['mz']['memory_recommended'] = $ThisFileInfo['exe']['mz']['raw']['max_memory_paragraphs'] * 16;
 
-		$ThisFileInfo['error'][] = 'EXE parsing not enabled in this version of getID3()';
-		return false;
+$ThisFileInfo['error'][] = 'EXE parsing not enabled in this version of getID3()';
+return false;
 
 	}
 

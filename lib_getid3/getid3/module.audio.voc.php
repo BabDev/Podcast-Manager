@@ -163,38 +163,38 @@ class getid3_voc
 
 	function VOCcompressionTypeLookup($index) {
 		static $VOCcompressionTypeLookup = array(
-		0 => '8-bit',
-		1 => '4-bit',
-		2 => '2.6-bit',
-		3 => '2-bit'
+			0 => '8-bit',
+			1 => '4-bit',
+			2 => '2.6-bit',
+			3 => '2-bit'
 		);
 		return (isset($VOCcompressionTypeLookup[$index]) ? $VOCcompressionTypeLookup[$index] : 'Multi DAC ('.($index - 3).') channels');
 	}
 
 	function VOCwFormatLookup($index) {
 		static $VOCwFormatLookup = array(
-		0x0000 => '8-bit unsigned PCM',
-		0x0001 => 'Creative 8-bit to 4-bit ADPCM',
-		0x0002 => 'Creative 8-bit to 3-bit ADPCM',
-		0x0003 => 'Creative 8-bit to 2-bit ADPCM',
-		0x0004 => '16-bit signed PCM',
-		0x0006 => 'CCITT a-Law',
-		0x0007 => 'CCITT u-Law',
-		0x2000 => 'Creative 16-bit to 4-bit ADPCM'
+			0x0000 => '8-bit unsigned PCM',
+			0x0001 => 'Creative 8-bit to 4-bit ADPCM',
+			0x0002 => 'Creative 8-bit to 3-bit ADPCM',
+			0x0003 => 'Creative 8-bit to 2-bit ADPCM',
+			0x0004 => '16-bit signed PCM',
+			0x0006 => 'CCITT a-Law',
+			0x0007 => 'CCITT u-Law',
+			0x2000 => 'Creative 16-bit to 4-bit ADPCM'
 		);
 		return (isset($VOCwFormatLookup[$index]) ? $VOCwFormatLookup[$index] : false);
 	}
 
 	function VOCwFormatActualBitsPerSampleLookup($index) {
 		static $VOCwFormatLookup = array(
-		0x0000 => 8,
-		0x0001 => 4,
-		0x0002 => 3,
-		0x0003 => 2,
-		0x0004 => 16,
-		0x0006 => 8,
-		0x0007 => 8,
-		0x2000 => 4
+			0x0000 => 8,
+			0x0001 => 4,
+			0x0002 => 3,
+			0x0003 => 2,
+			0x0004 => 16,
+			0x0006 => 8,
+			0x0007 => 8,
+			0x2000 => 4
 		);
 		return (isset($VOCwFormatLookup[$index]) ? $VOCwFormatLookup[$index] : false);
 	}

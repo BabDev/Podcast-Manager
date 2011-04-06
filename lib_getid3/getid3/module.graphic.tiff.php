@@ -194,11 +194,11 @@ class getid3_tiff
 		static $TIFFcompressionMethod = array();
 		if (empty($TIFFcompressionMethod)) {
 			$TIFFcompressionMethod = array(
-			1     => 'Uncompressed',
-			2     => 'Huffman',
-			3     => 'Fax - CCITT 3',
-			5     => 'LZW',
-			32773 => 'PackBits',
+				1     => 'Uncompressed',
+				2     => 'Huffman',
+				3     => 'Fax - CCITT 3',
+				5     => 'LZW',
+				32773 => 'PackBits',
 			);
 		}
 		return (isset($TIFFcompressionMethod[$id]) ? $TIFFcompressionMethod[$id] : 'unknown/invalid ('.$id.')');
@@ -208,13 +208,13 @@ class getid3_tiff
 		static $TIFFcommentName = array();
 		if (empty($TIFFcommentName)) {
 			$TIFFcommentName = array(
-			270 => 'imagedescription',
-			271 => 'make',
-			272 => 'model',
-			305 => 'software',
-			306 => 'datetime',
-			315 => 'artist',
-			316 => 'hostcomputer',
+				270 => 'imagedescription',
+				271 => 'make',
+				272 => 'model',
+				305 => 'software',
+				306 => 'datetime',
+				315 => 'artist',
+				316 => 'hostcomputer',
 			);
 		}
 		return (isset($TIFFcommentName[$id]) ? $TIFFcommentName[$id] : 'unknown/invalid ('.$id.')');

@@ -17,7 +17,7 @@
 class getid3_vqf
 {
 	function getid3_vqf(&$fd, &$ThisFileInfo) {
-		// based loosely on code from TTwinVQ by Jurgen Faul <jfaulï¿½gmx*de>
+		// based loosely on code from TTwinVQ by Jurgen Faul <jfaulØgmx*de>
 		// http://jfaul.de/atl  or  http://j-faul.virtualave.net/atl/atl.html
 
 		$ThisFileInfo['fileformat']            = 'vqf';
@@ -134,9 +134,9 @@ class getid3_vqf
 
 	function VQFchannelFrequencyLookup($frequencyid) {
 		static $VQFchannelFrequencyLookup = array(
-		11 => 11025,
-		22 => 22050,
-		44 => 44100
+			11 => 11025,
+			22 => 22050,
+			44 => 44100
 		);
 		return (isset($VQFchannelFrequencyLookup[$frequencyid]) ? $VQFchannelFrequencyLookup[$frequencyid] : $frequencyid * 1000);
 	}
@@ -149,8 +149,8 @@ class getid3_vqf
 			'FILE' => 'filename',
 			'COMT' => 'comment',
 			'ALBM' => 'album'
-			);
-			return (isset($VQFcommentNiceNameLookup[$shortname]) ? $VQFcommentNiceNameLookup[$shortname] : $shortname);
+		);
+		return (isset($VQFcommentNiceNameLookup[$shortname]) ? $VQFcommentNiceNameLookup[$shortname] : $shortname);
 	}
 
 }

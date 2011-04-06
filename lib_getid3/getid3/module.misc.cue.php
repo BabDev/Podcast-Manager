@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////
 //                                                             //
 // Module originally written [2009-Mar-25] by                  //
-//      Nigel Barnes <ngbarnesï¿½hotmail*com>                    //
+//      Nigel Barnes <ngbarnesØhotmail*com>                    //
 // Minor reformatting and similar small changes to integrate   //
 //   into getID3 by James Heinrich <info@getid3.org>           //
 //                                                            ///
@@ -49,10 +49,10 @@ class getid3_cue
 		return $this->readCueSheet($filedata);
 	}
 	/**
-	 * Parses a cue sheet file.
-	 *
-	 * @param string $filename - The filename for the cue sheet to open.
-	 */
+	* Parses a cue sheet file.
+	*
+	* @param string $filename - The filename for the cue sheet to open.
+	*/
 	function readCueSheet(&$filedata)
 	{
 		$cue_lines = array();
@@ -69,10 +69,10 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the cue sheet array.
-	 *
-	 * @param array $file - The cuesheet as an array of each line.
-	 */
+	* Parses the cue sheet array.
+	*
+	* @param array $file - The cuesheet as an array of each line.
+	*/
 	function parseCueSheet($file)
 	{
 		//-1 means still global, all others are track specific
@@ -122,11 +122,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the REM command.
-	 *
-	 * @param string $line - The line in the cue file that contains the TRACK command.
-	 * @param integer $track_on - The track currently processing.
-	 */
+	* Parses the REM command.
+	*
+	* @param string $line - The line in the cue file that contains the TRACK command.
+	* @param integer $track_on - The track currently processing.
+	*/
 	function parseComment($line, $track_on)
 	{
 		$explodedline = explode(' ', $line, 3);
@@ -145,11 +145,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the FILE command.
-	 *
-	 * @param string $line - The line in the cue file that contains the FILE command.
-	 * @return array - Array of FILENAME and TYPE of file..
-	 */
+	* Parses the FILE command.
+	*
+	* @param string $line - The line in the cue file that contains the FILE command.
+	* @return array - Array of FILENAME and TYPE of file..
+	*/
 	function parseFile($line)
 	{
 		$line =            substr($line, strpos($line, ' ') + 1);
@@ -165,11 +165,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the FLAG command.
-	 *
-	 * @param string $line - The line in the cue file that contains the TRACK command.
-	 * @param integer $track_on - The track currently processing.
-	 */
+	* Parses the FLAG command.
+	*
+	* @param string $line - The line in the cue file that contains the TRACK command.
+	* @param integer $track_on - The track currently processing.
+	*/
 	function parseFlags($line, $track_on)
 	{
 		if ($track_on != -1)
@@ -203,11 +203,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Collect any unidentified data.
-	 *
-	 * @param string $line - The line in the cue file that contains the TRACK command.
-	 * @param integer $track_on - The track currently processing.
-	 */
+	* Collect any unidentified data.
+	*
+	* @param string $line - The line in the cue file that contains the TRACK command.
+	* @param integer $track_on - The track currently processing.
+	*/
 	function parseGarbage($line, $track_on)
 	{
 		if ( strlen($line) > 0 )
@@ -224,11 +224,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the INDEX command of a TRACK.
-	 *
-	 * @param string $line - The line in the cue file that contains the TRACK command.
-	 * @param integer $track_on - The track currently processing.
-	 */
+	* Parses the INDEX command of a TRACK.
+	*
+	* @param string $line - The line in the cue file that contains the TRACK command.
+	* @param integer $track_on - The track currently processing.
+	*/
 	function parseIndex($line, $track_on)
 	{
 		$type = strtolower(substr($line, 0, strpos($line, ' ')));
@@ -289,11 +289,11 @@ class getid3_cue
 	}
 
 	/**
-	 * Parses the TRACK command.
-	 *
-	 * @param string $line - The line in the cue file that contains the TRACK command.
-	 * @param integer $track_on - The track currently processing.
-	 */
+	* Parses the TRACK command.
+	*
+	* @param string $line - The line in the cue file that contains the TRACK command.
+	* @param integer $track_on - The track currently processing.
+	*/
 	function parseTrack($line, $track_on)
 	{
 		$line = substr($line, strpos($line, ' ') + 1);

@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // Restricted access
 defined('JPATH_BASE') or die;
@@ -43,14 +43,14 @@ class JFormFieldModal_Podcast extends JFormField
 		$script[] = '		document.id("'.$this->id.'_name").value = title;';
 		$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';
-
+		
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		// Setup variables for display.
 		$html	= array();
 
-		$html[] = '<input type="hidden" id="'.$this->id.'_id" name="'.$this->name.'" />';
+		$html[] = '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
 
 		return implode("\n", $html);
 	}

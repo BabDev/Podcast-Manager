@@ -80,14 +80,14 @@ class getid3_la
 				$offset += 2;
 				if ($ThisFileInfo['la']['channels'] == 0) {
 					$ThisFileInfo['error'][] = 'Corrupt LA file: channels == zero';
-					return false;
+						return false;
 				}
 
 				$ThisFileInfo['la']['sample_rate'] = getid3_lib::LittleEndian2Int(substr($rawdata, $offset, 4));
 				$offset += 4;
 				if ($ThisFileInfo['la']['sample_rate'] == 0) {
 					$ThisFileInfo['error'][] = 'Corrupt LA file: sample_rate == zero';
-					return false;
+						return false;
 				}
 
 				$ThisFileInfo['la']['bytes_per_second']     = getid3_lib::LittleEndian2Int(substr($rawdata, $offset, 4));
@@ -110,7 +110,7 @@ class getid3_la
 				$ThisFileInfo['la']['original_crc']         = getid3_lib::LittleEndian2Int(substr($rawdata, $offset, 4));
 				$offset += 4;
 
-				// mikeï¿½bevin*de
+				// mikeØbevin*de
 				// Basically, the blocksize/seekevery are 61440/19 in La0.4 and 73728/16
 				// in earlier versions. A seekpoint is added every blocksize * seekevery
 				// samples, so 4 * int(totalSamples / (blockSize * seekEvery)) should

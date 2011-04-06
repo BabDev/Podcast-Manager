@@ -38,7 +38,7 @@ class getid3_apetag
 				// APE tag found before ID3v1
 				$ThisFileInfo['ape']['tag_offset_end'] = $ThisFileInfo['filesize'] - $id3v1tagsize;
 
-				//} elseif (preg_match('/APETAGEX.{24}$/i', $APEfooterID3v1)) {
+			//} elseif (preg_match('/APETAGEX.{24}$/i', $APEfooterID3v1)) {
 			} elseif (substr($APEfooterID3v1, strlen($APEfooterID3v1) - $apetagheadersize, 8) == 'APETAGEX') {
 
 				// APE tag found, no ID3v1
@@ -290,10 +290,10 @@ class getid3_apetag
 
 	function APEcontentTypeFlagLookup($contenttypeid) {
 		static $APEcontentTypeFlagLookup = array(
-		0 => 'utf-8',
-		1 => 'binary',
-		2 => 'external',
-		3 => 'reserved'
+			0 => 'utf-8',
+			1 => 'binary',
+			2 => 'external',
+			3 => 'reserved'
 		);
 		return (isset($APEcontentTypeFlagLookup[$contenttypeid]) ? $APEcontentTypeFlagLookup[$contenttypeid] : 'invalid');
 	}
@@ -323,8 +323,8 @@ class getid3_apetag
 			'abstract',
 			'language',
 			'bibliography'
-			);
-			return in_array(strtolower($itemkey), $APEtagItemIsUTF8Lookup);
+		);
+		return in_array(strtolower($itemkey), $APEtagItemIsUTF8Lookup);
 	}
 
 }

@@ -5,6 +5,7 @@
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * 
 */
+
 .podMan-welcome {
 	padding-bottom: 10px;
 }
@@ -18,8 +19,8 @@
 }
 
 .minimaList {
-	color: #666666;
-	font-size: 13px;
-	line-height: 1.5;
-	max-width: 503px;
+    color: #666666;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 503px;
 }

@@ -8,18 +8,15 @@
 	<authorUrl>http://www.flbab.com</authorUrl>
 	<version>1.6 Beta 2</version>
 	<license>GNU/GPL Version 2 or later</license>
-	<description>HTML overrides for the Podcast Manager extensions for the
-		Minima template</description>
+	<description>HTML overrides for the Podcast Manager extensions for the Minima template</description>
 
 	<fileset>
-		<files folder="com_podcastmanager"
-			target="administrator/templates/minima/html/com_podcastmanager">
+		<files folder="com_podcastmanager" target="administrator/templates/minima/html/com_podcastmanager">
 			<folder>info</folder>
 			<folder>podcast</folder>
 			<folder>podcasts</folder>
 		</files>
-		<files folder="com_podcastmedia"
-			target="administrator/templates/minima/html/com_podcastmedia">
+		<files folder="com_podcastmedia" target="administrator/templates/minima/html/com_podcastmedia">
 			<folder>media</folder>
 		</files>
 	</fileset>

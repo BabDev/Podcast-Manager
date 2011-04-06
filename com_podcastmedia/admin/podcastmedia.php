@@ -1,11 +1,11 @@
 <?php
 /**
- * Podcast Manager for Joomla!
- *
- * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
- * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
 // no direct access
 defined('_JEXEC') or die;
@@ -14,13 +14,13 @@ defined('_JEXEC') or die;
 $user	= JFactory::getUser();
 $asset	= JRequest::getCmd('asset');
 $author	= JRequest::getCmd('author');
-
+ 
 if (!$user->authorise('core.manage', 'com_podcastmanager')
-&&	(!$asset or (
-!$user->authorise('core.edit', $asset)
-&&	!$user->authorise('core.create', $asset)
-&& 	count($user->getAuthorisedCategories($asset, 'core.create')) == 0)
-&&	!($user->id==$author && $user->authorise('core.edit.own', $asset))))
+	&&	(!$asset or (
+			!$user->authorise('core.edit', $asset)
+		&&	!$user->authorise('core.create', $asset) 
+		&& 	count($user->getAuthorisedCategories($asset, 'core.create')) == 0)
+		&&	!($user->id==$author && $user->authorise('core.edit.own', $asset))))
 {
 	return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
 }

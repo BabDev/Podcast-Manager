@@ -9,8 +9,7 @@
 	<authorUrl>http://www.getid3.org</authorUrl>
 	<version>1.8.5</version>
 	<license>GNU/GPL Version 2</license>
-	<description>getID3() is a PHP script that extracts useful information
-		from MP3s and other multimedia file formats</description>
+	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
 	<files folder="getid3">
 		<file>changelog.txt</file>
 		<file>extension.cache.dbm.php</file>
