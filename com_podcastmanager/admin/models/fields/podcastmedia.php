@@ -52,7 +52,7 @@ class JFormFieldPodcastMedia extends JFormField
 		if ($asset == "") {
 			 $asset = JRequest::getCmd('option');
 		}
-		
+
 		$link = (string) $this->element['link'];
 		if (!self::$initialised) {
 
@@ -116,7 +116,7 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '			'.JText::_('JLIB_FORM_BUTTON_SELECT').'</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
-		
+
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
 		$html[] = '		<a title="'.JText::_('JLIB_FORM_BUTTON_CLEAR').'"' .

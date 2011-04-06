@@ -43,14 +43,14 @@ class JFormFieldModal_Podcast extends JFormField
 		$script[] = '		document.id("'.$this->id.'_name").value = title;';
 		$script[] = '		SqueezeBox.close();';
 		$script[] = '	}';
-		
+
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		// Setup variables for display.
 		$html	= array();
 
-		$html[] = '<input type="hidden" id="'.$this->id.'_id"'.$class.' name="'.$this->name.'" value="'.$value.'" />';
+		$html[] = '<input type="hidden" id="'.$this->id.'_id" name="'.$this->name.'" />';
 
 		return implode("\n", $html);
 	}
