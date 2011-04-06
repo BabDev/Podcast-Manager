@@ -19,7 +19,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @since	1.6
 	 */
 	protected $text_prefix = 'COM_PODCASTMANAGER';
-	
+
 	/**
 	 * Method to get the record form.
 	 *
@@ -66,7 +66,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$table->publish_up = JFactory::getDate()->toMySQL();
 		}
 	}
-	
+
 	/**
 	 * Returns a Table object, always creating it.
 	 *
@@ -91,7 +91,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
-		
+
 		if (empty($data)) {
 			$data = $this->getItem();
 			// If changing the selected file, process the new data through getID3
@@ -114,12 +114,11 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	{
 		jimport('getid3.getid3');
 		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
-				
-		$params		= JComponentHelper::getParams('com_podcastmanager');
+
 		$filename	= JPATH_ROOT.'/'.$_COOKIE[podManFile];
 		$getID3		= new getID3($filename);
 		$fileInfo	= $getID3->analyze($filename);
-		
+
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];
 			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
@@ -138,7 +137,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				}
 			}
 		}
-		
+
 		if (isset($fileInfo['playtime_string'])) {
 			$data->itDuration = $fileInfo['playtime_string'];
 		}
