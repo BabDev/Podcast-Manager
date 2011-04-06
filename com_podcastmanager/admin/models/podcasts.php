@@ -77,53 +77,53 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Select the required fields from the table.
 		$query->select(
-			$this->getState(
+		$this->getState(
 				'list.select',
 				'a.id, a.filename, a.title, a.published, a.created, a.modified, a.modified_by, a.itAuthor,' .
 				'a.checked_out, a.checked_out_time, a.publish_up, a.itBlock, a.itCategory, a.itDuration, a.itExplicit,' .
 				'a.itKeywords, a.itSubtitle, a.itSummary, a.language'
-			)
-		);
-		$query->from('`#__podcastmanager` AS a');
+				)
+				);
+				$query->from('`#__podcastmanager` AS a');
 
-		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
+				// Join over the language
+				$query->select('l.title AS language_title');
+				$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
-		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+				// Join over the users for the checked out user.
+				$query->select('uc.name AS editor');
+				$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-		// Filter by published state
-		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
-			$query->where('a.published = '.(int) $published);
-		} else if ($published === '') {
-			$query->where('(a.published IN (0, 1))');
-		}
+				// Filter by published state
+				$published = $this->getState('filter.published');
+				if (is_numeric($published)) {
+					$query->where('a.published = '.(int) $published);
+				} else if ($published === '') {
+					$query->where('(a.published IN (0, 1))');
+				}
 
-		// Filter by search in title
-		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
-				$query->where('a.id = '.(int) substr($search, 3));
-			} else {
-				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
-				$query->where('(a.title LIKE '.$search.')');
-			}
-		}
+				// Filter by search in title
+				$search = $this->getState('filter.search');
+				if (!empty($search)) {
+					if (stripos($search, 'id:') === 0) {
+						$query->where('a.id = '.(int) substr($search, 3));
+					} else {
+						$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+						$query->where('(a.title LIKE '.$search.')');
+					}
+				}
 
-		// Filter on the language.
-		if ($language = $this->getState('filter.language')) {
-			$query->where('a.language = ' . $db->quote($language));
-		}
+				// Filter on the language.
+				if ($language = $this->getState('filter.language')) {
+					$query->where('a.language = ' . $db->quote($language));
+				}
 
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+				// Add the list ordering clause.
+				$orderCol	= $this->state->get('list.ordering');
+				$orderDirn	= $this->state->get('list.direction');
+				$query->order($db->getEscaped($orderCol.' '.$orderDirn));
 
-		//echo nl2br(str_replace('#__','jos_',$query));
-		return $query;
+				//echo nl2br(str_replace('#__','jos_',$query));
+				return $query;
 	}
 }

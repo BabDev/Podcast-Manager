@@ -30,15 +30,15 @@ class PodcastManagerHelper
 		JSubMenuHelper::addEntry(
 		JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
 			'index.php?option=com_podcastmanager&view=podcasts',
-			$vName == 'podcasts');
+		$vName == 'podcasts');
 		JSubMenuHelper::addEntry(
 		JText::_('COM_PODCASTMANAGER_SUBMENU_INFO'),
 			'index.php?option=com_podcastmanager&view=info',
-			$vName == 'info');
+		$vName == 'info');
 		JSubMenuHelper::addEntry(
 		JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
 			'index.php?option=com_podcastmedia&view=media',
-			$vName == 'media');
+		$vName == 'media');
 	}
 
 	/**
@@ -57,10 +57,10 @@ class PodcastManagerHelper
 			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
 			);
 
-		foreach ($actions as $action) {
-			$result->set($action, $user->authorise($action, $assetName));
-		}
+			foreach ($actions as $action) {
+				$result->set($action, $user->authorise($action, $assetName));
+			}
 
-		return $result;
+			return $result;
 	}
 }
