@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id$ -->
 <form>
 	<fieldset addfieldpath="/administrator/components/com_podcastmanager/models/fields">
 		<field name="id" type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
