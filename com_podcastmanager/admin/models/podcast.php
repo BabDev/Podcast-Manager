@@ -119,25 +119,33 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		$getID3		= new getID3($filename);
 		$fileInfo	= $getID3->analyze($filename);
 
+		// Set the filename field (fallback if session data doesn't retain)
+		$data->filename	= $_COOKIE[podManFile];
+
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];
 			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
 			if ($tags) {
+				// Set the title field
 				if (isset($tags['title'])) {
 					$data->title = $tags['title'][0];
 				}
+				// Set the album field
 				if (isset($tags['album'])) {
 					$data->itSubtitle = $tags['album'][0];
 				}
+				// Set the artist field
 				if (isset($tags['artist'])) {
 					$data->itAuthor = $tags['artist'][0];
 				}
+				// Set the category field with the genre
 				if (isset($tags['genre'])) {
 					$data->itCategory = $tags['genre'][0];
 				}
 			}
 		}
 
+		// Set the duration field
 		if (isset($fileInfo['playtime_string'])) {
 			$data->itDuration = $fileInfo['playtime_string'];
 		}
