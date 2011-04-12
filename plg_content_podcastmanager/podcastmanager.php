@@ -54,7 +54,7 @@ class plgContentPodcastManager extends JPlugin
 			$podfilepath = $db->loadObject();
 
 			// Get the player
-			$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
+			$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $article->title);
 
 			// Replace the {podcast marker with the player
 			$article->text = JString::str_ireplace($matches[0][$id], $player->generate(), $article->text);
@@ -83,7 +83,7 @@ class PodcastManagerPlayer
 	/**
 	 * The class constructor
 	 */
-	function __construct(&$podmanparams, $podfilepath, $podtitle)
+	function __construct(&$podmanparams, $podfilepath, $podtitle, $title)
 	{	
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath	= $podfilepath;
@@ -152,8 +152,8 @@ class PodcastManagerPlayer
 	 */
 	private function player()
 	{
-		$width	= $this->podmanparams->get('playerwidth', 400);
-		$height	= $this->podmanparams->get('playerheight', 15);
+		$width = $this->podmanparams->get('playerwidth', 400);
+		$height = $this->podmanparams->get('playerheight', 15);
 
 		$playerURL = JURI::base().'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
@@ -169,7 +169,7 @@ class PodcastManagerPlayer
 	{
 		$tempfile	= get_object_vars($this->podfilepath);
 		$filepath	= substr(implode('', $tempfile), 0);
-		$ext		= substr($filepath, strlen($filepath) - 3);
+		$ext = substr($filepath, strlen($filepath) - 3);
 		
 		$width = $this->podmanparams->get('playerwidth', 320);
 		$height = $this->podmanparams->get('playerheight', 240);
