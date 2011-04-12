@@ -14,6 +14,17 @@ jimport('joomla.application.component.controller');
 
 class PodcastManagerController extends JController
 {
+	function __construct($config = array())
+	{
+		// Frontpage Editor podcast proxying:
+		if(JRequest::getCmd('view') === 'podcasts' && JRequest::getCmd('layout') === 'modal') {
+			JHtml::_('stylesheet','system/adminlist.css', array(), true);
+			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
+		}
+
+		parent::__construct($config);
+	}
+
 	/**
 	 * Method to display a view.
 	 *
