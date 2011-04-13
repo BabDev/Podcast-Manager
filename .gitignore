@@ -1,8 +1,9 @@
 # Packages #
 *.zip
 
-# Packages directory #
+# Packages directories #
 packages
+releases
 
 # Phing #
 build.xml
