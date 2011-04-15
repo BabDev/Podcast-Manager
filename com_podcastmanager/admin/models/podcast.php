@@ -95,7 +95,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (empty($data)) {
 			$data = $this->getItem();
 			// If changing the selected file, process the new data through getID3
-			if (isset($_COOKIE[podManFile])) {
+			if (isset($_COOKIE['podManFile'])) {
 				$data = $this->fillMetaData($data);
 			}
 		}
@@ -115,12 +115,12 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		jimport('getid3.getid3');
 		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
 
-		$filename	= JPATH_ROOT.'/'.$_COOKIE[podManFile];
+		$filename	= JPATH_ROOT.'/'.$_COOKIE['podManFile'];
 		$getID3		= new getID3($filename);
 		$fileInfo	= $getID3->analyze($filename);
 
-		// Set the filename field (fallback if session data doesn't retain)
-		$data->filename	= $_COOKIE[podManFile];
+		// Set the filename field (fallback for if session data doesn't retain)
+		$data->filename	= $_COOKIE['podManFile'];
 
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];
