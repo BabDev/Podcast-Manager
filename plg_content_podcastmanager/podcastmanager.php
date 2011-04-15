@@ -38,6 +38,10 @@ class plgContentPodcastManager extends JPlugin
 		$podmanparams = JComponentHelper::getParams('com_podcastmanager');
 
 		foreach ($matches as $id => $podcast) {
+			// We only want to process ID 0
+			if ($id > 0) {
+				return;
+			}
 
 			// Retrieve the title and convert it to a useable string
 			// 9 offset for {podcast marker
@@ -118,10 +122,10 @@ class PodcastManagerPlayer
 	 * 
 	 * @return	object	The URL to the file
 	 */
-	private function determineURL($filename)
+	private function determineURL($podfilepath)
 	{
 		// Convert the file path to a string
-		$tempfile	= get_object_vars($filename);
+		$tempfile	= get_object_vars($podfilepath);
 		$filepath	= substr(implode('', $tempfile), 0);
 		
 		// Set the file path based on the server
