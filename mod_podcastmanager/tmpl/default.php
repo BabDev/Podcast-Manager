@@ -13,4 +13,6 @@ defined('_JEXEC') or die();
 
 <div><?php echo $params->get('text'); ?></div>
 <div><a href="<?php echo $link; ?>"><?php echo $img; ?></a></div>
+<?php if ($params->get('plainlink') == 1) { ?>
 <div><a href="<?php echo $plainlink; ?>"><?php echo JText::_('MOD_PODCASTMANAGER_FULLFEED');?></a></div>
+<?php }
