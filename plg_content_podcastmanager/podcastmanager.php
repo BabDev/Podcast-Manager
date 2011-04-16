@@ -94,7 +94,7 @@ class PodcastManagerPlayer
 	/**
 	 * The class constructor
 	 */
-	function __construct(&$podmanparams, $podfilepath, $podtitle, $title)
+	function __construct(&$podmanparams, $podfilepath, $podtitle)
 	{	
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath	= $podfilepath;
