@@ -71,12 +71,11 @@ class PodcastManagerViewPodcasts extends JView
 			JToolBarHelper::custom('podcasts.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('podcasts.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
-		}
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'podcasts.delete','JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
-		} else if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::trash('podcasts.trash','JTOOLBAR_TRASH');
+		}
+		if ($canDo->get('core.delete')) {
+			JToolBarHelper::deleteList('', 'podcasts.delete','JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
 		if ($canDo->get('core.admin')) {
