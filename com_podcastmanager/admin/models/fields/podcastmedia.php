@@ -61,12 +61,12 @@ class JFormFieldPodcastMedia extends JFormField
 
 			// Build the script.
 			$script = array();
-			$script[] = '	function jInsertFieldValue(value,id) {';
-			$script[] = '		var old_id = document.getElementById(id).value;';
+			$script[] = '	function jInsertFieldValue(value, id) {';
+			$script[] = '		var old_id = document.id(id).value;';
 			$script[] = '		if (old_id != id) {';
-			$script[] = '			var elem = document.getElementById(id)';
+			$script[] = '			var elem = document.id(id)';
 			$script[] = '			elem.value = value;';
-			$script[] = '			elem.onchange();';
+			$script[] = '			elem.fireEvent("change");';
 			$script[] = '		}';
 			$script[] = '	}';
 
