@@ -37,6 +37,7 @@ class PodcastMediaViewMedia extends JView
 
 		JHtml::_('behavior.framework', true);
 
+		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 		JHtml::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
 		JHtml::_('stylesheet','media/mediamanager.css', array(), true);
 		if ($lang->isRTL()) :
