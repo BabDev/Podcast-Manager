@@ -83,7 +83,7 @@ abstract class PodcastMediaHelper
 						$err = 'COM_PODCASTMEDIA_ERROR_WARNINVALID_MIME';
 						return false;
 					}
-				} else if (!$user->authorise('core.manage')) {
+				} else if (!$user->authorise('core.manage', 'com_podcastmanager')) {
 					$err = 'COM_PODCASTMEDIA_ERROR_WARNNOTADMIN';
 					return false;
 				}
