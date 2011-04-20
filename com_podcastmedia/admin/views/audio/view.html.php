@@ -79,7 +79,6 @@ class PodcastMediaViewAudio extends JView
 
 		$this->assignRef('session',			JFactory::getSession());
 		$this->assignRef('medmanparams',	$medmanparams);
-		$this->assignRef('podmedparams',	$podmedparams);
 		$this->assignRef('state',			$this->get('state'));
 		$this->assignRef('folderList',		$this->get('folderList'));
 		$this->assign('require_ftp', $ftp);
