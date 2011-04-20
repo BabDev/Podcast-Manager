@@ -25,8 +25,6 @@ class PodcastMediaViewMedia extends JView
 	{
 		$app			= JFactory::getApplication();
 		$medmanparams	= JComponentHelper::getParams('com_media');
-		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
-		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
 		
 		$lang	= JFactory::getLanguage();
 
@@ -109,8 +107,6 @@ class PodcastMediaViewMedia extends JView
 		$state		= $this->get('state');
 		$this->assignRef('session', $session);
 		$this->assignRef('medmanparams', $medmanparams);
-		$this->assignRef('podmanparams', $podmanparams);
-		$this->assignRef('podmedparams', $podmedparams);
 		$this->assignRef('state', $state);
 		$this->assign('require_ftp', $ftp);
 		$this->assign('folders_id', ' id="media-tree"');
@@ -147,7 +143,7 @@ class PodcastMediaViewMedia extends JView
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}
-		if ($user->authorise('core.admin', 'com_podcastmedia'))
+		if ($user->authorise('core.admin', 'com_podcastmanager'))
 		{
 			JToolBarHelper::preferences('com_podcastmedia');
 			JToolBarHelper::divider();
