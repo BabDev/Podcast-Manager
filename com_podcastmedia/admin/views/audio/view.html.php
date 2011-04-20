@@ -24,8 +24,6 @@ class PodcastMediaViewAudio extends JView
 	function display($tpl = null)
 	{
 		$medmanparams	= JComponentHelper::getParams('com_media');
-		$podmanparams	= JComponentHelper::getParams('com_podcastmanager');
-		$podmedparams	= JComponentHelper::getParams('com_podcastmedia');
 		$app			= JFactory::getApplication();
 		$lang			= JFactory::getLanguage();
 		$append 		= '';
@@ -81,7 +79,6 @@ class PodcastMediaViewAudio extends JView
 
 		$this->assignRef('session',			JFactory::getSession());
 		$this->assignRef('medmanparams',	$medmanparams);
-		$this->assignRef('podmanparams',	$podmanparams);
 		$this->assignRef('podmedparams',	$podmedparams);
 		$this->assignRef('state',			$this->get('state'));
 		$this->assignRef('folderList',		$this->get('folderList'));
