@@ -27,7 +27,7 @@ class PodcastManagerViewFeed extends JView
 		$document->setMimeEncoding('application/rss+xml');
 
 		if($params->get('cache', true)) {
-			$cache =& JFactory::getCache('com_podcastmanager', 'output');
+			$cache = JFactory::getCache('com_podcastmanager', 'output');
 			if($cache->start('feed', 'com_podcastmanager')) {
 				return;
 			}
@@ -56,7 +56,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeElement('title', $params->get('title', ''));
 		$xw->writeElement('link', JURI::base()); // may want to make configurable as param
 
-		$lang =& JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$xw->writeElement('language', $lang->getTag());
 
 		$xw->writeElement('copyright', $params->get('copyright', ''));
