@@ -19,4 +19,4 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itSummary` varchar(255) NOT NULL default '',
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`)
-);
+) DEFAULT CHARSET=utf8;
