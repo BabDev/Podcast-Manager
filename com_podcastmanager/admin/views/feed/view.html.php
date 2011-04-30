@@ -8,12 +8,11 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
-jimport('joomla.filesystem.file');
 
-class PodcastManagerViewPodcast extends JView
+class PodcastManagerViewFeed extends JView
 {
 	protected $form;
 	protected $item;
@@ -24,7 +23,6 @@ class PodcastManagerViewPodcast extends JView
 	 */
 	public function display($tpl = null)
 	{
-		// Initialiase variables.
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
@@ -37,7 +35,6 @@ class PodcastManagerViewPodcast extends JView
 
 		// Add the component media
 		JHTML::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-		JHTML::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
 
 		$this->addToolbar();
 		parent::display($tpl);
@@ -56,35 +53,35 @@ class PodcastManagerViewPodcast extends JView
 		$isNew		= ($this->item->id == 0);
 		$canDo		= PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEED_'.($isNew ? 'ADD_FEED' : 'EDIT_FEED')), 'podcastmanager.png');
 
 		// Set the actions for new and existing records.
 		if ($isNew)  {
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) {
-				JToolBarHelper::apply('podcast.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('podcast.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply('feed.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('feed.save', 'JTOOLBAR_SAVE');
 			}
 
-			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CANCEL');
+			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else {
 			// Since it's an existing record, check the edit permission.
 			if ($canDo->get('core.edit')) {
-				JToolBarHelper::apply('podcast.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('podcast.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply('feed.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('feed.save', 'JTOOLBAR_SAVE');
 
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) {
-					JToolBarHelper::custom('podcast.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					JToolBarHelper::custom('feed.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			// If an existing item, can save as a copy
 			if ($canDo->get('core.create')) {
-				JToolBarHelper::custom('podcast.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				JToolBarHelper::custom('feed.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
 
-			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
+			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 }

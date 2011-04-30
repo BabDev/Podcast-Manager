@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!-- $Id$	-->
 <form>
 	<fieldset
 		addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
@@ -21,6 +20,11 @@
 				value="0">JUNPUBLISHED</option>
 			<option
 				value="-2">JTRASH</option>
+		</field>
+		<field
+			name="feedname" type="feedname" class="inputbox"
+			label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
+			size="40" required="true">
 		</field>
 		<field name="created" type="calendar" label="COM_PODCASTMANAGER_FIELD_CREATED_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION" class="inputbox" size="22"

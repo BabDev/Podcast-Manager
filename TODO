@@ -1,0 +1,6 @@
+TODO for Podcast Manager Multi-feed Functionality:
+
+- Migrate appropriate options from component params to feed params
+- Field to select feed
+- Verification that all functions work and extend if necessary
+- Verify no data is corrupt in podcasts area

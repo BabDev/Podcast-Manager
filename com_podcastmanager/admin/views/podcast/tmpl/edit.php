@@ -14,7 +14,17 @@ defined('_JEXEC') or die();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+
+<script type="text/javascript">
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
+			Joomla.submitform(task, document.getElementById('item-form'));
+		}
+	}
+</script>
+
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
