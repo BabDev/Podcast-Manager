@@ -10,7 +10,7 @@
 // Restricted access
 defined('_JEXEC') or die();
 
-jimport( 'joomla.application.component.modeladmin' );
+jimport('joomla.application.component.modeladmin');
 
 class PodcastManagerModelPodcast extends JModelAdmin
 {
@@ -151,5 +151,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 		return $data;
 	}
+
+	/**
+	 * Custom clean cache method
+	 *
+	 * @since	1.6
+	 */
+	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
+	{
+		parent::cleanCache($group, $client_id);
+	}	
 }
 	
