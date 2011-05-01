@@ -16,7 +16,6 @@ class PodcastManagerModelFeed extends JModelAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
-	 * @since	1.6
 	 */
 	protected $text_prefix = 'COM_PODCASTMANAGER';
 
@@ -26,36 +25,6 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * @var		string
 	 */
 	protected $_context		= 'com_podcastmanager.feed';
-
-	/**
-	 * Method to test whether a record can be deleted.
-	 *
-	 * @param	object	A record object.
-	 *
-	 * @return	boolean	True if allowed to delete the record. Defaults to the permission set in the component.
-	 * @since	1.6
-	 */
-	protected function canDelete($record)
-	{
-		$user = JFactory::getUser();
-
-		return $user->authorise('core.delete', 'com_podcastmanager.feed.'.(int) $record->id);
-	}
-
-	/**
-	 * Method to test whether a record can have its state edited.
-	 *
-	 * @param	object	A record object.
-	 *
-	 * @return	boolean	True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 * @since	1.6
-	 */
-	protected function canEditState($record)
-	{
-		$user = JFactory::getUser();
-
-		return $user->authorise('core.edit.state', 'com_podcastmanager.feed.'.(int) $record->id);
-	}
 
 	/**
 	 * Returns a Table object, always creating it
@@ -76,7 +45,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 * @return	JForm	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -93,7 +62,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return	mixed	The data for the form.
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	protected function loadFormData()
 	{
@@ -110,7 +79,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	/**
 	 * Custom clean cache method
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{

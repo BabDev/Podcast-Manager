@@ -31,15 +31,15 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Self join to find the number of published menu items in the menu.
 		$query->select('COUNT(DISTINCT p1.id) AS count_published');
-		$query->join('LEFT', '`#__podcastmanager` AS p1 ON p1.feedname = a.feedname AND p1.published = 1');
+		$query->join('LEFT', '`#__podcastmanager` AS p1 ON p1.feedname = a.name AND p1.published = 1');
 
 		// Self join to find the number of unpublished menu items in the menu.
 		$query->select('COUNT(DISTINCT p2.id) AS count_unpublished');
-		$query->join('LEFT', '`#__podcastmanager` AS p2 ON p2.feedname = a.feedname AND p2.published = 0');
+		$query->join('LEFT', '`#__podcastmanager` AS p2 ON p2.feedname = a.name AND p2.published = 0');
 
 		// Self join to find the number of trashed menu items in the menu.
 		$query->select('COUNT(DISTINCT p3.id) AS count_trashed');
-		$query->join('LEFT', '`#__podcastmanager` AS p3 ON p3.feedname = a.feedname AND p3.published = -2');
+		$query->join('LEFT', '`#__podcastmanager` AS p3 ON p3.feedname = a.name AND p3.published = -2');
 
 		$query->group('a.id');
 
@@ -59,7 +59,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

@@ -16,9 +16,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
-	 * @since	1.6
 	 */
 	protected $text_prefix = 'COM_PODCASTMANAGER';
+
+	/**
+	 * Model context string.
+	 *
+	 * @var		string
+	 */
+	protected $_context		= 'com_podcastmanager.podcast';
 
 	/**
 	 * Method to get the record form.
@@ -155,7 +161,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Custom clean cache method
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{
