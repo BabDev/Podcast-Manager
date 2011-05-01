@@ -30,7 +30,7 @@
 	</uninstall>
 	<update>
 		<schemas>
-			<schemapath type="mysql">sql/update.mysql.sql</schemapath>
+			<schemapath type="mysql">sql/updates</schemapath>
 		</schemas>
 	</update>
 	<languages folder="site/language">
