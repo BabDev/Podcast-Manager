@@ -48,14 +48,7 @@ class JFormFieldFeedName extends JFormFieldList
 
 		$query->select('a.id AS value, a.name AS text');
 		$query->from('#__podcastmanager_feeds AS a');
-
-		if ($feedName = $this->form->getValue('feedname')) {
-			$query->where('a.name = '.$db->quote($feedName));
-		}
-		else {
-			$query->where('a.name != '.$db->quote(''));
-		}
-
+		$query->where('a.name != '.$db->quote(''));
 		$query->where('a.published != -2');
 		$query->group('a.id');
 		$query->order('a.id ASC');

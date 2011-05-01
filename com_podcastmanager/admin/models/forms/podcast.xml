@@ -24,7 +24,7 @@
 		<field
 			name="feedname" type="feedname" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
-			size="40" required="true">
+			size="1" required="true">
 		</field>
 		<field name="created" type="calendar" label="COM_PODCASTMANAGER_FIELD_CREATED_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION" class="inputbox" size="22"
