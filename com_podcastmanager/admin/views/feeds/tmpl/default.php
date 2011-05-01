@@ -37,7 +37,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
-					<?php echo JText::_('COM_MENUS_HEADING_NUMBER_MENU_ITEMS'); ?>
+					<?php echo JText::_('COM_PODCASTMANAGER_HEADING_NUMBER_ITEMS'); ?>
 				</th>
 				<th width="5%" rowspan="2">
 					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
