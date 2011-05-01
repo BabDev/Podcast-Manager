@@ -7,6 +7,12 @@
 		<field name="name" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FEED_FIELD_NAME_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_NAME_DESCRIPTION"
 			size="30" required="true" />
+		<field name="description" type="textarea" filter="safehtml"
+			rows="3" cols="40"
+			label="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_DESCRIPTION" />
+		<field name="copyright" type="text" class="inputbox"
+			label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION"
+			size="30" required="true" />
 		<field name="published" type="list" class="inputbox"
 			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">

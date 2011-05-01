@@ -56,28 +56,6 @@
 			default="audio/mpeg"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
-		<field
-			name="title"
-			type="text"
-			size="40"
-			default="My Podcast"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_TITLE_DESCRIPTION" />
-		<field
-			name="description"
-			type="textarea"
-			rows="5"
-			cols="30"
-			default="My regular podcast"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_DESCRIPTION_DESCRIPTION" />
-		<field
-			name="copyright"
-			type="text"
-			size="30"
-			default="(C) 2011"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_COPYRIGHT_DESCRIPTION" />
 	</fieldset>
 	<fieldset
 		name="itunes"

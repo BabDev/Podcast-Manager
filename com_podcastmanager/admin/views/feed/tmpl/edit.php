@@ -35,6 +35,12 @@ JHtml::_('behavior.formvalidation');
 					<li><?php echo $this->form->getLabel('published'); ?>
 					<?php echo $this->form->getInput('published'); ?></li>
 
+					<li><?php echo $this->form->getLabel('description'); ?>
+					<?php echo $this->form->getInput('description'); ?></li>
+
+					<li><?php echo $this->form->getLabel('copyright'); ?>
+					<?php echo $this->form->getInput('copyright'); ?></li>
+
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
 
