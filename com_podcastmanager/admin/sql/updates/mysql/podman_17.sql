@@ -1,4 +1,4 @@
-ALTER TABLE `#__podcastmanager` ADD `feedname` varchar(255) default NULL AFTER `filename`;
+ALTER TABLE `#__podcastmanager` ADD `feedname` int(11) NOT NULL AFTER `filename`;
 
 ALTER TABLE `#__podcastmanager` DEFAULT CHARSET=utf8;
 
