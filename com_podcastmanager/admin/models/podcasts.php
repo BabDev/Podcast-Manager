@@ -31,7 +31,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
+		$feedname = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
 		$this->setState('filter.feedname', $feedname);
 
 		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
