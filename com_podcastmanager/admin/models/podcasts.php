@@ -105,7 +105,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		}
 
 		// Filter by feedname.
-		$clientId = $this->getState('filter.feedname');
+		$feedname = $this->getState('filter.feedname');
 		if (is_numeric($feedname)) {
 			$query->where('a.feedname = '.(int) $feedname);
 		}
