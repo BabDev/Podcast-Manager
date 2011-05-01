@@ -35,6 +35,9 @@ JHtml::_('behavior.formvalidation');
 				<li><?php echo $this->form->getLabel('title'); ?>
 				<?php echo $this->form->getInput('title'); ?></li>
 
+				<li><?php echo $this->form->getLabel('feedname'); ?>
+				<?php echo $this->form->getInput('feedname'); ?></li>
+
 				<li><?php echo $this->form->getLabel('published'); ?>
 				<?php echo $this->form->getInput('published'); ?></li>
 
