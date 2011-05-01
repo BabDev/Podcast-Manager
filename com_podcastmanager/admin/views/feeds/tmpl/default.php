@@ -91,16 +91,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					} ?>
 				</td>
 				<td class="center btns">
-					<a href="<?php //TODO: Routing for feedname
-					 echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->feedname.'&filter_published=1');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=1');?>">
 						<?php echo $item->count_published; ?></a>
 				</td>
 				<td class="center btns">
-					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->feedname.'&filter_published=0');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=0');?>">
 						<?php echo $item->count_unpublished; ?></a>
 				</td>
 				<td class="center btns">
-					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->feedname.'&filter_published=-2');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=-2');?>">
 						<?php echo $item->count_trashed; ?></a>
 				</td>
 				<td class="center">
