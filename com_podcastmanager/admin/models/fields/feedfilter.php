@@ -15,7 +15,7 @@ jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
-class JFormFieldFeedName extends JFormFieldList
+class JFormFieldFeedFilter extends JFormFieldList
 {
 	/**
 	 * The form field type.
@@ -23,7 +23,7 @@ class JFormFieldFeedName extends JFormFieldList
 	 * @var		string
 	 * @since	1.6
 	 */
-	protected $type = 'FeedName';
+	protected $type = 'FeedFilter';
 
 	/**
 	 * Method to get the field options.
@@ -31,20 +31,17 @@ class JFormFieldFeedName extends JFormFieldList
 	 * @return	array	The field option objects.
 	 * @since	1.6
 	 */
-	protected function getOptions()
+	public function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
 
-		$query->select('a.id AS value, a.name AS text');
+		$query->select('id as value, name as text');
 		$query->from('#__podcastmanager_feeds AS a');
-		$query->where('a.name != '.$db->quote(''));
-		$query->where('a.published != -2');
-		$query->group('a.id');
-		$query->order('a.id ASC');
+		$query->order('a.name');
 
 		// Get the options.
 		$db->setQuery($query);
@@ -56,8 +53,7 @@ class JFormFieldFeedName extends JFormFieldList
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
+		array_unshift($options, JHtml::_('select.option', '0', JText::_('JNONE')));
 
 		return $options;
 	}

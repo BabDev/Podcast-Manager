@@ -31,6 +31,9 @@ class PodcastManagerModelPodcasts extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
 
+		$published = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
+		$this->setState('filter.feedname', $feedname);
+
 		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
@@ -58,6 +61,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		// Compile the store id.
 		$id.= ':' . $this->getState('filter.search');
 		$id.= ':' . $this->getState('filter.published');
+		$id.= ':' . $this->getState('filter.feedname');
 		$id.= ':' . $this->getState('filter.language');
 
 		return parent::getStoreId($id);
@@ -98,6 +102,12 @@ class PodcastManagerModelPodcasts extends JModelList
 			$query->where('a.published = '.(int) $published);
 		} else if ($published === '') {
 			$query->where('(a.published IN (0, 1))');
+		}
+
+		// Filter by feedname.
+		$clientId = $this->getState('filter.feedname');
+		if (is_numeric($feedname)) {
+			$query->where('a.feedname = '.(int) $feedname);
 		}
 
 		// Filter by search in title

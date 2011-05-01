@@ -32,6 +32,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
+			<select name="filter_feedname" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
+				<?php echo JHtml::_('select.options', JFormFieldFeedFilter::getOptions(), 'value', 'text', $this->state->get('filter.feedname'));?>
+			</select>
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
