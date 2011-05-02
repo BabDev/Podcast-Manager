@@ -56,9 +56,9 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="itCategory" type="text" class="inputbox"
+		<field name="itCategory" type="itunescategory"
 			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY_LABEL" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY_DESCRIPTION"
-			size="30" />
+			size="1" />
 		<field name="itDuration" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITDURATION_LABEL" description="COM_PODCASTMANAGER_FIELD_ITDURATION_DESCRIPTION"
 			size="30" />

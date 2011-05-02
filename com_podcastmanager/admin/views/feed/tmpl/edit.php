@@ -32,14 +32,23 @@ JHtml::_('behavior.formvalidation');
 					<li><?php echo $this->form->getLabel('name'); ?>
 					<?php echo $this->form->getInput('name'); ?></li>
 
-					<li><?php echo $this->form->getLabel('published'); ?>
-					<?php echo $this->form->getInput('published'); ?></li>
+					<li><?php echo $this->form->getLabel('subtitle'); ?>
+					<?php echo $this->form->getInput('subtitle'); ?></li>
 
 					<li><?php echo $this->form->getLabel('description'); ?>
 					<?php echo $this->form->getInput('description'); ?></li>
 
+					<li><?php echo $this->form->getLabel('published'); ?>
+					<?php echo $this->form->getInput('published'); ?></li>
+
 					<li><?php echo $this->form->getLabel('copyright'); ?>
 					<?php echo $this->form->getInput('copyright'); ?></li>
+
+					<li><?php echo $this->form->getLabel('author'); ?>
+					<?php echo $this->form->getInput('author'); ?></li>
+
+					<li><?php echo $this->form->getLabel('image'); ?>
+					<?php echo $this->form->getInput('image'); ?></li>
 
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
@@ -71,6 +80,37 @@ JHtml::_('behavior.formvalidation');
 					<?php endif; ?>
 				</ul>
 			</fieldset>
+
+			<?php echo JHtml::_('sliders.panel',JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
+			<fieldset class="panelform">
+				<ul class="adminformlist">
+					<li><?php echo $this->form->getLabel('block'); ?>
+					<?php echo $this->form->getInput('block'); ?></li>
+
+					<li><?php echo $this->form->getLabel('explicit'); ?>
+					<?php echo $this->form->getInput('explicit'); ?></li>
+
+					<li><?php echo $this->form->getLabel('category1'); ?>
+					<?php echo $this->form->getInput('category1'); ?></li>
+
+					<li><?php echo $this->form->getLabel('category2'); ?>
+					<?php echo $this->form->getInput('category2'); ?></li>
+
+					<li><?php echo $this->form->getLabel('category3'); ?>
+					<?php echo $this->form->getInput('category3'); ?></li>
+
+					<li><?php echo $this->form->getLabel('ownername'); ?>
+					<?php echo $this->form->getInput('ownername'); ?></li>
+
+					<li><?php echo $this->form->getLabel('owneremail'); ?>
+					<?php echo $this->form->getInput('owneremail'); ?></li>
+
+					<li><?php echo $this->form->getLabel('keywords'); ?>
+					<?php echo $this->form->getInput('keywords'); ?></li>
+
+				</ul>
+			</fieldset>
+
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 
