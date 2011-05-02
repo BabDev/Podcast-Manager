@@ -22,6 +22,7 @@ class PodcastManagerViewFeed extends JView
 
 		// Get the data from the model
 		$items	= $this->get('Items');
+		$feed	= $this->get('Feed');
 
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
@@ -59,7 +60,7 @@ class PodcastManagerViewFeed extends JView
 		$lang = JFactory::getLanguage();
 		$xw->writeElement('language', $lang->getTag());
 
-		$xw->writeElement('copyright', $params->get('copyright', ''));
+		$xw->writeElement('copyright', $feed->copyright);
 
 		$xw->writeElement('itunes:subtitle', $params->get('itSubtitle', ''));
 		$xw->writeElement('itunes:author', $params->get('itAuthor', ''));
@@ -82,9 +83,9 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->writeElement('itunes:keywords', $params->get('itKeywords', ''));
 
-		$xw->writeElement('itunes:summary', $params->get('description', ''));
+		$xw->writeElement('itunes:summary', $feed->description);
 
-		$xw->writeElement('description', $params->get('description', ''));
+		$xw->writeElement('description', $feed->description);
 
 		$xw->startElement('itunes:owner');
 		$xw->writeElement('itunes:name', $params->get('itOwnerName', ''));

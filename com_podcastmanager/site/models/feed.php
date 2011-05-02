@@ -15,6 +15,29 @@ jimport('joomla.application.component.modellist');
 class PodcastManagerModelFeed extends JModelList
 {
 	/**
+	 * Method to get a feed's parameters.
+	 *
+	 * @return	object
+	 */
+	public function getFeed()
+	{
+		// Create a new query object.
+		$db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+
+		// Select required fields
+		$query->select($this->getState('list.select', 'a.*'));
+		$query->from('`#__podcastmanager_feeds` AS a');
+
+		$feedId = $this->getState('feed.id');
+		$query->where('a.id = '.(int) $feedId);
+
+		$db->setQuery($query);
+		$feed = $db->loadObject();
+		return $feed;
+	}
+
+	/**
 	 * Method to get a list of items.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
