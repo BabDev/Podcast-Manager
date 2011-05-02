@@ -46,6 +46,12 @@ class PodcastManagerModelFeed extends JModelList
 		// Join over the users for the modified_by name.
 		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
 
+		// Filter by feed
+		$feed = $this->getState('feed.id');
+		if (is_numeric($feed)) {
+			$query->where('a.feedname = '.(int) $feed);
+		}
+
 		// Filter by state
 		$state = $this->getState('filter.published');
 		if (is_numeric($state)) {
@@ -82,6 +88,9 @@ class PodcastManagerModelFeed extends JModelList
 		$params	= JComponentHelper::getParams('com_podcastmanager');
 
 		// List state information
+		$feed = JRequest::getInt('feedname');
+		$this->setState('feed.id', $feed);
+		
 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		$this->setState('list.limit', $limit);
 
