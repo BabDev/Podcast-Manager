@@ -1,13 +1,11 @@
 <?php
-/**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
-*/
+/** 
+ * @package     Minima
+ * @author      Marco Barbosa
+ * @copyright   Copyright (C) 2010 Webnific. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
@@ -25,20 +23,35 @@ JHtml::_('behavior.keepalive');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feed&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></legend>
-				<ul class="adminformlist">
-					<li><?php echo $this->form->getLabel('name'); ?>
-					<?php echo $this->form->getInput('name'); ?></li>
-
-					<li><?php echo $this->form->getLabel('subtitle'); ?>
-					<?php echo $this->form->getInput('subtitle'); ?></li>
-
-					<li><?php echo $this->form->getLabel('description'); ?>
-					<?php echo $this->form->getInput('description'); ?></li>
-
+<ul id="submenu" class="out">
+	<li class="item-content"><a href="#" class="active"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_CONTENT'); ?></a></li>
+	<li class="item-parameters"><a href="#"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_PARAMETERS'); ?></a></li>
+</ul>
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feed&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+	<div id="item-basic">
+		<div class="width-70 fltlft">
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></legend>
+				<ol class="adminformlist">
+					<li">
+						<?php echo $this->form->getLabel('name'); ?>
+						<?php echo $this->form->getInput('name'); ?>
+					</li>
+					<li>
+						<?php echo $this->form->getLabel('subtitle'); ?>
+						<?php echo $this->form->getInput('subtitle'); ?>
+					</li>
+					<li class="item-text">
+						<?php echo $this->form->getLabel('description'); ?>
+						<?php echo $this->form->getInput('description'); ?>
+					</li>
+				</ol>
+			</fieldset>
+		</div>
+		<div class="width-30 fltrt item-info">
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED'); ?></legend>
+				<ol class="adminformlist">
 					<li><?php echo $this->form->getLabel('published'); ?>
 					<?php echo $this->form->getInput('published'); ?></li>
 
@@ -56,16 +69,19 @@ JHtml::_('behavior.keepalive');
 
 					<li><?php echo $this->form->getLabel('id'); ?>
 					<?php echo $this->form->getInput('id'); ?></li>
-				</ul>
-		</fieldset>
-	</div>
+				</ol>
+			</fieldset>
+		</div>
+	</div><!-- #item-basic -->
 
-	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start','podcastmanager-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-
-			<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
-			<fieldset class="panelform">
-				<ul class="adminformlist">
+	<div id="item-advanced">
+		<ul id="vertical-tabs">
+			<li class="publishing"><a href="#" class="active"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></a></li>
+			<li class="details"><a href="#"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'); ?></a></li>
+		</ul>
+		<div id="tabs">
+			<fieldset id="publishing" class="panelform">
+				<ol class="adminformlist">
 					<li><?php echo $this->form->getLabel('created'); ?>
 					<?php echo $this->form->getInput('created'); ?></li>
 
@@ -79,12 +95,10 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('modified'); ?>
 					<?php echo $this->form->getInput('modified'); ?></li>
 					<?php endif; ?>
-				</ul>
+				</ol>
 			</fieldset>
-
-			<?php echo JHtml::_('sliders.panel',JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
-			<fieldset class="panelform">
-				<ul class="adminformlist">
+			<fieldset id="details" class="panelform">
+				<ol class="adminformlist">
 					<li><?php echo $this->form->getLabel('block'); ?>
 					<?php echo $this->form->getInput('block'); ?></li>
 
@@ -108,15 +122,11 @@ JHtml::_('behavior.keepalive');
 
 					<li><?php echo $this->form->getLabel('keywords'); ?>
 					<?php echo $this->form->getInput('keywords'); ?></li>
-				</ul>
+				</ol>
 			</fieldset>
+		</div><!-- /#tabs -->
+	</div><!-- /#item-advanced -->
 
-		<?php echo JHtml::_('sliders.end'); ?>
-	</div>
-
-	<div>
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+	<input type="hidden" name="task" value="" />
+	<?php echo JHtml::_('form.token'); ?>
 </form>
-<div class="clr"></div>

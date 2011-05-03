@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
 ?>
 
 <script type="text/javascript">
