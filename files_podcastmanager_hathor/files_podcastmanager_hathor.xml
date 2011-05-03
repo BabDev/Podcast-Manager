@@ -6,7 +6,7 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.7 Alpha</version>
+	<version>1.7 Beta</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>HTML overrides for the Podcast Manager extensions for the Hathor template</description>
 	<fileset>
