@@ -1,11 +1,13 @@
 <?php
-/** 
- * @package     Minima
- * @author      Marco Barbosa
- * @copyright   Copyright (C) 2010 Webnific. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
+/**
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* 
+*/
 
+// Restricted access
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
