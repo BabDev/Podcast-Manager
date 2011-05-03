@@ -38,6 +38,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
+			<label class="selectlabel" for="filter_feedname">
+				<?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'); ?>
+			</label>
+			<select name="filter_feedname" id="filter_feedname" class="inputbox">
+				<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
+				<?php echo JHtml::_('select.options', JFormFieldFeedFilter::getOptions(), 'value', 'text', $this->state->get('filter.feedname'), true);?>
+			</select>
+
 			<label class="selectlabel" for="filter_language">
 				<?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?>
 			</label>
@@ -63,6 +71,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</th>
 				<th class="nowrap state-col">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+				</th>
+				<th class="width-10">
+					<?php echo JHtml::_('grid.sort', 'COM_PODCASTMANAGER_HEADING_FEEDNAME', 'a.feedname', $listDirn, $listOrder); ?>
 				</th>
 				<th class="width-5">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
@@ -99,6 +110,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
+				</td>
+				<td class="center">
+					<?php echo $this->escape($item->feed_name); ?>
 				</td>
 				<td class="center">
 					<?php if ($item->language=='*'):?>

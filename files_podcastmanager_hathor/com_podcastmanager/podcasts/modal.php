@@ -33,6 +33,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true);?>
 			</select>
 
+			<label class="selectlabel" for="filter_feedname"><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'); ?></label>
+			<select name="filter_feedname" id="filter_feedname" class="inputbox">
+				<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
+				<?php echo JHtml::_('select.options', JFormFieldFeedFilter::getOptions(), 'value', 'text', $this->state->get('filter.feedname'), true);?>
+			</select>
+
 			<label class="selectlabel" for="filter_language"><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></label>
 			<select name="filter_language" class="inputbox" id="filter_language"">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
@@ -50,8 +56,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
+				<th class="title">
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				</th>
 				<th class="title language-col">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_PODCASTMANAGER_HEADING_FEEDNAME', 'a.feedname', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap id-col">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -66,6 +75,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $this->escape(addslashes($item->title)); ?>');">
 						<?php echo $this->escape($item->title); ?></a>
 				</th>
+				<td class="center">
+					<?php echo $this->escape($item->feed_name); ?>
+				</td>
 				<td class="center">
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL','language'); ?>
