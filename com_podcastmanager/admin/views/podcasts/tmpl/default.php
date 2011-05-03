@@ -56,6 +56,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
+				<th width="10%">
+					<?php echo JHtml::_('grid.sort', 'COM_PODCASTMANAGER_HEADING_FEEDNAME', 'a.feedname', $listDirn, $listOrder); ?>
+				</th>
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
@@ -93,6 +96,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
+				</td>
+				<td class="center">
+					<?php echo $this->escape($item->feed_name); ?>
 				</td>
 				<td class="center nowrap">
 					<?php if ($item->language=='*') {

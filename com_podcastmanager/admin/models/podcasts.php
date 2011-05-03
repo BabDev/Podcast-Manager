@@ -101,6 +101,10 @@ class PodcastManagerModelPodcasts extends JModelList
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
 
+		// Join over the feed name
+		$query->select('f.name AS feed_name');
+		$query->join('LEFT', '`#__podcastmanager_feeds` AS f ON f.id = a.feedname');
+
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
