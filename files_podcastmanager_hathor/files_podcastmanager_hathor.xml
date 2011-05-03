@@ -11,6 +11,8 @@
 	<description>HTML overrides for the Podcast Manager extensions for the Hathor template</description>
 	<fileset>
 		<files folder="com_podcastmanager" target="administrator/templates/hathor/html/com_podcastmanager">
+			<folder>feed</folder>
+			<folder>feeds</folder>
 			<folder>info</folder>
 			<folder>podcast</folder>
 			<folder>podcasts</folder>
