@@ -53,6 +53,7 @@ class PodcastManagerController extends JController
 
 		$safeurlparams = array(
 			'id'				=> 'INT',
+			'feedname'			=> 'INT',
 			'limit'				=> 'INT',
 			'limitstart'		=> 'INT',
 			'lang'				=> 'CMD'

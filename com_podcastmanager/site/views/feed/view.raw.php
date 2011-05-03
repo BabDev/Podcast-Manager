@@ -49,12 +49,12 @@ class PodcastManagerViewFeed extends JView
 		$xw->startElement('channel');
 
 		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&view=feed&format=raw');
+		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&view=feed&feedname='.$feed->id.'&format=raw');
 		$xw->writeAttribute('rel', 'self');
 		$xw->writeAttribute('type', 'application/rss+xml');
 		$xw->endElement();
 
-		$xw->writeElement('title', $params->get('title', ''));
+		$xw->writeElement('title', $feed->name);
 		$xw->writeElement('link', JURI::base()); // may want to make configurable as param
 
 		$lang = JFactory::getLanguage();
@@ -62,16 +62,16 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->writeElement('copyright', $feed->copyright);
 
-		$xw->writeElement('itunes:subtitle', $params->get('itSubtitle', ''));
-		$xw->writeElement('itunes:author', $params->get('itAuthor', ''));
+		$xw->writeElement('itunes:subtitle', $feed->subtitle);
+		$xw->writeElement('itunes:author', $feed->author);
 
-		$itBlock = $params->get('itBlock', 0);
+		$itBlock = $feed->block;
 
 		if ($itBlock == 1) {
 			$xw->writeElement('itunes:block', 'yes');
 		}
 
-		$itExplicit = $params->get('itExplicit', 0);
+		$itExplicit = $feed->explicit;
 
 		if ($itExplicit == 1) {
 			$xw->writeElement('itunes:explicit', 'yes');
@@ -81,20 +81,20 @@ class PodcastManagerViewFeed extends JView
 			$xw->writeElement('itunes:explicit', 'no');
 		}		
 
-		$xw->writeElement('itunes:keywords', $params->get('itKeywords', ''));
+		$xw->writeElement('itunes:keywords', $feed->keywords);
 
 		$xw->writeElement('itunes:summary', $feed->description);
 
 		$xw->writeElement('description', $feed->description);
 
 		$xw->startElement('itunes:owner');
-		$xw->writeElement('itunes:name', $params->get('itOwnerName', ''));
-		$xw->writeElement('itunes:email', $params->get('itOwnerEmail', ''));
+		$xw->writeElement('itunes:name', $feed->ownername);
+		$xw->writeElement('itunes:email', $feed->owneremail);
 		$xw->endElement();
 
 		$xw->startElement('itunes:image');
 
-		$imageURL = $params->get('itImage', '');
+		$imageURL = $feed->image;
 
 		if (!preg_match('/^http/', $imageURL))
 		{
@@ -104,7 +104,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeAttribute('href', $imageURL);
 		$xw->endElement();
 
-		$this->setCategories($xw, $params);
+		$this->setCategories($xw, $params, $feed);
 
 		$this->setItems($xw, $params, $items);
 
@@ -117,12 +117,13 @@ class PodcastManagerViewFeed extends JView
 			$cache->end(); // cache output
 	}
 
-	private function setCategories(&$xw, $params)
+	private function setCategories(&$xw, $params, $feed)
 	{
-		$cats = array('itCategory1', 'itCategory2', 'itCategory3');
+		$cats = array('category1', 'category2', 'category3');
+		$i = 1;
 
 		foreach ($cats as $cat) {
-			$pieces = explode('>', $params->get($cat, ''));
+			$pieces = explode('>', $feed->$cat);
 
 			if ($pieces[0] != '') {
 				$xw->startElement('itunes:category');
@@ -135,6 +136,7 @@ class PodcastManagerViewFeed extends JView
 				}
 
 				$xw->endElement();
+				$i++;
 			}
 		}
 	}
