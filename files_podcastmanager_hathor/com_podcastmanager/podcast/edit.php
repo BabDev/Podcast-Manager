@@ -14,9 +14,18 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 ?>
+<script type="text/javascript">
+	Joomla.submitbutton = function(task)
+	{
+		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
+			Joomla.submitform(task, document.getElementById('item-form'));
+		}
+	}
+</script>
+
 <div class="podcast-edit">
 
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="podcast-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="podcast-form" class="form-validate">
 <div class="col main-section">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA'); ?></legend>
@@ -26,6 +35,9 @@ JHtml::_('behavior.formvalidation');
 
 			<li><?php echo $this->form->getLabel('title'); ?>
 			<?php echo $this->form->getInput('title'); ?></li>
+
+			<li><?php echo $this->form->getLabel('feedname'); ?>
+			<?php echo $this->form->getInput('feedname'); ?></li>
 
 			<li><?php echo $this->form->getLabel('published'); ?>
 			<?php echo $this->form->getInput('published'); ?></li>

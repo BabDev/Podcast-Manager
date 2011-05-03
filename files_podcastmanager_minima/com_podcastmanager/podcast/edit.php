@@ -22,7 +22,7 @@ JHtml::_('behavior.keepalive');
 <ul id="submenu" class="out">
     <li class="item-content"><a href="#" class="active"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_CONTENT'); ?></a></li>
 </ul>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
     <div id="item-basic">
     <div class="width-70 fltlft">
         <fieldset class="adminform">
@@ -35,6 +35,9 @@ JHtml::_('behavior.keepalive');
                     <?php echo $this->form->getLabel('title'); ?>
                     <?php echo $this->form->getInput('title'); ?>
                 </li>
+
+				<li><?php echo $this->form->getLabel('feedname'); ?>
+				<?php echo $this->form->getInput('feedname'); ?></li>
 
 				<li><?php echo $this->form->getLabel('published'); ?>
 				<?php echo $this->form->getInput('published'); ?></li>
