@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `block` tinyint(1) NOT NULL default '0',
   `ownername` varchar(255) NOT NULL default '',
   `owneremail` varchar(255) NOT NULL default '',
+  `keywords` varchar(255) NOT NULL default '',
   `author` varchar(255) NOT NULL default '',
   `image` varchar(255) NOT NULL default '',
   `category1` varchar(255) NOT NULL default '',
