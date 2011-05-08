@@ -16,9 +16,10 @@ $params->def('plainlink', 1);
 
 $plainlink	= $params->get('otherlink', '');
 $img		= $params->get('otherimage', '');
+$feed		= $params->get('feedname', '');
 
 if (!$plainlink) {
-	$plainlink = JRoute::_(JURI::root().'index.php?option=com_podcastmanager&view=feed&format=raw');
+	$plainlink = JRoute::_(JURI::root().'index.php?option=com_podcastmanager&view=feed&feedname='.$feed.'&format=raw');
 }
 
 if ($img) {
