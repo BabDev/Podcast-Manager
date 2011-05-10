@@ -117,7 +117,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.title, a.published, a.checked_out, a.checked_out_time, a.language'
+				'a.id, a.title, a.published, a.created, a.checked_out, a.checked_out_time, a.language'
 			)
 		);
 		$query->from('`#__podcastmanager` AS a');
