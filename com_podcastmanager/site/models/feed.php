@@ -94,6 +94,9 @@ class PodcastManagerModelFeed extends JModelList
 			$query->where('a.language in ('.$db->Quote(JFactory::getLanguage()->getTag()).','.$db->Quote('*').')');
 		}
 
+		// Add the list ordering clause.
+		$query->order($this->getState('list.ordering', 'a.publish_up').' '.$this->getState('list.direction', 'DESC'));
+
 		return $query;
 	}
 
@@ -120,15 +123,15 @@ class PodcastManagerModelFeed extends JModelList
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 		$this->setState('list.start', $limitstart);
 
-		$orderCol	= JRequest::getCmd('filter_order', 'ordering');
+		$orderCol	= JRequest::getCmd('filter_order', 'a.publish_up');
 		if (!in_array($orderCol, $this->filter_fields)) {
-			$orderCol = 'ordering';
+			$orderCol = 'a.publish_up';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
+		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'DESC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
-			$listOrder = 'ASC';
+			$listOrder = 'DESC';
 		}
 		$this->setState('list.direction', $listOrder);
 
