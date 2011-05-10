@@ -144,10 +144,6 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				if (isset($tags['artist'])) {
 					$data->itAuthor = $tags['artist'][0];
 				}
-				// Set the category field with the genre
-				if (isset($tags['genre'])) {
-					$data->itCategory = $tags['genre'][0];
-				}
 			}
 		}
 

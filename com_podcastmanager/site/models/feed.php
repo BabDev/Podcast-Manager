@@ -137,14 +137,14 @@ class PodcastManagerModelFeed extends JModelList
 
 		$user = JFactory::getUser();
 		if ((!$user->authorise('core.edit.state', 'com_podcastmanager')) &&  (!$user->authorise('core.edit', 'com_podcastmanager'))){
-			// limit to published for people who can't edit or edit.state.
-			$this->setState('filter.state',	1);
+			// Limit to published for people who can't edit or edit.state.
+			$this->setState('filter.published',	1);
 
-			// Filter by start and end dates.
+			// Filter by published dates.
 			$this->setState('filter.publish_date', true);
 		}
 
-		$this->setState('filter.language',$app->getLanguageFilter());
+		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the parameters.
 		$this->setState('params', $params);
