@@ -15,11 +15,12 @@ jimport('joomla.application.component.modellist');
 class PodcastManagerModelFeeds extends JModelList
 {
 	/**
-	 * Constructor.
+	 * The class constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param	array	$config	An optional associative array of configuration settings.
+	 * 
+	 * @return	void
+	 * @since	1.7
 	 */
 	public function __construct($config = array())
 	{
@@ -40,7 +41,8 @@ class PodcastManagerModelFeeds extends JModelList
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
-	 * @return	string	An SQL query
+	 * @return	string	$query	An SQL query
+	 * @since	1.7
 	 */
 	protected function getListQuery()
 	{
@@ -78,10 +80,9 @@ class PodcastManagerModelFeeds extends JModelList
 	}
 
 	/**
-	 * Method to auto-populate the model state.
+	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
+	 * @return	void
 	 * @since	1.7
 	 */
 	protected function populateState($ordering = null, $direction = null)

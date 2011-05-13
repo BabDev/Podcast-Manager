@@ -20,7 +20,7 @@ class PodcastManagerTablePodcast extends JTable
 	/**
 	 * Overriden JTable::store to set modified data and user id.
 	 *
-	 * @param	boolean	True to update fields even if they are null.
+	 * @param	boolean	$updateNulls	True to update fields even if they are null.
 	 *
 	 * @return	boolean	True on success.
 	 * @since	1.6

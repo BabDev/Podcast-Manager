@@ -43,7 +43,7 @@ class PodcastManagerViewFeeds extends JView
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	protected function addToolbar()
 	{
@@ -64,12 +64,17 @@ class PodcastManagerViewFeeds extends JView
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('feeds.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 			JToolBarHelper::divider();
-			JToolBarHelper::trash('feeds.trash','JTOOLBAR_TRASH');
 		}
-		if ($canDo->get('core.delete')) {
+
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
 			JToolBarHelper::deleteList('', 'feeds.delete','JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
+		else if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::trash('feeds.trash','JTOOLBAR_TRASH');
+			JToolBarHelper::divider();
+		}
+
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_podcastmanager');
 		}

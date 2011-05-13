@@ -17,26 +17,27 @@ class PodcastManagerModelFeed extends JModelAdmin
 	/**
 	 * @var		string	The prefix to use with controller messages.
 	 */
-	protected $text_prefix = 'COM_PODCASTMANAGER';
+	protected $text_prefix	= 'COM_PODCASTMANAGER';
 
 	/**
 	 * Model context string.
 	 *
-	 * @var		string
+	 * @var		string	The context of the model
 	 */
 	protected $_context		= 'com_podcastmanager.feed';
 
 	/**
-	 * Returns a Table object, always creating it
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	*/
-	public function getTable($type = 'Feed', $prefix = 'PodcastManagerTable', $config = array())
+	 * Custom clean cache method
+	 * 
+	 * @param	string	$group		The component name
+	 * @param	int		$client_id	The client ID
+	 * 
+	 * @return	void
+	 * @since	1.7
+	 */
+	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		parent::cleanCache($group, $client_id);
 	}
 
 	/**
@@ -44,6 +45,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 *
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * 
 	 * @return	JForm	A JForm object on success, false on failure
 	 * @since	1.7
 	 */
@@ -59,9 +61,24 @@ class PodcastManagerModelFeed extends JModelAdmin
 	}
 
 	/**
+	 * Returns a Table object, always creating it
+	 *
+	 * @param	string	$type	The table type to instantiate
+	 * @param	string	$prefix	A prefix for the table class name. Optional.
+	 * @param	array	$config	Configuration array for model. Optional.
+	 * 
+	 * @return	JTable	A database object
+	 * @since	1.7
+	*/
+	public function getTable($type = 'Feed', $prefix = 'PodcastManagerTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+
+	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	The data for the form.
+	 * @return	mixed	$data	The data for the form.
 	 * @since	1.7
 	 */
 	protected function loadFormData()
@@ -75,14 +92,4 @@ class PodcastManagerModelFeed extends JModelAdmin
 
 		return $data;
 	}
-
-	/**
-	 * Custom clean cache method
-	 *
-	 * @since	1.7
-	 */
-	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
-	{
-		parent::cleanCache($group, $client_id);
-	}	
 }

@@ -21,7 +21,7 @@ class JFormFieldFeedFilter extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var		string
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	protected $type = 'FeedFilter';
 
@@ -29,7 +29,7 @@ class JFormFieldFeedFilter extends JFormFieldList
 	 * Method to get the field options.
 	 *
 	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @since	1.7
 	 */
 	public function getOptions()
 	{
