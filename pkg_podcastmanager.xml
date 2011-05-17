@@ -18,9 +18,9 @@
 		<server type="extension" name="Podcast Manager Updates" priority="2">http://www.flbab.com/updates/podman.xml</server>
 	</updateservers>
 	<files folder="packages">
-		<file type="component" id="com_podcastmanager" >com_podcastmanager.zip</file>
-		<file type="component" id="com_podcastmedia" >com_podcastmedia.zip</file>
-		<file type="library" id="lib_getid3" >lib_getid3.zip</file>
+		<file type="component" id="com_podcastmanager">com_podcastmanager.zip</file>
+		<file type="component" id="com_podcastmedia">com_podcastmedia.zip</file>
+		<file type="library" id="lib_getid3">lib_getid3.zip</file>
 		<file type="module" id="mod_podcastmanager" client="site">mod_podcastmanager.zip</file>
 		<file type="plugin" id="podcastmanager" group="content">plg_content_podcastmanager.zip</file>
 		<file type="plugin" id="podcastmanager" group="editors-xtd">plg_editors-xtd_podcastmanager.zip</file>

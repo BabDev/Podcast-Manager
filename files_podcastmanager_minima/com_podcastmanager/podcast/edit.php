@@ -5,13 +5,12 @@
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * 
+* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted Access
+// Restricted access
 defined('_JEXEC') or die;
-
-// Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
