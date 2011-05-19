@@ -78,7 +78,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.title', 'asc');
+		parent::populateState('a.created', 'desc');
 	}
 
 	/**
