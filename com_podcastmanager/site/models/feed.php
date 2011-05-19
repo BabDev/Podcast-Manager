@@ -118,8 +118,8 @@ class PodcastManagerModelFeed extends JModelList
 		// List state information
 		$feed = JRequest::getInt('feedname');
 		$this->setState('feed.id', $feed);
-		
-		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+
+		$limit = JRequest::getInt('limit');
 		$this->setState('list.limit', $limit);
 
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');

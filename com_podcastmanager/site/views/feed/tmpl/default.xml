@@ -12,6 +12,10 @@
 				description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
 				label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL"
 				required="true" />
+			<field name="limit" type="text"
+				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
+				label="COM_PODCASTMANAGER_LIMIT_LABEL"
+				size="3" filter="integer" />
 		</fieldset>
 	</fields>
 
