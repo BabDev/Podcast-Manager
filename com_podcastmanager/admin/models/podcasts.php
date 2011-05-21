@@ -42,71 +42,9 @@ class PodcastManagerModelPodcasts extends JModelList
 	}
 
 	/**
-	 * Method to auto-populate the model state.
-	 * Note. Calling getState in this method will result in recursion.
-	 * @since	1.6
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
-
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
-
-		$feedname = JRequest::getVar('feedname', null);
-		if ($feedname) {
-			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '')) {
-				$this->setUserState($this->context.'.filter.feedname', $feedname);
-			}
-		}
-		else {
-			$feedname = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
-		}
-
-		$this->setState('filter.feedname', $feedname);
-
-		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
-
-		// Load the parameters.
-		$params = JComponentHelper::getParams('com_podcastmanager');
-		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('a.created', 'desc');
-	}
-
-	/**
-	 * Method to get a store id based on model configuration state.
-	 *
-	 * This is necessary because the model is used by the component and
-	 * different modules that might need different sets of data or different
-	 * ordering requirements.
-	 *
-	 * @param	string		$id	A prefix for the store id.
-	 * @return	string		A store id.
-	 * @since	1.6
-	 */
-	protected function getStoreId($id = '')
-	{
-		// Compile the store id.
-		$id.= ':' . $this->getState('filter.search');
-		$id.= ':' . $this->getState('filter.published');
-		$id.= ':' . $this->getState('filter.feedname');
-		$id.= ':' . $this->getState('filter.language');
-
-		return parent::getStoreId($id);
-	}
-
-	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
+	 * @return	JDatabaseQuery	$query	A JDatabaseQuery object
 	 * @since	1.6
 	 */
 	protected function getListQuery()
@@ -171,7 +109,71 @@ class PodcastManagerModelPodcasts extends JModelList
 		$orderDirn	= $this->state->get('list.direction');
 		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
 
-		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param	string	$id	A prefix for the store id.
+	 * @return	string	$id	A store id.
+	 * @since	1.6
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id.= ':' . $this->getState('filter.search');
+		$id.= ':' . $this->getState('filter.published');
+		$id.= ':' . $this->getState('filter.feedname');
+		$id.= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
+	 * 
+	 * @param   string	$ordering	An optional ordering field.
+	 * @param   string	$direction	An optional direction.
+	 * 
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+		// Initialise variables.
+		$app = JFactory::getApplication('administrator');
+
+		// Load the filter state.
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.published', $published);
+
+		$feedname = JRequest::getVar('feedname', null);
+		if ($feedname) {
+			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '')) {
+				$this->setUserState($this->context.'.filter.feedname', $feedname);
+			}
+		}
+		else {
+			$feedname = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
+		}
+
+		$this->setState('filter.feedname', $feedname);
+
+		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		// Load the parameters.
+		$params = JComponentHelper::getParams('com_podcastmanager');
+		$this->setState('params', $params);
+
+		// List state information.
+		parent::populateState('a.created', 'desc');
 	}
 }

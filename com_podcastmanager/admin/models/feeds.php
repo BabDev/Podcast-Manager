@@ -56,15 +56,15 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->select($this->getState('list.select', 'a.*'));
 		$query->from('`#__podcastmanager_feeds` AS a');
 
-		// Self join to find the number of published menu items in the menu.
+		// Self join to find the number of published podcast episodes in the feed.
 		$query->select('COUNT(DISTINCT p1.id) AS count_published');
 		$query->join('LEFT', '`#__podcastmanager` AS p1 ON p1.feedname = a.id AND p1.published = 1');
 
-		// Self join to find the number of unpublished menu items in the menu.
+		// Self join to find the number of unpublished podcast episodes in the feed.
 		$query->select('COUNT(DISTINCT p2.id) AS count_unpublished');
 		$query->join('LEFT', '`#__podcastmanager` AS p2 ON p2.feedname = a.id AND p2.published = 0');
 
-		// Self join to find the number of trashed menu items in the menu.
+		// Self join to find the number of trashed podcast episodes in the feed.
 		$query->select('COUNT(DISTINCT p3.id) AS count_trashed');
 		$query->join('LEFT', '`#__podcastmanager` AS p3 ON p3.feedname = a.id AND p3.published = -2');
 
@@ -77,14 +77,15 @@ class PodcastManagerModelFeeds extends JModelList
 		// Add the list ordering clause.
 		$query->order($db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$db->getEscaped($this->getState('list.direction', 'ASC')));
 
-		//echo nl2br(str_replace('#__','jos_',(string)$query)).'<hr/>';
 		return $query;
 	}
 
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
-	 *
-	 * @return	void
+	 * 
+	 * @param   string	$ordering	An optional ordering field.
+	 * @param   string	$direction	An optional direction.
+	 * 
 	 * @since	1.7
 	 */
 	protected function populateState($ordering = null, $direction = null)

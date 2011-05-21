@@ -121,7 +121,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	}
 
 	/**
-	 * Returns a Table object, always creating it.
+	 * Returns a JTable object, always creating it.
 	 *
 	 * @param	string	$type	The table type to instantiate
 	 * @param	string	$prefix	A prefix for the table class name. Optional.
@@ -158,7 +158,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param	JTable	A JTable object.
+	 * @param	JTable	$table	A JTable object.
 	 *
 	 * @return	void
 	 * @since	1.6

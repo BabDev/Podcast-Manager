@@ -48,7 +48,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 * 
-	 * @return	JForm	A JForm object on success, false on failure
+	 * @return	JForm	$form		A JForm object on success, false on failure
 	 * @since	1.7
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -63,7 +63,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	}
 
 	/**
-	 * Returns a Table object, always creating it
+	 * Returns a JTable object, always creating it
 	 *
 	 * @param	string	$type	The table type to instantiate
 	 * @param	string	$prefix	A prefix for the table class name. Optional.

@@ -57,7 +57,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->endElement();
 
 		$xw->writeElement('title', $feed->name);
-		$xw->writeElement('link', JURI::base()); // may want to make configurable as param
+		$xw->writeElement('link', JURI::base());
 
 		$lang = JFactory::getLanguage();
 		$xw->writeElement('language', $lang->getTag());
