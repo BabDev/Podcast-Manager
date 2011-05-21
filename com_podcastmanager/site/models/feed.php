@@ -19,7 +19,8 @@ class PodcastManagerModelFeed extends JModelList
 	/**
 	 * Method to get a feed's parameters.
 	 *
-	 * @return	object
+	 * @return	object	$feed	An object containing the requested information
+	 * @since	1.7
 	 */
 	public function getFeed()
 	{
@@ -36,13 +37,15 @@ class PodcastManagerModelFeed extends JModelList
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
+		
 		return $feed;
 	}
 
 	/**
 	 * Method to get a list of items.
 	 *
-	 * @return	mixed	An array of objects on success, false on failure.
+	 * @return	mixed	$items	An array of objects on success, false on failure.
+	 * @since	1.6
 	 */
 	public function getItems()
 	{
@@ -55,7 +58,7 @@ class PodcastManagerModelFeed extends JModelList
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
-	 * @return	string	An SQL query
+	 * @return	string	$query	An SQL query
 	 * @since	1.6
 	 */
 	protected function getListQuery()
@@ -103,10 +106,11 @@ class PodcastManagerModelFeed extends JModelList
 	}
 
 	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
+	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
+	 * 
+	 * @param   string	$ordering	An optional ordering field.
+	 * @param   string	$direction	An optional direction.
+	 * 
 	 * @since	1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)

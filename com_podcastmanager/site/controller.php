@@ -20,7 +20,7 @@ class PodcastManagerController extends JController
 	{
 		// Frontpage Editor podcast proxying:
 		if(JRequest::getCmd('view') === 'podcasts' && JRequest::getCmd('layout') === 'modal') {
-			JHtml::_('stylesheet','system/adminlist.css', array(), true);
+			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 
@@ -30,10 +30,10 @@ class PodcastManagerController extends JController
 	/**
 	 * Method to display a view.
 	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param	boolean	$cachable	If true, the view output will be cached
+	 * @param	array	$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return	JController		This object to support chaining.
+	 * @return	JController		This object is to support chaining.
 	 * @since	1.6
 	 */
 	public function display($cachable = false, $urlparams = false)
@@ -59,6 +59,6 @@ class PodcastManagerController extends JController
 			'lang'				=> 'CMD'
 		);
 
-		return parent::display($cachable,$safeurlparams);
+		return parent::display($cachable, $safeurlparams);
 	}
 }
