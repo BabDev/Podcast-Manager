@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -27,6 +27,12 @@ class PodcastManagerController extends JController
 
 	/**
 	 * Method to display a view.
+	 *
+	 * @param	boolean	$cachable	If true, the view output will be cached
+	 * @param	array	$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return	JController			This object is to support chaining.
+	 * @since	1.6
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{

@@ -4,21 +4,42 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// NOTE: This class does not currently process due to a bug in the installer
-// See http://joomlacode.org/gf/project/joomla/tracker/?action=TrackerItemEdit&tracker_id=8103&tracker_item_id=25462
-
+/**
+ * Installation class to perform additional changes during install/uninstall/update
+ *
+ * @since	1.6
+ */
 class plgEditorsXtdPodcastManagerInstallerScript {
 
+	/**
+	 * Function to perform changes when plugin is initially installed
+	 *
+	 * @param	$parent
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function install($parent) {
 		echo '<p>Activate Podcast Manager button plugin</p>';
 	}
-	
+
+	/**
+	 * Function to perform additional changes post operation
+	 *
+	 * @param	$type
+	 * @param	$parent
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function postflight($type, $parent) {
+		echo '<p>Enabling Podcast Manager button plugin</p>';
+
 		$db = JFactory::getDBO();
 		$query	= 'UPDATE `#__extensions` SET `enabled` = 1 WHERE `name` = "plg_editors-xtd_podcastmanager"';
 		$db->setQuery($query);

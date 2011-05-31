@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
 * Podcast Manager for Joomla!
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -17,6 +17,14 @@ jimport('joomla.filesystem.file');
 
 class PodcastManagerViewFeed extends JView
 {
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function display($tpl = null)
 	{
 		// Get the component params
@@ -81,7 +89,7 @@ class PodcastManagerViewFeed extends JView
 			$xw->writeElement('itunes:explicit', 'clean');
 		} else {
 			$xw->writeElement('itunes:explicit', 'no');
-		}		
+		}
 
 		$xw->writeElement('itunes:keywords', $feed->keywords);
 
@@ -115,10 +123,21 @@ class PodcastManagerViewFeed extends JView
 
 		echo $xw->outputMemory(true);
 
-		if(isset($cache))
+		if (isset($cache)) {
 			$cache->end(); // cache output
+		}
 	}
 
+	/**
+	 * Function to set the feed categories
+	 *
+	 * @param	object	$xw		XMLWriter object containing generated feed output
+	 * @param	array	$params	The component parameters
+	 * @param	object	$feed	An object containing the feed record
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	private function setCategories(&$xw, $params, $feed)
 	{
 		$cats = array('category1', 'category2', 'category3');
@@ -143,6 +162,16 @@ class PodcastManagerViewFeed extends JView
 		}
 	}
 
+	/**
+	 * Function to generate the feed items
+	 *
+	 * @param	object	$xw		XMLWriter object containing generated feed output
+	 * @param	array	$params	The component parameters
+	 * @param	object	$feed	An object containing the feed record
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	private function setItems(&$xw, $params, $items)
 	{
 		foreach ($items as $item) {
@@ -185,7 +214,7 @@ class PodcastManagerViewFeed extends JView
 				$xw->writeElement('itunes:explicit', 'clean');
 			} else {
 				$xw->writeElement('itunes:explicit', 'no');
-			}		
+			}
 
 			$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
 

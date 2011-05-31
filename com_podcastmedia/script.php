@@ -4,18 +4,42 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
+/**
+ * Installation class to perform additional changes during install/uninstall/update
+ *
+ * @since	1.6
+ */
 class Com_PodcastMediaInstallerScript {
 
+	/**
+	 * Function to perform changes when component is initially installed
+	 *
+	 * @param	$parent
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function install($parent) {
-		echo '<p>Removing Podcast Media - File Manager menu item</p>';
+		echo '<p>Removing Podcast Manager - File Manager menu item</p>';
 	}
-	
+
+	/**
+	 * Function to perform additional changes post operation
+	 *
+	 * @param	$type
+	 * @param	$parent
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function postflight($type, $parent) {
+		echo '<p>Removing Podcast Manager - File Manager menu item</p>';
+
 		$db = JFactory::getDBO();
 		$query	= 'DELETE FROM `#__menu` WHERE `title` = "com_podcastmedia"';
 		$db->setQuery($query);

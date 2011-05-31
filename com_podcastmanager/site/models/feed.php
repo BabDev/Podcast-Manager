@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
 * Podcast Manager for Joomla!
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -19,7 +19,7 @@ class PodcastManagerModelFeed extends JModelList
 	/**
 	 * Method to get a feed's parameters.
 	 *
-	 * @return	object	$feed	An object containing the requested information
+	 * @return	object	$feed	An object containing the feed record
 	 * @since	1.7
 	 */
 	public function getFeed()
@@ -37,7 +37,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
-		
+
 		return $feed;
 	}
 
@@ -107,10 +107,11 @@ class PodcastManagerModelFeed extends JModelList
 
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
-	 * 
+	 *
 	 * @param   string	$ordering	An optional ordering field.
 	 * @param   string	$direction	An optional direction.
-	 * 
+	 *
+	 * @return	void
 	 * @since	1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
