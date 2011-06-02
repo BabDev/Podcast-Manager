@@ -17,3 +17,4 @@ files_podman_hathor.xml
 .buildpath
 .project
 .settings
+.DS_Store

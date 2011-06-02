@@ -25,23 +25,26 @@ class Com_PodcastManagerInstallerScript {
 	 * @since	1.7
 	 */
 	function update($parent) {
-		echo '<p>1.7 Update - SQL changes</p>';
+		// Check the currently installed version
+		$version	= $this->getVersion();
+
+		// If upgrading from 1.6, run the 1.7 schema updates
+		if ($version == '1.6') {
+			$this->db17Update();
+		}
 	}
 
 	/**
-	 * Function to perform additional changes post operation
-	 *
-	 * @param	$type
-	 * @param	$parent
+	 * Function to update the Podcast Manager tables from the 1.6 to 1.7 schema
 	 *
 	 * @return	void
 	 * @since	1.7
-	 * @deprecated	Current function only required for 1.6 to 1.7 update, remove post 1.7.0 Stable Release
 	 */
-	function postflight($type, $parent) {
+	protected function db17Update() {
 		echo '<p>Podcast Manager 1.6 to 1.7 SQL changes</p>';
 		$db = JFactory::getDBO();
 
+		// Get the update file
 		$SQLupdate	= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.0.sql');
 
 		if ($SQLupdate === false) {
@@ -67,5 +70,27 @@ class Com_PodcastManagerInstallerScript {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Function to get the currently installed version from the manifest cache
+	 *
+	 * @return	string	$version	The base version that is installed
+	 * @since	1.7
+	 */
+	protected function getVersion() {
+		// Get the record from the database
+		$db = JFactory::getDBO();
+		$query = 'SELECT `manifest_cache` FROM `#__extensions` WHERE `element` = "com_podcastmanager"';
+		$db->setQuery($query);
+		$manifest = $db->loadObject();
+
+		// Decode the JSON
+		$record	= json_decode($manifest->manifest_cache);
+
+		// Get the version
+		$version	= substr($record->version, 0, 3);
+
+		return $version;
 	}
 }
