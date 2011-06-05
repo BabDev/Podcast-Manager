@@ -29,7 +29,7 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 				   	uri = this._getUriObject(this.frameurl);
 				   	current	= uri.file+'?'+uri.query;
 
-					if (current != node.data.url) {
+					if (current != 'undefined?undefined' && current != node.data.url) {
 						window.frames[target].location.href = node.data.url;
 					}
 				}.bind(this)
