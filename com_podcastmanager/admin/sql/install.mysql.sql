@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) default NULL,
   `subtitle` varchar(255) NOT NULL default '',
-  `description` varchar(255) NOT NULL default '',
+  `description` varchar(5120) NOT NULL default '',
   `copyright` varchar(255) NOT NULL default '',
   `explicit` tinyint(1) NOT NULL default '0',
   `block` tinyint(1) NOT NULL default '0',
