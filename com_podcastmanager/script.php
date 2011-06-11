@@ -29,7 +29,7 @@ class Com_PodcastManagerInstallerScript {
 		$version	= $this->getVersion();
 
 		// If upgrading from 1.6, run the 1.7 schema updates
-		if ($version == '1.6') {
+		if (substr($version, 0, 3) == '1.6') {
 			$this->db17Update();
 		}
 	}
@@ -89,7 +89,7 @@ class Com_PodcastManagerInstallerScript {
 		$record	= json_decode($manifest->manifest_cache);
 
 		// Get the version
-		$version	= substr($record->version, 0, 3);
+		$version	= $record->version;
 
 		return $version;
 	}
