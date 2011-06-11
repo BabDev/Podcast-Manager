@@ -27,10 +27,19 @@
 			default="link"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
+			<option value="custom">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_CUSTOM</option>
 			<option value="link">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_LINK</option>
 			<option value="player">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_FLASH</option>
 			<option value="QTplayer">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_QUICKTIME</option>
 		</field>
+		<field
+			name="customcode"
+			type="textarea"
+			rows="5"
+			cols="30"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_CUSTOMCODE_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_CUSTOMCODE_DESCRIPTION" />
 		<field
 			name="playerwidth"
 			type="text"
