@@ -30,7 +30,49 @@ class Com_PodcastManagerInstallerScript {
 
 		// If upgrading from 1.6, run the 1.7 schema updates
 		if (substr($version, 0, 3) == '1.6') {
+			// Update the tables then create the new feed
 			$this->db17Update();
+			$this->createFeed();
+		}
+	}
+
+	/**
+	 * Function to create a new feed based on the 1.6 parameters when upgrading to 1.7
+	 *
+	 * @return	void
+	 * @since	1.7
+	 */
+	protected function createFeed() {
+		// Get the record from the database
+		$db = JFactory::getDBO();
+		$query = 'SELECT `params` FROM `#__extensions` WHERE `element` = "com_podcastmanager"';
+		$db->setQuery($query);
+		$record = $db->loadObject();
+
+		// Decode the JSON
+		$params	= json_decode($record->params);
+
+		// Query to create new feed record
+		$query	= 'INSERT INTO `#__podcastmanager_feeds` (`id`, `name`, `subtitle`, `description`, `copyright`,'.
+				  ' `explicit`, `block`, `ownername`, `owneremail`, `keywords`, `author`, `image`, `category1`,'.
+				  ' `category2`, `category3`, `published`) VALUES'.
+				  ' (1, '.$db->quote($params->title).', '.$db->quote($params->itSubtitle).', '.$db->quote($params->description).','.
+				  $db->quote($params->copyright).', '.$db->quote($params->itExplicit).', '.$db->quote($params->itBlock).','.
+				  $db->quote($params->itOwnerName).', '.$db->quote($params->itOwnerEmail).', '.$db->quote($params->itKeywords).','.
+				  $db->quote($params->itAuthor).', '.$db->quote($params->itImage).', '.$db->quote($params->itCategory1).','.
+				  $db->quote($params->itCategory2).', '.$db->quote($params->itCategory3).', '.$db->quote('1').');';
+		$db->setQuery($query);
+		if (!$db->query()) {
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			return false;
+		}
+
+		// Set the feed on existing podcasts to this feed
+		$query	= 'UPDATE `#__podcastmanager` SET `feedname` = '.$db->quote('1');
+		$db->setQuery($query);
+		if (!$db->query()) {
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			return false;
 		}
 	}
 
