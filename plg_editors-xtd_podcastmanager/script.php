@@ -17,6 +17,24 @@
 class plgEditorsXtdPodcastManagerInstallerScript {
 
 	/**
+	 * Function to act prior to installation process begins
+	 *
+	 * @param	string	$type	The action being performed
+	 * @param	string	$parent	The function calling this method
+	 *
+	 * @return	void
+	 * @since	1.7
+	 */
+	function preflight($type, $parent) {
+		// Requires Joomla! 1.7
+		$jversion = new JVersion();
+		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
+			JError::raiseWarning(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
+			return false;
+		}
+	}
+
+	/**
 	 * Function to perform changes when plugin is initially installed
 	 *
 	 * @param	$parent

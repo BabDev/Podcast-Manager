@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="library" version="1.6" method="upgrade">
+<extension type="library" version="1.7" method="upgrade">
 	<name>getID3</name>
 	<libraryname>getid3</libraryname>
 	<creationDate>4 May 2001</creationDate>
