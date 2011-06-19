@@ -43,19 +43,16 @@ class Com_PodcastMediaInstallerScript {
 	 * @since	1.6
 	 */
 	function install($parent) {
-		echo '<p>Removing Podcast Manager - File Manager menu item</p>';
+		$this->removeMenu();
 	}
 
 	/**
-	 * Function to perform additional changes post operation
-	 *
-	 * @param	string	$type	The action being performed
-	 * @param	string	$parent	The function calling this method
+	 * Function to remove the menu item
 	 *
 	 * @return	void
-	 * @since	1.6
+	 * @since	1.7
 	 */
-	function postflight($type, $parent) {
+	function removeMenu() {
 		echo '<p>Removing Podcast Manager - File Manager menu item</p>';
 
 		$db = JFactory::getDBO();

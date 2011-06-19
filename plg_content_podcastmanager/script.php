@@ -43,19 +43,16 @@ class plgContentPodcastManagerInstallerScript {
 	 * @since	1.6
 	 */
 	function install($parent) {
-		echo '<p>Activate Podcast Manager content plugin</p>';
+		$this->activateButton();
 	}
 
 	/**
-	 * Function to perform additional changes post operation
-	 *
-	 * @param	$type
-	 * @param	$parent
+	 * Function to activate the button at installation
 	 *
 	 * @return	void
-	 * @since	1.6
+	 * @since	1.7
 	 */
-	function postflight($type, $parent) {
+	function activateButton() {
 		echo '<p>Enabling Podcast Manager content plugin</p>';
 
 		$db = JFactory::getDBO();
