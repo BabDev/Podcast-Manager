@@ -74,8 +74,8 @@ class PodcastManagerViewPodcasts extends JView
 		}
 		if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('podcasts.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::custom('podcasts.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+			JToolBarHelper::publish('podcasts.publish', 'JTOOLBAR_PUBLISH');
+			JToolBarHelper::unpublish('podcasts.unpublish', 'JTOOLBAR_UNPUBLISH');
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('podcasts.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 			JToolBarHelper::divider();
