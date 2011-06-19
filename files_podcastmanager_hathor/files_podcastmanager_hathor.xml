@@ -17,9 +17,6 @@
 			<folder>podcast</folder>
 			<folder>podcasts</folder>
 		</files>
-		<files folder="com_podcastmedia" target="administrator/templates/hathor/html/com_podcastmedia">
-			<folder>media</folder>
-		</files>
 	</fileset>
 	<updateservers>
 		<server type="extension" name="Podcast Manager Minima HTML Overrides Updates" priority="2">http://www.flbab.com/updates/files_podman_minima.xml</server>
