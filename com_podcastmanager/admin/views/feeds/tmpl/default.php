@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
-JHtml::_('script','system/multiselect.js', false, true);
+JHtml::_('behavior.multiselect');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -33,22 +33,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th width="1%" rowspan="2">
-					<input type="checkbox" name="checkall-toggle" value="" onclick="checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="checkAll(this)" />
 				</th>
-				<th rowspan="2" class="title">
+				<th rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
 					<?php echo JText::_('COM_PODCASTMANAGER_HEADING_NUMBER_ITEMS'); ?>
 				</th>
 				<th width="5%" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			<tr>
@@ -86,9 +86,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'feeds.', $canCheckin);
 					} ?>
 					<?php if ($canEdit) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id='.(int) $item->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id='.$item->id); ?>">
 							<?php echo $this->escape($item->name); ?></a>
-					<?php } else { 
+					<?php } else {
 							echo $this->escape($item->name);
 					} ?>
 				</td>

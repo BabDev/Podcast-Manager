@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -75,7 +75,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo $this->escape($item->title); ?></a>
 				</td>
 				<td class="center">
-					<?php echo $this->escape($item->feed_name); ?>
+					<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
 				</td>
 				<td class="center">
 					<?php if ($item->language=='*') {
