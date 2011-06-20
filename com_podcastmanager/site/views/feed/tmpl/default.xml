@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_PODCASTMANAGER_FEED_VIEW_TITLE" option="COM_PODCASTMANAGER_FEED_VIEW_OPTION">
+	<layout title="COM_PODCASTMANAGER_FEED_HTML_VIEW_TITLE" option="COM_PODCASTMANAGER_FEED_HTML_VIEW_OPTION">
 		<message>
-			<![CDATA[COM_PODCASTMANAGER_FEED_VIEW_DESCRIPTION]]>
+			<![CDATA[COM_PODCASTMANAGER_FEED_HTML_VIEW_DESCRIPTION]]>
 		</message>
 	</layout>
 	<fields name="request">
@@ -19,4 +19,30 @@
 		</fieldset>
 	</fields>
 
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<fieldset name="basic" label="COM_PODCASTMANAGER_HTML_VIEW_OPTIONS">
+			<field name="show_feed_title" type="list"
+				label="COM_PODCASTMANAGER_SHOW_FEED_TITLE_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_FEED_TITLE_DESCRIPTION" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_feed_description" type="list"
+				label="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_DESCRIPTION" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_feed_image" type="list"
+				label="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_DESCRIPTION" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>
