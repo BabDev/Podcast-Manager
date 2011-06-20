@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -20,7 +20,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 * The class constructor.
 	 *
 	 * @param	array	$config	An optional associative array of configuration settings.
-	 * 
+	 *
 	 * @return	void
 	 * @since	1.7
 	 */
@@ -41,6 +41,99 @@ class PodcastManagerModelFeeds extends JModelList
 	}
 
 	/**
+	 * Overrides the getItems method to attach additional metrics to the list.
+	 *
+	 * @return	mixed	An array of data items on success, false on failure.
+	 * @since	1.7
+	 */
+	public function getItems()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId('getItems');
+
+		// Try to load the data from internal storage.
+		if (!empty($this->cache[$store])) {
+			return $this->cache[$store];
+		}
+
+		// Load the list items.
+		$items = parent::getItems();
+
+		// If emtpy or an error, just return.
+		if (empty($items)) {
+			return array();
+		}
+
+		// Getting the following metric by joins is WAY TOO SLOW.
+		// Faster to do three queries for very large menu trees.
+
+		// Get the menu types of menus in the list.
+		$db = $this->getDbo();
+		$feedNames = JArrayHelper::getColumn($items, 'id');
+
+		// Quote the strings.
+		$feedNames = implode(
+			',',
+			array_map(array($db, 'quote'), $feedNames)
+		);
+
+		// Get the published menu counts.
+		$query = $db->getQuery(true)
+			->select('p.feedname, COUNT(DISTINCT a.id) AS count_published')
+			->from('#__podcastmanager AS p, #__podcastmanager_feeds AS a')
+			->where('p.published = 1')
+			->where('p.feedname IN ('.$feedNames.')')
+			->group('p.feedname')
+			;
+		$db->setQuery($query);
+		$countPublished = $db->loadAssocList('id', 'count_published');
+
+		if ($db->getErrorNum()) {
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+
+		// Get the unpublished menu counts.
+		$query->clear('where')
+			->where('p.published = 0')
+			->where('p.feedname IN ('.$feedNames.')')
+			;
+		$db->setQuery($query);
+		$countUnpublished = $db->loadAssocList('id', 'count_unpublished');
+
+		if ($db->getErrorNum()) {
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+
+		// Get the trashed menu counts.
+		$query->clear('where')
+			->where('p.published = -2')
+			->where('p.feedname IN ('.$feedNames.')')
+			;
+		$db->setQuery($query);
+		$countTrashed = $db->loadAssocList('id', 'count_trashed');
+
+		if ($db->getErrorNum()) {
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+
+		// Inject the values back into the array.
+		foreach ($items as $item)
+		{
+			$item->count_published		= isset($countPublished[$item->menutype]) ? $countPublished[$item->menutype] : 0;
+			$item->count_unpublished	= isset($countUnpublished[$item->menutype]) ? $countUnpublished[$item->menutype] : 0;
+			$item->count_trashed		= isset($countTrashed[$item->menutype]) ? $countTrashed[$item->menutype] : 0;
+		}
+
+		// Add the items to the internal cache.
+		$this->cache[$store] = $items;
+
+		return $this->cache[$store];
+	}
+
+	/**
 	 * Method to build an SQL query to load the list data.
 	 *
 	 * @return	string	$query	An SQL query
@@ -56,18 +149,6 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->select($this->getState('list.select', 'a.*'));
 		$query->from('`#__podcastmanager_feeds` AS a');
 
-		// Self join to find the number of published podcast episodes in the feed.
-		$query->select('COUNT(DISTINCT p1.id) AS count_published');
-		$query->join('LEFT', '`#__podcastmanager` AS p1 ON p1.feedname = a.id AND p1.published = 1');
-
-		// Self join to find the number of unpublished podcast episodes in the feed.
-		$query->select('COUNT(DISTINCT p2.id) AS count_unpublished');
-		$query->join('LEFT', '`#__podcastmanager` AS p2 ON p2.feedname = a.id AND p2.published = 0');
-
-		// Self join to find the number of trashed podcast episodes in the feed.
-		$query->select('COUNT(DISTINCT p3.id) AS count_trashed');
-		$query->join('LEFT', '`#__podcastmanager` AS p3 ON p3.feedname = a.id AND p3.published = -2');
-
 		$query->group('a.id');
 
 		// Join over the language
@@ -82,10 +163,10 @@ class PodcastManagerModelFeeds extends JModelList
 
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
-	 * 
+	 *
 	 * @param   string	$ordering	An optional ordering field.
 	 * @param   string	$direction	An optional direction.
-	 * 
+	 *
 	 * @since	1.7
 	 */
 	protected function populateState($ordering = null, $direction = null)
