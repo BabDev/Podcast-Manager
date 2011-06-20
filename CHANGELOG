@@ -1,5 +1,6 @@
 20-June-2011 Michael Babker Version 1.8 Changes
 + Rough addition of front end HTML view for feeds
+~ Cleanup of the HTML view
 
 19-June-2011 Michael Babker Version 1.7 Changes
 ~ Optimize media manager navigation for Joomla! 1.7

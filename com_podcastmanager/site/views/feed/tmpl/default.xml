@@ -43,6 +43,20 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_headings" type="list"
+				label="JGLOBAL_SHOW_HEADINGS_LABEL"
+				description="JGLOBAL_SHOW_HEADINGS_DESC" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_item_description" type="list"
+				label="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_DESCRIPTION" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

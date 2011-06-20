@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die;
-// Code to support edit links for weblinks
+// Code to support edit links for podcasts
 // Create a shortcut for params.
 $params = &$this->item->params;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
@@ -18,7 +18,7 @@ JHtml::core();
 
 // Get the user object.
 $user = JFactory::getUser();
-// Check if user is allowed to add/edit based on weblinks permissinos.
+// Check if user is allowed to add/edit based on component permissinos.
 $canEdit = $user->authorise('core.edit', 'com_podcastmanager');
 $canCreate = $user->authorise('core.create', 'com_podcastmanager');
 $canEditState = $user->authorise('core.edit.state', 'com_podcastmanager');
@@ -29,7 +29,7 @@ $n = count($this->items);
 ?>
 
 <?php if (empty($this->items)) : ?>
-	<p> <?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
+	<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
 <?php else : ?>
 
 <form action="<?php echo JFilterOutput::ampReplace(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
@@ -46,7 +46,7 @@ $n = count($this->items);
 	<?php //endif; ?>
 
 	<table class="category">
-		<?php //if ($this->params->get('show_headings')==1) : ?>
+		<?php if ($this->params->get('show_headings')==1) : ?>
 
 		<thead><tr>
 
@@ -58,70 +58,54 @@ $n = count($this->items);
 			</th>
 		</tr>
 	</thead>
-	<?php //endif; ?>
+	<?php endif; ?>
 	<tbody>
-	<?php foreach ($this->items as $i => $item) : ?>
-		<?php if ($this->items[$i]->state == 0) : ?>
+	<?php foreach ($this->items as $i => $item) :
+		if ($this->items[$i]->state == 0) : ?>
 			<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
-		<?php else: ?>
+		<?php else : ?>
 			<tr class="cat-list-row<?php echo $i % 2; ?>" >
 		<?php endif; ?>
-
-			<td class="title">
-			<p>
-				<?php //if ($this->params->get('icons') == 0) : ?>
-					 <?php //echo JText::_('COM_WEBLINKS_LINK'); ?>
-				<?php //elseif ($this->params->get('icons') == 1) : ?>
-					<?php //if (!$this->params->get('link_icons')) : ?>
-						<?php //echo JHtml::_('image','system/'.$this->params->get('link_icons', 'weblink.png'), JText::_('COM_WEBLINKS_LINK'), NULL, true); ?>
-					<?php //else: ?>
-						<?php //echo '<img src="'.$this->params->get('link_icons').'" alt="'.JText::_('COM_WEBLINKS_LINK').'" />'; ?>
-					<?php //endif; ?>
-				<?php //endif; ?>
-				<?php
-					// Compute the correct link
+				<td class="title">
+					<p>
+					<?php // Compute the correct link
 					$menuclass = 'podcast'.$this->pageclass_sfx;
-					$link = JURI::base().$item->filename;
-					echo '<a href="'.$link.'" class="'.$menuclass.'" rel="nofollow">'.
-					$this->escape($item->title).'</a><br />'.$this->escape($item->itSummary);
-				?>
-				<?php // Code to add the edit link for the podcast. ?>
+					$link = JURI::base().$item->filename; ?>
+					<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
+					<?php echo $this->escape($item->title); ?></a></p>
+					<?php // Code to add the edit link for the podcast.
+					if ($canEdit) : ?>
+					<ul class="actions">
+						<li class="edit-icon">
+							<?php //echo JHtml::_('icon.edit', $item, $params); ?>
+						</li>
+					</ul>
+					<?php endif; ?>
 
-						<?php //if ($canEdit) : ?>
-							<ul class="actions">
-								<li class="edit-icon">
-									<?php //echo JHtml::_('icon.edit', $item, $params); ?>
-								</li>
-							</ul>
-						<?php //endif; ?>
-			</p>
-
-			<?php //if (($this->params->get('show_link_description')) AND ($item->description !='')): ?>
-				<p>
-				<?php //echo nl2br($item->description); ?>
-				</p>
-			<?php //endif; ?>
-		</td>
-		<td class="hits">
-			<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
-		</td>
-	</tr>
+					<?php if (($this->params->get('show_item_description')) AND ($item->itSummary)): ?>
+					<p><?php echo nl2br($item->itSummary); ?></p>
+					<?php endif; ?>
+				</td>
+				<td>
+				<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+				</td>
+			</tr>
 	<?php endforeach; ?>
-</tbody>
+	</tbody>
 </table>
 
-	<?php // Code to add a link to submit a weblink. ?>
-	<?php /* if ($canCreate) : // TODO This is not working due to some problem in the router, I think. Ref issue #23685 ?>
-		<?php echo JHtml::_('icon.create', $item, $item->params); ?>
- 	<?php  endif; */ ?>
-		<?php //if ($this->params->get('show_pagination')) : ?>
+	<?php // Code to add a link to submit a new podcast.
+	/* if ($canCreate)
+		echo JHtml::_('icon.create', $item, $item->params);
+ 	endif; */
+		//if ($this->params->get('show_pagination')) : ?>
 		 <div class="pagination">
 			<?php //if ($this->params->def('show_pagination_results', 1)) : ?>
 				<p class="counter">
 					<?php //echo $this->pagination->getPagesCounter(); ?>
 				</p>
-			<?php //endif; ?>
-				<?php //echo $this->pagination->getPagesLinks(); ?>
+			<?php //endif;
+				//echo $this->pagination->getPagesLinks(); ?>
 			</div>
 		<?php //endif; ?>
 	</form>
