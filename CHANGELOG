@@ -1,0 +1,10 @@
+19-June-2011 Michael Babker
+~ Optimize media manager navigation for Joomla! 1.7
+# Add a missing language string for the File Manager
+~ Convert toolbar tasks from JToolBarHelper::custom to defined tasks as appropriate
+~ Add a check to the scriptfiles for Joomla! 1.7
+~ Mark the XML files for Joomla! 1.7
+- Removed the Hathor media view override
+# Corrected the Hathor overrides update check
+~ Syncronized core layouts to current Joomla! SVN
+~ Updated PodcastManagerModelFeeds to use modified methods from MenusModelMenus
