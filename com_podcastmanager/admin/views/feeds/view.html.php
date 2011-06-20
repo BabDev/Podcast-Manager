@@ -60,26 +60,26 @@ class PodcastManagerViewFeeds extends JView
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('feed.add','JTOOLBAR_NEW');
+			JToolBarHelper::addNew('feed.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('feed.edit','JTOOLBAR_EDIT');
+			JToolBarHelper::editList('feed.edit');
 		}
 		if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::divider();
-			JToolBarHelper::publish('feeds.publish', 'JTOOLBAR_PUBLISH');
-			JToolBarHelper::unpublish('feeds.unpublish', 'JTOOLBAR_UNPUBLISH');
+			JToolBarHelper::publish('feeds.publish');
+			JToolBarHelper::unpublish('feeds.unpublish');
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('feeds.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 			JToolBarHelper::divider();
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'feeds.delete','JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
 		else if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::trash('feeds.trash','JTOOLBAR_TRASH');
+			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();
 		}
 

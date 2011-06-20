@@ -59,36 +59,24 @@ class PodcastManagerViewFeed extends JView
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo		= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEED_'.($isNew ? 'ADD_FEED' : 'EDIT_FEED')), 'podcastmanager.png');
 
-		// Set the actions for new and existing records.
-		if ($isNew)  {
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) {
-				JToolBarHelper::apply('feed.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('feed.save', 'JTOOLBAR_SAVE');
-			}
-
-			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CANCEL');
+		if (($isNew && ($canDo->get('core.create'))) || (!$isNew && !$checkedOut && ($canDo->get('core.edit')))) {
+			JToolBarHelper::apply('feed.apply');
+			JToolBarHelper::save('feed.save');
 		}
-		else {
-			// Since it's an existing record, check the edit permission.
-			if ($canDo->get('core.edit')) {
-				JToolBarHelper::apply('feed.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('feed.save', 'JTOOLBAR_SAVE');
 
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) {
-					JToolBarHelper::save2new('feed.save2new', 'JTOOLBAR_SAVE_AND_NEW');
-				}
-			}
-			// If an existing item, can save as a copy
-			if ($canDo->get('core.create')) {
-				JToolBarHelper::save2copy('feed.save2copy', 'JTOOLBAR_SAVE_AS_COPY');
-			}
+		if (!$isNew && $canDo->get('core.create')) {
+			JToolBarHelper::save2new('feed.save2new');
+			JToolBarHelper::save2copy('feed.save2copy');
+		}
 
+		if ($isNew)  {
+			JToolBarHelper::cancel('feed.cancel');
+		} else {
 			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
