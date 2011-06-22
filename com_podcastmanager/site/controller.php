@@ -43,6 +43,7 @@ class PodcastManagerController extends JController
 		$user		= JFactory::getUser();
 
 		// Set the default view name and format from the Request.
+		$id		= JRequest::getInt('p_id');
 		$feed	= JRequest::getInt('feedname');
 		$vName	= JRequest::getCmd('view', 'feed');
 		JRequest::setVar('view', $vName);
