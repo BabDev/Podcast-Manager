@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 // Customized info CSS
 JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/info/info.css', false, false, false);

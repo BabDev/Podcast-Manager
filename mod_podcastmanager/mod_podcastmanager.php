@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 $params->def('text', '');
 $params->def('urischeme', 'http');

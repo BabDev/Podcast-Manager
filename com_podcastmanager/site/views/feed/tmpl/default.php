@@ -11,6 +11,7 @@
 
 // Restricted access
 defined('_JEXEC') or die;
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 ?>
 <div class="podcastmanager-feed<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->def('show_page_heading', 1)) : ?>

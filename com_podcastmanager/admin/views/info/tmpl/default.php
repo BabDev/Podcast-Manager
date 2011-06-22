@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 // Styles specific to the info view
 JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/info.css', false, false, false);

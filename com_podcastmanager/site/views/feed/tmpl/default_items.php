@@ -77,7 +77,7 @@ $n = count($this->items);
 					if ($canEdit) : ?>
 					<ul class="actions">
 						<li class="edit-icon">
-							<?php //echo JHtml::_('icon.edit', $item, $params); ?>
+							<?php echo JHtml::_('icon.edit', $item, $params); ?>
 						</li>
 					</ul>
 					<?php endif; ?>

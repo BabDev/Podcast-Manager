@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
