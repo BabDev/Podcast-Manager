@@ -15,16 +15,16 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.helper');
 class JHtmlIcon
 {
-	/* static function create($weblink, $params)
+	static function create($weblink, $params)
 	{
 		$uri = JFactory::getURI();
 
-		$url = JRoute::_(WeblinksHelperRoute::getFormRoute(0, base64_encode($uri)));
-		$text = JHtml::_('image','system/new.png', JText::_('JNEW'), NULL, true);
-		$button = JHtml::_('link',$url, $text);
-		$output = '<span class="hasTip" title="'.JText::_('COM_WEBLINKS_FORM_CREATE_WEBLINK').'">'.$button.'</span>';
+		$url = JRoute::_(PodcastManagerHelperRoute::getFormRoute(0, base64_encode($uri)));
+		$text = JHtml::_('image', 'system/new.png', JText::_('JNEW'), NULL, true);
+		$button = JHtml::_('link', $url, $text);
+		$output = '<span class="hasTip" title="'.JText::_('COM_PODCASTMANAGER_FORM_CREATE_PODCAST').'">'.$button.'</span>';
 		return $output;
-	} */
+	}
 
 	static function edit($podcast, $params, $attribs = array())
 	{
