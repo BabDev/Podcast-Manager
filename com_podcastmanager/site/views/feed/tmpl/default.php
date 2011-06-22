@@ -15,24 +15,20 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 ?>
 <div class="podcastmanager-feed<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->def('show_page_heading', 1)) : ?>
-<h1>
-	<?php echo $this->escape($this->params->get('page_heading')); ?>
-</h1>
+	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php endif; ?>
 <?php if ($this->params->get('show_feed_title', 1)) : ?>
-<h2>
-	<?php echo JHtml::_('content.prepare', $this->feed->name); ?>
-</h2>
+	<h2><?php echo JHtml::_('content.prepare', $this->feed->name); ?></h2>
 <?php endif; ?>
 <?php if ($this->params->get('show_feed_description', 1) || $this->params->get('show_feed_image', 1)) : ?>
-<div class="category-desc">
+	<div class="category-desc">
 	<?php if ($this->params->get('show_feed_image') && $this->feed->image) : ?>
 		<img src="<?php echo $this->feed->image; ?>"/>
 	<?php endif; ?>
 	<?php if ($this->params->get('show_feed_description') && $this->feed->description) : ?>
 		<?php echo JHtml::_('content.prepare', $this->feed->description); ?>
 	<?php endif; ?>
-	<div class="clr"></div>
+		<div class="clr"></div>
 	</div>
 <?php endif; ?>
 <?php echo $this->loadTemplate('items'); ?>

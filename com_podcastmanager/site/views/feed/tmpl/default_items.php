@@ -24,8 +24,8 @@ $canCreate = $user->authorise('core.create', 'com_podcastmanager');
 $canEditState = $user->authorise('core.edit.state', 'com_podcastmanager');
 
 $n = count($this->items);
-//$listOrder	= $this->escape($this->state->get('list.ordering'));
-//$listDirn	= $this->escape($this->state->get('list.direction'));
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
 <?php if (empty($this->items)) : ?>
@@ -39,29 +39,28 @@ $n = count($this->items);
 		<div class="display-limit">
 			<?php //echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php //echo $this->pagination->getLimitBox(); ?>
-		</div>
-		<input type="hidden" name="filter_order" value="<?php //echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php //echo $listDirn; ?>" />
-		</fieldset>  -->
+		</div> -->
+		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+<!-- 	</fieldset>  -->
 	<?php //endif; ?>
 
 	<table class="category">
 		<?php if ($this->params->get('show_headings')==1) : ?>
-
-		<thead><tr>
-
-			<th class="title">
+		<thead>
+			<tr>
+				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
-			</th>
-			<th class="title">
+				</th>
+				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
-			</th>
-		</tr>
-	</thead>
-	<?php endif; ?>
-	<tbody>
-	<?php foreach ($this->items as $i => $item) :
-		if ($this->items[$i]->state == 0) : ?>
+				</th>
+			</tr>
+		</thead>
+		<?php endif; ?>
+		<tbody>
+		<?php foreach ($this->items as $i => $item) :
+		if ($this->items[$i]->published == 0) : ?>
 			<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
 		<?php else : ?>
 			<tr class="cat-list-row<?php echo $i % 2; ?>" >
@@ -87,12 +86,12 @@ $n = count($this->items);
 					<?php endif; ?>
 				</td>
 				<td>
-				<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
 			</tr>
-	<?php endforeach; ?>
-	</tbody>
-</table>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
 
 	<?php // Code to add a link to submit a new podcast.
 	/* if ($canCreate)

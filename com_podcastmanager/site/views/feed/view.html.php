@@ -44,7 +44,7 @@ class PodcastManagerViewFeed extends JView
 		$this->assignRef('params',	$params);
 
 		//Escape strings for HTML output
-		//$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
@@ -78,17 +78,17 @@ class PodcastManagerViewFeed extends JView
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		//if ($menu) {
-			//$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		//}
-		//else {
-			//$this->params->def('page_heading', JText::_('COM_PODCASTMANAGER_DEFAULT_PAGE_TITLE'));
-		//}
+		if ($menu) {
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		}
+		else {
+			$this->params->def('page_heading', JText::_('COM_PODCASTMANAGER_DEFAULT_PAGE_TITLE'));
+		}
 
 		$id = (int) @$menu->query['id'];
 
-		//if ($menu && ($menu->query['option'] != 'com_podcastmanager' || $id != $this->feed->id)) {
-			//$this->params->set('page_subheading', $this->feed->name);
+		if ($menu && ($menu->query['option'] != 'com_podcastmanager' || $id != $this->feed->id)) {
+			$this->params->set('page_subheading', $this->feed->name);
 			//$path = array(array('title' => $this->feed->name, 'link' => ''));
 			//$feed = $this->feed;
 
@@ -103,9 +103,9 @@ class PodcastManagerViewFeed extends JView
 			//{
 				//$pathway->addItem($item['title'], $item['link']);
 			//}
-		//}
+		}
 
-		//$title = $this->params->get('page_title', '');
+		$title = $this->params->get('page_title', '');
 
 		if (empty($title)) {
 			$title = $app->getCfg('sitename');
