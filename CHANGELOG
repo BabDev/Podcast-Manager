@@ -1,4 +1,8 @@
-19-June-2011 Michael Babker
+28-June-2011 Michael Babker Version 1.7 Changes
+# Correct counts for feeds view
+# Fix media installer
+
+19-June-2011 Michael Babker Version 1.7 Changes
 ~ Optimize media manager navigation for Joomla! 1.7
 # Add a missing language string for the File Manager
 ~ Convert toolbar tasks from JToolBarHelper::custom to defined tasks as appropriate

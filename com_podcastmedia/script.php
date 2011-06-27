@@ -37,12 +37,13 @@ class Com_PodcastMediaInstallerScript {
 	/**
 	 * Function to perform changes when component is initially installed
 	 *
+	 * @param	string	$type	The action being performed
 	 * @param	string	$parent	The function calling this method
 	 *
 	 * @return	void
 	 * @since	1.6
 	 */
-	function install($parent) {
+	function postflight($type, $parent) {
 		$this->removeMenu();
 	}
 
