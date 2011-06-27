@@ -32,18 +32,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
 <?php else : ?>
 
-<form action="<?php echo JFilterOutput::ampReplace(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
-	<?php //if ($this->params->get('show_pagination_limit')) : ?>
-<!-- 	<fieldset class="filters">
+<form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
+	<?php if ($this->params->get('show_pagination_limit')) : ?>
+ 	<fieldset class="filters">
 		<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 		<div class="display-limit">
-			<?php //echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php //echo $this->pagination->getLimitBox(); ?>
-		</div> -->
+			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+			<?php echo $this->pagination->getLimitBox(); ?>
+		</div>
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-<!-- 	</fieldset>  -->
-	<?php //endif; ?>
+	</fieldset>
+	<?php endif; ?>
 
 	<table class="category">
 		<?php if ($this->params->get('show_headings')==1) : ?>
