@@ -86,7 +86,7 @@ class PodcastManagerModelFeeds extends JModelList
 			->group('p.feedname')
 			;
 		$db->setQuery($query);
-		$countPublished = $db->loadAssocList('id', 'count_published');
+		$countPublished = $db->loadAssocList('feedname', 'count_published');
 
 		if ($db->getErrorNum()) {
 			$this->setError($db->getErrorMsg());
@@ -99,7 +99,7 @@ class PodcastManagerModelFeeds extends JModelList
 			->where('p.feedname IN ('.$feedNames.')')
 			;
 		$db->setQuery($query);
-		$countUnpublished = $db->loadAssocList('id', 'count_unpublished');
+		$countUnpublished = $db->loadAssocList('feedname', 'count_unpublished');
 
 		if ($db->getErrorNum()) {
 			$this->setError($db->getErrorMsg());
@@ -112,7 +112,7 @@ class PodcastManagerModelFeeds extends JModelList
 			->where('p.feedname IN ('.$feedNames.')')
 			;
 		$db->setQuery($query);
-		$countTrashed = $db->loadAssocList('id', 'count_trashed');
+		$countTrashed = $db->loadAssocList('feedname', 'count_trashed');
 
 		if ($db->getErrorNum()) {
 			$this->setError($db->getErrorMsg());
@@ -120,11 +120,10 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Inject the values back into the array.
-		foreach ($items as $item)
-		{
-			$item->count_published		= isset($countPublished[$item->menutype]) ? $countPublished[$item->menutype] : 0;
-			$item->count_unpublished	= isset($countUnpublished[$item->menutype]) ? $countUnpublished[$item->menutype] : 0;
-			$item->count_trashed		= isset($countTrashed[$item->menutype]) ? $countTrashed[$item->menutype] : 0;
+		foreach ($items as $item) {
+			$item->count_published		= isset($countPublished[$item->id]) ? $countPublished[$item->id] : 0;
+			$item->count_unpublished	= isset($countUnpublished[$item->id]) ? $countUnpublished[$item->id] : 0;
+			$item->count_trashed		= isset($countTrashed[$item->id]) ? $countTrashed[$item->id] : 0;
 		}
 
 		// Add the items to the internal cache.

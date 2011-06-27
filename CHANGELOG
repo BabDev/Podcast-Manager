@@ -2,6 +2,10 @@
 # Joomla! 1.6.4 security fix
 + Added pagination to list layout
 
+28-June-2011 Michael Babker Version 1.7 Changes
+# Correct counts for feeds view
+# Fix media installer
+
 22-June-2011 Michael Babker Version 1.8 Changes
 + Added JHtmlIcon helper for front end
 ~ Made consistent JEXEC checks
