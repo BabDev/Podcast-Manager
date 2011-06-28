@@ -2,6 +2,7 @@
 # Joomla! 1.6.4 security fix
 + Added pagination to list layout
 + Added feed link to head
+- Removed params conversion in getItems
 
 28-June-2011 Michael Babker Version 1.7 Changes
 # Correct counts for feeds view

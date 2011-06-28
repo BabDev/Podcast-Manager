@@ -52,15 +52,6 @@ class PodcastManagerModelFeed extends JModelList
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
 
-		// Convert the params field into an object, saving original in _params
-		for ($i = 0, $n = count($items); $i < $n; $i++) {
-			if (!isset($this->_params)) {
-				$params = new JRegistry;
-				$params->loadString($items[$i]->params, 'JSON', $options = array());
-				$items[$i]->params = $params;
-			}
-		}
-
 		return $items;
 	}
 
