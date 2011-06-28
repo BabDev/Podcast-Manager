@@ -37,6 +37,17 @@
 					filter="integer"
 					label="MOD_PODCASTMANAGERFEED_FIELD_COUNT_LABEL"
 					description="MOD_PODCASTMANAGERFEED_FIELD_COUNT_DESCRIPTION" />
+				<field
+					name="description"
+					type="radio"
+					default="1"
+					label="MOD_PODCASTMANAGERFEED_FIELD_DESCRIPTION_LABEL"
+					description="MOD_PODCASTMANAGER_FIELD_DESCRIPTION_DESCRIPTION">
+					<option
+						value="0">JNO</option>
+					<option
+						value="1">JYES</option>
+				</field>
 			</fieldset>
 			<fieldset
 				name="advanced">

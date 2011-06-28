@@ -13,9 +13,12 @@
 defined('_JEXEC') or die;
 ?>
 <ul class="podmanfeed<?php echo $moduleclass_sfx; ?>">
-<?php foreach ($list as $item) :  ?>
+<?php foreach ($list as $item) : ?>
 	<li>
 		<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
+		<?php if ($params->get('description') == 1) : ?>
+		<br /><?php echo $item->itSummary; ?>
+		<?php endif; ?>
 	</li>
 <?php endforeach; ?>
 </ul>
