@@ -5,9 +5,6 @@
 packages
 releases
 
-# Phing #
-build.xml
-
 # Update Server #
 podman.xml
 files_podman_minima.xml
