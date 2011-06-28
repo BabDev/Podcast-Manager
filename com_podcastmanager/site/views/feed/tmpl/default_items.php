@@ -1,13 +1,15 @@
 <?php
 /**
- * @version		$Id: default_items.php 13471 2009-11-12 00:38:49Z eddieajau
- * @package		Joomla.Site
- * @subpackage	com_weblinks
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+*
+* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+*/
 
-// no direct access
+// Restricted access
 defined('_JEXEC') or die;
 // Code to support edit links for podcasts
 // Create a shortcut for params.
@@ -23,7 +25,6 @@ $canEdit = $user->authorise('core.edit', 'com_podcastmanager');
 $canCreate = $user->authorise('core.create', 'com_podcastmanager');
 $canEditState = $user->authorise('core.edit.state', 'com_podcastmanager');
 
-$n = count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
@@ -97,15 +98,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	/* if ($canCreate)
 		echo JHtml::_('icon.create', $item, $item->params);
  	endif; */
-		//if ($this->params->get('show_pagination')) : ?>
+		if ($this->params->get('show_pagination')) : ?>
 		 <div class="pagination">
-			<?php //if ($this->params->def('show_pagination_results', 1)) : ?>
+			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
 				<p class="counter">
-					<?php //echo $this->pagination->getPagesCounter(); ?>
+					<?php echo $this->pagination->getPagesCounter(); ?>
 				</p>
-			<?php //endif;
-				//echo $this->pagination->getPagesLinks(); ?>
+			<?php endif;
+				echo $this->pagination->getPagesLinks(); ?>
 			</div>
-		<?php //endif; ?>
+		<?php endif; ?>
 	</form>
 <?php endif; ?>
