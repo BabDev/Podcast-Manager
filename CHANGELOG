@@ -1,3 +1,6 @@
+29-June-2011 Michael Babker Version 1.7 Changes
+# Modified podcast summary field to allow up to 5120 characters
+
 28-June-2011 Michael Babker Version 1.7 Changes
 # Correct counts for feeds view
 # Fix media installer
