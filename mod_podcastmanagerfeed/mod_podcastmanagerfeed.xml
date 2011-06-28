@@ -20,7 +20,7 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanagerfeed.sys.ini</language>
 	</languages>
 	<config>
-		<fields>
+		<fields name="params">
 			<fieldset name="basic"
 				addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
 				<field
