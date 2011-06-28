@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension
-	type="module"
-	version="1.7"
-	client="site"
-	method="upgrade">
+<extension type="module" version="1.7" client="site" method="upgrade">
 	<name>mod_podcastmanager</name>
 	<creationDate>January 2011</creationDate>
 	<author>Michael Babker</author>
