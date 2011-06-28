@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="podcast-manager" default="dev_head" basedir=".">
+	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages">
+		<echo msg="Deleting old master builds" />
+		<delete quiet="yes" includeemptydirs="true">
+			<fileset dir="*">
+				<include name="files_podcastmanager_hathor.zip" />
+				<include name="files_podcastmanager_minima.zip" />
+				<include name="pkg_podcastmanager_master.zip" />
+			</fileset>
+		</delete>
+		<echo msg="Build Podcast Manager package" />
+		<zip destfile="pkg_podcastmanager_master.zip">
+			<fileset dir=".">
+				<include name="packages/**" />
+				<include name="pkg_podcastmanager.xml" />
+			</fileset>
+		</zip>
+		<echo msg="Building Hathor Overrides package" />
+		<zip destfile="files_podcastmanager_hathor.zip" basedir="files_podcastmanager_hathor" />
+		<echo msg="Building Minima Overrides package" />
+		<zip destfile="files_podcastmanager_minima.zip" basedir="files_podcastmanager_minima" />
+	</target>
+	<target name="release" description="Builds release packages based on the development head" depends="rebuild-packages">
+		<echo msg="Build Podcast Manager package" />
+		<zip destfile="releases/pkg_podcastmanager_170.zip">
+			<fileset dir=".">
+				<include name="packages/**" />
+				<include name="pkg_podcastmanager.xml" />
+			</fileset>
+		</zip>
+		<echo msg="Building Hathor Overrides package" />
+		<zip destfile="files_podcastmanager_hathor_170.zip" basedir="files_podcastmanager_hathor" />
+		<echo msg="Building Minima Overrides package" />
+		<zip destfile="files_podcastmanager_minima_170.zip" basedir="files_podcastmanager_minima" />
+	</target>
+	<target name="rebuild-packages" description="Delete old packages">
+		<echo msg="Deleting packages dir" />
+		<delete quiet="yes" includeemptydirs="true">
+			<fileset dir="*">
+				<include name="packages" />
+			</fileset>
+		</delete>
+		<echo msg="Creating extension packages" />
+		<mkdir dir="packages" />
+		<zip destfile="packages/com_podcastmanager.zip" basedir="com_podcastmanager" />
+		<zip destfile="packages/com_podcastmedia.zip" basedir="com_podcastmedia" />
+		<zip destfile="packages/lib_getid3.zip" basedir="lib_getid3" />
+		<zip destfile="packages/mod_podcastmanager.zip" basedir="mod_podcastmanager" />
+		<zip destfile="packages/plg_content_podcastmanager.zip" basedir="plg_content_podcastmanager" />
+		<zip destfile="packages/plg_editors-xtd_podcastmanager.zip" basedir="plg_editors-xtd_podcastmanager" />
+	</target>
+</project>
