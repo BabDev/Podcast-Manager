@@ -3,6 +3,7 @@
 
 29-June-2011 Michael Babker Version 1.7 Changes
 # Modified podcast summary field to allow up to 5120 characters
+# Fixed storage bug with itunescategory field
 
 28-June-2011 Michael Babker Version 1.8 Changes
 # Joomla! 1.6.4 security fix
