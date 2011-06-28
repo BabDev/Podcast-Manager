@@ -17,6 +17,25 @@ jimport('joomla.application.component.modellist');
 class PodcastManagerModelFeed extends JModelList
 {
 	/**
+	 * Constructor.
+	 *
+	 * @param	array	An optional associative array of configuration settings.
+	 * @see		JController
+	 * @since	1.8
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+				'title', 'a.title',
+				'created', 'a.created',
+			);
+		}
+
+		parent::__construct($config);
+	}
+
+	/**
 	 * Method to get a feed's parameters.
 	 *
 	 * @return	object	$feed	An object containing the feed record
