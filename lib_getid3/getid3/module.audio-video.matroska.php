@@ -14,9 +14,10 @@
 /////////////////////////////////////////////////////////////////
 
 
+// from: http://www.matroska.org/technical/specs/index.html
 define('EBML_ID_CHAPTERS',                  0x0043A770); // [10][43][A7][70] -- A system to define basic menus and partition data. For more detailed information, look at the Chapters Explanation.
 define('EBML_ID_SEEKHEAD',                  0x014D9B74); // [11][4D][9B][74] -- Contains the position of other level 1 elements.
-define('EBML_ID_TAGS',                      0x0254C367); // [12][54][C3][67] -- Element containing elements specific to Tracks/Chapters. A list of valid tags can be found here.
+define('EBML_ID_TAGS',                      0x0254C367); // [12][54][C3][67] -- Element containing elements specific to Tracks/Chapters. A list of valid tags can be found <http://www.matroska.org/technical/specs/tagging/index.html>.
 define('EBML_ID_INFO',                      0x0549A966); // [15][49][A9][66] -- Contains miscellaneous general information and statistics on the file.
 define('EBML_ID_TRACKS',                    0x0654AE6B); // [16][54][AE][6B] -- A top-level block of information with many tracks described.
 define('EBML_ID_SEGMENT',                   0x08538067); // [18][53][80][67] -- This element contains all other top-level (level 1) elements. Typically a Matroska file is composed of 1 segment.
@@ -205,43 +206,45 @@ define('EBML_ID_CLUSTERREFERENCEBLOCK',           0x7B); //             [FB] -- 
 define('EBML_ID_CLUSTERREFERENCEVIRTUAL',         0x7D); //             [FD] -- Relative position of the data that should be in position of the virtual block.
 
 
-class getid3_matroska
+class getid3_matroska extends getid3_handler
 {
-	var $read_buffer_size = 32768; // size of read buffer, 32kB is default
-	var $hide_clusters    = true;  // if true, do not return information about CLUSTER chunks, since there's a lot of them and they're not usually useful
-	var $warnings         = array();
+	var $read_buffer_size   = 32768; // size of read buffer, 32kB is default
+	var $hide_clusters      = true;  // if true, do not return information about CLUSTER chunks, since there's a lot of them and they're not usually useful
+	var $warnings           = array();
+	var $inline_attachments = true;  // true: return full data for all attachments; false: return no data for all attachments; integer: return data for attachments <= than this; string: save as file to this directory
 
-	function getid3_matroska(&$fd, &$ThisFileInfo) {
+	function Analyze() {
+		$info = &$this->getid3->info;
 
 		// http://www.matroska.org/technical/specs/index.html#EBMLBasics
-		$offset = $ThisFileInfo['avdataoffset'];
+		$offset = $info['avdataoffset'];
 		$EBMLdata = '';
 		$EBMLdata_offset = $offset;
 
-		if (!getid3_lib::intValueSupported($ThisFileInfo['avdataend'])) {
-			$this->warnings[] = 'This version of getID3() may or may not correctly handle Matroska files larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+		if (!getid3_lib::intValueSupported($info['avdataend'])) {
+			$this->warnings[] = 'This version of getID3() ['.$this->getid3->version().'] may or may not correctly handle Matroska files larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 		}
 
-		while ($offset < $ThisFileInfo['avdataend']) {
-			$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+		while ($offset < $info['avdataend']) {
+			$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 
 			$top_element_offset    = $offset;
 			$top_element_id        = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 			$top_element_length    = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 			if ($top_element_length === false) {
 				$this->warnings[] = 'invalid chunk length at '.$top_element_offset;
-				$offset = pow(2, 63);
+				$offset = PHP_INT_MAX + 1;
 				break;
 			}
 			$top_element_endoffset = $offset + $top_element_length;
 			switch ($top_element_id) {
 				case EBML_ID_EBML:
-					$ThisFileInfo['fileformat'] = 'matroska';
-					$ThisFileInfo['matroska']['header']['offset'] = $top_element_offset;
-					$ThisFileInfo['matroska']['header']['length'] = $top_element_length;
+					$info['fileformat'] = 'matroska';
+					$info['matroska']['header']['offset'] = $top_element_offset;
+					$info['matroska']['header']['length'] = $top_element_length;
 
 					while ($offset < $top_element_endoffset) {
-						$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+						$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 						$element_data = array();
 						$element_data_offset     = $offset;
 						$element_data['id']      = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
@@ -263,23 +266,29 @@ class getid3_matroska
 							case EBML_ID_DOCTYPE:
 								$element_data['data'] =                      trim(substr($EBMLdata, $offset - $EBMLdata_offset, $element_data['length']), "\x00");
 								break;
+							case EBML_ID_CRC32:
+								// probably not useful, ignore
+								unset($element_data);
+								break;
 							default:
 								$this->warnings[] = 'Unhandled track.video element ['.basename(__FILE__).':'.__LINE__.'] ('.$element_data['id'].'::'.$element_data['id_name'].') at '.$element_data_offset;
 								break;
 						}
 						$offset = $end_offset;
-						$ThisFileInfo['matroska']['header']['elements'][] = $element_data;
+						if (!empty($element_data)) {
+							$info['matroska']['header']['elements'][] = $element_data;
+						}
 					}
 					break;
 
 
 				case EBML_ID_SEGMENT:
-					$ThisFileInfo['matroska']['segment'][0]['offset'] = $top_element_offset;
-					$ThisFileInfo['matroska']['segment'][0]['length'] = $top_element_length;
+					$info['matroska']['segment'][0]['offset'] = $top_element_offset;
+					$info['matroska']['segment'][0]['length'] = $top_element_length;
 
 					$segment_key = -1;
-					while ($offset < $ThisFileInfo['avdataend']) {
-						$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+					while ($offset < $info['avdataend']) {
+						$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 
 						$element_data = array();
 						$element_data['offset']  = $offset;
@@ -288,8 +297,8 @@ class getid3_matroska
 						$element_data['length']  = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 						if ($element_data['length'] === false) {
 							$this->warnings[] = 'invalid chunk length at '.$element_data['offset'];
-							//$offset = pow(2, 63);
-							$offset = $ThisFileInfo['avdataend'];
+							//$offset = PHP_INT_MAX + 1;
+							$offset = $info['avdataend'];
 							break;
 						}
 						$element_end             = $offset + $element_data['length'];
@@ -302,7 +311,7 @@ class getid3_matroska
 								$offset = $element_end;
 								continue 3;
 							default:
-								$ThisFileInfo['matroska']['segments'][] = $element_data;
+								$info['matroska']['segments'][] = $element_data;
 								break;
 						}
 						$segment_key++;
@@ -310,7 +319,7 @@ class getid3_matroska
 						switch ($element_data['id']) {
 							case EBML_ID_SEEKHEAD: // Contains the position of other level 1 elements
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$seek_entry = array();
 									$seek_entry['offset']  = $offset;
 									$seek_entry['id']      = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
@@ -320,7 +329,7 @@ class getid3_matroska
 									switch ($seek_entry['id']) {
 										case EBML_ID_SEEK: // Contains a single seek entry to an EBML element
 											while ($offset < $seek_end_offset) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$length = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$value  =             substr($EBMLdata, $offset - $EBMLdata_offset, $length);
@@ -334,23 +343,33 @@ class getid3_matroska
 													case EBML_ID_SEEKPOSITION:
 														$seek_entry['target_offset'] = $element_data['offset'] + getid3_lib::BigEndian2Int($value);
 														break;
+													case EBML_ID_CRC32:
+														// probably not useful, ignore
+														//$seek_entry['crc32'] = getid3_lib::PrintHexBytes($value, true, false, false);
+														unset($seek_entry);
+														break;
 													default:
-														$ThisFileInfo['error'][] = 'Unhandled segment ['.basename(__FILE__).':'.__LINE__.'] ('.$id.') at '.$offset;
+														$info['error'][] = 'Unhandled segment ['.basename(__FILE__).':'.__LINE__.'] ('.$id.') at '.$offset;
 														break;
 												}
 											}
-											$ThisFileInfo['matroska']['seek'][] = $seek_entry;
+											if (!empty($seek_entry)) {
+												$info['matroska']['seek'][] = $seek_entry;
+											}
 											//switch ($seek_entry['target_id']) {
 											//	case EBML_ID_CLUSTER:
 											//		// too many cluster seek points, probably not useful
 											//		break;
 											//	default:
-											//		$ThisFileInfo['matroska']['seek'][] = $seek_entry;
+											//		$info['matroska']['seek'][] = $seek_entry;
 											//		break;
 											//}
 											break;
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
+											break;
 										default:
-											$this->warnings[] = 'Unhandled seekhead element ['.basename(__FILE__).':'.__LINE__.'] ('.$seek_entry['id'].') at '.$offset;
+											$this->warnings[] = 'Unhandled seekhead element ['.basename(__FILE__).':'.__LINE__.'] ('.$seek_entry['id'].'::'.$seek_entry['id_name'].') at '.$offset;
 											break;
 									}
 									$offset = $seek_end_offset;
@@ -358,19 +377,19 @@ class getid3_matroska
 								break;
 
 							case EBML_ID_TRACKS: // information about all tracks in segment
-								$ThisFileInfo['matroska']['tracks'] = $element_data;
+								$info['matroska']['tracks'] = $element_data;
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$track_entry = array();
 									$track_entry['offset']  = $offset;
 									$track_entry['id']      = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$track_entry['id_name'] = $this->EBMLidName($track_entry['id']);
 									$track_entry['length']  = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
-									$track_entry_endoffset  = $offset + $track_entry['length'];
+									$track_entry_endoffset  = $offset + $track_entry['length']; // $track_entry['offset'] is not the same as $offset, even though they were set equal a few lines up: $offset has been automagically incremented by readEMLint()
 									switch ($track_entry['id']) {
 										case EBML_ID_TRACKENTRY: //subelements: Describes a track with all elements.
 											while ($offset < $track_entry_endoffset) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$subelement_offset = $offset;
 												$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$subelement_idname = $this->EBMLidName($subelement_id);
@@ -399,6 +418,18 @@ class getid3_matroska
 														$track_entry[$subelement_idname] =                             trim(substr($EBMLdata, $offset - $EBMLdata_offset, $subelement_length), "\x00");
 														break;
 
+													// thought maybe it was a nice wFormatTag entry, but it's not :(
+													//case EBML_ID_CODECPRIVATE:
+														//$track_entry[$subelement_idname] =                             trim(substr($EBMLdata, $offset - $EBMLdata_offset, $subelement_length), "\x00");
+														//if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio-video.riff.php', __FILE__, false)) {
+														//	$track_entry[$subelement_idname.'_decoded'] = getid3_riff::RIFFparseWAVEFORMATex($track_entry[$subelement_idname]);
+														//	if (isset($track_entry[$subelement_idname.'_decoded']['raw']['wFormatTag'])) {
+														//	}
+														//} else {
+														//	$this->warnings[] = 'failed to include "module.audio-video.riff.php" for parsing codec private data';
+														//}
+														//break;
+
 													case EBML_ID_FLAGENABLED:
 													case EBML_ID_FLAGDEFAULT:
 													case EBML_ID_FLAGFORCED:
@@ -409,7 +440,7 @@ class getid3_matroska
 
 													case EBML_ID_VIDEO:
 														while ($offset < $subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_offset = $offset;
 															$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -456,7 +487,7 @@ class getid3_matroska
 
 													case EBML_ID_AUDIO:
 														while ($offset < $subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_offset = $offset;
 															$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -475,7 +506,7 @@ class getid3_matroska
 																	$track_entry[$sub_subelement_idname] =                             trim(substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length), "\x00");
 																	break;
 																default:
-																	$this->warnings[] = 'Unhandled track.video element ['.basename(__FILE__).':'.__LINE__.'] ('.$sub_subelement_id.'::'.$sub_subelement_idname.') at '.$sub_subelement_offset;
+																	$this->warnings[] = 'Unhandled track.audio element ['.basename(__FILE__).':'.__LINE__.'] ('.$sub_subelement_id.'::'.$sub_subelement_idname.') at '.$sub_subelement_offset;
 																	break;
 															}
 															$offset = $sub_subelement_end;
@@ -484,7 +515,7 @@ class getid3_matroska
 
 													case EBML_ID_CONTENTENCODINGS:
 														while ($offset < $subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_offset = $offset;
 															$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -493,7 +524,7 @@ class getid3_matroska
 															switch ($sub_subelement_id) {
 																case EBML_ID_CONTENTENCODING:
 																	while ($offset < $sub_subelement_end) {
-																		$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+																		$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_subelement_offset = $offset;
 																		$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -507,7 +538,7 @@ class getid3_matroska
 																				break;
 																			case EBML_ID_CONTENTCOMPRESSION:
 																				while ($offset < $sub_sub_subelement_end) {
-																					$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+																					$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 																					$sub_sub_sub_subelement_offset = $offset;
 																					$sub_sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 																					$sub_sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -530,7 +561,7 @@ class getid3_matroska
 
 																			case EBML_ID_CONTENTENCRYPTION:
 																				while ($offset < $sub_sub_subelement_end) {
-																					$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+																					$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 																					$sub_sub_sub_subelement_offset = $offset;
 																					$sub_sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 																					$sub_sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -570,6 +601,10 @@ class getid3_matroska
 														}
 														break;
 
+													case EBML_ID_CRC32:
+														// probably not useful, ignore
+														break;
+
 													default:
 														$this->warnings[] = 'Unhandled track element ['.basename(__FILE__).':'.__LINE__.'] ('.$subelement_id.'::'.$subelement_idname.' ['.$subelement_length.' bytes]) at '.$subelement_offset;
 														break;
@@ -577,19 +612,25 @@ class getid3_matroska
 												$offset = $subelement_end;
 											}
 											break;
+
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
+											$offset = $track_entry_endoffset;
+											break;
+
 										default:
 											$this->warnings[] = 'Unhandled track element ['.basename(__FILE__).':'.__LINE__.'] ('.$track_entry['id'].'::'.$track_entry['id_name'].') at '.$track_entry['offset'];
 											$offset = $track_entry_endoffset;
 											break;
 									}
-									$ThisFileInfo['matroska']['tracks']['tracks'][] = $track_entry;
+									$info['matroska']['tracks']['tracks'][] = $track_entry;
 								}
 								break;
 
 							case EBML_ID_INFO: // Contains the position of other level 1 elements
 								$info_entry = array();
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
@@ -622,6 +663,10 @@ class getid3_matroska
 										case EBML_ID_MUXINGAPP:
 										case EBML_ID_WRITINGAPP:
 											$info_entry[$subelement_idname] =                             trim(substr($EBMLdata, $offset - $EBMLdata_offset, $subelement_length), "\x00");
+											$info['matroska']['comments'][strtolower($subelement_idname)][] = $info_entry[$subelement_idname];
+											break;
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
 											break;
 										default:
 											$this->warnings[] = 'Unhandled info element ['.basename(__FILE__).':'.__LINE__.'] ('.$subelement_id.'::'.$subelement_idname.' ['.$subelement_length.' bytes]) at '.$subelement_offset;
@@ -629,13 +674,13 @@ class getid3_matroska
 									}
 									$offset = $subelement_end;
 								}
-								$ThisFileInfo['matroska']['info'][] = $info_entry;
+								$info['matroska']['info'][] = $info_entry;
 								break;
 
 							case EBML_ID_CUES:
 								$cues_entry = array();
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
@@ -645,7 +690,7 @@ class getid3_matroska
 										case EBML_ID_CUEPOINT:
 											$cuepoint_entry = array();
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -654,7 +699,7 @@ class getid3_matroska
 												switch ($sub_subelement_id) {
 													case EBML_ID_CUETRACKPOSITIONS:
 														while ($offset < $sub_subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_offset = $offset;
 															$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -683,32 +728,37 @@ class getid3_matroska
 											$cues_entry[] = $cuepoint_entry;
 											$offset = $sub_subelement_end;
 											break;
+
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
+											break;
+
 										default:
 											$this->warnings[] = 'Unhandled cues element ['.basename(__FILE__).':'.__LINE__.'] ('.$subelement_id.'::'.$subelement_idname.' ['.$subelement_length.' bytes]) at '.$subelement_offset;
 											break;
 									}
 									$offset = $subelement_end;
 								}
-								$ThisFileInfo['matroska']['cues'] = $cues_entry;
+								$info['matroska']['cues'] = $cues_entry;
 								break;
 
 							case EBML_ID_TAGS:
 								$tags_entry = array();
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
 									$subelement_length = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_end    = $offset + $subelement_length;
+									$tag_entry = array();
 									switch ($subelement_id) {
 										case EBML_ID_WRITINGAPP:
-											$tags_entry[$subelement_idname] = substr($EBMLdata, $offset - $EBMLdata_offset, $subelement_length);
+											$tag_entry[$subelement_idname] = substr($EBMLdata, $offset - $EBMLdata_offset, $subelement_length);
 											break;
 										case EBML_ID_TAG:
-											$tag_entry = array();
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -718,7 +768,7 @@ class getid3_matroska
 													case EBML_ID_TARGETS:
 														$targets_entry = array();
 														while ($offset < $sub_subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_offset = $offset;
 															$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -726,6 +776,9 @@ class getid3_matroska
 															$sub_sub_subelement_end    = $offset + $sub_sub_subelement_length;
 															switch ($sub_sub_subelement_id) {
 																case EBML_ID_TARGETTYPEVALUE:
+																	$targets_entry[$sub_sub_subelement_idname] = getid3_lib::BigEndian2Int(substr($EBMLdata, $offset - $EBMLdata_offset, $sub_sub_subelement_length));
+																	$targets_entry[strtolower($sub_sub_subelement_idname).'_long'] = $this->MatroskaTargetTypeValue($targets_entry[$sub_sub_subelement_idname]);
+																	break;
 																case EBML_ID_EDITIONUID:
 																case EBML_ID_CHAPTERUID:
 																case EBML_ID_ATTACHMENTUID:
@@ -741,61 +794,47 @@ class getid3_matroska
 														}
 														$tag_entry[$sub_subelement_idname][] = $targets_entry;
 														break;
+
 													case EBML_ID_SIMPLETAG:
-														$simpletag_entry = array();
-														while ($offset < $sub_subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
-															$sub_sub_subelement_offset = $offset;
-															$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
-															$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
-															$sub_sub_subelement_length = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
-															$sub_sub_subelement_end    = $offset + $sub_sub_subelement_length;
-															switch ($sub_sub_subelement_id) {
-																case EBML_ID_TAGNAME:
-																case EBML_ID_TAGLANGUAGE:
-																case EBML_ID_TAGSTRING:
-																case EBML_ID_TAGBINARY:
-																	$simpletag_entry[$sub_sub_subelement_idname] =                                  substr($EBMLdata, $offset - $EBMLdata_offset, $sub_sub_subelement_length);
-																	break;
-																case EBML_ID_TAGDEFAULT:
-																	$simpletag_entry[$sub_sub_subelement_idname] = (bool) getid3_lib::BigEndian2Int(substr($EBMLdata, $offset - $EBMLdata_offset, $sub_sub_subelement_length));
-																	break;
-																default:
-																	$this->warnings[] = 'Unhandled tag.simpletag element ['.basename(__FILE__).':'.__LINE__.'] ('.$sub_sub_subelement_id.'::'.$sub_sub_subelement_idname.') at '.$sub_sub_subelement_offset;
-																	break;
-															}
-															$offset = $sub_sub_subelement_end;
-														}
-														$tag_entry[$sub_subelement_idname][] = $simpletag_entry;
+														//$tag_entry[$sub_subelement_idname][] = $simpletag_entry;
+														$tag_entry[$sub_subelement_idname][] = $this->Handle_EMBL_ID_SIMPLETAG($offset, $sub_subelement_end);
 														break;
+
 													case EBML_ID_TARGETTYPE:
 														$tag_entry[$sub_subelement_idname] =                           substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length);
 														break;
+
 													case EBML_ID_TRACKUID:
 														$tag_entry[$sub_subelement_idname] = getid3_lib::BigEndian2Int(substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length));
 														break;
+
 													default:
 														$this->warnings[] = 'Unhandled tags.tag element ['.basename(__FILE__).':'.__LINE__.'] ('.$sub_subelement_id.'::'.$sub_subelement_idname.') at '.$sub_subelement_offset;
 														break;
 												}
 												$offset = $sub_subelement_end;
 											}
-											$tags_entry['tags'][] = $tag_entry;
 											$offset = $sub_subelement_end;
 											break;
+
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
+											break;
+
 										default:
 											$this->warnings[] = 'Unhandled tags element ['.basename(__FILE__).':'.__LINE__.'] ('.$subelement_id.'::'.$subelement_idname.' ['.$subelement_length.' bytes]) at '.$subelement_offset;
 											break;
 									}
+									$tags_entry['tags'][] = $tag_entry;
 									$offset = $subelement_end;
 								}
-								$ThisFileInfo['matroska']['tags'] = $tags_entry;
+								$info['matroska']['tags'] = $tags_entry['tags'];
 								break;
 
 
 							case EBML_ID_ATTACHMENTS:
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
@@ -805,7 +844,7 @@ class getid3_matroska
 										case EBML_ID_ATTACHEDFILE:
 											$attachedfile_entry = array();
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -815,15 +854,47 @@ class getid3_matroska
 													case EBML_ID_FILEDESCRIPTION:
 													case EBML_ID_FILENAME:
 													case EBML_ID_FILEMIMETYPE:
-														$attachedfile_entry[$sub_subelement_idname] =                           substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length);
+														$attachedfile_entry[$sub_subelement_idname] = substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length);
 														break;
 
 													case EBML_ID_FILEDATA:
 														$attachedfile_entry['data_offset'] = $offset;
 														$attachedfile_entry['data_length'] = $sub_subelement_length;
-														if ($sub_subelement_length < 1024) {
-															$attachedfile_entry[$sub_subelement_idname] =                           substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length);
-														}
+														do {
+															if ($this->inline_attachments === false) {
+																// skip entirely
+																break;
+															}
+															if ($this->inline_attachments === true) {
+																// great
+															} elseif (is_int($this->inline_attachments)) {
+																if ($this->inline_attachments < $sub_subelement_length) {
+																	// too big, skip
+																	$this->warnings[] = 'attachment at '.$sub_subelement_offset.' is too large to process inline ('.number_format($sub_subelement_length).' bytes)';
+																	break;
+																}
+															} elseif (is_string($this->inline_attachments)) {
+																$this->inline_attachments = rtrim(str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $this->inline_attachments), DIRECTORY_SEPARATOR);
+																if (!is_dir($this->inline_attachments) || !is_writable($this->inline_attachments)) {
+																	// cannot write, skip
+																	$this->warnings[] = 'attachment at '.$sub_subelement_offset.' cannot be saved to "'.$this->inline_attachments.'" (not writable)';
+																	break;
+																}
+															}
+															// if we get this far, must be OK
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset, $sub_subelement_length);
+															$attachedfile_entry[$sub_subelement_idname] = substr($EBMLdata, $offset - $EBMLdata_offset, $sub_subelement_length);
+															if (is_string($this->inline_attachments)) {
+																$destination_filename = $this->inline_attachments.DIRECTORY_SEPARATOR.md5($info['filenamepath']).'_'.$attachedfile_entry['data_offset'];
+																if (!file_exists($destination_filename) || is_writable($destination_filename)) {
+																	file_put_contents($destination_filename, $attachedfile_entry[$sub_subelement_idname]);
+																} else {
+																	$this->warnings[] = 'attachment at '.$sub_subelement_offset.' cannot be saved to "'.$destination_filename.'" (not writable)';
+																}
+																$attachedfile_entry[$sub_subelement_idname.'_filename'] = $destination_filename;
+																unset($attachedfile_entry[$sub_subelement_idname]);
+															}
+														} while (false);
 														break;
 
 													case EBML_ID_FILEUID:
@@ -836,9 +907,26 @@ class getid3_matroska
 												}
 												$offset = $sub_subelement_end;
 											}
-											$ThisFileInfo['matroska']['attachments'][] = $attachedfile_entry;
+											if (!empty($attachedfile_entry[$this->EBMLidName(EBML_ID_FILEDATA)]) && !empty($attachedfile_entry[$this->EBMLidName(EBML_ID_FILEMIMETYPE)]) && preg_match('#^image/#i', $attachedfile_entry[$this->EBMLidName(EBML_ID_FILEMIMETYPE)])) {
+												if (($this->inline_attachments === true) || (is_int($this->inline_attachments) && ($this->inline_attachments >= strlen($attachedfile_entry[$this->EBMLidName(EBML_ID_FILEDATA)])))) {
+													$attachedfile_entry['data']       = $attachedfile_entry[$this->EBMLidName(EBML_ID_FILEDATA)];
+													$attachedfile_entry['image_mime'] = $attachedfile_entry[$this->EBMLidName(EBML_ID_FILEMIMETYPE)];
+													$info['matroska']['comments']['picture'][] = array('data'=>$attachedfile_entry['data'], 'image_mime'=>$attachedfile_entry['image_mime'], 'filename'=>(!empty($attachedfile_entry[$this->EBMLidName(EBML_ID_FILENAME)]) ? $attachedfile_entry[$this->EBMLidName(EBML_ID_FILENAME)] : ''));
+													unset($attachedfile_entry[$this->EBMLidName(EBML_ID_FILEDATA)], $attachedfile_entry[$this->EBMLidName(EBML_ID_FILEMIMETYPE)]);
+												}
+											}
+											if (!empty($attachedfile_entry['image_mime']) && preg_match('#^image/#i', $attachedfile_entry['image_mime'])) {
+												// don't add a second copy of attached images, which are grouped under the standard location [comments][picture]
+											} else {
+												$info['matroska']['attachments'][] = $attachedfile_entry;
+											}
 											$offset = $sub_subelement_end;
 											break;
+
+										case EBML_ID_CRC32:
+											// probably not useful, ignore
+											break;
+
 										default:
 											$this->warnings[] = 'Unhandled tags element ['.basename(__FILE__).':'.__LINE__.'] ('.$subelement_id.'::'.$subelement_idname.' ['.$subelement_length.' bytes]) at '.$subelement_offset;
 											break;
@@ -850,7 +938,7 @@ class getid3_matroska
 
 							case EBML_ID_CHAPTERS: // not important to us, contains mostly actual audio/video data, ignore
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
@@ -860,7 +948,7 @@ class getid3_matroska
 										case EBML_ID_EDITIONENTRY:
 											$editionentry_entry = array();
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -878,7 +966,7 @@ class getid3_matroska
 													case EBML_ID_CHAPTERATOM:
 														$chapteratom_entry = array();
 														while ($offset < $sub_subelement_end) {
-															$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+															$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_offset = $offset;
 															$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 															$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -901,7 +989,7 @@ class getid3_matroska
 																case EBML_ID_CHAPTERTRACK:
 																	$chaptertrack_entry = array();
 																	while ($offset < $sub_sub_subelement_end) {
-																		$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+																		$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_sub_subelement_offset = $offset;
 																		$sub_sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
@@ -922,7 +1010,7 @@ class getid3_matroska
 																case EBML_ID_CHAPTERDISPLAY:
 																	$chapterdisplay_entry = array();
 																	while ($offset < $sub_sub_subelement_end) {
-																		$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+																		$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_sub_subelement_offset = $offset;
 																		$sub_sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 																		$sub_sub_sub_subelement_idname = $this->EBMLidName($sub_sub_sub_subelement_id);
@@ -956,7 +1044,7 @@ class getid3_matroska
 												}
 												$offset = $sub_subelement_end;
 											}
-											$ThisFileInfo['matroska']['chapters'][] = $editionentry_entry;
+											$info['matroska']['chapters'][] = $editionentry_entry;
 											$offset = $sub_subelement_end;
 											break;
 										default:
@@ -971,13 +1059,13 @@ class getid3_matroska
 							case EBML_ID_VOID:    // padding, ignore
 								$void_entry = array();
 								$void_entry['offset'] = $offset;
-								$ThisFileInfo['matroska']['void'][] = $void_entry;
+								$info['matroska']['void'][] = $void_entry;
 								break;
 
 							case EBML_ID_CLUSTER: // not important to us, contains mostly actual audio/video data, ignore
 								$cluster_entry = array();
 								while ($offset < $element_end) {
-									$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+									$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_offset = $offset;
 									$subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 									$subelement_idname = $this->EBMLidName($subelement_id);
@@ -993,7 +1081,7 @@ class getid3_matroska
 										case EBML_ID_CLUSTERSILENTTRACKS:
 											$cluster_silent_tracks = array();
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -1016,7 +1104,7 @@ class getid3_matroska
 										case EBML_ID_CLUSTERBLOCKGROUP:
 											$cluster_block_group = array('offset'=>$offset);
 											while ($offset < $subelement_end) {
-												$this->EnsureBufferHasEnoughData($fd, $EBMLdata, $offset, $EBMLdata_offset);
+												$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_offset = $offset;
 												$sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
 												$sub_subelement_idname = $this->EBMLidName($sub_subelement_id);
@@ -1044,8 +1132,9 @@ class getid3_matroska
 																$offset += 1;
 															}
 														}
-														if (!isset($ThisFileInfo['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']])) {
-															$ThisFileInfo['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']] = $offset;
+														if (!isset($info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']])) {
+															$info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']]['offset'] = $offset;
+															$info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']]['length'] = $subelement_length;
 														}
 														$cluster_block_group[$sub_subelement_idname] = $cluster_block_data;
 														break;
@@ -1093,8 +1182,9 @@ class getid3_matroska
 												}
 											}
 
-											if (!isset($ThisFileInfo['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']])) {
-												$ThisFileInfo['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']] = $offset;
+											if (!isset($info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']])) {
+												$info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']]['offset'] = $offset;
+												$info['matroska']['track_data_offsets'][$cluster_block_data['tracknumber']]['length'] = $subelement_length;
 											}
 											$cluster_block_group[$sub_subelement_idname] = $cluster_block_data;
 											break;
@@ -1105,11 +1195,11 @@ class getid3_matroska
 									}
 									$offset = $subelement_end;
 								}
-								$ThisFileInfo['matroska']['cluster'][] = $cluster_entry;
+								$info['matroska']['cluster'][] = $cluster_entry;
 
 								// check to see if all the data we need exists already, if so, break out of the loop
-								if (isset($ThisFileInfo['matroska']['info']) && is_array($ThisFileInfo['matroska']['info'])) {
-									if (isset($ThisFileInfo['matroska']['tracks']['tracks']) && is_array($ThisFileInfo['matroska']['tracks']['tracks'])) {
+								if (isset($info['matroska']['info']) && is_array($info['matroska']['info'])) {
+									if (isset($info['matroska']['tracks']['tracks']) && is_array($info['matroska']['tracks']['tracks'])) {
 										break 2;
 									}
 								}
@@ -1117,7 +1207,7 @@ class getid3_matroska
 
 							default:
 								if ($element_data['id_name'] == dechex($element_data['id'])) {
-									$ThisFileInfo['error'][] = 'Unhandled segment ['.basename(__FILE__).':'.__LINE__.'] ('.$element_data['id'].') at '.$element_data_offset;
+									$info['error'][] = 'Unhandled segment ['.basename(__FILE__).':'.__LINE__.'] ('.$element_data['id'].') at '.$element_data_offset;
 								} else {
 									$this->warnings[] = 'Unhandled segment ['.basename(__FILE__).':'.__LINE__.'] ('.$element_data['id'].'::'.$element_data['id_name'].') at '.$element_data['offset'];
 								}
@@ -1129,7 +1219,7 @@ class getid3_matroska
 
 
 				default:
-					$ThisFileInfo['error'][] = 'Unhandled chunk ['.basename(__FILE__).':'.__LINE__.'] ('.$top_element_id.') at '.$offset;
+					$info['error'][] = 'Unhandled chunk ['.basename(__FILE__).':'.__LINE__.'] ('.$top_element_id.') at '.$offset;
 					break;
 			}
 			$offset = $top_element_endoffset;
@@ -1137,18 +1227,28 @@ class getid3_matroska
 
 
 
-		if (isset($ThisFileInfo['matroska']['info']) && is_array($ThisFileInfo['matroska']['info'])) {
-			foreach ($ThisFileInfo['matroska']['info'] as $key => $infoarray) {
+		if (isset($info['matroska']['info']) && is_array($info['matroska']['info'])) {
+			foreach ($info['matroska']['info'] as $key => $infoarray) {
 				if (isset($infoarray['Duration'])) {
 					// TimecodeScale is how many nanoseconds each Duration unit is
-					$ThisFileInfo['playtime_seconds'] = $infoarray['Duration'] * ((isset($infoarray['TimecodeScale']) ? $infoarray['TimecodeScale'] : 1000000) / 1000000000);
+					$info['playtime_seconds'] = $infoarray['Duration'] * ((isset($infoarray['TimecodeScale']) ? $infoarray['TimecodeScale'] : 1000000) / 1000000000);
 					break;
 				}
 			}
 		}
-		if (isset($ThisFileInfo['matroska']['tracks']['tracks']) && is_array($ThisFileInfo['matroska']['tracks']['tracks'])) {
-			foreach ($ThisFileInfo['matroska']['tracks']['tracks'] as $key => $trackarray) {
+
+		if (isset($info['matroska']['tags']) && is_array($info['matroska']['tags'])) {
+			foreach ($info['matroska']['tags'] as $key => $infoarray) {
+				$this->ExtractCommentsSimpleTag($infoarray);
+			}
+		}
+
+		if (isset($info['matroska']['tracks']['tracks']) && is_array($info['matroska']['tracks']['tracks'])) {
+			foreach ($info['matroska']['tracks']['tracks'] as $key => $trackarray) {
 				$track_info = array();
+				if (isset($trackarray['FlagDefault'])) {
+					$track_info['default'] = $trackarray['FlagDefault'];
+				}
 				switch (isset($trackarray['TrackType']) ? $trackarray['TrackType'] : '') {
 					case 1: // Video
 						if (!empty($trackarray['PixelWidth']))                     { $track_info['resolution_x']  =                                    $trackarray['PixelWidth'];                     }
@@ -1158,10 +1258,10 @@ class getid3_matroska
 						if (!empty($trackarray['DefaultDuration']))                { $track_info['frame_rate']    =                 round(1000000000 / $trackarray['DefaultDuration'], 3);            }
 						if (!empty($trackarray['CodecID']))                        { $track_info['dataformat']    = $this->MatroskaCodecIDtoCommonName($trackarray['CodecID']);                       }
 						if (!empty($trackarray['codec_private_parsed']['fourcc'])) { $track_info['fourcc']        =                                    $trackarray['codec_private_parsed']['fourcc']; }
-						$ThisFileInfo['video']['streams'][] = $track_info;
-						if (isset($track_info['resolution_x']) && empty($ThisFileInfo['video']['resolution_x'])) {
+						$info['video']['streams'][] = $track_info;
+						if (isset($track_info['resolution_x']) && empty($info['video']['resolution_x'])) {
 							foreach ($track_info as $key => $value) {
-								$ThisFileInfo['video'][$key] = $value;
+								$info['video'][$key] = $value;
 							}
 						}
 						break;
@@ -1179,29 +1279,32 @@ class getid3_matroska
 
 							case 'A_AC3':
 								if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.ac3.php', __FILE__, false)) {
-									if (isset($ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']])) {
-										$ac3_thisfileinfo = array('avdataoffset'=>$ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']]);
-										$getid3_ac3 = new getid3_ac3($fd, $ac3_thisfileinfo);
-										$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $ac3_thisfileinfo;
-										if (!empty($ac3_thisfileinfo['error'])) {
-											foreach ($ac3_thisfileinfo['error'] as $newerror) {
+									if (isset($info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'])) {
+										$getid3_temp = new getID3();
+										$getid3_temp->openfile($this->getid3->filename);
+										$getid3_temp->info['avdataoffset'] = $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'];
+										$getid3_ac3 = new getid3_ac3($getid3_temp);
+										$getid3_ac3->Analyze();
+										unset($getid3_temp->info['ac3']['GETID3_VERSION']);
+										$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $getid3_temp->info['ac3'];
+										if (!empty($getid3_temp->info['error'])) {
+											foreach ($getid3_temp->info['error'] as $newerror) {
 												$this->warnings[] = 'getid3_ac3() says: ['.$newerror.']';
 											}
 										}
-										if (!empty($ac3_thisfileinfo['warning'])) {
-											foreach ($ac3_thisfileinfo['warning'] as $newerror) {
+										if (!empty($getid3_temp->info['warning'])) {
+											foreach ($getid3_temp->info['warning'] as $newerror) {
 												$this->warnings[] = 'getid3_ac3() says: ['.$newerror.']';
 											}
 										}
-										if (isset($ac3_thisfileinfo['audio']) && is_array($ac3_thisfileinfo['audio'])) {
-											foreach ($ac3_thisfileinfo['audio'] as $key => $value) {
+										if (isset($getid3_temp->info['audio']) && is_array($getid3_temp->info['audio'])) {
+											foreach ($getid3_temp->info['audio'] as $key => $value) {
 												$track_info[$key] = $value;
 											}
 										}
-										unset($ac3_thisfileinfo);
-										unset($getid3_ac3);
+										unset($getid3_temp, $getid3_ac3);
 									} else {
-										$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because $ThisFileInfo[matroska][track_data_offsets]['.$trackarray['TrackNumber'].'] not set';
+										$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because $info[matroska][track_data_offsets]['.$trackarray['TrackNumber'].'][offset] not set';
 									}
 								} else {
 									$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because cannot include "module.audio.ac3.php"';
@@ -1209,10 +1312,10 @@ class getid3_matroska
 								break;
 
 							case 'A_DTS':
-								$dts_offset = $ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']];
+								$dts_offset = $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'];
 								// this is a NASTY hack, but sometimes audio data is off by a byte or two and not sure why, email info@getid3.org if you can explain better
-								fseek($fd, $dts_offset, SEEK_SET);
-								$magic_test = fread($fd, 8);
+								fseek($this->getid3->fp, $dts_offset, SEEK_SET);
+								$magic_test = fread($this->getid3->fp, 8);
 								for ($i = 0; $i < 4; $i++) {
 									// look to see if DTS "magic" is here, if so adjust offset by that many bytes
 									if (substr($magic_test, $i, 4) == "\x7F\xFE\x80\x01") {
@@ -1221,44 +1324,54 @@ class getid3_matroska
 									}
 								}
 								if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.dts.php', __FILE__, false)) {
-									$dts_thisfileinfo = array('avdataoffset'=>$dts_offset);
-									$getid3_dts = new getid3_dts($fd, $dts_thisfileinfo);
-									$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $dts_thisfileinfo;
-									if (!empty($dts_thisfileinfo['error'])) {
-										foreach ($dts_thisfileinfo['error'] as $newerror) {
+									$getid3_temp = new getID3();
+									$getid3_temp->openfile($this->getid3->filename);
+									$getid3_temp->info['avdataoffset'] = $dts_offset;
+									$getid3_dts = new getid3_dts($getid3_temp);
+									$getid3_dts->Analyze();
+									unset($getid3_temp->info['dts']['GETID3_VERSION']);
+									$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $getid3_temp->info['dts'];
+									if (!empty($getid3_temp->info['error'])) {
+										foreach ($getid3_temp->info['error'] as $newerror) {
 											$this->warnings[] = 'getid3_dts() says: ['.$newerror.']';
 										}
 									}
-									if (!empty($dts_thisfileinfo['warning'])) {
-										foreach ($dts_thisfileinfo['warning'] as $newerror) {
+									if (!empty($getid3_temp->info['warning'])) {
+										foreach ($getid3_temp->info['warning'] as $newerror) {
 											$this->warnings[] = 'getid3_dts() says: ['.$newerror.']';
 										}
 									}
-									if (isset($dts_thisfileinfo['audio']) && is_array($dts_thisfileinfo['audio'])) {
-										foreach ($dts_thisfileinfo['audio'] as $key => $value) {
+									if (isset($getid3_temp->info['audio']) && is_array($getid3_temp->info['audio'])) {
+										foreach ($getid3_temp->info['audio'] as $key => $value) {
 											$track_info[$key] = $value;
 										}
 									}
-									unset($dts_thisfileinfo);
-									unset($getid3_dts);
+									unset($getid3_temp, $getid3_dts);
 								} else {
 									$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because cannot include "module.audio.dts.php"';
 								}
 								break;
 
 							case 'A_AAC':
-$this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems parsing AAC audio in Matroska containers ['.basename(__FILE__).':'.__LINE__.']';
+$this->warnings[] = 'This version of getID3() [v'.$this->getid3->version().'] has problems parsing AAC audio in Matroska containers ['.basename(__FILE__).':'.__LINE__.']';
 								if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.aac.php', __FILE__, false)) {
-							//		$aac_thisfileinfo = array('avdataoffset'=>$ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']]);
-							//		$getid3_aac = new getid3_aac($fd, $aac_thisfileinfo);
-							//		$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $aac_thisfileinfo;
-							//		if (isset($aac_thisfileinfo['audio']) && is_array($aac_thisfileinfo['audio'])) {
-							//			foreach ($aac_thisfileinfo['audio'] as $key => $value) {
-							//				$track_info[$key] = $value;
-							//			}
-							//		}
-							//		unset($aac_thisfileinfo);
-							//		unset($getid3_aac);
+									$getid3_temp = new getID3();
+									$getid3_temp->openfile($this->getid3->filename);
+									$getid3_temp->info['avdataoffset'] = $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'];
+									$getid3_aac = new getid3_aac($getid3_temp);
+									$getid3_aac->Analyze();
+									unset($getid3_temp->info['aac']['GETID3_VERSION']);
+									if (!empty($getid3_temp->info['audio']['dataformat'])) {
+										$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $getid3_temp->info['aac'];
+										if (isset($getid3_temp->info['audio']) && is_array($getid3_temp->info['audio'])) {
+											foreach ($getid3_temp->info['audio'] as $key => $value) {
+												$track_info[$key] = $value;
+											}
+										}
+									} else {
+										$this->warnings[] = 'Failed to parse '.$trackarray[$this->EBMLidName(EBML_ID_CODECID)].' audio data ['.basename(__FILE__).':'.__LINE__.']';
+									}
+									unset($getid3_temp, $getid3_aac);
 								} else {
 									$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because cannot include "module.audio.aac.php"';
 								}
@@ -1266,31 +1379,35 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 
 							case 'A_MPEG/L3':
 								if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.mp3.php', __FILE__, false)) {
-									$mp3_thisfileinfo = array(
-										'avdataoffset' => $ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']],
-										'avdataend'    => $ThisFileInfo['matroska']['track_data_offsets'][$trackarray['TrackNumber']] + 1024,
-									);
-									$getid3_mp3 = new getid3_mp3($fd, $mp3_thisfileinfo);
+									$getid3_temp = new getID3();
+									$getid3_temp->openfile($this->getid3->filename);
+									$getid3_temp->info['avdataoffset'] = $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'];
+									$getid3_temp->info['avdataend']    = $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'] + $info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['length'];
+									$getid3_mp3 = new getid3_mp3($getid3_temp);
 									$getid3_mp3->allow_bruteforce = true;
-									//getid3_mp3::getOnlyMPEGaudioInfo($fd, $mp3_thisfileinfo, $offset, false);
-									$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $mp3_thisfileinfo;
-									if (!empty($mp3_thisfileinfo['error'])) {
-										foreach ($mp3_thisfileinfo['error'] as $newerror) {
-											$this->warnings[] = 'getid3_mp3() says: ['.$newerror.']';
+									$getid3_mp3->Analyze();
+									if (!empty($getid3_temp->info['mpeg'])) {
+										unset($getid3_temp->info['mpeg']['GETID3_VERSION']);
+										$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $getid3_temp->info['mpeg'];
+										if (!empty($getid3_temp->info['error'])) {
+											foreach ($getid3_temp->info['error'] as $newerror) {
+												$this->warnings[] = 'getid3_mp3() says: ['.$newerror.']';
+											}
 										}
-									}
-									if (!empty($mp3_thisfileinfo['warning'])) {
-										foreach ($mp3_thisfileinfo['warning'] as $newerror) {
-											$this->warnings[] = 'getid3_mp3() says: ['.$newerror.']';
+										if (!empty($getid3_temp->info['warning'])) {
+											foreach ($getid3_temp->info['warning'] as $newerror) {
+												$this->warnings[] = 'getid3_mp3() says: ['.$newerror.']';
+											}
 										}
-									}
-									if (isset($mp3_thisfileinfo['audio']) && is_array($mp3_thisfileinfo['audio'])) {
-										foreach ($mp3_thisfileinfo['audio'] as $key => $value) {
-											$track_info[$key] = $value;
+										if (isset($getid3_temp->info['audio']) && is_array($getid3_temp->info['audio'])) {
+											foreach ($getid3_temp->info['audio'] as $key => $value) {
+												$track_info[$key] = $value;
+											}
 										}
+									} else {
+										$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because getid3_mp3::Analyze failed at offset '.$info['matroska']['track_data_offsets'][$trackarray['TrackNumber']]['offset'];
 									}
-									unset($mp3_thisfileinfo);
-									unset($getid3_mp3);
+									unset($getid3_temp, $getid3_mp3);
 								} else {
 									$this->warnings[] = 'Unable to parse audio data ['.basename(__FILE__).':'.__LINE__.'] because cannot include "module.audio.mp3.php"';
 								}
@@ -1309,10 +1426,21 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 									}
 									if ($found_vorbis) {
 										if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.audio.ogg.php', __FILE__, false)) {
-											$vorbis_fileinfo = array();
 											$oggpageinfo['page_seqno'] = 0;
-											getid3_ogg::ParseVorbisPageHeader($trackarray['CodecPrivate'], $vorbis_offset, $vorbis_fileinfo, $oggpageinfo);
-											$ThisFileInfo['matroska']['track_codec_parsed'][$trackarray['TrackNumber']] = $vorbis_fileinfo;
+
+											$getid3_temp = new getID3();
+											$getid3_temp->openfile($this->getid3->filename);
+											$getid3_ogg = new getid3_ogg($getid3_temp);
+											$getid3_ogg->ParseVorbisPageHeader($trackarray['CodecPrivate'], $vorbis_offset, $oggpageinfo);
+											$vorbis_fileinfo = $getid3_temp->info;
+											unset($getid3_temp, $getid3_ogg);
+
+											if (isset($vorbis_fileinfo['audio'])) {
+												$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']]['audio'] = $vorbis_fileinfo['audio'];
+											}
+											if (isset($vorbis_fileinfo['ogg'])) {
+												$info['matroska']['track_codec_parsed'][$trackarray['TrackNumber']]['ogg']   = $vorbis_fileinfo['ogg'];
+											}
 											if (!empty($vorbis_fileinfo['error'])) {
 												foreach ($vorbis_fileinfo['error'] as $newerror) {
 													$this->warnings[] = 'getid3_ogg() says: ['.$newerror.']';
@@ -1350,10 +1478,10 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 						}
 
 
-						$ThisFileInfo['audio']['streams'][] = $track_info;
-						if (isset($track_info['dataformat']) && empty($ThisFileInfo['audio']['dataformat'])) {
+						$info['audio']['streams'][] = $track_info;
+						if (isset($track_info['dataformat']) && empty($info['audio']['dataformat'])) {
 							foreach ($track_info as $key => $value) {
-								$ThisFileInfo['audio'][$key] = $value;
+								$info['audio'][$key] = $value;
 							}
 						}
 						break;
@@ -1366,34 +1494,34 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 
 		if ($this->hide_clusters) {
 			// too much data returned that is usually not useful
-			if (isset($ThisFileInfo['matroska']['segments']) && is_array($ThisFileInfo['matroska']['segments'])) {
-				foreach ($ThisFileInfo['matroska']['segments'] as $key => $segmentsarray) {
+			if (isset($info['matroska']['segments']) && is_array($info['matroska']['segments'])) {
+				foreach ($info['matroska']['segments'] as $key => $segmentsarray) {
 					if ($segmentsarray['id'] == EBML_ID_CLUSTER) {
-						unset($ThisFileInfo['matroska']['segments'][$key]);
+						unset($info['matroska']['segments'][$key]);
 					}
 				}
 			}
-			if (isset($ThisFileInfo['matroska']['seek']) && is_array($ThisFileInfo['matroska']['seek'])) {
-				foreach ($ThisFileInfo['matroska']['seek'] as $key => $seekarray) {
+			if (isset($info['matroska']['seek']) && is_array($info['matroska']['seek'])) {
+				foreach ($info['matroska']['seek'] as $key => $seekarray) {
 					if ($seekarray['target_id'] == EBML_ID_CLUSTER) {
-						unset($ThisFileInfo['matroska']['seek'][$key]);
+						unset($info['matroska']['seek'][$key]);
 					}
 				}
 			}
-			//unset($ThisFileInfo['matroska']['cluster']);
-			//unset($ThisFileInfo['matroska']['track_data_offsets']);
+			//unset($info['matroska']['cluster']);
+			//unset($info['matroska']['track_data_offsets']);
 		}
 
-		if (!empty($ThisFileInfo['video']['streams'])) {
-			$ThisFileInfo['mime_type'] = 'video/x-matroska';
-		} elseif (!empty($ThisFileInfo['audio']['streams'])) {
-			$ThisFileInfo['mime_type'] = 'audio/x-matroska';
-		} elseif (isset($ThisFileInfo['mime_type'])) {
-			unset($ThisFileInfo['mime_type']);
+		if (!empty($info['video']['streams'])) {
+			$info['mime_type'] = 'video/x-matroska';
+		} elseif (!empty($info['audio']['streams'])) {
+			$info['mime_type'] = 'audio/x-matroska';
+		} elseif (isset($info['mime_type'])) {
+			unset($info['mime_type']);
 		}
 
 		foreach ($this->warnings as $key => $value) {
-			$ThisFileInfo['warning'][] = $value;
+			$info['warning'][] = $value;
 		}
 
 		return true;
@@ -1403,15 +1531,15 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 ///////////////////////////////////////
 
 
-	function EnsureBufferHasEnoughData(&$fd, &$EBMLdata, &$offset, &$EBMLdata_offset) {
-		$min_data = 1024;
+	function EnsureBufferHasEnoughData(&$EBMLdata, &$offset, &$EBMLdata_offset, $min_data=1024) {
 		if (!getid3_lib::intValueSupported($offset + $this->read_buffer_size)) {
-			$offset = pow(2, 63);
+			$offset = PHP_INT_MAX + 1;
 			return false;
-		} elseif (($offset - $EBMLdata_offset) >= (strlen($EBMLdata) - $min_data)) {
-			fseek($fd, $offset, SEEK_SET);
-			$EBMLdata_offset = ftell($fd);
-			$EBMLdata = fread($fd, $this->read_buffer_size);
+		}
+		if (($offset - $EBMLdata_offset) >= (strlen($EBMLdata) - $min_data)) {
+			fseek($this->getid3->fp, $offset, SEEK_SET);
+			$EBMLdata_offset = ftell($this->getid3->fp);
+			$EBMLdata = fread($this->getid3->fp, max($min_data, $this->read_buffer_size));
 		}
 		return true;
 	}
@@ -1446,8 +1574,8 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 		} elseif (0x01 & $first_byte_int) {
 			$length = 8;
 		} else {
-			$offset = pow(2, 63); // abort processing, skip to end of file
 			$this->warnings[] = 'invalid EBML integer (leading 0x00) at '.$offset;
+			$offset = PHP_INT_MAX + 1; // abort processing, skip to end of file
 			return false;
 		}
 		$int_value = $this->EBML2Int(substr($string, $actual_offset, $length));
@@ -1455,7 +1583,7 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 		return $int_value;
 	}
 
-	function EBML2Int($EBMLstring) {
+	static function EBML2Int($EBMLstring) {
 		// http://matroska.org/specs/
 
 		// Element ID coded with an UTF-8 like system:
@@ -1499,14 +1627,77 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 	}
 
 
-	function EBMLdate2unix($EBMLdatestamp) {
+	static function EBMLdate2unix($EBMLdatestamp) {
 		// Date - signed 8 octets integer in nanoseconds with 0 indicating the precise beginning of the millennium (at 2001-01-01T00:00:00,000000000 UTC)
 		// 978307200 == mktime(0, 0, 0, 1, 1, 2001) == January 1, 2001 12:00:00am UTC
 		return round(($EBMLdatestamp / 1000000000) + 978307200);
 	}
 
 
-	function MatroskaBlockLacingType($lacingtype) {
+	function ExtractCommentsSimpleTag($SimpleTagArray) {
+		$info = &$this->getid3->info;
+		if (!empty($SimpleTagArray[$this->EBMLidName(EBML_ID_SIMPLETAG)])) {
+			foreach ($SimpleTagArray[$this->EBMLidName(EBML_ID_SIMPLETAG)] as $SimpleTagKey => $SimpleTagData) {
+				if (!empty($SimpleTagData[$this->EBMLidName(EBML_ID_TAGNAME)]) && !empty($SimpleTagData[$this->EBMLidName(EBML_ID_TAGSTRING)])) {
+					$info['matroska']['comments'][strtolower($SimpleTagData[$this->EBMLidName(EBML_ID_TAGNAME)])][] = $SimpleTagData[$this->EBMLidName(EBML_ID_TAGSTRING)];
+				}
+				if (!empty($SimpleTagData[$this->EBMLidName(EBML_ID_SIMPLETAG)])) {
+					$this->ExtractCommentsSimpleTag($SimpleTagData);
+				}
+			}
+		}
+		return true;
+	}
+
+	function Handle_EMBL_ID_SIMPLETAG(&$offset, $sub_subelement_end) {
+		$simpletag_entry = array();
+		while ($offset < $sub_subelement_end) {
+			$this->EnsureBufferHasEnoughData($EBMLdata, $offset, $EBMLdata_offset);
+			$sub_sub_subelement_offset = $offset;
+			$sub_sub_subelement_id     = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
+			$sub_sub_subelement_idname = $this->EBMLidName($sub_sub_subelement_id);
+			$sub_sub_subelement_length = $this->readEBMLint($EBMLdata, $offset, $EBMLdata_offset);
+			$sub_sub_subelement_end    = $offset + $sub_sub_subelement_length;
+			switch ($sub_sub_subelement_id) {
+				case EBML_ID_TAGNAME:
+				case EBML_ID_TAGLANGUAGE:
+				case EBML_ID_TAGSTRING:
+				case EBML_ID_TAGBINARY:
+					$simpletag_entry[$sub_sub_subelement_idname] =                                  substr($EBMLdata, $offset - $EBMLdata_offset, $sub_sub_subelement_length);
+					break;
+				case EBML_ID_SIMPLETAG:
+					$simpletag_entry[$sub_sub_subelement_idname][] = $this->Handle_EMBL_ID_SIMPLETAG($offset, $sub_sub_subelement_end);
+					break;
+				case EBML_ID_TAGDEFAULT:
+					$simpletag_entry[$sub_sub_subelement_idname] = (bool) getid3_lib::BigEndian2Int(substr($EBMLdata, $offset - $EBMLdata_offset, $sub_sub_subelement_length));
+					break;
+
+				default:
+					$this->warnings[] = 'Unhandled tag.simpletag element ['.basename(__FILE__).':'.__LINE__.'] ('.$sub_sub_subelement_id.'::'.$sub_sub_subelement_idname.') at '.$sub_sub_subelement_offset;
+					break;
+			}
+			$offset = $sub_sub_subelement_end;
+		}
+		return $simpletag_entry;
+	}
+
+
+	static function MatroskaTargetTypeValue($target_type) {
+		// http://www.matroska.org/technical/specs/tagging/index.html
+		static $MatroskaTargetTypeValue = array();
+		if (empty($MatroskaTargetTypeValue)) {
+			$MatroskaTargetTypeValue[10] = 'A: ~ V:shot';                                           // the lowest hierarchy found in music or movies
+			$MatroskaTargetTypeValue[20] = 'A:subtrack/part/movement ~ V:scene';                    // corresponds to parts of a track for audio (like a movement)
+			$MatroskaTargetTypeValue[30] = 'A:track/song ~ V:chapter';                              // the common parts of an album or a movie
+			$MatroskaTargetTypeValue[40] = 'A:part/session ~ V:part/session';                       // when an album or episode has different logical parts
+			$MatroskaTargetTypeValue[50] = 'A:album/opera/concert ~ V:movie/episode/concert';       // the most common grouping level of music and video (equals to an episode for TV series)
+			$MatroskaTargetTypeValue[60] = 'A:edition/issue/volume/opus ~ V:season/sequel/volume';  // a list of lower levels grouped together
+			$MatroskaTargetTypeValue[70] = 'A:collection ~ V:collection';                           // the high hierarchy consisting of many different lower items
+		}
+		return (isset($MatroskaTargetTypeValue[$target_type]) ? $MatroskaTargetTypeValue[$target_type] : $target_type);
+	}
+
+	static function MatroskaBlockLacingType($lacingtype) {
 		// http://matroska.org/technical/specs/index.html#block_structure
 		static $MatroskaBlockLacingType = array();
 		if (empty($MatroskaBlockLacingType)) {
@@ -1518,7 +1709,7 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 		return (isset($MatroskaBlockLacingType[$lacingtype]) ? $MatroskaBlockLacingType[$lacingtype] : $lacingtype);
 	}
 
-	function MatroskaCodecIDtoCommonName($codecid) {
+	static function MatroskaCodecIDtoCommonName($codecid) {
 		// http://www.matroska.org/technical/specs/codecid/index.html
 		static $MatroskaCodecIDlist = array();
 		if (empty($MatroskaCodecIDlist)) {
@@ -1550,7 +1741,7 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 		return (isset($MatroskaCodecIDlist[$codecid]) ? $MatroskaCodecIDlist[$codecid] : $codecid);
 	}
 
-	function EBMLidName($value) {
+	static function EBMLidName($value) {
 		static $EBMLidList = array();
 		if (empty($EBMLidList)) {
 			$EBMLidList[EBML_ID_ASPECTRATIOTYPE]            = 'AspectRatioType';
@@ -1745,5 +1936,4 @@ $this->warnings[] = 'This version of getID3() [v'.GETID3_VERSION.'] has problems
 	}
 
 }
-
 ?>

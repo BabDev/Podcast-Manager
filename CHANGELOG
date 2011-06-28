@@ -4,6 +4,7 @@
 + Added feed link to head
 - Removed params conversion in getItems
 + Add support for Akeeba Backup System Restore Points
+~ Update getID3 library to 1.9.0
 
 28-June-2011 Michael Babker Version 1.7 Changes
 # Correct counts for feeds view
