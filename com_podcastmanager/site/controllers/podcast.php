@@ -91,7 +91,6 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		// Get the previous record id (if any) and the current record id.
 		$recordId	= (int) (count($cid) ? $cid[0] : JRequest::getInt($urlVar));
 		$checkin	= property_exists($table, 'checked_out');
-		echo '<p>'.var_dump($cid).'- $cid</p>';
 
 		// Access check.
 		if (!$this->allowEdit(array($key => $recordId), $key)) {
@@ -110,7 +109,8 @@ class PodcastManagerControllerPodcast extends JControllerForm
 			$this->setRedirect('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($recordId, $urlVar));
 
 			return false;
-		} else {
+		}
+		else {
 			// Check-out succeeded, push the new record id into the session.
 			$this->holdEditId($context, $recordId);
 			$app->setUserState($context.'.data', null);
@@ -177,7 +177,8 @@ class PodcastManagerControllerPodcast extends JControllerForm
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return))) {
 			return JURI::base();
-		} else {
+		}
+		else {
 			return base64_decode($return);
 		}
 	}

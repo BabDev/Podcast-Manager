@@ -12,9 +12,9 @@
 // Restricted access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelitem');
+jimport('joomla.application.component.modelform');
 
-class PodcastManagerModelPodcast extends JModelItem
+class PodcastManagerModelPodcast extends JModelForm
 {
 	/**
 	 * Model context string.
@@ -23,31 +23,70 @@ class PodcastManagerModelPodcast extends JModelItem
 	 */
 	protected $_context = 'com_podcastmanager.podcast';
 
+	protected $_item = null;
+
 	/**
-	 * Method to check out a podcast for editing.
+	 * Method to get the record form.
 	 *
-	 * @param	integer		The id of the row to check out.
+	 * @param	array	$data		Data for the form.
+	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	boolean		True on success, false on failure.
+	 * @return	mixed	$form		A JForm object on success, false on failure
 	 * @since	1.8
 	 */
-	public function checkout($podcastId = null)
+	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the podcast id.
-		$podcastId = (!empty($podcastId)) ? $podcastId : (int)$this->getState('podcast.id');
+		// Get the form.
+		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form)) {
+			return false;
+		}
 
-		if ($podcastId) {
-			// Initialise the table.
+		return $form;
+	}
+
+	/**
+	 * Method to get an object.
+	 *
+	 * @param	integer	The id of the object to get.
+	 *
+	 * @return	mixed	Object on success, false on failure.
+	 * @since	1.8
+	 */
+	public function &getItem($id = null)
+	{
+		if ($this->_item === null)
+		{
+			$this->_item = false;
+
+			if (empty($id)) {
+				$id = $this->getState('podcast.id');
+			}
+
+			// Get a level row instance.
 			$table = JTable::getInstance('Podcast', 'PodcastManagerTable');
 
-			// Attempt to check the row out.
-			if (!$table->checkout($podcastId)) {
-				$this->setError($table->getError());
-				return false;
+			// Attempt to load the row.
+			if ($table->load($id))
+			{
+				// Check published state.
+				if ($published = $this->getState('filter.published'))
+				{
+					if ($table->published != $published) {
+						return $this->_item;
+					}
+				}
+
+				// Convert the JTable to a clean JObject.
+				$properties = $table->getProperties(1);
+				$this->_item = JArrayHelper::toObject($properties, 'JObject');
+			}
+			else if ($error = $table->getError()) {
+				$this->setError($error);
 			}
 		}
 
-		return true;
+		return $this->_item;
 	}
 
 	/**
@@ -59,46 +98,6 @@ class PodcastManagerModelPodcast extends JModelItem
 	public function getReturnPage()
 	{
 		return base64_encode($this->getState('return_page'));
-	}
-
-	/**
-	 * Method to get an ojbect.
-	 *
-	 * @param	integer	The id of the object to get.
-	 *
-	 * @return	mixed	Object on success, false on failure.
-	 * @since	1.8
-	 */
-	public function &getItem($id = null)
-	{
-		if ($this->_item === null) {
-			$this->_item = false;
-
-			if (empty($id)) {
-				$id = $this->getState('podcast.id');
-			}
-
-			// Get a level row instance.
-			$table = JTable::getInstance('Podcast', 'PodcastManagerTable');
-
-			// Attempt to load the row.
-			if ($table->load($id)) {
-				// Check published state.
-				if ($published = $this->getState('filter.published')) {
-					if ($table->published != $published) {
-						return $this->_item;
-					}
-				}
-
-				// Convert the JTable to a clean JObject.
-				$properties = $table->getProperties(1);
-				$this->_item = JArrayHelper::toObject($properties, 'JObject');
-			} else if ($error = $table->getError()) {
-				$this->setError($error);
-			}
-		}
-
-		return $this->_item;
 	}
 
 	/**
@@ -117,6 +116,27 @@ class PodcastManagerModelPodcast extends JModelItem
 	}
 
 	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return	mixed	$data	The data for the form.
+	 * @since	1.8
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
+
+		if (empty($data)) {
+			$data = $this->getItem();
+			// If changing the selected file, process the new data through getID3
+			if (isset($_COOKIE['podManFile'])) {
+				$data = $this->fillMetaData($data);
+			}
+		}
+		return $data;
+	}
+
+	/**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
@@ -132,7 +152,7 @@ class PodcastManagerModelPodcast extends JModelItem
 		$this->setState('podcast.id', $pk);
 
 		$feedId	= JRequest::getInt('feedname');
-		$this->setState('podcast.feedname', $categoryId);
+		$this->setState('podcast.feedname', $feedId);
 
 		$return = JRequest::getVar('return', null, 'default', 'base64');
 

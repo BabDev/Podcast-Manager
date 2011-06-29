@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout
+		title="com_podcastmanager_podcast_view_default_title" option="com_weblinks_podcast_view_default_option">
+		<message>
+			<![CDATA[com_podcastmanager_form_view_default_description]]>
+		</message>
+	</layout>
+</metadata>
