@@ -9,8 +9,8 @@
 		<fieldset name="request"
 			addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
 			<field name="feedname" type="feedname"
-				description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
-				label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL"
+				description="COM_PODCASTMANAGER_MENU_FEEDNAME_DESCRIPTION"
+				label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL"
 				required="true" />
 			<field name="limit" type="text"
 				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
