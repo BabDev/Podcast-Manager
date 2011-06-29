@@ -57,8 +57,16 @@ class PodcastManagerController extends JController
 			'feedname'			=> 'INT',
 			'limit'				=> 'INT',
 			'limitstart'		=> 'INT',
+			'filter_order'		=> 'CMD',
+			'filter_order_Dir'	=> 'CMD',
 			'lang'				=> 'CMD'
 		);
+
+		// Check for edit form.
+		if ($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id)) {
+			// Somehow the person just went to the form - we don't allow that.
+			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+		}
 
 		return parent::display($cachable, $safeurlparams);
 	}

@@ -16,6 +16,7 @@
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
 		<filename>router.php</filename>
+		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
