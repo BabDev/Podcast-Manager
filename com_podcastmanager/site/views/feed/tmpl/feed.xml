@@ -4,6 +4,9 @@
 		<message>
 			<![CDATA[COM_PODCASTMANAGER_FEED_HTML_VIEW_DESCRIPTION]]>
 		</message>
+		<options var="format">
+			<option value="html" layout="feed" name="COM_PODCASTMANAGER_FEED_HTML_VIEW_TITLE" msg="COM_PODCASTMANAGER_FEED_HTML_VIEW_DESCRIPTION" />
+		</options>
 	</layout>
 	<fields name="request">
 		<fieldset name="request"
@@ -16,6 +19,7 @@
 				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
 				label="COM_PODCASTMANAGER_LIMIT_LABEL"
 				size="3" filter="integer" />
+			<field name="format" type="hidden" default="html" />
 		</fieldset>
 	</fields>
 	<!-- Add fields to the parameters object for the layout. -->
