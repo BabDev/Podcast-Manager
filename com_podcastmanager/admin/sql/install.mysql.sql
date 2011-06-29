@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itExplicit` tinyint(1) NOT NULL default '0',
   `itKeywords` varchar(255) NOT NULL default '',
   `itSubtitle` varchar(255) NOT NULL default '',
-  `itSummary` varchar(255) NOT NULL default '',
+  `itSummary` varchar(5120) NOT NULL default '',
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
