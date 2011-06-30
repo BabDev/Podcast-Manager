@@ -95,9 +95,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</table>
 
 	<?php // Code to add a link to submit a new podcast.
-	/* if ($canCreate)
-		echo JHtml::_('icon.create', $item, $item->params);
- 	endif; */
+		if ($canCreate) :
+			echo JHtml::_('icon.create', $item, $params);
+	 	endif;
 		if ($this->params->get('show_pagination')) : ?>
 		 <div class="pagination">
 			<?php if ($this->params->def('show_pagination_results', 1)) : ?>

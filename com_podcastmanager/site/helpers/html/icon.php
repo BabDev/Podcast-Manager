@@ -22,7 +22,7 @@ class JHtmlIcon
 		$url = JRoute::_(PodcastManagerHelperRoute::getFormRoute(0, base64_encode($uri)));
 		$text = JHtml::_('image', 'system/new.png', JText::_('JNEW'), NULL, true);
 		$button = JHtml::_('link', $url, $text);
-		$output = '<span class="hasTip" title="'.JText::_('COM_PODCASTMANAGER_FORM_CREATE_PODCAST').'">'.$button.'</span>';
+		$output = '<span class="hasTip" title="'.JText::_('COM_PODCASTMANAGER_FORM_ADD_PODCAST').'">'.$button.'</span>';
 		return $output;
 	}
 
