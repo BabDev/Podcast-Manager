@@ -50,7 +50,7 @@ class PodcastManagerViewPodcasts extends JView
 			$this->addToolbar();
 		}
 
-		require_once JPATH_COMPONENT .'/models/fields/feedfilter.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/fields/feedfilter.php';
 		parent::display($tpl);
 	}
 
