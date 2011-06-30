@@ -10,6 +10,9 @@ podman.xml
 files_podman_minima.xml
 files_podman_hathor.xml
 
+# SVN #
+.svn
+
 # IDE #
 .buildpath
 .project
