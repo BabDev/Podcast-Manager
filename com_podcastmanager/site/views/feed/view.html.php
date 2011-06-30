@@ -137,7 +137,7 @@ class PodcastManagerViewFeed extends JView
 
 		// Add alternative feed link
 		if ($this->params->get('show_feed_link', 1) == 1) {
-			$link	= '&format=raw&feedname='.$feed->id;
+			$link	= '&format=raw&layout=default&feedname='.$feed->id;
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 			$this->document->addHeadLink(JRoute::_($link), 'alternate', 'rel', $attribs);
 		}
