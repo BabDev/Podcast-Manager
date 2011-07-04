@@ -77,7 +77,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					if ($canEdit) : ?>
 					<ul class="actions">
 						<li class="edit-icon">
-							<?php echo JHtml::_('icon.edit', $item, $params); ?>
+							<?php echo JHtml::_('icon.podcastedit', $item, $params); ?>
 						</li>
 					</ul>
 					<?php endif; ?>
@@ -94,10 +94,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tbody>
 	</table>
 
-	<?php // Code to add a link to submit a new podcast.
-		if ($canCreate) :
-			echo JHtml::_('icon.create', $item, $params);
-	 	endif;
+	<?php
 		if ($this->params->get('show_pagination')) : ?>
 		 <div class="pagination">
 			<?php if ($this->params->def('show_pagination_results', 1)) : ?>

@@ -15,18 +15,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.helper');
 class JHtmlIcon
 {
-	static function create($weblink, $params)
-	{
-		$uri = JFactory::getURI();
-
-		$url = JRoute::_(PodcastManagerHelperRoute::getFormRoute(0, base64_encode($uri)));
-		$text = JHtml::_('image', 'system/new.png', JText::_('JNEW'), NULL, true);
-		$button = JHtml::_('link', $url, $text);
-		$output = '<span class="hasTip" title="'.JText::_('COM_PODCASTMANAGER_FORM_ADD_PODCAST').'">'.$button.'</span>';
-		return $output;
-	}
-
-	static function edit($podcast, $params, $attribs = array())
+	static function podcastEdit($podcast, $params, $attribs = array())
 	{
 		$user = JFactory::getUser();
 		$uri = JFactory::getURI();
@@ -40,7 +29,7 @@ class JHtmlIcon
 		}
 
 		JHtml::_('behavior.tooltip');
-		$url	= PodcastManagerHelperRoute::getFormRoute($podcast->id, base64_encode($uri));
+		$url	= PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
 		$icon	= $podcast->published ? 'edit.png' : 'edit_unpublished.png';
 		$text	= JHtml::_('image','system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
 

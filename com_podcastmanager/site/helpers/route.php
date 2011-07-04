@@ -29,7 +29,7 @@ abstract class PodcastManagerHelperRoute
 			'podcast'  => array((int) $id)
 		);
 
-		//Create the link
+		// Create the link
 		$link = 'index.php?option=com_podcastmanager&view=podcast&id='. $id;
 
 		if ($item = self::_findItem($needles)) {
@@ -47,15 +47,10 @@ abstract class PodcastManagerHelperRoute
 	 *
 	 * @param	string	$return	The return page variable.
 	 */
-	public static function getFormRoute($id, $return = null)
+	public static function getPodcastEditRoute($id, $return = null)
 	{
 		// Create the link.
-		if ($id) {
-			$link = 'index.php?option=com_podcastmanager&task=podcast.edit&p_id='. $id;
-		}
-		else {
-			$link = 'index.php?option=com_podcastmanager&task=podcast.add&p_id=0';
-		}
+		$link = 'index.php?option=com_podcastmanager&task=podcast.edit&layout=edit&p_id='.$id;
 
 		if ($return) {
 			$link .= '&return='.$return;
