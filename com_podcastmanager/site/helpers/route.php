@@ -21,6 +21,23 @@ abstract class PodcastManagerHelperRoute
 	protected static $lookup;
 
 	/**
+	 * @param	int		$id		The id of the feed.
+	 *
+	 * @param	string	$return	The return page variable.
+	 */
+	public static function getFeedEditRoute($id, $return = null)
+	{
+		// Create the link.
+		$link = 'index.php?option=com_podcastmanager&task=form.edit&layout=edit&feedname='.$id;
+
+		if ($return) {
+			$link .= '&return='.$return;
+		}
+
+		return $link;
+	}
+
+	/**
 	 * @param	int	The route of the weblink
 	 */
 	public static function getPodcastRoute($id, $catid)

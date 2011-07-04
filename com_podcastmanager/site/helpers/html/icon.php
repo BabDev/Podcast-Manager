@@ -15,6 +15,46 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.helper');
 class JHtmlIcon
 {
+	static function feedEdit($feed, $params, $attribs = array())
+	{
+		$user = JFactory::getUser();
+		$uri = JFactory::getURI();
+
+		if ($params && $params->get('popup')) {
+			return;
+		}
+
+		if ($feed->published < 0) {
+			return;
+		}
+
+		JHtml::_('behavior.tooltip');
+		$url	= PodcastManagerHelperRoute::getFeedEditRoute($feed->id, base64_encode($uri));
+		$icon	= $feed->published ? 'edit.png' : 'edit_unpublished.png';
+		$text	= JHtml::_('image','system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
+
+		if ($feed->published == 0) {
+			$overlib = JText::_('JUNPUBLISHED');
+		}
+		else {
+			$overlib = JText::_('JPUBLISHED');
+		}
+
+		$date = JHtml::_('date', $feed->created);
+		$author = $feed->author;
+
+		$overlib .= '&lt;br /&gt;';
+		$overlib .= $date;
+		$overlib .= '&lt;br /&gt;';
+		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
+
+		$button = JHtml::_('link', JRoute::_($url), $text);
+
+		$output = '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
+
+		return $output;
+	}
+
 	static function podcastEdit($podcast, $params, $attribs = array())
 	{
 		$user = JFactory::getUser();
@@ -29,7 +69,7 @@ class JHtmlIcon
 		}
 
 		JHtml::_('behavior.tooltip');
-		$url	= PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
+		$url	= PodcastManagerHelperRoute::getFeedEditRoute($podcast->id, base64_encode($uri));
 		$icon	= $podcast->published ? 'edit.png' : 'edit_unpublished.png';
 		$text	= JHtml::_('image','system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
 
