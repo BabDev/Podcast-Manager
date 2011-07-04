@@ -14,34 +14,33 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_rar extends getid3_handler
+class getid3_rar
 {
 
 	var $option_use_rar_extension = false;
 
-	function Analyze() {
-		$info = &$this->getid3->info;
+	function getid3_rar(&$fd, &$ThisFileInfo) {
 
-		$info['fileformat'] = 'rar';
+		$ThisFileInfo['fileformat'] = 'rar';
 
 		if ($this->option_use_rar_extension === true) {
 			if (function_exists('rar_open')) {
-				if ($rp = rar_open($info['filenamepath'])) {
-					$info['rar']['files'] = array();
+				if ($rp = rar_open($ThisFileInfo['filenamepath'])) {
+					$ThisFileInfo['rar']['files'] = array();
 					$entries = rar_list($rp);
 					foreach ($entries as $entry) {
-						$info['rar']['files'] = getid3_lib::array_merge_clobber($info['rar']['files'], getid3_lib::CreateDeepArray($entry->getName(), '/', $entry->getUnpackedSize()));
+						$ThisFileInfo['rar']['files'] = getid3_lib::array_merge_clobber($ThisFileInfo['rar']['files'], getid3_lib::CreateDeepArray($entry->getName(), '/', $entry->getUnpackedSize()));
 					}
 					rar_close($rp);
 					return true;
 				} else {
-					$info['error'][] = 'failed to rar_open('.$info['filename'].')';
+					$ThisFileInfo['error'][] = 'failed to rar_open('.$ThisFileInfo['filename'].')';
 				}
 			} else {
-				$info['error'][] = 'RAR support does not appear to be available in this PHP installation';
+				$ThisFileInfo['error'][] = 'RAR support does not appear to be available in this PHP installation';
 			}
 		} else {
-			$info['error'][] = 'PHP-RAR processing has been disabled (set $getid3_rar->option_use_rar_extension=true to enable)';
+			$ThisFileInfo['error'][] = 'PHP-RAR processing has been disabled (set $getid3_rar->option_use_rar_extension=true to enable)';
 		}
 		return false;
 

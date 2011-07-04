@@ -579,4 +579,3 @@ Reference material:
 * http://cpansearch.perl.org/src/RGIBSON/Audio-DSS-0.02/lib/Audio/DSS.pm
 * http://trac.musepack.net/trac/wiki/SV8Specification
 * http://wyday.com/cuesharp/specification.php
-* http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/Nikon.html

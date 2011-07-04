@@ -14,38 +14,34 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_pcd extends getid3_handler
+class getid3_pcd
 {
-	var $ExtractData = 0;
-
-	function Analyze() {
-		$info = &$this->getid3->info;
-
-		$info['fileformat']          = 'pcd';
-		$info['video']['dataformat'] = 'pcd';
-		$info['video']['lossless']   = false;
+	function getid3_pcd(&$fd, &$ThisFileInfo, $ExtractData=0) {
+		$ThisFileInfo['fileformat']          = 'pcd';
+		$ThisFileInfo['video']['dataformat'] = 'pcd';
+		$ThisFileInfo['video']['lossless']   = false;
 
 
-		fseek($this->getid3->fp, $info['avdataoffset'] + 72, SEEK_SET);
+		fseek($fd, $ThisFileInfo['avdataoffset'] + 72, SEEK_SET);
 
-		$PCDflags = fread($this->getid3->fp, 1);
+		$PCDflags = fread($fd, 1);
 		$PCDisVertical = ((ord($PCDflags) & 0x01) ? true : false);
 
 
 		if ($PCDisVertical) {
-			$info['video']['resolution_x'] = 3072;
-			$info['video']['resolution_y'] = 2048;
+			$ThisFileInfo['video']['resolution_x'] = 3072;
+			$ThisFileInfo['video']['resolution_y'] = 2048;
 		} else {
-			$info['video']['resolution_x'] = 2048;
-			$info['video']['resolution_y'] = 3072;
+			$ThisFileInfo['video']['resolution_x'] = 2048;
+			$ThisFileInfo['video']['resolution_y'] = 3072;
 		}
 
 
-		if ($this->ExtractData > 3) {
+		if ($ExtractData > 3) {
 
-			$info['error'][] = 'Cannot extract PSD image data for detail levels above BASE (level-3) because encrypted with Kodak-proprietary compression/encryption.';
+			$ThisFileInfo['error'][] = 'Cannot extract PSD image data for detail levels above BASE (3)';
 
-		} elseif ($this->ExtractData > 0) {
+		} elseif ($ExtractData > 0) {
 
 			$PCD_levels[1] = array( 192,  128, 0x02000); // BASE/16
 			$PCD_levels[2] = array( 384,  256, 0x0B800); // BASE/4
@@ -56,7 +52,7 @@ class getid3_pcd extends getid3_handler
 
 			list($PCD_width, $PCD_height, $PCD_dataOffset) = $PCD_levels[3];
 
-			fseek($this->getid3->fp, $info['avdataoffset'] + $PCD_dataOffset, SEEK_SET);
+			fseek($fd, $ThisFileInfo['avdataoffset'] + $PCD_dataOffset, SEEK_SET);
 
 			for ($y = 0; $y < $PCD_height; $y += 2) {
 				// The image-data of these subtypes start at the respective offsets of 02000h, 0b800h and 30000h.
@@ -65,18 +61,18 @@ class getid3_pcd extends getid3_handler
 				// the first half of the third ‘w’ bytes contain data for the first RGB-line, the second ‘w’ bytes
 				// and the second half of the third ‘w’ bytes contain data for a second RGB-line.
 
-				$PCD_data_Y1 = fread($this->getid3->fp, $PCD_width);
-				$PCD_data_Y2 = fread($this->getid3->fp, $PCD_width);
-				$PCD_data_Cb = fread($this->getid3->fp, intval(round($PCD_width / 2)));
-				$PCD_data_Cr = fread($this->getid3->fp, intval(round($PCD_width / 2)));
+				$PCD_data_Y1 = fread($fd, $PCD_width);
+				$PCD_data_Y2 = fread($fd, $PCD_width);
+				$PCD_data_Cb = fread($fd, intval(round($PCD_width / 2)));
+				$PCD_data_Cr = fread($fd, intval(round($PCD_width / 2)));
 
 				for ($x = 0; $x < $PCD_width; $x++) {
 					if ($PCDisVertical) {
-						$info['pcd']['data'][$PCD_width - $x][$y]     = $this->YCbCr2RGB(ord($PCD_data_Y1{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
-						$info['pcd']['data'][$PCD_width - $x][$y + 1] = $this->YCbCr2RGB(ord($PCD_data_Y2{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
+						$ThisFileInfo['pcd']['data'][$PCD_width - $x][$y]     = $this->YCbCr2RGB(ord($PCD_data_Y1{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
+						$ThisFileInfo['pcd']['data'][$PCD_width - $x][$y + 1] = $this->YCbCr2RGB(ord($PCD_data_Y2{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
 					} else {
-						$info['pcd']['data'][$y][$x]                  = $this->YCbCr2RGB(ord($PCD_data_Y1{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
-						$info['pcd']['data'][$y + 1][$x]              = $this->YCbCr2RGB(ord($PCD_data_Y2{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
+						$ThisFileInfo['pcd']['data'][$y][$x]                  = $this->YCbCr2RGB(ord($PCD_data_Y1{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
+						$ThisFileInfo['pcd']['data'][$y + 1][$x]              = $this->YCbCr2RGB(ord($PCD_data_Y2{$x}), ord($PCD_data_Cb{floor($x / 2)}), ord($PCD_data_Cr{floor($x / 2)}));
 					}
 				}
 			}
@@ -90,7 +86,7 @@ class getid3_pcd extends getid3_handler
 			//	$BMPinfo['resolution_x'] = $PCD_width;
 			//	$BMPinfo['resolution_y'] = $PCD_height;
 			//}
-			//$BMPinfo['bmp']['data'] = $info['pcd']['data'];
+			//$BMPinfo['bmp']['data'] = $ThisFileInfo['pcd']['data'];
 			//getid3_bmp::PlotBMP($BMPinfo);
 			//exit;
 

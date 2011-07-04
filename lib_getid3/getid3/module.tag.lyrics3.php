@@ -14,21 +14,19 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_lyrics3 extends getid3_handler
+class getid3_lyrics3
 {
 
-	function Analyze() {
-		$info = &$this->getid3->info;
-
+	function getid3_lyrics3(&$fd, &$ThisFileInfo) {
 		// http://www.volweb.cz/str/tags.htm
 
-		if (!getid3_lib::intValueSupported($info['filesize'])) {
-			$info['warning'][] = 'Unable to check for Lyrics3 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+		if (!getid3_lib::intValueSupported($ThisFileInfo['filesize'])) {
+			$ThisFileInfo['warning'][] = 'Unable to check for Lyrics3 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 			return false;
 		}
 
-		fseek($this->getid3->fp, (0 - 128 - 9 - 6), SEEK_END);          // end - ID3v1 - "LYRICSEND" - [Lyrics3size]
-		$lyrics3_id3v1 = fread($this->getid3->fp, 128 + 9 + 6);
+		fseek($fd, (0 - 128 - 9 - 6), SEEK_END);          // end - ID3v1 - "LYRICSEND" - [Lyrics3size]
+		$lyrics3_id3v1 = fread($fd, 128 + 9 + 6);
 		$lyrics3lsz    = substr($lyrics3_id3v1,  0,   6); // Lyrics3size
 		$lyrics3end    = substr($lyrics3_id3v1,  6,   9); // LYRICSEND or LYRICS200
 		$id3v1tag      = substr($lyrics3_id3v1, 15, 128); // ID3v1
@@ -37,7 +35,7 @@ class getid3_lyrics3 extends getid3_handler
 			// Lyrics3v1, ID3v1, no APE
 
 			$lyrics3size    = 5100;
-			$lyrics3offset  = $info['filesize'] - 128 - $lyrics3size;
+			$lyrics3offset  = $ThisFileInfo['filesize'] - 128 - $lyrics3size;
 			$lyrics3version = 1;
 
 		} elseif ($lyrics3end == 'LYRICS200') {
@@ -45,49 +43,49 @@ class getid3_lyrics3 extends getid3_handler
 
 			// LSZ = lyrics + 'LYRICSBEGIN'; add 6-byte size field; add 'LYRICS200'
 			$lyrics3size    = $lyrics3lsz + 6 + strlen('LYRICS200');
-			$lyrics3offset  = $info['filesize'] - 128 - $lyrics3size;
+			$lyrics3offset  = $ThisFileInfo['filesize'] - 128 - $lyrics3size;
 			$lyrics3version = 2;
 
 		} elseif (substr(strrev($lyrics3_id3v1), 0, 9) == strrev('LYRICSEND')) {
 			// Lyrics3v1, no ID3v1, no APE
 
 			$lyrics3size    = 5100;
-			$lyrics3offset  = $info['filesize'] - $lyrics3size;
+			$lyrics3offset  = $ThisFileInfo['filesize'] - $lyrics3size;
 			$lyrics3version = 1;
-			$lyrics3offset  = $info['filesize'] - $lyrics3size;
+			$lyrics3offset  = $ThisFileInfo['filesize'] - $lyrics3size;
 
 		} elseif (substr(strrev($lyrics3_id3v1), 0, 9) == strrev('LYRICS200')) {
 
 			// Lyrics3v2, no ID3v1, no APE
 
 			$lyrics3size    = strrev(substr(strrev($lyrics3_id3v1), 9, 6)) + 6 + strlen('LYRICS200'); // LSZ = lyrics + 'LYRICSBEGIN'; add 6-byte size field; add 'LYRICS200'
-			$lyrics3offset  = $info['filesize'] - $lyrics3size;
+			$lyrics3offset  = $ThisFileInfo['filesize'] - $lyrics3size;
 			$lyrics3version = 2;
 
 		} else {
 
-			if (isset($info['ape']['tag_offset_start']) && ($info['ape']['tag_offset_start'] > 15)) {
+			if (isset($ThisFileInfo['ape']['tag_offset_start']) && ($ThisFileInfo['ape']['tag_offset_start'] > 15)) {
 
-				fseek($this->getid3->fp, $info['ape']['tag_offset_start'] - 15, SEEK_SET);
-				$lyrics3lsz = fread($this->getid3->fp, 6);
-				$lyrics3end = fread($this->getid3->fp, 9);
+				fseek($fd, $ThisFileInfo['ape']['tag_offset_start'] - 15, SEEK_SET);
+				$lyrics3lsz = fread($fd, 6);
+				$lyrics3end = fread($fd, 9);
 
 				if ($lyrics3end == 'LYRICSEND') {
 					// Lyrics3v1, APE, maybe ID3v1
 
 					$lyrics3size    = 5100;
-					$lyrics3offset  = $info['ape']['tag_offset_start'] - $lyrics3size;
-					$info['avdataend'] = $lyrics3offset;
+					$lyrics3offset  = $ThisFileInfo['ape']['tag_offset_start'] - $lyrics3size;
+					$ThisFileInfo['avdataend'] = $lyrics3offset;
 					$lyrics3version = 1;
-					$info['warning'][] = 'APE tag located after Lyrics3, will probably break Lyrics3 compatability';
+					$ThisFileInfo['warning'][] = 'APE tag located after Lyrics3, will probably break Lyrics3 compatability';
 
 				} elseif ($lyrics3end == 'LYRICS200') {
 					// Lyrics3v2, APE, maybe ID3v1
 
 					$lyrics3size    = $lyrics3lsz + 6 + strlen('LYRICS200'); // LSZ = lyrics + 'LYRICSBEGIN'; add 6-byte size field; add 'LYRICS200'
-					$lyrics3offset  = $info['ape']['tag_offset_start'] - $lyrics3size;
+					$lyrics3offset  = $ThisFileInfo['ape']['tag_offset_start'] - $lyrics3size;
 					$lyrics3version = 2;
-					$info['warning'][] = 'APE tag located after Lyrics3, will probably break Lyrics3 compatability';
+					$ThisFileInfo['warning'][] = 'APE tag located after Lyrics3, will probably break Lyrics3 compatability';
 
 				}
 
@@ -96,24 +94,14 @@ class getid3_lyrics3 extends getid3_handler
 		}
 
 		if (isset($lyrics3offset)) {
-			$info['avdataend'] = $lyrics3offset;
-			$this->getLyrics3Data($lyrics3offset, $lyrics3version, $lyrics3size);
+			$ThisFileInfo['avdataend'] = $lyrics3offset;
+			$this->getLyrics3Data($ThisFileInfo, $fd, $lyrics3offset, $lyrics3version, $lyrics3size);
 
-			if (!isset($info['ape'])) {
-				$GETID3_ERRORARRAY = &$info['warning'];
+			if (!isset($ThisFileInfo['ape'])) {
+				$GETID3_ERRORARRAY = &$ThisFileInfo['warning'];
 				if (getid3_lib::IncludeDependency(GETID3_INCLUDEPATH.'module.tag.apetag.php', __FILE__, false)) {
-					$getid3_temp = new getID3();
-					$getid3_temp->openfile($this->getid3->filename);
-					$getid3_apetag = new getid3_apetag($getid3_temp);
-					$getid3_apetag->overrideendoffset = $info['lyrics3']['tag_offset_start'];
-					$getid3_apetag->Analyze();
-					if (!empty($getid3_temp->info['ape'])) {
-						$info['ape'] = $getid3_temp->info['ape'];
-					}
-					if (!empty($getid3_temp->info['replay_gain'])) {
-						$info['replay_gain'] = $getid3_temp->info['replay_gain'];
-					}
-					unset($getid3_temp, $getid3_apetag);
+					$tag = new getid3_apetag($fd, $ThisFileInfo, $ThisFileInfo['lyrics3']['tag_offset_start']);
+					unset($tag);
 				}
 			}
 
@@ -122,45 +110,42 @@ class getid3_lyrics3 extends getid3_handler
 		return true;
 	}
 
-	function getLyrics3Data($endoffset, $version, $length) {
+	function getLyrics3Data(&$ThisFileInfo, &$fd, $endoffset, $version, $length) {
 		// http://www.volweb.cz/str/tags.htm
 
-		$info = &$this->getid3->info;
-
 		if (!getid3_lib::intValueSupported($endoffset)) {
-			$info['warning'][] = 'Unable to check for Lyrics3 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+			$ThisFileInfo['warning'][] = 'Unable to check for Lyrics3 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 			return false;
 		}
 
-		fseek($this->getid3->fp, $endoffset, SEEK_SET);
+		fseek($fd, $endoffset, SEEK_SET);
 		if ($length <= 0) {
 			return false;
 		}
-		$rawdata = fread($this->getid3->fp, $length);
-
-		$ParsedLyrics3['raw']['lyrics3version'] = $version;
-		$ParsedLyrics3['raw']['lyrics3tagsize'] = $length;
-		$ParsedLyrics3['tag_offset_start']      = $endoffset;
-		$ParsedLyrics3['tag_offset_end']        = $endoffset + $length - 1;
+		$rawdata = fread($fd, $length);
 
 		if (substr($rawdata, 0, 11) != 'LYRICSBEGIN') {
 			if (strpos($rawdata, 'LYRICSBEGIN') !== false) {
 
-				$info['warning'][] = '"LYRICSBEGIN" expected at '.$endoffset.' but actually found at '.($endoffset + strpos($rawdata, 'LYRICSBEGIN')).' - this is invalid for Lyrics3 v'.$version;
-				$info['avdataend'] = $endoffset + strpos($rawdata, 'LYRICSBEGIN');
+				$ThisFileInfo['warning'][] = '"LYRICSBEGIN" expected at '.$endoffset.' but actually found at '.($endoffset + strpos($rawdata, 'LYRICSBEGIN')).' - this is invalid for Lyrics3 v'.$version;
+				$ThisFileInfo['avdataend'] = $endoffset + strpos($rawdata, 'LYRICSBEGIN');
+				$ParsedLyrics3['tag_offset_start'] = $ThisFileInfo['avdataend'];
 				$rawdata = substr($rawdata, strpos($rawdata, 'LYRICSBEGIN'));
 				$length = strlen($rawdata);
-				$ParsedLyrics3['tag_offset_start'] = $info['avdataend'];
-				$ParsedLyrics3['raw']['lyrics3tagsize'] = $length;
 
 			} else {
 
-				$info['error'][] = '"LYRICSBEGIN" expected at '.$endoffset.' but found "'.substr($rawdata, 0, 11).'" instead';
+				$ThisFileInfo['error'][] = '"LYRICSBEGIN" expected at '.$endoffset.' but found "'.substr($rawdata, 0, 11).'" instead';
 				return false;
 
 			}
 
 		}
+
+		$ParsedLyrics3['raw']['lyrics3version'] = $version;
+		$ParsedLyrics3['raw']['lyrics3tagsize'] = $length;
+		$ParsedLyrics3['tag_offset_start']      = $endoffset;
+		$ParsedLyrics3['tag_offset_end']        = $endoffset + $length;
 
 		switch ($version) {
 
@@ -169,7 +154,7 @@ class getid3_lyrics3 extends getid3_handler
 					$ParsedLyrics3['raw']['LYR'] = trim(substr($rawdata, 11, strlen($rawdata) - 11 - 9));
 					$this->Lyrics3LyricsTimestampParse($ParsedLyrics3);
 				} else {
-					$info['error'][] = '"LYRICSEND" expected at '.(ftell($this->getid3->fp) - 11 + $length - 9).' but found "'.substr($rawdata, strlen($rawdata) - 9, 9).'" instead';
+					$ThisFileInfo['error'][] = '"LYRICSEND" expected at '.(ftell($fd) - 11 + $length - 9).' but found "'.substr($rawdata, strlen($rawdata) - 9, 9).'" instead';
 					return false;
 				}
 				break;
@@ -217,31 +202,31 @@ class getid3_lyrics3 extends getid3_handler
 						$this->Lyrics3LyricsTimestampParse($ParsedLyrics3);
 					}
 				} else {
-					$info['error'][] = '"LYRICS200" expected at '.(ftell($this->getid3->fp) - 11 + $length - 9).' but found "'.substr($rawdata, strlen($rawdata) - 9, 9).'" instead';
+					$ThisFileInfo['error'][] = '"LYRICS200" expected at '.(ftell($fd) - 11 + $length - 9).' but found "'.substr($rawdata, strlen($rawdata) - 9, 9).'" instead';
 					return false;
 				}
 				break;
 
 			default:
-				$info['error'][] = 'Cannot process Lyrics3 version '.$version.' (only v1 and v2)';
+				$ThisFileInfo['error'][] = 'Cannot process Lyrics3 version '.$version.' (only v1 and v2)';
 				return false;
 				break;
 		}
 
 
-		if (isset($info['id3v1']['tag_offset_start']) && ($info['id3v1']['tag_offset_start'] <= $ParsedLyrics3['tag_offset_end'])) {
-			$info['warning'][] = 'ID3v1 tag information ignored since it appears to be a false synch in Lyrics3 tag data';
-			unset($info['id3v1']);
-			foreach ($info['warning'] as $key => $value) {
+		if (isset($ThisFileInfo['id3v1']['tag_offset_start']) && ($ThisFileInfo['id3v1']['tag_offset_start'] < $ParsedLyrics3['tag_offset_end'])) {
+			$ThisFileInfo['warning'][] = 'ID3v1 tag information ignored since it appears to be a false synch in Lyrics3 tag data';
+			unset($ThisFileInfo['id3v1']);
+			foreach ($ThisFileInfo['warning'] as $key => $value) {
 				if ($value == 'Some ID3v1 fields do not use NULL characters for padding') {
-					unset($info['warning'][$key]);
-					sort($info['warning']);
+					unset($ThisFileInfo['warning'][$key]);
+					sort($ThisFileInfo['warning']);
 					break;
 				}
 			}
 		}
 
-		$info['lyrics3'] = $ParsedLyrics3;
+		$ThisFileInfo['lyrics3'] = $ParsedLyrics3;
 
 		return true;
 	}

@@ -14,33 +14,31 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_au extends getid3_handler
+class getid3_au
 {
 
-	function Analyze() {
-		$info = &$this->getid3->info;
+	function getid3_au(&$fd, &$ThisFileInfo) {
 
-		fseek($this->getid3->fp, $info['avdataoffset'], SEEK_SET);
-		$AUheader  = fread($this->getid3->fp, 8);
+		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
+		$AUheader  = fread($fd, 8);
 
-		$magic = '.snd';
-		if (substr($AUheader, 0, 4) != $magic) {
-			$info['error'][] = 'Expecting "'.getid3_lib::PrintHexBytes($magic).'" (".snd") at offset '.$info['avdataoffset'].', found "'.getid3_lib::PrintHexBytes(substr($AUheader, 0, 4)).'"';
+		if (substr($AUheader, 0, 4) != '.snd') {
+			$ThisFileInfo['error'][] = 'Expecting ".snd" at offset '.$ThisFileInfo['avdataoffset'].', found "'.substr($AUheader, 0, 4).'"';
 			return false;
 		}
 
 		// shortcut
-		$info['au'] = array();
-		$thisfile_au        = &$info['au'];
+		$ThisFileInfo['au'] = array();
+		$thisfile_au        = &$ThisFileInfo['au'];
 
-		$info['fileformat']            = 'au';
-		$info['audio']['dataformat']   = 'au';
-		$info['audio']['bitrate_mode'] = 'cbr';
+		$ThisFileInfo['fileformat']            = 'au';
+		$ThisFileInfo['audio']['dataformat']   = 'au';
+		$ThisFileInfo['audio']['bitrate_mode'] = 'cbr';
 		$thisfile_au['encoding']               = 'ISO-8859-1';
 
 		$thisfile_au['header_length']   = getid3_lib::BigEndian2Int(substr($AUheader,  4, 4));
-		$AUheader .= fread($this->getid3->fp, $thisfile_au['header_length'] - 8);
-		$info['avdataoffset'] += $thisfile_au['header_length'];
+		$AUheader .= fread($fd, $thisfile_au['header_length'] - 8);
+		$ThisFileInfo['avdataoffset'] += $thisfile_au['header_length'];
 
 		$thisfile_au['data_size']             = getid3_lib::BigEndian2Int(substr($AUheader,  8, 4));
 		$thisfile_au['data_format_id']        = getid3_lib::BigEndian2Int(substr($AUheader, 12, 4));
@@ -51,20 +49,20 @@ class getid3_au extends getid3_handler
 		$thisfile_au['data_format'] = $this->AUdataFormatNameLookup($thisfile_au['data_format_id']);
 		$thisfile_au['used_bits_per_sample'] = $this->AUdataFormatUsedBitsPerSampleLookup($thisfile_au['data_format_id']);
 		if ($thisfile_au['bits_per_sample'] = $this->AUdataFormatBitsPerSampleLookup($thisfile_au['data_format_id'])) {
-			$info['audio']['bits_per_sample'] = $thisfile_au['bits_per_sample'];
+			$ThisFileInfo['audio']['bits_per_sample'] = $thisfile_au['bits_per_sample'];
 		} else {
 			unset($thisfile_au['bits_per_sample']);
 		}
 
-		$info['audio']['sample_rate']  = $thisfile_au['sample_rate'];
-		$info['audio']['channels']     = $thisfile_au['channels'];
+		$ThisFileInfo['audio']['sample_rate']  = $thisfile_au['sample_rate'];
+		$ThisFileInfo['audio']['channels']     = $thisfile_au['channels'];
 
-		if (($info['avdataoffset'] + $thisfile_au['data_size']) > $info['avdataend']) {
-			$info['warning'][] = 'Possible truncated file - expecting "'.$thisfile_au['data_size'].'" bytes of audio data, only found '.($info['avdataend'] - $info['avdataoffset']).' bytes"';
+		if (($ThisFileInfo['avdataoffset'] + $thisfile_au['data_size']) > $ThisFileInfo['avdataend']) {
+			$ThisFileInfo['warning'][] = 'Possible truncated file - expecting "'.$thisfile_au['data_size'].'" bytes of audio data, only found '.($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']).' bytes"';
 		}
 
-		$info['playtime_seconds'] = $thisfile_au['data_size'] / ($thisfile_au['sample_rate'] * $thisfile_au['channels'] * ($thisfile_au['used_bits_per_sample'] / 8));
-		$info['audio']['bitrate'] = ($thisfile_au['data_size'] * 8) / $info['playtime_seconds'];
+		$ThisFileInfo['playtime_seconds'] = $thisfile_au['data_size'] / ($thisfile_au['sample_rate'] * $thisfile_au['channels'] * ($thisfile_au['used_bits_per_sample'] / 8));
+		$ThisFileInfo['audio']['bitrate'] = ($thisfile_au['data_size'] * 8) / $ThisFileInfo['playtime_seconds'];
 
 		return true;
 	}

@@ -14,22 +14,20 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_msoffice extends getid3_handler
+class getid3_msoffice
 {
 
-	function Analyze() {
-		$info = &$this->getid3->info;
-
-		fseek($this->getid3->fp, $info['avdataoffset'], SEEK_SET);
-		$DOCFILEheader = fread($this->getid3->fp, 8);
+	function getid3_msoffice(&$fd, &$ThisFileInfo) {
+		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
+		$DOCFILEheader = fread($fd, 8);
 		$magic = "\xD0\xCF\x11\xE0\xA1\xB1\x1A\xE1";
 		if (substr($DOCFILEheader, 0, 8) != $magic) {
-			$info['error'][] = 'Expecting "'.getid3_lib::PrintHexBytes($magic).'" at '.$info['avdataoffset'].', found '.getid3_lib::PrintHexBytes(substr($DOCFILEheader, 0, 8)).' instead.';
+			$ThisFileInfo['error'][] = 'Expecting "'.getid3_lib::PrintHexBytes($magic).'" at '.$ThisFileInfo['avdataoffset'].', found '.getid3_lib::PrintHexBytes(substr($DOCFILEheader, 0, 8)).' instead.';
 			return false;
 		}
-		$info['fileformat'] = 'msoffice';
+		$ThisFileInfo['fileformat'] = 'msoffice';
 
-$info['error'][] = 'MS Office (.doc, .xls, etc) parsing not enabled in this version of getID3() ['.$this->getid3->version().']';
+$ThisFileInfo['error'][] = 'MS Office (.doc, .xls, etc) parsing not enabled in this version of getID3() [v'.GETID3_VERSION.']';
 return false;
 
 	}

@@ -21,9 +21,9 @@ class getid3_write_apetag
 
 	var $filename;
 	var $tag_data;
-	var $always_preserve_replaygain = true;    // ReplayGain / MP3gain tags will be copied from old tag even if not passed in data
-	var $warnings                   = array(); // any non-critical errors will be stored here
-	var $errors                     = array(); // any critical errors will be stored here
+	var $always_preserve_replaygain = true;  // ReplayGain / MP3gain tags will be copied from old tag even if not passed in data
+	var $warnings = array();                 // any non-critical errors will be stored here
+	var $errors   = array();                 // any critical errors will be stored here
 
 	function getid3_write_apetag() {
 		return true;
@@ -56,7 +56,9 @@ class getid3_write_apetag
 		}
 
 		if ($APEtag = $this->GenerateAPEtag()) {
-			if (is_writable($this->filename) && is_file($this->filename) && ($fp = fopen($this->filename, 'a+b'))) {
+			ob_start();
+			if ($fp = fopen($this->filename, 'a+b')) {
+				ob_end_clean();
 				$oldignoreuserabort = ignore_user_abort(true);
 				flock($fp, LOCK_EX);
 
@@ -87,6 +89,9 @@ class getid3_write_apetag
 				ignore_user_abort($oldignoreuserabort);
 				return true;
 			}
+			$errormessage = ob_get_contents();
+			ob_end_clean();
+			return false;
 		}
 		return false;
 	}
@@ -95,7 +100,9 @@ class getid3_write_apetag
 		$getID3 = new getID3;
 		$ThisFileInfo = $getID3->analyze($this->filename);
 		if (isset($ThisFileInfo['ape']['tag_offset_start']) && isset($ThisFileInfo['ape']['tag_offset_end'])) {
-			if (is_writable($this->filename) && is_file($this->filename) && ($fp = fopen($this->filename, 'a+b'))) {
+			ob_start();
+			if ($fp = fopen($this->filename, 'a+b')) {
+				ob_end_clean();
 
 				flock($fp, LOCK_EX);
 				$oldignoreuserabort = ignore_user_abort(true);
@@ -119,6 +126,8 @@ class getid3_write_apetag
 
 				return true;
 			}
+			$errormessage = ob_get_contents();
+			ob_end_clean();
 			return false;
 		}
 		return true;

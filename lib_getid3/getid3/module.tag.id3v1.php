@@ -14,24 +14,23 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_id3v1 extends getid3_handler
+class getid3_id3v1
 {
 
-	function Analyze() {
-		$info = &$this->getid3->info;
+	function getid3_id3v1(&$fd, &$ThisFileInfo) {
 
-		if (!getid3_lib::intValueSupported($info['filesize'])) {
-			$info['warning'][] = 'Unable to check for ID3v1 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
+		if (!getid3_lib::intValueSupported($ThisFileInfo['filesize'])) {
+			$ThisFileInfo['warning'][] = 'Unable to check for ID3v1 because file is larger than '.round(PHP_INT_MAX / 1073741824).'GB';
 			return false;
 		}
 
-		fseek($this->getid3->fp, -256, SEEK_END);
-		$preid3v1 = fread($this->getid3->fp, 128);
-		$id3v1tag = fread($this->getid3->fp, 128);
+		fseek($fd, -256, SEEK_END);
+		$preid3v1 = fread($fd, 128);
+		$id3v1tag = fread($fd, 128);
 
 		if (substr($id3v1tag, 0, 3) == 'TAG') {
 
-			$info['avdataend'] = $info['filesize'] - 128;
+			$ThisFileInfo['avdataend'] = $ThisFileInfo['filesize'] - 128;
 
 			$ParsedID3v1['title']   = $this->cutfield(substr($id3v1tag,   3, 30));
 			$ParsedID3v1['artist']  = $this->cutfield(substr($id3v1tag,  33, 30));
@@ -72,13 +71,13 @@ class getid3_id3v1 extends getid3_handler
 			$ParsedID3v1['padding_valid'] = true;
 			if ($id3v1tag !== $GoodFormatID3v1tag) {
 				$ParsedID3v1['padding_valid'] = false;
-				$info['warning'][] = 'Some ID3v1 fields do not use NULL characters for padding';
+				$ThisFileInfo['warning'][] = 'Some ID3v1 fields do not use NULL characters for padding';
 			}
 
-			$ParsedID3v1['tag_offset_end']   = $info['filesize'];
+			$ParsedID3v1['tag_offset_end']   = $ThisFileInfo['filesize'];
 			$ParsedID3v1['tag_offset_start'] = $ParsedID3v1['tag_offset_end'] - 128;
 
-			$info['id3v1'] = $ParsedID3v1;
+			$ThisFileInfo['id3v1'] = $ParsedID3v1;
 		}
 
 		if (substr($preid3v1, 0, 3) == 'TAG') {
@@ -94,8 +93,8 @@ class getid3_id3v1 extends getid3_handler
 				// a Lyrics3 tag footer was found before the last ID3v1, assume false "TAG" synch
 			} else {
 				// APE and Lyrics3 footers not found - assume double ID3v1
-				$info['warning'][] = 'Duplicate ID3v1 tag detected - this has been known to happen with iTunes';
-				$info['avdataend'] -= 128;
+				$ThisFileInfo['warning'][] = 'Duplicate ID3v1 tag detected - this has been known to happen with iTunes';
+				$ThisFileInfo['avdataend'] -= 128;
 			}
 		}
 

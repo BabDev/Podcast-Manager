@@ -30,16 +30,14 @@
  * A CueSheet class used to open and parse cuesheets.
  *
  */
-class getid3_cue extends getid3_handler
+class getid3_cue
 {
 	var $cuesheet = array();
 
-	function Analyze() {
-		$info = &$this->getid3->info;
-
-		$info['fileformat'] = 'cue';
-		$this->readCueSheetFilename($info['filenamepath']);
-		$info['cue'] = $this->cuesheet;
+	function getid3_cue(&$fd, &$ThisFileInfo) {
+		$ThisFileInfo['fileformat'] = 'cue';
+		$this->readCueSheetFilename($ThisFileInfo['filenamepath']);
+		$ThisFileInfo['cue'] = $this->cuesheet;
 		return true;
 	}
 

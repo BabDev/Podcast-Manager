@@ -35,7 +35,9 @@ class getid3_write_lyrics3
 		$getID3 = new getID3;
 		$ThisFileInfo = $getID3->analyze($this->filename);
 		if (isset($ThisFileInfo['lyrics3']['tag_offset_start']) && isset($ThisFileInfo['lyrics3']['tag_offset_end'])) {
-			if (is_readable($this->filename) && is_writable($this->filename) && is_file($this->filename) && ($fp = fopen($this->filename, 'a+b'))) {
+			ob_start();
+			if ($fp = fopen($this->filename, 'a+b')) {
+				ob_end_clean();
 
 				flock($fp, LOCK_EX);
 				$oldignoreuserabort = ignore_user_abort(true);
@@ -60,8 +62,12 @@ class getid3_write_lyrics3
 				return true;
 
 			} else {
-				$this->errors[] = 'Cannot fopen('.$this->filename.', "a+b")';
+
+				$errormessage = ob_get_contents();
+				ob_end_clean();
+				$this->errors[] = 'Cannot open "'.$this->filename.'" in "a+b" mode';
 				return false;
+
 			}
 		}
 		// no Lyrics3 present

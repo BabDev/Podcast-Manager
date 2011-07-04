@@ -14,39 +14,36 @@
 /////////////////////////////////////////////////////////////////
 
 
-class getid3_shorten extends getid3_handler
+class getid3_shorten
 {
 
-	function Analyze() {
-		$info = &$this->getid3->info;
+	function getid3_shorten(&$fd, &$ThisFileInfo) {
 
-		fseek($this->getid3->fp, $info['avdataoffset'], SEEK_SET);
+		fseek($fd, $ThisFileInfo['avdataoffset'], SEEK_SET);
 
-		$ShortenHeader = fread($this->getid3->fp, 8);
-		$magic = 'ajkg';
-		if (substr($ShortenHeader, 0, 4) != $magic) {
-			$info['error'][] = 'Expecting "'.getid3_lib::PrintHexBytes($magic).'" at offset '.$info['avdataoffset'].', found "'.getid3_lib::PrintHexBytes(substr($ShortenHeader, 0, 4)).'"';
+		$ShortenHeader = fread($fd, 8);
+		if (substr($ShortenHeader, 0, 4) != 'ajkg') {
+			$ThisFileInfo['error'][] = 'Expecting "ajkg" at offset '.$ThisFileInfo['avdataoffset'].', found "'.substr($ShortenHeader, 0, 4).'"';
 			return false;
 		}
-		$info['fileformat']            = 'shn';
-		$info['audio']['dataformat']   = 'shn';
-		$info['audio']['lossless']     = true;
-		$info['audio']['bitrate_mode'] = 'vbr';
+		$ThisFileInfo['fileformat']            = 'shn';
+		$ThisFileInfo['audio']['dataformat']   = 'shn';
+		$ThisFileInfo['audio']['lossless']     = true;
+		$ThisFileInfo['audio']['bitrate_mode'] = 'vbr';
 
-		$info['shn']['version'] = getid3_lib::LittleEndian2Int(substr($ShortenHeader, 4, 1));
+		$ThisFileInfo['shn']['version'] = getid3_lib::LittleEndian2Int(substr($ShortenHeader, 4, 1));
 
-		fseek($this->getid3->fp, $info['avdataend'] - 12, SEEK_SET);
-		$SeekTableSignatureTest = fread($this->getid3->fp, 12);
-		$info['shn']['seektable']['present'] = (bool) (substr($SeekTableSignatureTest, 4, 8) == 'SHNAMPSK');
-		if ($info['shn']['seektable']['present']) {
-			$info['shn']['seektable']['length'] = getid3_lib::LittleEndian2Int(substr($SeekTableSignatureTest, 0, 4));
-			$info['shn']['seektable']['offset'] = $info['avdataend'] - $info['shn']['seektable']['length'];
-			fseek($this->getid3->fp, $info['shn']['seektable']['offset'], SEEK_SET);
-			$SeekTableMagic = fread($this->getid3->fp, 4);
-			$magic = 'SEEK';
-			if ($SeekTableMagic != $magic) {
+		fseek($fd, $ThisFileInfo['avdataend'] - 12, SEEK_SET);
+		$SeekTableSignatureTest = fread($fd, 12);
+		$ThisFileInfo['shn']['seektable']['present'] = (bool) (substr($SeekTableSignatureTest, 4, 8) == 'SHNAMPSK');
+		if ($ThisFileInfo['shn']['seektable']['present']) {
+			$ThisFileInfo['shn']['seektable']['length'] = getid3_lib::LittleEndian2Int(substr($SeekTableSignatureTest, 0, 4));
+			$ThisFileInfo['shn']['seektable']['offset'] = $ThisFileInfo['avdataend'] - $ThisFileInfo['shn']['seektable']['length'];
+			fseek($fd, $ThisFileInfo['shn']['seektable']['offset'], SEEK_SET);
+			$SeekTableMagic = fread($fd, 4);
+			if ($SeekTableMagic != 'SEEK') {
 
-				$info['error'][] = 'Expecting "'.getid3_lib::PrintHexBytes($magic).'" at offset '.$info['shn']['seektable']['offset'].', found "'.getid3_lib::PrintHexBytes($SeekTableMagic).'"';
+				$ThisFileInfo['error'][] = 'Expecting "SEEK" at offset '.$ThisFileInfo['shn']['seektable']['offset'].', found "'.$SeekTableMagic.'"';
 				return false;
 
 			} else {
@@ -67,11 +64,11 @@ class getid3_shorten extends getid3_handler
 				//   long Offset1[4];
 				// }TSeekEntry;
 
-				$SeekTableData = fread($this->getid3->fp, $info['shn']['seektable']['length'] - 16);
-				$info['shn']['seektable']['entry_count'] = floor(strlen($SeekTableData) / 80);
-				//$info['shn']['seektable']['entries'] = array();
+				$SeekTableData = fread($fd, $ThisFileInfo['shn']['seektable']['length'] - 16);
+				$ThisFileInfo['shn']['seektable']['entry_count'] = floor(strlen($SeekTableData) / 80);
+				//$ThisFileInfo['shn']['seektable']['entries'] = array();
 				//$SeekTableOffset = 0;
-				//for ($i = 0; $i < $info['shn']['seektable']['entry_count']; $i++) {
+				//for ($i = 0; $i < $ThisFileInfo['shn']['seektable']['entry_count']; $i++) {
 				//	$SeekTableEntry['sample_number'] = getid3_lib::LittleEndian2Int(substr($SeekTableData, $SeekTableOffset, 4));
 				//	$SeekTableOffset += 4;
 				//	$SeekTableEntry['shn_file_byte_offset'] = getid3_lib::LittleEndian2Int(substr($SeekTableData, $SeekTableOffset, 4));
@@ -105,7 +102,7 @@ class getid3_shorten extends getid3_handler
 				//		$SeekTableOffset += 4;
 				//	}
 				//
-				//	$info['shn']['seektable']['entries'][] = $SeekTableEntry;
+				//	$ThisFileInfo['shn']['seektable']['entries'][] = $SeekTableEntry;
 				//}
 
 			}
@@ -113,7 +110,7 @@ class getid3_shorten extends getid3_handler
 		}
 
 		if (preg_match('#(1|ON)#i', ini_get('safe_mode'))) {
-			$info['error'][] = 'PHP running in Safe Mode - backtick operator not available, cannot run shntool to analyze Shorten files';
+			$ThisFileInfo['error'][] = 'PHP running in Safe Mode - backtick operator not available, cannot run shntool to analyze Shorten files';
 			return false;
 		}
 
@@ -122,11 +119,11 @@ class getid3_shorten extends getid3_handler
 			$RequiredFiles = array('shorten.exe', 'cygwin1.dll', 'head.exe');
 			foreach ($RequiredFiles as $required_file) {
 				if (!is_readable(GETID3_HELPERAPPSDIR.$required_file)) {
-					$info['error'][] = GETID3_HELPERAPPSDIR.$required_file.' does not exist';
+					$ThisFileInfo['error'][] = GETID3_HELPERAPPSDIR.$required_file.' does not exist';
 					return false;
 				}
 			}
-			$commandline = GETID3_HELPERAPPSDIR.'shorten.exe -x "'.$info['filenamepath'].'" - | '.GETID3_HELPERAPPSDIR.'head.exe -c 64';
+			$commandline = GETID3_HELPERAPPSDIR.'shorten.exe -x "'.$ThisFileInfo['filenamepath'].'" - | '.GETID3_HELPERAPPSDIR.'head.exe -c 64';
 			$commandline = str_replace('/', '\\', $commandline);
 
 		} else {
@@ -136,10 +133,10 @@ class getid3_shorten extends getid3_handler
 				$shorten_present = file_exists('/usr/local/bin/shorten') || `which shorten`;
 			}
 			if (!$shorten_present) {
-				$info['error'][] = 'shorten binary was not found in path or /usr/local/bin';
+				$ThisFileInfo['error'][] = 'shorten binary was not found in path or /usr/local/bin';
 				return false;
 			}
-			$commandline = (file_exists('/usr/local/bin/shorten') ? '/usr/local/bin/' : '' ) . 'shorten -x '.escapeshellarg($info['filenamepath']).' - | head -c 64';
+			$commandline = (file_exists('/usr/local/bin/shorten') ? '/usr/local/bin/' : '' ) . 'shorten -x '.escapeshellarg($ThisFileInfo['filenamepath']).' - | head -c 64';
 
 		}
 
@@ -151,26 +148,26 @@ class getid3_shorten extends getid3_handler
 
 			$fmt_size = getid3_lib::LittleEndian2Int(substr($output, 16, 4));
 			$DecodedWAVFORMATEX = getid3_riff::RIFFparseWAVEFORMATex(substr($output, 20, $fmt_size));
-			$info['audio']['channels']        = $DecodedWAVFORMATEX['channels'];
-			$info['audio']['bits_per_sample'] = $DecodedWAVFORMATEX['bits_per_sample'];
-			$info['audio']['sample_rate']     = $DecodedWAVFORMATEX['sample_rate'];
+			$ThisFileInfo['audio']['channels']        = $DecodedWAVFORMATEX['channels'];
+			$ThisFileInfo['audio']['bits_per_sample'] = $DecodedWAVFORMATEX['bits_per_sample'];
+			$ThisFileInfo['audio']['sample_rate']     = $DecodedWAVFORMATEX['sample_rate'];
 
 			if (substr($output, 20 + $fmt_size, 4) == 'data') {
 
-				$info['playtime_seconds'] = getid3_lib::LittleEndian2Int(substr($output, 20 + 4 + $fmt_size, 4)) / $DecodedWAVFORMATEX['raw']['nAvgBytesPerSec'];
+				$ThisFileInfo['playtime_seconds'] = getid3_lib::LittleEndian2Int(substr($output, 20 + 4 + $fmt_size, 4)) / $DecodedWAVFORMATEX['raw']['nAvgBytesPerSec'];
 
 			} else {
 
-				$info['error'][] = 'shorten failed to decode DATA chunk to expected location, cannot determine playtime';
+				$ThisFileInfo['error'][] = 'shorten failed to decode DATA chunk to expected location, cannot determine playtime';
 				return false;
 
 			}
 
-			$info['audio']['bitrate'] = (($info['avdataend'] - $info['avdataoffset']) / $info['playtime_seconds']) * 8;
+			$ThisFileInfo['audio']['bitrate'] = (($ThisFileInfo['avdataend'] - $ThisFileInfo['avdataoffset']) / $ThisFileInfo['playtime_seconds']) * 8;
 
 		} else {
 
-			$info['error'][] = 'shorten failed to decode file to WAV for parsing';
+			$ThisFileInfo['error'][] = 'shorten failed to decode file to WAV for parsing';
 			return false;
 
 		}
