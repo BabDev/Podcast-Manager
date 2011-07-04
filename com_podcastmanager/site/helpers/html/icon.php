@@ -69,7 +69,7 @@ class JHtmlIcon
 		}
 
 		JHtml::_('behavior.tooltip');
-		$url	= PodcastManagerHelperRoute::getFeedEditRoute($podcast->id, base64_encode($uri));
+		$url	= PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
 		$icon	= $podcast->published ? 'edit.png' : 'edit_unpublished.png';
 		$text	= JHtml::_('image','system/'.$icon, JText::_('JGLOBAL_EDIT'), NULL, true);
 
