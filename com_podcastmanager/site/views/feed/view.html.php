@@ -107,33 +107,21 @@ class PodcastManagerViewFeed extends JView
 
 		$this->document->setTitle($title);
 
-		//if ($this->category->metadesc) {
-			//$this->document->setDescription($this->category->metadesc);
-		//} else if (!$this->category->metadesc && $this->params->get('menu-meta_description')) {
-			//$this->document->setDescription($this->params->get('menu-meta_description'));
-		//}
+		if ($this->params->get('menu-meta_description')) {
+			$this->document->setDescription($this->params->get('menu-meta_description'));
+		}
 
-		//if ($this->category->metakey) {
-			//$this->document->setMetadata('keywords', $this->category->metakey);
-		//} else if (!$this->category->metakey && $this->params->get('menu-meta_keywords')) {
-			//$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
-		//}
+		if ($this->params->get('menu-meta_keywords')) {
+			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+		}
 
-		//if ($this->params->get('robots')) {
-			//$this->document->setMetadata('robots', $this->params->get('robots'));
-		//}
+		if ($this->params->get('robots')) {
+			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
 
-		//if ($app->getCfg('MetaAuthor') == '1') {
-			//$this->document->setMetaData('author', $this->category->getMetadata()->get('author'));
-		//}
-
-		//$mdata = $this->category->getMetadata()->toArray();
-
-		//foreach ($mdata as $k => $v) {
-			//if ($v) {
-				//$this->document->setMetadata($k, $v);
-			//}
-		//}
+		if ($feed->author) {
+			$this->document->setMetaData('author', $feed->author);
+		}
 
 		// Add alternative feed link
 		if ($this->params->get('show_feed_link', 1) == 1) {
