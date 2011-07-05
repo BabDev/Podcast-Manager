@@ -30,9 +30,9 @@
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
-		<zip destfile="files_podcastmanager_hathor_18alpha.zip" basedir="files_podcastmanager_hathor" />
+		<zip destfile="releases/files_podcastmanager_hathor_18alpha.zip" basedir="files_podcastmanager_hathor" />
 		<echo msg="Building Minima Overrides package" />
-		<zip destfile="files_podcastmanager_minima_18alpha.zip" basedir="files_podcastmanager_minima" />
+		<zip destfile="releases/files_podcastmanager_minima_18alpha.zip" basedir="files_podcastmanager_minima" />
 	</target>
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packages dir" />

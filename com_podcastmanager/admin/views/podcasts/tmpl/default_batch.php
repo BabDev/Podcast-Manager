@@ -21,7 +21,7 @@ $published	= $this->state->get('filter.published');
 $extension	= $this->escape($this->state->get('filter.extension'));
 ?>
 <fieldset class="batch">
-	<legend><?php echo JText::_('COM_CATEGORIES_BATCH_OPTIONS');?></legend>
+	<legend><?php echo JText::_('COM_PODCASTMANAGER_BATCH_OPTIONS');?></legend>
 	<?php if ($published >= 0) : ?>
 	<label id="batch-choose-action-lbl" for="batch-feed-id">
 		<?php echo JText::_('COM_PODCASTMANAGER_BATCH_FEED_LABEL'); ?>
