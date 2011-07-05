@@ -21,7 +21,7 @@ class PodcastManagerModelForm extends JModelForm
 	 *
 	 * @var		string
 	 */
-	protected $_context = 'com_podcastmanager.feed';
+	protected $_context = 'com_podcastmanager.form';
 
 	protected $_item = null;
 
@@ -124,7 +124,7 @@ class PodcastManagerModelForm extends JModelForm
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.form.data', array());
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.feed.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();

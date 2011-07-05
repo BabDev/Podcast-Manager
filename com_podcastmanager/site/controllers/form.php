@@ -51,7 +51,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @return	Boolean	True if access level checks pass, false otherwise.
 	 * @since	1.8
 	 */
-	public function cancel($key = 'p_id')
+	public function cancel($key = 'feedname')
 	{
 		parent::cancel($key);
 
@@ -68,7 +68,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @return	Boolean	True if access level check and checkout passes, false otherwise.
 	 * @since	1.8
 	 */
-	public function edit($key = null, $urlVar = 'p_id')
+	public function edit($key = null, $urlVar = 'feedname')
 	{
 		// Initialise variables.
 		$app		= JFactory::getApplication();
@@ -197,7 +197,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		$task = $this->getTask();
 
 		if ($task == 'save') {
-			$this->setRedirect(JRoute::_('index.php?option=com_podcastmanager&view=feed&id='.$validData['feedname'], false));
+			$this->setRedirect(JRoute::_('index.php?option=com_podcastmanager&view=feed&feedname='.$validData['feedname'], false));
 		}
 	}
 
@@ -210,7 +210,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @return	Boolean	True if successful, false otherwise.
 	 * @since	1.8
 	 */
-	public function save($key = null, $urlVar = 'p_id')
+	public function save($key = null, $urlVar = 'feedname')
 	{
 		$result = parent::save($key, $urlVar);
 
