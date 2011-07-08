@@ -117,6 +117,7 @@ class Com_PodcastManagerInstallerScript {
 
 		// Get the update file
 		$SQLupdate	= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.0.sql');
+		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.1.sql');
 
 		if ($SQLupdate === false) {
 			return false;
