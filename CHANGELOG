@@ -1,3 +1,6 @@
+10-July-2011 Michael Babker Version 1.7 Changes
+# Fix a bug in custom code rendering for content plugin
+
 30-June-2011 Michael Babker Version 1.7 Changes
 # Correct the installation SQL with the summary changes
 

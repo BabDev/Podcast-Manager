@@ -156,7 +156,7 @@ class PodcastManagerPlayer
 	private function custom()
 	{
 		$linkcode = $this->podmanparams->get('customcode', '');
-		return preg_replace('/\{filename\}/', $this->fileURL, $linkcode);
+		return preg_replace('/\{podcast\}/', $this->fileURL, $linkcode);
 	}
 
 	/**
