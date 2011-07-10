@@ -1,5 +1,6 @@
 10-July-2011 Michael Babker Version 1.8 Changes
 + Add SoundManager2 media player
+~ Add demo MP3 player from SM2 site
 
 10-July-2011 Michael Babker Version 1.7 Changes
 # Fix a bug in custom code rendering for content plugin

@@ -84,7 +84,7 @@ class PodcastManagerPlayer
 	private $fileURL = null;
 	private $podmanparams = null;
 	private $podfilepath = null;
-	private $validTypes = array('link', 'player', 'QTplayer');
+	private $validTypes = array('custom', 'html5', 'link', 'player', 'QTplayer');
 	private $fileTypes = array (
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
@@ -169,14 +169,28 @@ class PodcastManagerPlayer
 		// Initialize variables
 		$document	= JFactory::getDocument();
 
-		// Declare the script
-		$file	= 'soundmanager2-nodebug-jsmin.js';
-		if (JDEBUG) {
-			$file	= 'soundmanager2.js';
-		}
-		JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
+		// Define non debug settings
+		$file		= 'soundmanager2-nodebug-jsmin.js';
+		$debugMode	= 'false';
 
-		//return preg_replace('/\{podcast\}/', $this->fileURL);
+		// If site debug enabled, enable SoundManager debug
+		if (JDEBUG) {
+			$file		= 'soundmanager2.js';
+			$debugMode	= 'true';
+		}
+
+		// Declare the stylesheets
+		JHTML::stylesheet('plugins/content/podcastmanager/soundmanager/css/player.css', false, false, false);
+		JHTML::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
+
+		// Declare the scripts
+		JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
+		$document->addCustomTag('<script type="text/javascript">soundManager.waitForWindowLoad = true;</script>');
+		$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>');
+		$document->addCustomTag('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>');
+		JHTML::script('plugins/content/podcastmanager/soundmanager/script/player.js', false, false);
+
+		return '<div class="sm2-player"><a class="sm2_link" href="'.$this->fileURL.'">'.htmlspecialchars($this->podtitle).'</a></div>';
 	}
 
 	/**
