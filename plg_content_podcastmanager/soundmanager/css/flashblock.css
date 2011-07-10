@@ -3,7 +3,7 @@
  * Flash positioning and flashblock / clicktoflash handling
 */
 
-div.sm2-player {
+#sm2-container {
  /*
   * where the SM2 flash movie goes. by default, relative container.
   * set relative or absolute here, and don't touch it later or bad things will happen (see below comments.)
@@ -14,7 +14,7 @@ height: 1px;
 _overflow: hidden; /* screw IE 6, just make it display nice */
 }
 
-div.sm2-player object, div.sm2-player embed {
+#sm2-container object, #sm2-container embed {
  /*
   * the actual movie bit.
   * SWF needs to be able to be moved off-screen without display: or position: changes. important.
@@ -28,11 +28,11 @@ top: auto;
   * at first, stay <= 8px to fly under the radar of some flash blockers as an "invisible" SWF.
   * dimensions will change with blocked state.
  */
-width: 8px;
-height: 8px;
+ width: 8px;
+ height: 8px;
 }
 
-div.sm2-player.swf_timedout, div.sm2-player.swf_timedout object, div.sm2-player.swf_timedout embed {
+#sm2-container.swf_timedout, #sm2-container.swf_timedout object, #sm2-container.swf_timedout embed {
  /* 
   * when SM2 didn't start normally, time-out case. flash blocked, missing SWF, no flash?
   * 48px square flash placeholder is typically used by blockers.
@@ -43,24 +43,24 @@ width: 48px;
 height: 48px;
 }
 
-div.sm2-player.swf_unblocked {
+#sm2-container.swf_unblocked {
  /* SWF unblocked, or was never blocked to begin with; try to collapse container as much as possible. */
- width: 1px;
- height: 1px;
+width: 1px;
+height: 1px;
 }
 
-div.sm2-player.swf_loaded object, div.sm2-player.swf_loaded embed, div.sm2-player.swf_unblocked object, div.sm2-player.swf_unblocked embed {
+#sm2-container.swf_loaded object, #sm2-container.swf_loaded embed, #sm2-container.swf_unblocked object, #sm2-container.swf_unblocked embed {
  /* hide flash off-screen (relative to container) when it has loaded OK */
 left: -9999em;
 top: -9999em;
 }
 
-div.sm2-player.swf_error {
+#sm2-container.swf_error {
  /* when there is a fatal error (flash loaded, but SM2 failed) */
 display: none;
 }
 
-div.sm2-player.high_performance {
+#sm2-container.high_performance {
  /* "high performance" case: keep on-screen at all times */
 position: absolute;
 position: fixed;
@@ -77,11 +77,11 @@ left: 0px;
 z-index: 99; /* try to stay on top */
 }
 
-div.sm2-player.high_performance.swf_loaded, div.sm2-player.high_performance.swf_unblocked {
+#sm2-container.high_performance.swf_loaded, #sm2-container.high_performance.swf_unblocked {
 z-index: auto;
 }
 
-div.sm2-player.high_performance.swf_loaded, div.sm2-player.high_performance.swf_unblocked, div.sm2-player.high_performance.swf_unblocked object, div.sm2-player.high_performance.swf_unblocked embed {
+#sm2-container.high_performance.swf_loaded, #sm2-container.high_performance.swf_unblocked, #sm2-container.high_performance.swf_unblocked object, #sm2-container.high_performance.swf_unblocked embed {
  /*
   * 8x8px is required minimum to load in fx/win32 in some cases(?)
   * 6x6+ good for fast performance, even better when on-screen via position:fixed
@@ -90,19 +90,19 @@ width: 8px;
 height: 8px;
 }
 
-div.sm2-player.high_performance.swf_loaded {
+#sm2-container.high_performance.swf_loaded {
  /* stay bottom/left */
 top: auto;
 bottom: 0px;
 left: 0px;
 }
 
-div.sm2-player.high_performance.swf_loaded object, div.sm2-player.high_performance.swf_loaded embed, div.sm2-player.high_performance.swf_unblocked object, div.sm2-player.high_performance.swf_unblocked embed {
+#sm2-container.high_performance.swf_loaded object, #sm2-container.high_performance.swf_loaded embed, #sm2-container.high_performance.swf_unblocked object, #sm2-container.high_performance.swf_unblocked embed {
  /* high-performance case must stay on-screen */
 left: auto;
 top: auto;
 }
 
-div.sm2-player.high_performance.swf_timedout {
+#sm2-container.high_performance.swf_timedout {
 z-index: 99; /* try to stay on top */
 }
