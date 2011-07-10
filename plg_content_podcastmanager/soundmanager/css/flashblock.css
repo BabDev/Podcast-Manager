@@ -9,8 +9,6 @@
   * set relative or absolute here, and don't touch it later or bad things will happen (see below comments.)
  */
 position: relative;
-width: 1px;
-height: 1px;
 _overflow: hidden; /* screw IE 6, just make it display nice */
 }
 

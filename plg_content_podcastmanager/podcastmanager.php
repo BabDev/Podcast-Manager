@@ -185,12 +185,11 @@ class PodcastManagerPlayer
 
 		// Declare the scripts
 		JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
-		$document->addCustomTag('<script type="text/javascript">soundManager.waitForWindowLoad = true;</script>');
 		$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>');
 		$document->addCustomTag('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>');
 		JHTML::script('plugins/content/podcastmanager/soundmanager/script/player.js', false, false);
 
-		return '<div class="sm2-player"><a class="sm2_link" href="'.$this->fileURL.'">'.htmlspecialchars($this->podtitle).'</a></div>';
+		return '<div id="sm2-container"><div class="sm2-player"><a class="sm2_link" href="'.$this->fileURL.'">'.htmlspecialchars($this->podtitle).'</a></div></div>';
 	}
 
 	/**
