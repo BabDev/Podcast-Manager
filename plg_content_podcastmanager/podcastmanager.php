@@ -160,6 +160,26 @@ class PodcastManagerPlayer
 	}
 
 	/**
+	 * Function to generate a HTML5 player that will fall back to Flash if necessary
+	 *
+	 * @return	object	A HTML5 or Flash player for the podcast
+	 */
+	private function html5()
+	{
+		// Initialize variables
+		$document	= JFactory::getDocument();
+
+		// Declare the script
+		$file	= 'soundmanager2-nodebug-jsmin.js';
+		if (JDEBUG) {
+			$file	= 'soundmanager2.js';
+		}
+		JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
+
+		//return preg_replace('/\{podcast\}/', $this->fileURL);
+	}
+
+	/**
 	 * Function to generate a link player
 	 *
 	 * @return	object	A HTML link to the podcast
