@@ -21,6 +21,7 @@ function InlinePlayer() {
   this.links = [];
   this.sounds = [];
   this.soundsByURL = [];
+  this.strings = [];
   this.indexByURL = [];
   this.lastSound = null;
   this.soundCount = 0;
@@ -28,7 +29,8 @@ function InlinePlayer() {
 
   this.config = {
     playNext: false, // stop after one sound, or play through list until end
-    autoPlay: false  // start playing the first sound right away
+    autoPlay: false,  // start playing the first sound right away
+    emptyTime: '-:--'  // null/undefined timer values (before data is available)
   }
 
   this.css = {
@@ -65,6 +67,50 @@ function InlinePlayer() {
     o.className = o.className.replace(new RegExp('( '+cStr+')|('+cStr+')','g'),'');
   }
 
+  this.select = function(className, oParent) {
+    var result = self.getByClassName(className, 'div', oParent||null);
+    return (result ? result[0] : null);
+  };
+
+  this.getByClassName = (document.querySelectorAll ? function(className, tagNames, oParent) { // tagNames: string or ['div', 'p'] etc.
+    var pattern = ('.'+className), qs;
+    if (tagNames) {
+      tagNames = tagNames.split(' ');
+    }
+    qs = (tagNames.length > 1 ? tagNames.join(pattern+', ') : tagNames[0]+pattern);
+    return (oParent?oParent:document).querySelectorAll(qs);
+
+  } : function(className, tagNames, oParent) {
+
+    var node = (oParent?oParent:document), matches = [], i, j, nodes = [];
+    if (tagNames) {
+      tagNames = tagNames.split(' ');
+    }
+    if (tagNames instanceof Array) {
+      for (i=tagNames.length; i--;) {
+        if (!nodes || !nodes[tagNames[i]]) {
+          nodes[tagNames[i]] = node.getElementsByTagName(tagNames[i]);
+        }
+      }
+      for (i=tagNames.length; i--;) {
+        for (j=nodes[tagNames[i]].length; j--;) {
+          if (self.classContains(nodes[tagNames[i]][j], className)) {
+            matches.push(nodes[tagNames[i]][j]);
+          }
+        }
+      }
+    } else {
+      nodes = node.all||node.getElementsByTagName('*');
+      for (i=0, j=nodes.length; i<j; i++) {
+        if (self.classContains(nodes[i],className)) {
+          matches.push(nodes[i]);
+        }
+      }
+    }
+    return matches;
+
+  });
+
   this.getSoundByURL = function(sURL) {
     return (typeof self.soundsByURL[sURL] != 'undefined'?self.soundsByURL[sURL]:null);
   }
@@ -79,6 +125,15 @@ function InlinePlayer() {
     } while (o && o.parentNode && o.nodeName.toLowerCase() != sNodeName);
     return (o.nodeName.toLowerCase() == sNodeName?o:null);
   }
+
+  this.getTime = function(nMSec, bAsString) {
+    // convert milliseconds to mm:ss, return as object literal or string
+    var nSec = Math.floor(nMSec/1000),
+        min = Math.floor(nSec/60),
+        sec = nSec-(min*60);
+    // if (min === 0 && sec === 0) return null; // return 0:00 as null
+    return (bAsString?(min+':'+(sec<10?'0'+sec:sec)):{'min':min,'sec':sec});
+  };
 
   this.events = {
 
@@ -116,8 +171,20 @@ function InlinePlayer() {
           pl.handleClick({'target':pl.links[nextLink]});
         }
       }
-    }
+    },
 
+    whileplaying: function() {
+      var d = null;
+      d = new Date();
+      if (d-self.lastWPExec>30) {
+        self.updateTime.apply(this);
+        if (this._data.metadata) {
+          this._data.metadata.refreshMetadata(this);
+        }
+        this._data.oPosition.style.width = (((this.position/self.getDurationEstimate(this))*100)+'%');
+        self.lastWPExec = d;
+      }
+    }
   }
 
   this.stopEvent = function(e) {
@@ -173,14 +240,25 @@ function InlinePlayer() {
        onstop:self.events.stop,
        onpause:self.events.pause,
        onresume:self.events.resume,
-       onfinish:self.events.finish
+       onfinish:self.events.finish,
+       whileplaying:self.events.whileplaying
       });
+      // append control template
+      oControls = self.oControls.cloneNode(true);
+      oLink = o;
+      oLink.appendChild(oControls);
       // tack on some custom data
       thisSound._data = {
         oLink: o, // DOM node for reference within SM2 object event handlers
-        className: self.css.sPlaying
+        className: self.css.sPlaying,
+        oTimingBox: self.select('timing',oLink),
+        oTiming: self.select('timing',oLink).getElementsByTagName('div')[0]
       };
       self.soundsByURL[soundURL] = thisSound;
+      // set initial timer stuff (before loading)
+      str = self.strings.timing.replace('%s1',self.config.emptyTime);
+      str = str.replace('%s2',self.config.emptyTime);
+      thisSound._data.oTiming.innerHTML = str;
       self.sounds.push(thisSound);
       if (self.lastSound) self.stopSound(self.lastSound);
       thisSound.play();
@@ -202,6 +280,20 @@ function InlinePlayer() {
     soundManager.unload(oSound.sID);
   }
 
+  this.updateTime = function() {
+    var str = self.strings.timing.replace('%s1',self.getTime(this.position,true));
+    str = str.replace('%s2',self.getTime(self.getDurationEstimate(this),true));
+    this._data.oTiming.innerHTML = str;
+  };
+
+  this.getDurationEstimate = function(oSound) {
+    if (oSound.instanceOptions.isMovieStar) {
+      return (oSound.duration);
+    } else {
+      return (!oSound._data.metadata || !oSound._data.metadata.data.givenDuration ? (oSound.durationEstimate||0) : oSound._data.metadata.data.givenDuration);
+    }
+  };
+
   this.init = function() {
     sm._writeDebug('inlinePlayer.init()');
     var oLinks = document.getElementsByTagName('a');
@@ -221,6 +313,25 @@ function InlinePlayer() {
         self.handleClick({target:self.links[0],preventDefault:function(){}});
       }
     }
+    controlTemplate = document.createElement('div');
+    controlTemplate.setAttribute('class', 'timing');
+
+    controlTemplate.innerHTML = [
+
+     // control markup inserted dynamically after each page player link
+     // if you want to change the UI layout, this is the place to do it.
+
+     '   <div id="sm2_timing" class="timing-data">',
+     '    <span class="sm2_position">%s1</span> / <span class="sm2_total">%s2</span>',
+     '   </div>'
+
+    ].join('\n');
+    self.oControls = controlTemplate.cloneNode(true);
+
+    oTiming = self.select('timing-data',controlTemplate);
+    self.strings.timing = oTiming.innerHTML;
+    oTiming.innerHTML = '';
+    oTiming.id = '';
     sm._writeDebug('inlinePlayer.init(): Found '+foundItems+' relevant items.');
   }
 

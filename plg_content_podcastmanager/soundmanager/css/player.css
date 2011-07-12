@@ -104,6 +104,10 @@ _background-image: url(../images/icon_pause.gif);
 text-decoration: none;
 }
 
+div.sm2-player a.sm2_link div.timing {
+float: right;
+}
+
 /* hide button while playing?
 div.sm2-player a.sm2_playing {
 background-image:none;
