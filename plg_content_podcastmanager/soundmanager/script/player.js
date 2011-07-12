@@ -28,6 +28,7 @@ function InlinePlayer() {
   var isIE = (navigator.userAgent.match(/msie/i));
 
   this.config = {
+    useMovieStar: true, // [Flash 9 only]: Support for MPEG4 audio formats
     playNext: false, // stop after one sound, or play through list until end
     autoPlay: false,  // start playing the first sound right away
     emptyTime: '-:--'  // null/undefined timer values (before data is available)
@@ -287,7 +288,7 @@ function InlinePlayer() {
   };
 
   this.getDurationEstimate = function(oSound) {
-    if (oSound.instanceOptions.isMovieStar) {
+    if (self.config.useMovieStar) {
       return (oSound.duration);
     } else {
       return (!oSound._data.metadata || !oSound._data.metadata.data.givenDuration ? (oSound.durationEstimate||0) : oSound._data.metadata.data.givenDuration);
@@ -345,7 +346,6 @@ soundManager.useFlashBlock = true;
 
 // optional: enable MPEG-4/AAC support (requires flash 9)
 soundManager.flashVersion = 9;
-soundManager.useMovieStar = true;
 
 // ----
 soundManager.onready(function() {
