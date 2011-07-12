@@ -24,6 +24,7 @@ function InlinePlayer() {
   this.strings = [];
   this.indexByURL = [];
   this.lastSound = null;
+  this.lastWPExec = new Date();
   this.soundCount = 0;
   var isIE = (navigator.userAgent.match(/msie/i));
 
@@ -298,6 +299,7 @@ function InlinePlayer() {
   this.init = function() {
     sm._writeDebug('inlinePlayer.init()');
     var oLinks = document.getElementsByTagName('a');
+    var oTiming;
     // grab all links, look for .mp3
     var foundItems = 0;
     for (var i=0, j=oLinks.length; i<j; i++) {
