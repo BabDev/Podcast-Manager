@@ -135,7 +135,7 @@ class PodcastManagerPlayer
 	{
 		// Convert the file path to a string
 		$tempfile	= get_object_vars($podfilepath);
-		$filepath	= substr(implode('', $tempfile), 0);
+		$filepath	= $tempfile['filename'];
 
 		// Set the file path based on the server
 		$fullPath = JPATH_BASE.'/'.$filepath;
