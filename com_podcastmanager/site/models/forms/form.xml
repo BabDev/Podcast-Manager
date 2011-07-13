@@ -15,7 +15,7 @@
 			rows="3" cols="40" />
 		<field name="copyright" type="text" class="inputbox" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION"
-			size="30" required="true" />
+			size="30" />
 		<field name="owneremail" type="text" class="inputbox" size="30" filter="safehtml"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
 		<field name="ownername" type="text" class="inputbox" size="30" filter="safehtml"
