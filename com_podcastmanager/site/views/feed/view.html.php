@@ -45,7 +45,20 @@ class PodcastManagerViewFeed extends JView
 		$this->assignRef('params',	$params);
 		$this->assignRef('pagination',	$pagination);
 
-		//Escape strings for HTML output
+		// Prepare the content (runs content plugins).
+		for ($i = 0, $n = count($items); $i < $n; $i++) {
+			$item = &$items[$i];
+			$item->player	= '{podcast '.$item->title.'}';
+			// Set the text object to prevent errors with other plugins
+			$item->text		= '';
+			$dispatcher = JDispatcher::getInstance();
+
+			// Process the content plugins.
+			JPluginHelper::importPlugin('content');
+			$results = $dispatcher->trigger('onContentPrepare', array('com_podcastmanager.feed', &$item, &$this->params));
+		}
+
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		// Check for layout override only if this is not the active menu item

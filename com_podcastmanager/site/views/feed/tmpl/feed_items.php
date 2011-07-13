@@ -69,10 +69,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<td class="title">
 					<p>
 					<?php // Compute the correct link
-					$menuclass = 'podcast'.$this->pageclass_sfx;
-					$link = JURI::base().$item->filename; ?>
-					<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
-					<?php echo $this->escape($item->title); ?></a></p>
+					if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $this->params->get('show_item_player')) {
+						echo $item->text;
+					} else {
+						$menuclass = 'podcast'.$this->pageclass_sfx;
+						$link = JURI::base().$item->filename; ?>
+						<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
+						<?php echo $this->escape($item->title); ?></a>
+					<?php } ?></p>
 					<?php // Code to add the edit link for the podcast.
 					if ($canEdit) : ?>
 					<ul class="actions">

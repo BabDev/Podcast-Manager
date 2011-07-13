@@ -26,6 +26,11 @@ class plgContentPodcastManager extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		if ($context == 'com_podcastmanager.feed') {
+			$article->text = $article->player;
+			$feedView	= 'com_podcastmanager.feed';
+		}
+
 		// Simple performance check to determine whether plugin should process further
 		if (strpos($article->text, 'podcast') === false) {
 			return true;
@@ -80,19 +85,24 @@ class plgContentPodcastManager extends JPlugin
 			}
 
 			foreach ($podcast as $episode) {
-				// Retrieve the title and convert it to a useable string
-				// 9 offset for {podcast marker
-				// -1 offset for closing }
-				$podtitle	= substr($episode, 9, -1);
+				// Check if we're in the Podcast Manager Feed view; if so, extract data from the object
+				if ((isset($feedView)) && ($feedView == $context)) {
+					$podtitle		= $article->title;
+					$podfilepath	= $article->filename;
+				} else {
+					// Retrieve the title from the object and prepare it for a DB query
+					// 9 offset for {podcast marker, -1 offset for closing }
+					$podtitle	= substr($episode, 9, -1);
 
-				// Query the DB for the title string, returning the filename
-				$db = JFactory::getDBO();
-				$db->setQuery(
-					'SELECT `filename`' .
-					' FROM `#__podcastmanager`' .
-					' WHERE `title` = "'.$podtitle.'"'
-				);
-				$podfilepath = $db->loadObject();
+					// Query the DB for the title string, returning the filename
+					$db = JFactory::getDBO();
+					$db->setQuery(
+						'SELECT `filename`' .
+						' FROM `#__podcastmanager`' .
+						' WHERE `title` = "'.$podtitle.'"'
+					);
+					$podfilepath = $db->loadObject();
+				}
 
 				// Get the player
 				$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
@@ -165,8 +175,12 @@ class PodcastManagerPlayer
 	private function determineURL($podfilepath)
 	{
 		// Convert the file path to a string
-		$tempfile	= get_object_vars($podfilepath);
-		$filepath	= substr(implode('', $tempfile), 0);
+		$tempfile	= $podfilepath;
+		if (isset($tempfile->filename)) {
+			$filepath	= $tempfile->filename;
+		} else {
+			$filepath	= $tempfile;
+		}
 
 		// Set the file path based on the server
 		$fullPath = JPATH_BASE.'/'.$filepath;

@@ -62,6 +62,12 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_item_player" type="list" default="0"
+				label="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_DESCRIPTION" >
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="show_item_description" type="list"
 				label="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_LABEL"
 				description="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_DESCRIPTION" >
