@@ -291,12 +291,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		jimport('getid3.getid3');
 		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
 
-		$filename	= JPATH_ROOT.'/'.$_COOKIE['podManFile'];
+		$filename	= $_COOKIE['podManFile'];
+		if (!preg_match('/^http/', $filename)) {
+			$filename	= JPATH_ROOT.'/'.$filename;
+		}
 		$getID3		= new getID3($filename);
 		$fileInfo	= $getID3->analyze($filename);
 
 		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename	= $_COOKIE['podManFile'];
+		$data->filename	= $filename;
 
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];

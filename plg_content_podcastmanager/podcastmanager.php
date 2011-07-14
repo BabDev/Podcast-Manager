@@ -168,7 +168,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
-	 * @param	object	The filename of the podcast file relative to the site root.
+	 * @param	object	The filename of the podcast file.
 	 *
 	 * @return	object	The URL to the file
 	 */
@@ -176,18 +176,32 @@ class PodcastManagerPlayer
 	{
 		// Convert the file path to a string
 		$tempfile	= $podfilepath;
+
 		if (isset($tempfile->filename)) {
 			$filepath	= $tempfile->filename;
 		} else {
 			$filepath	= $tempfile;
 		}
 
-		// Set the file path based on the server
-		$fullPath = JPATH_BASE.'/'.$filepath;
+		$filename = $filepath;
 
-		// Check if the file exists
-		if (JFile::exists($fullPath)) {
-			$filename = JURI::base().$filepath;
+		// Check if the file is from off site
+		if (!preg_match('/^http/', $filename)) {
+			// The file is stored on site, check if it exists
+			$filepath	= JPATH_ROOT.'/'.$item->filename;
+
+			// Check if the file exists
+			if (JFile::exists($filepath)) {
+				$filename = JURI::base().$item->filename;
+			}
+
+			// Set the file path based on the server
+			$fullPath = JPATH_BASE.'/'.$filepath;
+
+			// Check if the file exists
+			if (JFile::exists($fullPath)) {
+				$filename = JURI::base().$filepath;
+			}
 		}
 
 		return $filename;
