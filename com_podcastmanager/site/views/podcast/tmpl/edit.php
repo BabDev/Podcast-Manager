@@ -21,6 +21,15 @@ JHtml::_('behavior.formvalidation');
 $params = $this->state->get('params');
 ?>
 
+<script type="text/javascript">
+	Joomla.submitbutton = function(task) {
+		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+			Joomla.submitform(task);
+		} else {
+			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+		}
+	}
+</script>
 <div class="edit<?php echo $this->pageclass_sfx; ?>">
 <?php if ($this->params->def('show_page_heading', 1)) : ?>
 <h1>

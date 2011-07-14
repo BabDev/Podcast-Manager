@@ -124,7 +124,7 @@ class PodcastManagerModelForm extends JModelForm
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.feed.data', array());
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.form.data', array());
 
 		if (empty($data)) {
 			$data = $this->getItem();
