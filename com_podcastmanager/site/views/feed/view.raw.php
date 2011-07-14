@@ -176,11 +176,19 @@ class PodcastManagerViewFeed extends JView
 	{
 		foreach ($items as $item) {
 			// Set the file path on the file structure
-			$filepath	= JPATH_ROOT.'/'.$item->filename;
+			$filepath	= $item->filename;
 
-			// Check if the file exists
-			if (JFile::exists($filepath)) {
-				$filename = JURI::base().$item->filename;
+			$filename	= $filepath;
+
+			// Check if the file is from off site
+			if (!preg_match('/^http/', $filepath)) {
+				// The file is stored on site, check if it exists
+				$filepath	= JPATH_ROOT.'/'.$item->filename;
+
+				// Check if the file exists
+				if (JFile::exists($filepath)) {
+					$filename = JURI::base().$item->filename;
+				}
 			}
 
 			// Start writing the element

@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
 * Podcast Manager for Joomla!
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -30,23 +30,23 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 	/**
 	 * Custom clean cache method
-	 * 
+	 *
 	 * @param	string	$group		The component name
 	 * @param	int		$client_id	The client ID
-	 * 
+	 *
 	 * @return	void
 	 * @since	1.7
 	 */
 	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{
 		parent::cleanCache($group, $client_id);
-	}	
+	}
 
 	/**
 	 * Method to process the file through the getID3 library to extract key data
-	 * 
+	 *
 	 * @param	mixed	$data	The data object for the form
-	 * 
+	 *
 	 * @return	mixed	$data	The processed data for the form.
 	 * @since	1.6
 	 */
@@ -55,12 +55,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		jimport('getid3.getid3');
 		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
 
-		$filename	= JPATH_ROOT.'/'.$_COOKIE['podManFile'];
+		$filename	= $_COOKIE['podManFile'];
+		if (!preg_match('/^http/', $filename)) {
+			$filename	= JPATH_ROOT.'/'.$filename;
+		}
 		$getID3		= new getID3($filename);
 		$fileInfo	= $getID3->analyze($filename);
 
 		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename	= $_COOKIE['podManFile'];
+		$data->filename	= $filename;
 
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];
@@ -93,7 +96,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 *
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * 
+	 *
 	 * @return	mixed	$form		A JForm object on success, false on failure
 	 * @since	1.6
 	 */
@@ -171,4 +174,3 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 	}
 }
-	
