@@ -50,7 +50,12 @@ abstract class modPodcastManagerFeedHelper
 		$items = $model->getItems();
 
 		foreach ($items as &$item) {
-			$item->link = JURI::base().$item->filename;
+			$item->link = $item->filename;
+
+			// Check if the file is from off site
+			if (!preg_match('/^http/', $item->link)) {
+				$item->link = JURI::base().$item->filename;
+			}
 		}
 
 		return $items;
