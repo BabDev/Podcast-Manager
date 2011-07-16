@@ -35,7 +35,7 @@ class PodcastManagerModelFeed extends JModelList
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
 				'title', 'a.title',
-				'created', 'a.created',
+				'publish_up', 'a.publish_up',
 			);
 		}
 

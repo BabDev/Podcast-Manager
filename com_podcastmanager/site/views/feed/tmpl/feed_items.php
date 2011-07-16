@@ -54,7 +54,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="title">
-					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.publish_up', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -91,7 +91,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+					<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
