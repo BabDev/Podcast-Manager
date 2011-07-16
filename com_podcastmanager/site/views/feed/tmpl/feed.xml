@@ -19,6 +19,20 @@
 				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
 				label="COM_PODCASTMANAGER_LIMIT_LABEL"
 				size="3" filter="integer" />
+			<field name="filter_order" type="list" filter="options"
+				description="COM_PODCASTMANAGER_ORDER_DESCRIPTION"
+				label="COM_PODCASTMANAGER_ORDER_LABEL" default="a.publish_up">
+				<option value="">JDEFAULT</option>
+				<option value="a.title">COM_PODCASTMANAGER_ORDER_TITLE_LABEL</option>
+				<option value="a.publish_up">COM_PODCASTMANAGER_ORDER_PUBLISHED_LABEL</option>
+			</field>
+			<field name="filter_order_Dir" type="list" filter="options"
+				description="COM_PODCASTMANAGER_DIRECTION_DESCRIPTION"
+				label="COM_PODCASTMANAGER_DIRECTION_LABEL" default="desc">
+				<option value="">JDEFAULT</option>
+				<option value="asc">COM_PODCASTMANAGER_DIRECTION_ASC_LABEL</option>
+				<option value="desc">COM_PODCASTMANAGER_DIRECTION_DESC_LABEL</option>
+			</field>
 			<field name="format" type="hidden" default="html" />
 		</fieldset>
 	</fields>

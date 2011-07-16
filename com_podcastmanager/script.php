@@ -56,7 +56,7 @@ class Com_PodcastManagerInstallerScript {
 		// If upgrading from 1.7 Beta releases, update the description field
 		if (strpos($version, '1.7 Beta') != false) {
 			$db = JFactory::getDBO();
-			$query	= 'ALTER TABLE `#__podcastmanager_feeds` CHANGE `description` `description` varchar(255) NOT NULL default '.$db->quote('');
+			$query	= 'ALTER TABLE `#__podcastmanager_feeds` CHANGE `description` `description` varchar(5120) NOT NULL default '.$db->quote('');
 			$db->setQuery($query);
 			if (!$db->query()) {
 				JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
