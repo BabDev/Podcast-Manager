@@ -19,6 +19,7 @@
 	</files>
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB/en-GB.com_podcastmedia.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_podcastmedia.ini</language>
 	</languages>
 	<administration>
 		<files folder="admin">
@@ -35,6 +36,8 @@
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_podcastmedia.sys.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmedia.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmedia.sys.ini</language>
 		</languages>
 	</administration>
 </extension>

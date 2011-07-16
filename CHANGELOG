@@ -1,5 +1,7 @@
 17-July-2011 Michael Babker Version 1.8 Changes
 + Add ability to select default sorting for feed view
++ Add pt-BR translation
+~ Update Akeeba Backup System Restore Point definition
 
 14-July-2011 Michael Babker Version 1.7 Changes
 + Add ability to link to off-site media

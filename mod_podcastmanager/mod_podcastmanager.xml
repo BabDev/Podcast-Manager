@@ -18,6 +18,8 @@
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR/pt-BR.mod_podcastmanager.ini</language>
+		<language tag="pt-BR">language/pt-BR/pt-BR.mod_podcastmanager.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">

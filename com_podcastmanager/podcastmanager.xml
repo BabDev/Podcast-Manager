@@ -40,6 +40,8 @@
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
 	</languages>
 	<media destination="com_podcastmanager">
 		<filename>index.html</filename>
@@ -62,6 +64,8 @@
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
 		</languages>
 		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
 		<submenu>
@@ -82,12 +86,14 @@
 			<dir>components/com_podcastmedia</dir>
 			<dir>libraries/getid3</dir>
 			<dir>modules/mod_podcastmanager</dir>
+			<dir>modules/mod_podcastmanagerfeed</dir>
 			<dir>plugins/content/podcastmanager</dir>
 			<dir>plugins/editors-xtd/podcastmanager</dir>
 		</customdirs>
 		<langfiles>
 			<lang>com_podcastmedia</lang>
 			<lang>mod_podcastmanager</lang>
+			<lang>mod_podcastmanagerfeed</lang>
 			<lang>plg_content_podcastmanager</lang>
 			<lang>plg_editors-xtd_podcastmanager</lang>
 		</langfiles>
