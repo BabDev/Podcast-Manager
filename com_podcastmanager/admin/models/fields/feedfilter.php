@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -41,9 +41,9 @@ class JFormFieldFeedFilter extends JFormFieldList
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
 
-		$query->select('id as value, name as text');
-		$query->from('#__podcastmanager_feeds AS a');
-		$query->order('a.name');
+		$query->select($db->quoteName('id').' AS value, '.$db->quoteName('name').' AS text');
+		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
+		$query->order($db->quoteName('a.name'));
 
 		// Get the options.
 		$db->setQuery($query);

@@ -56,10 +56,10 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('`#__podcastmanager_feeds` AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
 
 		$feedId = $this->getState('feed.id');
-		$query->where('a.id = '.(int) $feedId);
+		$query->where($db->quoteName('a.id').' = '.(int) $feedId);
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
@@ -95,21 +95,21 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('`#__podcastmanager` AS a');
+		$query->from($db->quoteName('#__podcastmanager').' AS a');
 
 		// Join over the users for the modified_by name.
-		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+		$query->join('LEFT', $db->quoteName('#__users').' AS uam ON '.$db->quoteName('uam.id').' = '.$db->quoteName('a.modified_by'));
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
 		if (is_numeric($feed)) {
-			$query->where('a.feedname = '.(int) $feed);
+			$query->where($db->quoteName('a.feedname').' = '.(int) $feed);
 		}
 
 		// Filter by state
 		$state = $this->getState('filter.published');
 		if (is_numeric($state)) {
-			$query->where('a.published = '.(int) $state);
+			$query->where($db->quoteName('a.published').' = '.(int) $state);
 		}
 
 		// Filter by start date.
@@ -117,12 +117,12 @@ class PodcastManagerModelFeed extends JModelList
 		$nowDate = $db->Quote(JFactory::getDate()->toMySQL());
 
 		if ($this->getState('filter.publish_date')){
-			$query->where('(a.publish_up = '.$nullDate.' OR a.publish_up <= '.$nowDate.')');
+			$query->where('('.$db->quoteName('a.publish_up').' = '.$nullDate.' OR '.$db->quoteName('a.publish_up').' <= '.$nowDate.')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language')) {
-			$query->where('a.language in ('.$db->Quote(JFactory::getLanguage()->getTag()).','.$db->Quote('*').')');
+			$query->where($db->quoteName('a.language').' in ('.$db->Quote(JFactory::getLanguage()->getTag()).','.$db->Quote('*').')');
 		}
 
 		// Add the list ordering clause.

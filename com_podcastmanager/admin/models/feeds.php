@@ -67,7 +67,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// Getting the following metric by joins is WAY TOO SLOW.
 		// Faster to do three queries for very large menu trees.
 
-		// Get the menu types of menus in the list.
+		// Get the feeds in the list.
 		$db = $this->getDbo();
 		$feedNames = JArrayHelper::getColumn($items, 'id');
 
@@ -79,11 +79,11 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the published menu counts.
 		$query = $db->getQuery(true)
-			->select('p.feedname, COUNT(DISTINCT a.id) AS count_published')
-			->from('#__podcastmanager AS p, #__podcastmanager_feeds AS a')
-			->where('p.published = 1')
-			->where('p.feedname IN ('.$feedNames.')')
-			->group('p.feedname')
+			->select($db->quoteName('p.feedname').', COUNT(DISTINCT p.id) AS count_published')
+			->from($db->quoteName('#__podcastmanager').' AS p')
+			->where($db->quoteName('p.published').' = 1')
+			->where($db->quoteName('p.feedname').' IN ('.$feedNames.')')
+			->group($db->quoteName('p.feedname'))
 			;
 		$db->setQuery($query);
 		$countPublished = $db->loadAssocList('feedname', 'count_published');
@@ -146,13 +146,13 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('`#__podcastmanager_feeds` AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
 
-		$query->group('a.id');
+		$query->group($db->quoteName('a.id'));
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title').' AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = a.language');
 
 		// Add the list ordering clause.
 		$query->order($db->getEscaped($this->getState('list.ordering', 'a.id')).' '.$db->getEscaped($this->getState('list.direction', 'ASC')));
