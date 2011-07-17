@@ -26,7 +26,7 @@ class plgContentPodcastManager extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		if ($context == 'com_podcastmanager.feed') {
+		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1) {
 			$article->text = $article->player;
 			$feedView	= 'com_podcastmanager.feed';
 		}
