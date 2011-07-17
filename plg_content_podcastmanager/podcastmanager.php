@@ -95,12 +95,12 @@ class plgContentPodcastManager extends JPlugin
 					$podtitle	= substr($episode, 9, -1);
 
 					// Query the DB for the title string, returning the filename
-					$db = JFactory::getDBO();
-					$db->setQuery(
-						'SELECT `filename`' .
-						' FROM `#__podcastmanager`' .
-						' WHERE `title` = "'.$podtitle.'"'
-					);
+					$db 	= JFactory::getDBO();
+					$query	= $db->getQuery(true);
+					$query->select($db->quoteName('filename'));
+					$query->from($db->quoteName('#__podcastmanager'));
+					$query->where($db->quoteName('title').' = "'.$podtitle.'"');
+					$db->setQuery($query);
 					$podfilepath = $db->loadObject();
 				}
 
@@ -188,11 +188,11 @@ class PodcastManagerPlayer
 		// Check if the file is from off site
 		if (!preg_match('/^http/', $filename)) {
 			// The file is stored on site, check if it exists
-			$filepath	= JPATH_ROOT.'/'.$item->filename;
+			$filepath	= JPATH_ROOT.'/'.$filename;
 
 			// Check if the file exists
 			if (JFile::exists($filepath)) {
-				$filename = JURI::base().$item->filename;
+				$filename = JURI::base().$filename;
 			}
 
 			// Set the file path based on the server
