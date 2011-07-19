@@ -56,7 +56,10 @@ class plgContentPodcastManagerInstallerScript {
 		echo '<p>Enabling Podcast Manager content plugin</p>';
 
 		$db = JFactory::getDBO();
-		$query	= 'UPDATE `#__extensions` SET `enabled` = 1 WHERE `name` = "plg_content_podcastmanager"';
+		$query	= $db->getQuery(true);
+		$query->update($db->quoteName('#__extensions'));
+		$query->set($db->quoteName('enabled').' = 1');
+		$query->where($db->quoteName('name').' = "plg_content_podcastmanager"');
 		$db->setQuery($query);
 		$db->query();
 	}

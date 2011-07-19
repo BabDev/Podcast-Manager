@@ -16,6 +16,9 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
+// Add the HTML Helper
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -90,7 +93,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td>
 					<?php if ($item->checked_out) {
-						echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'podcasts.', $canCheckin);
+						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
 					} ?>
 					<?php if ($canEdit) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id='.(int) $item->id); ?>">
@@ -122,6 +125,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<?php endforeach; ?>
 		</tbody>
 	</table>
+	<?php //Load the batch processing form. ?>
+	<?php echo $this->loadTemplate('batch'); ?>
 
 	<div>
 		<input type="hidden" name="task" value="" />

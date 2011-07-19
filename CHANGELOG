@@ -1,22 +1,73 @@
+17-July-2011 Michael Babker Version 1.8 Changes
++ Add ability to select default sorting for feed view
++ Add pt-BR translation
+~ Update Akeeba Backup System Restore Point definition
+~ Convert Information view to JText
+# Correct a bug with the published count on feeds admin view
+~ Added additional SQL security from Platform 11.1
+
 14-July-2011 Michael Babker Version 1.7 Changes
 + Add ability to link to off-site media
 
-12-July-2011 Michael Babker Version 1.7 Changes
-# Change $filepath processing in content plugin
+13-July-2011 Michael Babker Version 1.8 Changes
++ Allow front end feed view to render onContentPrepare plugin
++ Add parameter to render the media player on the feed view
+~ Optimize the content plugin to handle data from the feed view
+
+12-July-2011 Michael Babker Version 1.8 Changes
++ Add script to display the runtime
+
+10-July-2011 Michael Babker Version 1.8 Changes
++ Add SoundManager2 media player
+~ Add demo MP3 player from SM2 site
 
 10-July-2011 Michael Babker Version 1.7 Changes
 # Fix a bug in custom code rendering for content plugin
 
+5-July-2011 Michael Babker Version 1.8 Changes
+# Fix routing bug for front end edit
+- Remove create link from feed view because of routing bug
+~ Rename routing functions specific to podcast edit
++ Add front end feed edit view
++ Add batch processing
+
+30-June-2011 Michael Babker Version 1.8 Changes
+~ Rename the layouts for the HTML view
+~ Language strings for various menu components
++ Routing and methods for podcast edit
++ Add podcast edit view
+# Fix routing bug in front end media
+
 30-June-2011 Michael Babker Version 1.7 Changes
 # Correct the installation SQL with the summary changes
+
+29-June-2011 Michael Babker Version 1.8 Changes
++ Add a feed listing module
 
 29-June-2011 Michael Babker Version 1.7 Changes
 # Modified podcast summary field to allow up to 5120 characters
 # Fixed storage bug with itunescategory field
 
+28-June-2011 Michael Babker Version 1.8 Changes
+# Joomla! 1.6.4 security fix
++ Added pagination to list layout
++ Added feed link to head
+- Removed params conversion in getItems
++ Add support for Akeeba Backup System Restore Points
+
 28-June-2011 Michael Babker Version 1.7 Changes
 # Correct counts for feeds view
 # Fix media installer
+
+22-June-2011 Michael Babker Version 1.8 Changes
++ Added JHtmlIcon helper for front end
+~ Made consistent JEXEC checks
+# Changed com_podcastmedia to delete menus on postflight (again)
++ Add PodcastManagerHelperRoute
+
+20-June-2011 Michael Babker Version 1.8 Changes
++ Rough addition of front end HTML view for feeds
+~ Cleanup of the HTML view
 
 19-June-2011 Michael Babker Version 1.7 Changes
 ~ Optimize media manager navigation for Joomla! 1.7

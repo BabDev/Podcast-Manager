@@ -6,7 +6,7 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.7.1</version>
+	<version>1.8 Alpha</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PLG_CONTENT_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
@@ -14,6 +14,7 @@
 		<filename plugin="podcastmanager">podcastmanager.php</filename>
 		<filename>index.html</filename>
 		<folder>podcast</folder>
+		<folder>soundmanager</folder>
 	</files>
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_content_podcastmanager.ini</language>

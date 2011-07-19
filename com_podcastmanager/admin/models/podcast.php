@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -27,6 +27,242 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @var		string	The context of the model
 	 */
 	protected $_context		= 'com_podcastmanager.podcast';
+
+	/**
+	 * Method to perform batch operations on an item or a set of items.
+	 *
+	 * @param	array	$commands	An array of commands to perform.
+	 * @param	array	$pks		An array of item ids.
+	 *
+	 * @return	boolean	Returns true on success, false on failure.
+	 * @since	1.8
+	 */
+	public function batch($commands, $pks)
+	{
+		// Sanitize user ids.
+		$pks = array_unique($pks);
+		JArrayHelper::toInteger($pks);
+
+		// Remove any values of zero.
+		if (array_search(0, $pks, true)) {
+			unset($pks[array_search(0, $pks, true)]);
+		}
+
+		if (empty($pks)) {
+			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+			return false;
+		}
+
+		$done = false;
+
+		if (!empty($commands)) {
+			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+
+			if ($cmd == 'c' && !$this->batchCopy($commands['feed_id'], $pks)) {
+				return false;
+			}
+			else if ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks)) {
+				return false;
+			}
+			$done = true;
+		}
+
+		if (!$done) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			return false;
+		}
+
+		// Clear the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Batch copy podcasts to a new feed or current.
+	 *
+	 * @param	int		$value  The new feed.
+	 * @param	array	$pks    An array of row IDs.
+	 *
+	 * @return	boolean  True if successful, false otherwise and internal error is set.
+	 *
+	 * @since	11.1
+	 */
+	protected function batchCopy($value, $pks)
+	{
+		$feedId	= (int) $value;
+
+		$table	= $this->getTable();
+		$db		= $this->getDbo();
+
+		// Check that the category exists
+		if ($feedId != '0') {
+			$feedTable = $this->getTable();
+			if (!$feedTable->load($feedId)) {
+				if ($error = $feedTable->getError()) {
+					// Fatal error
+					$this->setError($error);
+					return false;
+				}
+				else {
+					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					return false;
+				}
+			}
+		}
+
+		if (is_null($feedId)) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			return false;
+		}
+
+		// Check that the user has create permission for the component
+		$extension	= JRequest::getCmd('option');
+		$user		= JFactory::getUser();
+		if (!$user->authorise('core.create', $extension)) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			return false;
+		}
+
+		// Parent exists so we let's proceed
+		while (!empty($pks))
+		{
+			// Pop the first ID off the stack
+			$pk = array_shift($pks);
+
+			$table->reset();
+
+			// Check that the row actually exists
+			if (!$table->load($pk)) {
+				if ($error = $table->getError()) {
+					// Fatal error
+					$this->setError($error);
+					return false;
+				}
+				else {
+					// Not fatal error
+					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					continue;
+				}
+			}
+
+			// Alter the title & alias
+			$table->title   = 'Copy of '.$table->title;
+
+			// Reset the ID because we are making a copy
+			$table->id		= 0;
+
+			// New feed ID
+			$table->feedname	= $feedId;
+
+			// Check the row.
+			if (!$table->check()) {
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Store the row.
+			if (!$table->store()) {
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Batch move podcasts to a new feed
+	 *
+	 * @param	int	   $value  The new feed ID.
+	 * @param	array  $pks    An array of row IDs.
+	 *
+	 * @return	booelan  True if successful, false otherwise and internal error is set.
+	 *
+	 * @since	11.1
+	 */
+	protected function batchMove($value, $pks)
+	{
+		$feedId	= (int) $value;
+
+		$table	= $this->getTable();
+		$db		= $this->getDbo();
+
+		// Check that the category exists
+		if ($feedId != '0') {
+			$feedTable = $this->getTable();
+			if (!$feedTable->load($categoryId)) {
+				if ($error = $feedTable->getError()) {
+					// Fatal error
+					$this->setError($error);
+					return false;
+				}
+				else {
+					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+					return false;
+				}
+			}
+		}
+
+		if (is_null($feedId)) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			return false;
+		}
+
+		// Check that user has create and edit permission for the component
+		$extension	= JRequest::getCmd('option');
+		$user		= JFactory::getUser();
+		if (!$user->authorise('core.create', $extension)) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			return false;
+		}
+
+		if (!$user->authorise('core.edit', $extension)) {
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			return false;
+		}
+
+		// Parent exists so we let's proceed
+		foreach ($pks as $pk)
+		{
+			// Check that the row actually exists
+			if (!$table->load($pk)) {
+				if ($error = $table->getError()) {
+					// Fatal error
+					$this->setError($error);
+					return false;
+				}
+				else {
+					// Not fatal error
+					$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_BATCH_MOVE_ROW_NOT_FOUND', $pk));
+					continue;
+				}
+			}
+
+			// Set the new feed ID
+			$table->feedname = $feedId;
+
+			// Check the row.
+			if (!$table->check()) {
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Store the row.
+			if (!$table->store()) {
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
 
 	/**
 	 * Custom clean cache method

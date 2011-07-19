@@ -6,7 +6,7 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.7.1</version>
+	<version>1.8 Alpha</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>COM_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<menu link="option=com_podcastmanager">COM_PODCASTMANAGER</menu>
@@ -16,6 +16,9 @@
 		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
 		<filename>router.php</filename>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>media</folder>
 		<folder>models</folder>
 		<folder>views</folder>
 	</files>
@@ -37,6 +40,8 @@
 	<languages folder="site/language">
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
 	</languages>
 	<media destination="com_podcastmanager">
 		<filename>index.html</filename>
@@ -59,6 +64,8 @@
 		<languages folder="admin/language">
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
+			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
 		</languages>
 		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
 		<submenu>
@@ -72,4 +79,26 @@
 			<menu link="option=com_podcastmedia&amp;view=media" view="media" alt="Podcast-Media/Media" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
 		</submenu>
 	</administration>
+	<!-- Below section is data for Akeeba Backup System Restore Points -->
+	<restorepoint>
+		<customdirs>
+			<dir>administrator/components/com_podcastmedia</dir>
+			<dir>components/com_podcastmedia</dir>
+			<dir>libraries/getid3</dir>
+			<dir>modules/mod_podcastmanager</dir>
+			<dir>modules/mod_podcastmanagerfeed</dir>
+			<dir>plugins/content/podcastmanager</dir>
+			<dir>plugins/editors-xtd/podcastmanager</dir>
+		</customdirs>
+		<langfiles>
+			<lang>com_podcastmedia</lang>
+			<lang>mod_podcastmanager</lang>
+			<lang>mod_podcastmanagerfeed</lang>
+			<lang>plg_content_podcastmanager</lang>
+			<lang>plg_editors-xtd_podcastmanager</lang>
+		</langfiles>
+		<extratables>
+			<table>podcastmanager_feeds</table>
+		</extratables>
+	</restorepoint>
 </extension>

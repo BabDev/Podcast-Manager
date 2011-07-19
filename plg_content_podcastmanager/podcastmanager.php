@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
@@ -26,6 +26,11 @@ class plgContentPodcastManager extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1) {
+			$article->text = $article->player;
+			$feedView	= 'com_podcastmanager.feed';
+		}
+
 		// Simple performance check to determine whether plugin should process further
 		if (strpos($article->text, 'podcast') === false) {
 			return true;
@@ -48,20 +53,56 @@ class plgContentPodcastManager extends JPlugin
 				return;
 			}
 
-			foreach ($podcast as $episode) {
-				// Retrieve the title and convert it to a useable string
-				// 9 offset for {podcast marker
-				// -1 offset for closing }
-				$podtitle	= substr($episode, 9, -1);
+			// If using SM2 player, define the scripts only on the first iteration
+			if (($podmanparams->get('linkhandling') == 'html5') && ($i == 0)) {
+				// Initialize variables
+				$document	= JFactory::getDocument();
 
-				// Query the DB for the title string, returning the filename
-				$db = JFactory::getDBO();
-				$db->setQuery(
-					'SELECT `filename`' .
-					' FROM `#__podcastmanager`' .
-					' WHERE `title` = "'.$podtitle.'"'
-				);
-				$podfilepath = $db->loadObject();
+				// Define non debug settings
+				$file		= 'soundmanager2-nodebug-jsmin.js';
+				$debugMode	= 'false';
+
+				// If site debug enabled, enable SoundManager debug
+				if (JDEBUG) {
+					$file		= 'soundmanager2.js';
+					$debugMode	= 'true';
+				}
+
+				// Declare the stylesheets
+				JHTML::stylesheet('plugins/content/podcastmanager/soundmanager/css/player.css', false, false, false);
+				JHTML::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
+
+				// Declare the scripts
+				JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
+				// Check if the custom tags are already defined first; if not, add them
+				if (!in_array('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>', $document->_custom)) {
+					$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>');
+				}
+				if (!in_array('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom)) {
+					$document->addCustomTag('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>');
+				}
+				JHTML::script('plugins/content/podcastmanager/soundmanager/script/player.js', false, false);
+			}
+
+			foreach ($podcast as $episode) {
+				// Check if we're in the Podcast Manager Feed view; if so, extract data from the object
+				if ((isset($feedView)) && ($feedView == $context)) {
+					$podtitle		= $article->title;
+					$podfilepath	= $article->filename;
+				} else {
+					// Retrieve the title from the object and prepare it for a DB query
+					// 9 offset for {podcast marker, -1 offset for closing }
+					$podtitle	= substr($episode, 9, -1);
+
+					// Query the DB for the title string, returning the filename
+					$db 	= JFactory::getDBO();
+					$query	= $db->getQuery(true);
+					$query->select($db->quoteName('filename'));
+					$query->from($db->quoteName('#__podcastmanager'));
+					$query->where($db->quoteName('title').' = "'.$podtitle.'"');
+					$db->setQuery($query);
+					$podfilepath = $db->loadObject();
+				}
 
 				// Get the player
 				$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
@@ -84,7 +125,7 @@ class PodcastManagerPlayer
 	private $fileURL = null;
 	private $podmanparams = null;
 	private $podfilepath = null;
-	private $validTypes = array('link', 'player', 'QTplayer');
+	private $validTypes = array('custom', 'html5', 'link', 'player', 'QTplayer');
 	private $fileTypes = array (
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
@@ -134,19 +175,24 @@ class PodcastManagerPlayer
 	private function determineURL($podfilepath)
 	{
 		// Convert the file path to a string
-		$tempfile	= get_object_vars($podfilepath);
-		$filepath	= $tempfile['filename'];
+		$tempfile	= $podfilepath;
+
+		if (isset($tempfile->filename)) {
+			$filepath	= $tempfile->filename;
+		} else {
+			$filepath	= $tempfile;
+		}
 
 		$filename = $filepath;
 
 		// Check if the file is from off site
 		if (!preg_match('/^http/', $filename)) {
 			// The file is stored on site, check if it exists
-			$filepath	= JPATH_ROOT.'/'.$item->filename;
+			$filepath	= JPATH_ROOT.'/'.$filename;
 
 			// Check if the file exists
 			if (JFile::exists($filepath)) {
-				$filename = JURI::base().$item->filename;
+				$filename = JURI::base().$filename;
 			}
 
 			// Set the file path based on the server
@@ -170,6 +216,16 @@ class PodcastManagerPlayer
 	{
 		$linkcode = $this->podmanparams->get('customcode', '');
 		return preg_replace('/\{podcast\}/', $this->fileURL, $linkcode);
+	}
+
+	/**
+	 * Function to generate a HTML5 player that will fall back to Flash if necessary
+	 *
+	 * @return	object	A HTML5 or Flash player for the podcast
+	 */
+	private function html5()
+	{
+		return '<div id="sm2-container"><div class="sm2-player"><a class="sm2_link" href="'.$this->fileURL.'">'.htmlspecialchars($this->podtitle).'</a></div></div>';
 	}
 
 	/**

@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -61,25 +61,39 @@ class PodcastManagerViewPodcast extends JView
 		JRequest::setVar('hidemainmenu', true);
 
 		$user		= JFactory::getUser();
+		$userId		= $user->get('id');
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo		= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
-		if (($isNew && ($canDo->get('core.create'))) || (!$isNew && !$checkedOut && ($canDo->get('core.edit')))) {
-			JToolBarHelper::apply('podcast.apply');
-			JToolBarHelper::save('podcast.save');
-		}
-
-		if (!$isNew && $canDo->get('core.create')) {
-			JToolBarHelper::save2new('podcast.save2new');
-			JToolBarHelper::save2copy('feed.save2copy');
-		}
-
+		// Set the actions for new and existing records.
 		if ($isNew)  {
+			// For new records, check the create permission.
+			if ($canDo->get('core.create')) {
+				JToolBarHelper::apply('podcast.apply');
+				JToolBarHelper::save('podcast.save');
+			}
+
 			JToolBarHelper::cancel('podcast.cancel');
-		} else {
+		}
+		else {
+			// Since it's an existing record, check the edit permission.
+			if ($canDo->get('core.edit')) {
+				JToolBarHelper::apply('podcast.apply');
+				JToolBarHelper::save('podcast.save');
+
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create')) {
+					JToolBarHelper::save2new('podcast.save2new');
+				}
+			}
+			// If an existing item, can save as a copy
+			if ($canDo->get('core.create')) {
+				JToolBarHelper::save2copy('podcast.save2copy');
+			}
+
 			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

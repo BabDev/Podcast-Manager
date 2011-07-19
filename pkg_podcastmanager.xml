@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="1.6" method="upgrade">
+<extension type="package" version="1.7" method="upgrade">
 	<name>Podcast Manager</name>
 	<packagename>podcastmanager</packagename>
 	<creationDate>January 2011</creationDate>
@@ -10,7 +10,11 @@
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
+<<<<<<< HEAD
 	<version>1.7.1</version>
+=======
+	<version>1.8 Alpha</version>
+>>>>>>> 18
 	<license>GNU/GPL Version 2 or later</license>
 	<description>Podcast Manager extension suite for Joomla!</description>
 	<update>http://www.flbab.com/updates/podman.xml</update>
@@ -22,6 +26,7 @@
 		<file type="component" id="com_podcastmedia">com_podcastmedia.zip</file>
 		<file type="library" id="lib_getid3">lib_getid3.zip</file>
 		<file type="module" id="mod_podcastmanager" client="site">mod_podcastmanager.zip</file>
+		<file type="module" id="mod_podcastmanagerfeed" client="site">mod_podcastmanagerfeed.zip</file>
 		<file type="plugin" id="podcastmanager" group="content">plg_content_podcastmanager.zip</file>
 		<file type="plugin" id="podcastmanager" group="editors-xtd">plg_editors-xtd_podcastmanager.zip</file>
 	</files>

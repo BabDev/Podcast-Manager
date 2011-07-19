@@ -10,7 +10,7 @@
 */
 
 // Restricted access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 jimport( 'joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -183,11 +183,11 @@ class PodcastManagerViewFeed extends JView
 			// Check if the file is from off site
 			if (!preg_match('/^http/', $filepath)) {
 				// The file is stored on site, check if it exists
-				$filepath	= JPATH_ROOT.'/'.$item->filename;
+				$filepath	= JPATH_ROOT.'/'.$filename;
 
 				// Check if the file exists
 				if (JFile::exists($filepath)) {
-					$filename = JURI::base().$item->filename;
+					$filename = JURI::base().$filename;
 				}
 			}
 

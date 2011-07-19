@@ -83,7 +83,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td>
 					<?php if ($item->checked_out) {
-						echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'feeds.', $canCheckin);
+						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
 					} ?>
 					<?php if ($canEdit) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id='.$item->id); ?>">

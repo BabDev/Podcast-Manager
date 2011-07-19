@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_PODCASTMANAGER_FEED_VIEW_TITLE" option="COM_PODCASTMANAGER_FEED_VIEW_OPTION">
+	<layout title="COM_PODCASTMANAGER_FEED_RAW_VIEW_TITLE" option="COM_PODCASTMANAGER_FEED_RAW_VIEW_OPTION">
 		<message>
-			<![CDATA[COM_PODCASTMANAGER_FEED_VIEW_DESCRIPTION]]>
+			<![CDATA[COM_PODCASTMANAGER_FEED_RAW_VIEW_DESCRIPTION]]>
 		</message>
+		<options var="format">
+			<option value="raw" layout="default" name="COM_PODCASTMANAGER_FEED_RAW_VIEW_TITLE" msg="COM_PODCASTMANAGER_FEED_RAW_VIEW_DESCRIPTION" />
+		</options>
 	</layout>
 	<fields name="request">
 		<fieldset name="request"
 			addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
 			<field name="feedname" type="feedname"
-				description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
-				label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL"
+				description="COM_PODCASTMANAGER_MENU_FEEDNAME_DESCRIPTION"
+				label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL"
 				required="true" />
 			<field name="limit" type="text"
 				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
 				label="COM_PODCASTMANAGER_LIMIT_LABEL"
 				size="3" filter="integer" />
+			<field name="format" type="hidden" default="raw" />
 		</fieldset>
 	</fields>
-
 </metadata>
