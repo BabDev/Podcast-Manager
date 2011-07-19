@@ -10,9 +10,6 @@
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-<<<<<<< HEAD
-	<version>1.7.1</version>
-=======
 	<version>1.8 Alpha</version>
 >>>>>>> 18
 	<license>GNU/GPL Version 2 or later</license>
