@@ -44,30 +44,34 @@ margin: 0px;
 padding: 0px;
 }
 
-div.sm2-player a {
+div.sm2-player a.sm2_link {
+color: #ffffff;
+display: block;
 margin-bottom: 2px;
+text-decoration: none;
 }
 
-div.sm2-player a, div.sm2-player a.sm2_link {
+/* we don't want to inherit link classes */
+div.sm2-player a:hover, div.sm2-player a:active, div.sm2-player a:focus {
+background: none !important;
+}
+
 /* assume all items will be sounds rather than wait for onload etc. in this example.. may differ for your uses. */
-display: inline-block;
-padding-left: 22px;
-min-height: 16px;
-vertical-align: middle;
+div#sm2-container div.sm2-player {
 background-color: #336699;
 -moz-border-radius: 3px;
 -webkit-border-radius: 3px;
 border-radius: 3px;
-padding: 3px 3px 3px 25px;
-min-width: 19em;
-_width: 19em; /* IE 6 */
-text-decoration: none;
+color: #ffffff;
+display: inline-block;
 font-weight: normal;
-color: #f6f9ff;
-}
-
-div.sm2-player a.sm2_link {
-/* safari 3.1+ fun (or, proprietary crap. TBD.) */
+padding-left: 22px;
+min-height: 16px;
+min-width: 19em;
+padding: 3px 3px 3px 25px;
+text-decoration: none;
+vertical-align: middle;
+_width: 19em; /* IE 6 */
 -webkit-transition-property: hover;
 -webkit-transition: background-color 0.15s linear;
 -moz-transition: background-color 0.15s linear 0s; /* firefox 4 */
@@ -75,36 +79,74 @@ div.sm2-player a.sm2_link {
 -o-transition-duration: 0.15s;
 }
 
+div#sm2-container div.sm2_playing, div#sm2-container div.sm2_paused {
+min-height: 25px;
+}
+
 /* use a.sm2_link {} if you want play icons showing only if SM2 is supported */
-div.sm2-player a, div.sm2-player a.sm2_paused:hover, div.sm2-player a.sm2_link:hover {
+div#sm2-container div.sm2-player, div#sm2-container div.sm2_paused:hover, div#sm2-container div.sm2-player:hover {
 background-image: url(../images/icon_play.png);
 background-position: 3px 50%;
 background-repeat: no-repeat;
 _background-image: url(../images/icon_play.gif); /* IE 6 */
 }
 
-div.sm2-player a.sm2_link:hover {
-/* default hover color, if you'd like.. */
-background-color: #003366;
-color: #ffffff;
-}
-
-div.sm2-player a.sm2_paused {
+div#sm2-container div.sm2_paused {
 background-color: #999999;
 }
 
-div.sm2-player a.sm2_paused:hover {
+div#sm2-container div.sm2_paused:hover {
 background: #003366 url(../images/icon_play.png) no-repeat 3px 50%;
 _background-image: url(../images/icon_play.gif);
 }
 
-div.sm2-player a.sm2_playing, div.sm2-player a.sm2_playing:hover {
+div#sm2-container div.sm2_playing:hover {
 background: #003366 url(../images/icon_pause.png) no-repeat 3px 50%;
 _background-image: url(../images/icon_pause.gif);
 text-decoration: none;
 }
 
-div.sm2-player div.position, div.sm2-player div.loading {
+div.sm2-player div.sm2_elements {
+position: relative;
+}
+
+div.sm2-player:hover div.sm2_elements div.controls div.statusbar {
+cursor: ew-resize;
+cursor: -moz-grab;
+cursor: grab;
+position: relative;
+}
+
+div#sm2-container div.sm2_paused div.sm2_elements div.controls div.statusbar {
+background-color: #CCCCCC;
+}
+
+div.sm2-player div.sm2_elements div.controls {
+background-color: #99CCFF;
+margin-bottom: 0.25em;
+margin-top: 0.25em;
+position: relative;
+}
+
+div.sm2-player div.sm2_elements div.controls div.statusbar {
+background-color: #CCDDFF;
+border: 2px solid #FFFFFF;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+border-radius: 2px;
+cursor: -moz-grab;
+cursor: grab;
+height: 0.5em;
+overflow: hidden;
+position: relative;
+}
+
+div.sm2-player div.sm2_elements div.controls.dragging div.statusbar {
+cursor: -moz-grabbing;
+cursor: grabbing;
+}
+
+div.sm2-player div.sm2_elements div.controls div.statusbar div.position, div.sm2-player div.sm2_elements div.controls div.statusbar div.loading {
 height: 0.5em;
 left: 0px;
 position: absolute;
@@ -117,9 +159,13 @@ background-color: #336699;
 -webkit-border-radius: 3px;
 border-radius: 3px;
 border-right: 3px solid #336699;
+-webkit-transition: background-color 0.15s linear;
+-moz-transition: background-color 0.15s linear 0s; /* firefox 4 */
+-o-transition-property: background-color; /* opera 10.5 */
+-o-transition-duration: 0.15s;
 }
 
-div.sm2-player a.sm2_paused div.position {
+div#sm2-container div.sm2_paused div.position {
 background-color: #666666;
 border-color: #666666;
 }
@@ -134,6 +180,10 @@ width: 0px;
 
 div.sm2-player a.sm2_link div.timing {
 float: right;
+}
+
+div.sm2_paused a.sm2_link div.timing span.sm2_position {
+text-decoration: blink;
 }
 
 /* hide button while playing?

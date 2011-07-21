@@ -149,13 +149,13 @@ function InlinePlayer() {
     // handlers for sound events as they're started/stopped/played
 
     play: function() {
-      pl.removeClass(this._data.oLink,this._data.className);
+      pl.removeClass(this._data.oLI,this._data.className);
       this._data.className = pl.css.sPlaying;
-      pl.addClass(this._data.oLink,this._data.className);
+      pl.addClass(this._data.oLI,this._data.className);
     },
 
     stop: function() {
-      pl.removeClass(this._data.oLink,this._data.className);
+      pl.removeClass(this._data.oLI,this._data.className);
       this._data.className = '';
       this._data.oPosition.style.width = '0px';
     },
@@ -164,22 +164,22 @@ function InlinePlayer() {
       if (pl.dragActive) {
         return false;
       }
-      pl.removeClass(this._data.oLink,this._data.className);
+      pl.removeClass(this._data.oLI,this._data.className);
       this._data.className = pl.css.sPaused;
-      pl.addClass(this._data.oLink,this._data.className);
+      pl.addClass(this._data.oLI,this._data.className);
     },
 
     resume: function() {
       if (pl.dragActive) {
         return false;
       }
-      pl.removeClass(this._data.oLink,this._data.className);
+      pl.removeClass(this._data.oLI,this._data.className);
       this._data.className = pl.css.sPlaying;
-      pl.addClass(this._data.oLink,this._data.className);      
+      pl.addClass(this._data.oLI,this._data.className);      
     },
 
     finish: function() {
-      pl.removeClass(this._data.oLink,this._data.className);
+      pl.removeClass(this._data.oLI,this._data.className);
       this._data.className = '';
       this._data.oPosition.style.width = '0px';
       if (pl.config.playNext) {
@@ -242,7 +242,8 @@ function InlinePlayer() {
 	  // ignore right-click
 	  return true;
     }
-    var o = self.getTheDamnLink(e);
+    var o = self.getTheDamnLink(e),
+      sURL, soundURL, thisSound, oControls, oLI, str;
     if (o.nodeName.toLowerCase() != 'a') {
       o = self.isChildOfNode(o,'a');
       if (!o) return true;
@@ -289,6 +290,7 @@ function InlinePlayer() {
       // tack on some custom data
       thisSound._data = {
         oLink: o, // DOM node for reference within SM2 object event handlers
+        oLI: oLI,
         className: self.css.sPlaying,
         oControls: self.select('controls',oLI),
         oStatus: self.select('statusbar',oLI),
