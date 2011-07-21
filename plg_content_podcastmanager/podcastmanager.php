@@ -61,11 +61,13 @@ class plgContentPodcastManager extends JPlugin
 				// Define non debug settings
 				$file		= 'soundmanager2-nodebug-jsmin.js';
 				$debugMode	= 'false';
+				$player		= 'player.js';
 
 				// If site debug enabled, enable SoundManager debug
 				if (JDEBUG) {
 					$file		= 'soundmanager2.js';
 					$debugMode	= 'true';
+					$player		= 'player-uncompressed.js';
 				}
 
 				// Declare the stylesheets
@@ -81,7 +83,7 @@ class plgContentPodcastManager extends JPlugin
 				if (!in_array('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom)) {
 					$document->addCustomTag('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>');
 				}
-				JHTML::script('plugins/content/podcastmanager/soundmanager/script/player.js', false, false);
+				JHTML::script('plugins/content/podcastmanager/soundmanager/script/'.$player, false, false);
 			}
 
 			foreach ($podcast as $episode) {
