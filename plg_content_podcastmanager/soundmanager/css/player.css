@@ -104,6 +104,34 @@ _background-image: url(../images/icon_pause.gif);
 text-decoration: none;
 }
 
+div.sm2-player div.position, div.sm2-player div.loading {
+height: 0.5em;
+left: 0px;
+position: absolute;
+top: 0px;
+}
+
+div.sm2-player div.position {
+background-color: #336699;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+border-radius: 3px;
+border-right: 3px solid #336699;
+}
+
+div.sm2-player a.sm2_paused div.position {
+background-color: #666666;
+border-color: #666666;
+}
+
+div.sm2-player div.loading {
+background-color: #EEEEEE;
+}
+
+div.sm2-player div.position, div.sm2-player div.loading {
+width: 0px;
+}
+
 div.sm2-player a.sm2_link div.timing {
 float: right;
 }

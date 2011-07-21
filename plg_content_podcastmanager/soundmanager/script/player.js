@@ -16,8 +16,13 @@ function InlinePlayer() {
   var self = this;
   var pl = this;
   var sm = soundManager; // soundManager instance
+  var isIE = (navigator.userAgent.match(/msie/i));
+  var isTouchDevice = (navigator.userAgent.match(/ipad|ipod|iphone/i));
   this.playableClass = 'inline-playable'; // CSS class for forcing a link to be playable (eg. doesn't have .MP3 in it)
   this.excludeClass = 'inline-exclude'; // CSS class for ignoring MP3 links
+  this.dragActive = false;
+  this.dragExec = new Date();
+  this.dragTimer = null;
   this.links = [];
   this.sounds = [];
   this.soundsByURL = [];
@@ -26,10 +31,12 @@ function InlinePlayer() {
   this.lastSound = null;
   this.lastWPExec = new Date();
   this.soundCount = 0;
-  var isIE = (navigator.userAgent.match(/msie/i));
+  this.oControls = null;
+  this.oTiming = null;
 
   this.config = {
     useMovieStar: true, // [Flash 9 only]: Support for MPEG4 audio formats
+    useThrottling: true, // try to rate-limit potentially-expensive calls (eg. dragging position around)
     playNext: false, // stop after one sound, or play through list until end
     autoPlay: false,  // start playing the first sound right away
     emptyTime: '-:--'  // null/undefined timer values (before data is available)
@@ -117,7 +124,7 @@ function InlinePlayer() {
     return (typeof self.soundsByURL[sURL] != 'undefined'?self.soundsByURL[sURL]:null);
   }
 
-  this.isChildOfNode = function(o,sNodeName) {
+  this.isChildOfNode = function(o, sNodeName) {
     if (!o || !o.parentNode) {
       return false;
     }
@@ -150,15 +157,22 @@ function InlinePlayer() {
     stop: function() {
       pl.removeClass(this._data.oLink,this._data.className);
       this._data.className = '';
+      this._data.oPosition.style.width = '0px';
     },
 
     pause: function() {
+      if (pl.dragActive) {
+        return false;
+      }
       pl.removeClass(this._data.oLink,this._data.className);
       this._data.className = pl.css.sPaused;
       pl.addClass(this._data.oLink,this._data.className);
     },
 
     resume: function() {
+      if (pl.dragActive) {
+        return false;
+      }
       pl.removeClass(this._data.oLink,this._data.className);
       this._data.className = pl.css.sPlaying;
       pl.addClass(this._data.oLink,this._data.className);      
@@ -167,6 +181,7 @@ function InlinePlayer() {
     finish: function() {
       pl.removeClass(this._data.oLink,this._data.className);
       this._data.className = '';
+      this._data.oPosition.style.width = '0px';
       if (pl.config.playNext) {
         var nextLink = (pl.indexByURL[this._data.oLink.href]+1);
         if (nextLink<pl.links.length) {
@@ -177,14 +192,26 @@ function InlinePlayer() {
 
     whileplaying: function() {
       var d = null;
-      d = new Date();
-      if (d-self.lastWPExec>30) {
+      if (pl.dragActive) {
         self.updateTime.apply(this);
         if (this._data.metadata) {
-          this._data.metadata.refreshMetadata(this);
+          d = new Date();
+          if (d && d-self.lastWPExec>500) {
+            this._data.metadata.refreshMetadata(this);
+            self.lastWPExec = d;
+          }
         }
         this._data.oPosition.style.width = (((this.position/self.getDurationEstimate(this))*100)+'%');
-        self.lastWPExec = d;
+      } else {
+        d = new Date();
+        if (d-self.lastWPExec>30) {
+          self.updateTime.apply(this);
+          if (this._data.metadata) {
+            this._data.metadata.refreshMetadata(this);
+          }
+          this._data.oPosition.style.width = (((this.position/self.getDurationEstimate(this))*100)+'%');
+          self.lastWPExec = d;
+        }
       }
     }
   }
@@ -205,6 +232,10 @@ function InlinePlayer() {
     return e.target;
   }
 
+  this.withinStatusBar = function(o) {
+    return (self.isChildOfNode(o,'controls'));
+  };
+
   this.handleClick = function(e) {
     // a sound link was clicked
     if (typeof e.button != 'undefined' && e.button>1) {
@@ -215,6 +246,9 @@ function InlinePlayer() {
     if (o.nodeName.toLowerCase() != 'a') {
       o = self.isChildOfNode(o,'a');
       if (!o) return true;
+    }
+    if (self.dragActive) {
+      self.stopDrag(); // to be safe
     }
     var sURL = o.getAttribute('href');
     if (!o.href || (!sm.canPlayLink(o) && !self.classContains(o,self.playableClass)) || self.classContains(o,self.excludeClass)) {
@@ -245,14 +279,21 @@ function InlinePlayer() {
        onfinish:self.events.finish,
        whileplaying:self.events.whileplaying
       });
-      // append control template
+      // append templates
       oControls = self.oControls.cloneNode(true);
+      oTiming = self.oTiming.cloneNode(true);
       oLink = o;
-      oLink.appendChild(oControls);
+      oLI = o.parentNode;
+      oLink.appendChild(oTiming);
+      oLI.appendChild(oControls);
       // tack on some custom data
       thisSound._data = {
         oLink: o, // DOM node for reference within SM2 object event handlers
         className: self.css.sPlaying,
+        oControls: self.select('controls',oLI),
+        oStatus: self.select('statusbar',oLI),
+        oLoading: self.select('loading',oLI),
+        oPosition: self.select('position',oLI),
         oTimingBox: self.select('timing',oLink),
         oTiming: self.select('timing',oLink).getElementsByTagName('div')[0]
       };
@@ -277,10 +318,100 @@ function InlinePlayer() {
     return false;
   }
 
+  this.handleMouseDown = function(e) {
+    // a sound link was clicked
+    if (isTouchDevice && e.touches) {
+      e = e.touches[0];
+    }
+    var o = self.getTheDamnLink(e);
+    if (!o) {
+      return true;
+    }
+    if (!self.withinStatusBar(o)) {
+      return true;
+    }
+    self.dragActive = true;
+    self.lastSound.pause();
+    self.setPosition(e);
+    if (!isTouchDevice) {
+      _event.add(document,'mousemove',self.handleMouseMove);
+    } else {
+      _event.add(document,'touchmove',self.handleMouseMove);
+    }
+    self.addClass(self.lastSound._data.oControls,'dragging');
+    return self.stopEvent(e);
+  };
+	  
+  this.handleMouseMove = function(e) {
+    if (isTouchDevice && e.touches) {
+      e = e.touches[0];
+    }
+    // set position accordingly
+    if (self.dragActive) {
+      if (self.config.useThrottling) {
+        // be nice to CPU/externalInterface
+        var d = new Date();
+        if (d-self.dragExec>20) {
+          self.setPosition(e);
+        } else {
+          window.clearTimeout(self.dragTimer);
+          self.dragTimer = window.setTimeout(function(){self.setPosition(e);},20);
+        }
+        self.dragExec = d;
+      } else {
+        // oh the hell with it
+        self.setPosition(e);
+      }
+    } else {
+      self.stopDrag();
+    }
+    e.stopPropagation = true;
+    return false;
+  }
+
+  this.stopDrag = function(e) {
+    if (self.dragActive) {
+      self.removeClass(self.lastSound._data.oControls,'dragging');
+      if (!isTouchDevice) {
+        _event.remove(document,'mousemove',self.handleMouseMove);
+      } else {
+        _event.remove(document,'touchmove',self.handleMouseMove);
+      }
+      if (!pl.hasClass(self.lastSound._data.oLI,self.css.sPaused)) {
+        self.lastSound.resume();
+      }
+      self.dragActive = false;
+      return self.stopEvent(e);
+    }
+  }
+
   this.stopSound = function(oSound) {
     soundManager.stop(oSound.sID);
     soundManager.unload(oSound.sID);
   }
+
+  this.setPosition = function(e) {
+    // called from slider control
+    var oThis = self.getTheDamnLink(e),
+      x, oControl, oSound, nMsecOffset;
+    if (!oThis) {
+      return true;
+    }
+    oControl = oThis;
+    while (!self.hasClass(oControl,'controls') && oControl.parentNode) {
+      oControl = oControl.parentNode;
+    }
+    oSound = self.lastSound;
+    x = parseInt(e.clientX,10);
+    // play sound at this position
+    nMsecOffset = Math.floor((x-self.getOffX(oControl)-4)/(oControl.offsetWidth)*self.getDurationEstimate(oSound));
+    if (!isNaN(nMsecOffset)) {
+      nMsecOffset = Math.min(nMsecOffset,oSound.duration);
+    }
+    if (!isNaN(nMsecOffset)) {
+      oSound.setPosition(nMsecOffset);
+    }
+  };
 
   this.updateTime = function() {
     var str = self.strings.timing.replace('%s1',self.getTime(this.position,true));
@@ -316,10 +447,11 @@ function InlinePlayer() {
         self.handleClick({target:self.links[0],preventDefault:function(){}});
       }
     }
-    controlTemplate = document.createElement('div');
-    controlTemplate.setAttribute('class', 'timing');
+    // create the timing template
+    timingTemplate = document.createElement('div');
+    timingTemplate.setAttribute('class', 'timing');
 
-    controlTemplate.innerHTML = [
+    timingTemplate.innerHTML = [
 
      // control markup inserted dynamically after each page player link
      // if you want to change the UI layout, this is the place to do it.
@@ -329,9 +461,28 @@ function InlinePlayer() {
      '   </div>'
 
     ].join('\n');
+    self.oTiming = timingTemplate.cloneNode(true);
+
+    // create the position template
+    controlTemplate = document.createElement('div');
+    controlTemplate.setAttribute('class', 'sm2_elements');
+
+    controlTemplate.innerHTML = [
+
+     // control markup inserted dynamically after each page player link
+     // if you want to change the UI layout, this is the place to do it.
+
+     '  <div class="controls">',
+     '   <div class="statusbar">',
+     '    <div class="loading"></div>',
+     '    <div class="position"></div>',
+     '   </div>',
+     '  </div>'
+
+    ].join('\n');
     self.oControls = controlTemplate.cloneNode(true);
 
-    oTiming = self.select('timing-data',controlTemplate);
+    oTiming = self.select('timing-data',timingTemplate);
     self.strings.timing = oTiming.innerHTML;
     oTiming.innerHTML = '';
     oTiming.id = '';
