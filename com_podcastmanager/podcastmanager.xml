@@ -68,16 +68,6 @@
 			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
 		</languages>
 		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
-		<submenu>
-			<!--
-				Note that all & must be escaped to &amp; for the file to be valid
-				XML and be parsed by the installer
-			-->
-			<menu link="option=com_podcastmanager&amp;view=feeds" view="feeds" alt="Podcast-Manager/Feeds" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_FEEDS</menu>
-			<menu link="option=com_podcastmanager&amp;view=podcasts" view="podcasts" alt="Podcast-Manager/Podcasts" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_PODCASTS</menu>
-			<menu link="option=com_podcastmanager&amp;view=info" view="info" alt="Podcast-Manager/Info" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_INFO</menu>
-			<menu link="option=com_podcastmedia&amp;view=media" view="media" alt="Podcast-Media/Media" img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER_SUBMENU_FILES</menu>
-		</submenu>
 	</administration>
 	<!-- Below section is data for Akeeba Backup System Restore Points -->
 	<restorepoint>

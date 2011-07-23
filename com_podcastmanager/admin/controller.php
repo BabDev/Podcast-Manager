@@ -23,7 +23,7 @@ class PodcastManagerController extends JController
 	 * @var		string	The default view.
 	 * @since	1.6
 	 */
-	protected $default_view = 'feeds';
+	protected $default_view = 'cpanel';
 
 	/**
 	 * Method to display a view.
