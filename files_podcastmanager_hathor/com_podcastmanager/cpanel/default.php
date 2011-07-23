@@ -12,6 +12,9 @@
 // Restricted access
 defined('_JEXEC') or die;
 
+// Styles specific to the cpanel
+JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/cpanel/cpanel.css', false, false, false);
+
 // Site addresses to be processed outside JText
 $flbab		= '<a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
@@ -30,7 +33,7 @@ $pane =& JPane::getInstance('Sliders');
 
 <div id="cpanel">
 	<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $flbab);?></p>
-	<div class="cpanel-left">
+	<div class="cpanel-icons">
 		<div class="icon">
 			<a href="index.php?option=com_podcastmanager&amp;view=feeds">
 				<img src="<?php echo $icons; ?>/feeds.png" />
@@ -52,7 +55,7 @@ $pane =& JPane::getInstance('Sliders');
 		<?php echo LiveUpdate::getIcon(); ?>
 	</div>
 
-	<div class="cpanel-right">
+	<div class="cpanel-component">
 	<?php echo $pane->startPane('podmancpanel')."\n"; ?>
 		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'), 'howitworks')."\n"; ?>
 		<div>

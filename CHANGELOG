@@ -1,3 +1,9 @@
+23-July-2011 Michael Babker Version 1.8 Changes
+- Removed Information view
+- Removed Components submenu items
++ Added cpanel view as new default landing
++ Added Akeeba Live Update support
+
 21-July-2011 Michael Babker Version 1.8 Changes
 + Add script to display the position within the playing file
 
