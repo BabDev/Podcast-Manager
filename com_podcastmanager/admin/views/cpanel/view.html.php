@@ -1,22 +1,20 @@
 <?php
 /**
- * @package AkeebaBackup
- * @copyright Copyright (c)2006-2011 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
- * @version $Id: view.html.php 704 2011-06-04 12:35:05Z nikosdion $
- * @since 1.3
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+*
+* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+*/
 
-// Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+// Restricted access
+defined('_JEXEC') or die;
 
 // Load framework base classes
 jimport('joomla.application.component.view');
 
-/**
- * Akeeba Backup Control Panel view class
- *
- */
 class PodcastManagerViewCpanel extends JView
 {
 	public function display($tpl = null)
@@ -42,7 +40,7 @@ class PodcastManagerViewCpanel extends JView
 	 * Add the page title and toolbar.
 	 *
 	 * @return	void
-	 * @since	1.6
+	 * @since	1.8
 	 */
 	protected function addToolbar()
 	{
