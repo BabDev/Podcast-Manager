@@ -55,6 +55,7 @@
 			<filename>podcastmanager.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
+			<folder>liveupdate</folder>
 			<folder>media</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
