@@ -8,28 +8,33 @@
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-#content .toolbar-box {
-	border-top: 1px solid #C7C8B2;
+.widgets-first {
+	float: left;
+	width: 54%;
 }
 
-#element-box {
-	padding: 15px;
+.widgets-last {
+	float: right;
+	width: 44%;
 }
 
-p#skiptargetholder {
-	display: none;
+#content-cpanel > p {
+	margin-left: 0 !important;
+	max-width: none !important;
 }
 
-#element-box p.intro {
-	font-size: 12px;
-	padding-bottom: 5px;
+.icon a {
+	display: block;
+	text-align: center;
+	text-decoration: none !important;
 }
 
-.cpanel-component .pane-slider div {
-	padding: 5px;
+.icon a div {
+	text-align: center;
+	margin-top: 10px;
 }
 
-.cpanel-component .pane-slider div ul li {
-	list-style: disc outside none;
-	margin-left: 20px;
+.icon span {
+	display: block;
+	margin-top: 22px !important;
 }

@@ -11,6 +11,7 @@
 	<description>HTML overrides for the Podcast Manager extensions for the Minima template</description>
 	<fileset>
 		<files folder="com_podcastmanager" target="administrator/templates/minima/html/com_podcastmanager">
+			<folder>cpanel</folder>
 			<folder>feed</folder>
 			<folder>feeds</folder>
 			<folder>podcast</folder>
