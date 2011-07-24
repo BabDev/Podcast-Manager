@@ -10,16 +10,16 @@ defined('_JEXEC') or die();
 class LiveUpdateXMLSlurp extends JObject
 {
 	private $_info = array();
-	
+
 	public function getInfo($extensionName, $xmlName)
 	{
 		if(!array_key_exists($extensionName, $this->_info)) {
 			$this->_info[$extensionName] = $this->fetchInfo($extensionName, $xmlName);
 		}
-		
+
 		return $this->_info[$extensionName];
 	}
-	
+
 	/**
 	 * Gets the version information of an extension by reading its XML file
 	 * @param string $extensionName The name of the extension, e.g. com_foobar, mod_foobar, plg_foobar or tpl_foobar.
@@ -35,6 +35,9 @@ class LiveUpdateXMLSlurp extends JObject
 			case 'mod':
 				return $this->getModuleData($extensionName, $xmlName);
 				break;
+			case 'pkg':
+				return $this->getPackageData($extensionName, $xmlName);
+				break;
 			case 'plg':
 				return $this->getPluginData($extensionName, $xmlName);
 				break;
@@ -45,7 +48,7 @@ class LiveUpdateXMLSlurp extends JObject
 				return array('version'=>'', 'date'=>'');
 		}
 	}
-	
+
 	/**
 	 * Gets the version information of a component by reading its XML file
 	 * @param string $extensionName The name of the extension, e.g. com_foobar
@@ -56,7 +59,7 @@ class LiveUpdateXMLSlurp extends JObject
 		$extensionName = strtolower($extensionName);
 		$path = JPATH_ADMINISTRATOR.'/components/'.$extensionName;
 		$altExtensionName = substr($extensionName,4);
-		
+
 		jimport('joomla.filesystem.file');
 		if(JFile::exists("$path/$xmlName")) {
 			$filename = "$path/$xmlName";
@@ -70,33 +73,33 @@ class LiveUpdateXMLSlurp extends JObject
 			$filename = $this->searchForManifest($path);
 			if($filename === false)	$filename = null;
 		}
-		
+
 		if(empty($filename)) {
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$data = array();
 		$element = & $xml->document->version[0];
-		$data['version'] = $element ? $element->data() : '';		
+		$data['version'] = $element ? $element->data() : '';
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
-		
+
 		$data['xmlfile'] = $filename;
 
 		return $data;
 	}
-	
+
 	/**
 	 * Gets the version information of a module by reading its XML file
 	 * @param string $extensionName The name of the extension, e.g. mod_foobar
@@ -106,7 +109,7 @@ class LiveUpdateXMLSlurp extends JObject
 	{
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
-		
+
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 		$path = JPATH_SITE.'/modules/'.$extensionName;
@@ -151,28 +154,79 @@ class LiveUpdateXMLSlurp extends JObject
 				return array('version' => '', 'date' => '');
 			}
 		}
-		
+
 		if(empty($filename)) {
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$data = array();
 		$element = & $xml->document->version[0];
-		$data['version'] = $element ? $element->data() : '';		
+		$data['version'] = $element ? $element->data() : '';
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
-		
+
+		$data['xmlfile'] = $filename;
+
+		return $data;
+	}
+
+	/**
+	 * Gets the version information of a module by reading its XML file
+	 * @param string $extensionName The name of the extension, e.g. mod_foobar
+	 * @param string $xmlName The name of the XML manifest filename. If empty uses $extensionName.xml
+	 */
+	private function getPackageData($extensionName, $xmlName)
+	{
+		$extensionName = strtolower($extensionName);
+		$altExtensionName = substr($extensionName,4);
+
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		$path = JPATH_ADMINISTRATOR.'/manifests/packages';
+
+		$filename = "$path/$xmlName";
+		if(!JFile::exists($filename)) {
+			$filename = "$path/$extensionName.xml";
+		}
+		if(!JFile::exists($filename)) {
+			$filename = "$path/$altExtensionName.xml";
+		}
+		if(!JFile::exists($filename)) {
+			return array('version' => '', 'date' => '');
+		}
+
+		if(empty($filename)) {
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		$xml = & JFactory::getXMLParser('Simple');
+		if (!$xml->loadFile($filename)) {
+			unset($xml);
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		if ($xml->document->name() != 'extension') {
+			unset($xml);
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		$data = array();
+		$element = & $xml->document->version[0];
+		$data['version'] = $element ? $element->data() : '';
+		$element = & $xml->document->creationDate[0];
+		$data['date'] = $element ? $element->data() : '';
+
 		$data['xmlfile'] = $filename;
 
 		return $data;
@@ -187,12 +241,12 @@ class LiveUpdateXMLSlurp extends JObject
 	{
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
-		
+
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-		
+
 		$base = JPATH_PLUGINS;
-		
+
 		// Get a list of directories
 		$stack = JFolder::folders($base,'.',true,true);
 		foreach($stack as $path)
@@ -204,7 +258,7 @@ class LiveUpdateXMLSlurp extends JObject
 			$filename = "$path/$altExtensionName.xml";
 			if(JFile::exists($filename)) break;
 		}
-		
+
 		if(!JFile::exists($filename)) {
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
@@ -214,23 +268,23 @@ class LiveUpdateXMLSlurp extends JObject
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$data = array();
 		$element = & $xml->document->version[0];
-		$data['version'] = $element ? $element->data() : '';		
+		$data['version'] = $element ? $element->data() : '';
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
-		
+
 		$data['xmlfile'] = $filename;
 
-		return $data;		
+		return $data;
 	}
-	
+
 	/**
 	 * Gets the version information of a template by reading its XML file
 	 * @param string $extensionName The name of the template, e.g. tpl_foobar
@@ -240,10 +294,10 @@ class LiveUpdateXMLSlurp extends JObject
 	{
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
-		
+
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-		
+
 		// First look for administrator templates
 		$path = JPATH_THEMES.'/'.$altExtensionName;
 		if(!JFolder::exists($path)) {
@@ -251,7 +305,7 @@ class LiveUpdateXMLSlurp extends JObject
 			$path = JPATH_SITE.'/templates/'.$altExtensionName;
 			if(!JFolder::exists($path)) return array('version' => '', 'date' => '');
 		}
-		
+
 		$filename = "$path/$xmlName";
 		if(!JFile::exists($filename)) {
 			$filename = "$path/templateDetails.xml";
@@ -265,35 +319,35 @@ class LiveUpdateXMLSlurp extends JObject
 		if(!JFile::exists($filename)) {
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
-		
+
 		$data = array();
 		$element = & $xml->document->version[0];
-		$data['version'] = $element ? $element->data() : '';		
+		$data['version'] = $element ? $element->data() : '';
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
-		
+
 		$data['xmlfile'] = $filename;
 
-		return $data;		
+		return $data;
 	}
-	
+
 	/**
 	 * Scans a directory for XML manifest files. The first XML file to be a
 	 * manifest wins.
-	 * 
+	 *
 	 * @var $path string The path to look into
-	 * 
+	 *
 	 * @return string|bool The full path to a manifest file or false if not found
 	 */
 	private function searchForManifest($path)
@@ -308,7 +362,7 @@ class LiveUpdateXMLSlurp extends JObject
 			unset($xml);
 			return $filename;
 		}
-		
+
 		return false;
 	}
 }

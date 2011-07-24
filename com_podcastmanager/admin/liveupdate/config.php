@@ -14,7 +14,9 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
 	var $_extensionName			= 'pkg_podcastmanager';
 	var $_extensionTitle		= 'Podcast Manager';
-	var $_updateURL				= 'http://www.flbab.com/index.php?option=com_ars&view=update&format=ini&id=3';
+	var $_minStability 			= 'beta';
 	var $_requiresAuthorization	= false;
-	var $_versionStrategy		= 'newest';
+	var $_updateURL				= 'http://www.flbab.com/index.php?option=com_ars&view=update&format=ini&id=3';
+	var $_versionStrategy		= 'different';
+	var $_xmlFilename			= 'pkg_podcastmanager.xml';
 }
