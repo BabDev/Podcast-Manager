@@ -35,17 +35,24 @@ class LiveUpdateXMLSlurp extends JObject
 			case 'mod':
 				return $this->getModuleData($extensionName, $xmlName);
 				break;
-			case 'pkg':
-				return $this->getPackageData($extensionName, $xmlName);
-				break;
 			case 'plg':
 				return $this->getPluginData($extensionName, $xmlName);
 				break;
 			case 'tpl':
 				return $this->getTemplateData($extensionName, $xmlName);
 				break;
+			case 'pkg':
+				return $this->getManifestData($extensionName, $xmlName, 'packages');
+				break;
+			case 'lib':
+				return $this->getManifestData($extensionName, $xmlName, 'libraries');
+				break;
 			default:
-				return array('version'=>'', 'date'=>'');
+				if(strtolower(substr($extensionName, 0, 4)) == 'file') {
+					return $this->getManifestData($extensionName, $xmlName, 'files');
+				} else {
+					return array('version'=>'', 'date'=>'');
+				}
 		}
 	}
 
@@ -84,7 +91,7 @@ class LiveUpdateXMLSlurp extends JObject
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 
-		if ($xml->document->name() != 'install') {
+		if ( ($xml->document->name() != 'install') && ($xml->document->name() != 'extension') ) {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
@@ -166,57 +173,6 @@ class LiveUpdateXMLSlurp extends JObject
 		}
 
 		if ($xml->document->name() != 'install') {
-			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');
-		}
-
-		$data = array();
-		$element = & $xml->document->version[0];
-		$data['version'] = $element ? $element->data() : '';
-		$element = & $xml->document->creationDate[0];
-		$data['date'] = $element ? $element->data() : '';
-
-		$data['xmlfile'] = $filename;
-
-		return $data;
-	}
-
-	/**
-	 * Gets the version information of a module by reading its XML file
-	 * @param string $extensionName The name of the extension, e.g. mod_foobar
-	 * @param string $xmlName The name of the XML manifest filename. If empty uses $extensionName.xml
-	 */
-	private function getPackageData($extensionName, $xmlName)
-	{
-		$extensionName = strtolower($extensionName);
-		$altExtensionName = substr($extensionName,4);
-
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-		$path = JPATH_ADMINISTRATOR.'/manifests/packages';
-
-		$filename = "$path/$xmlName";
-		if(!JFile::exists($filename)) {
-			$filename = "$path/$extensionName.xml";
-		}
-		if(!JFile::exists($filename)) {
-			$filename = "$path/$altExtensionName.xml";
-		}
-		if(!JFile::exists($filename)) {
-			return array('version' => '', 'date' => '');
-		}
-
-		if(empty($filename)) {
-			return array('version' => '', 'date' => '', 'xmlfile' => '');
-		}
-
-		$xml = & JFactory::getXMLParser('Simple');
-		if (!$xml->loadFile($filename)) {
-			unset($xml);
-			return array('version' => '', 'date' => '', 'xmlfile' => '');
-		}
-
-		if ($xml->document->name() != 'extension') {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
@@ -327,6 +283,63 @@ class LiveUpdateXMLSlurp extends JObject
 		}
 
 		if ($xml->document->name() != 'install') {
+			unset($xml);
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		$data = array();
+		$element = & $xml->document->version[0];
+		$data['version'] = $element ? $element->data() : '';
+		$element = & $xml->document->creationDate[0];
+		$data['date'] = $element ? $element->data() : '';
+
+		$data['xmlfile'] = $filename;
+
+		return $data;
+	}
+
+	/**
+	 * This method parses the manifest information of package, library and file
+	 * extensions. All of those extensions do not store their manifests in the
+	 * extension's directory, but in administrator/manifests. Kudos to @mbabker
+	 * for sharing this method!
+	 *
+	 * @param string $extensionName
+	 * @param string $xmlName
+	 * @param string $type
+	 * @return type
+	 */
+	private function getManifestData($extensionName, $xmlName, $type)
+	{
+		$extensionName = strtolower($extensionName);
+		$altExtensionName = substr($extensionName,4);
+
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		$path = JPATH_ADMINISTRATOR.'/manifests/'.$type;
+
+		$filename = "$path/$xmlName";
+		if(!JFile::exists($filename)) {
+			$filename = "$path/$extensionName.xml";
+		}
+		if(!JFile::exists($filename)) {
+			$filename = "$path/$altExtensionName.xml";
+		}
+		if(!JFile::exists($filename)) {
+			return array('version' => '', 'date' => '');
+		}
+
+		if(empty($filename)) {
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		$xml = & JFactory::getXMLParser('Simple');
+		if (!$xml->loadFile($filename)) {
+			unset($xml);
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
+		}
+
+		if ($xml->document->name() != 'extension') {
 			unset($xml);
 			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
