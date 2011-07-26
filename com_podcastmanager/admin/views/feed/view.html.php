@@ -78,6 +78,7 @@ class PodcastManagerViewFeed extends JView
 			if ($canDo->get('core.create')) {
 				JToolBarHelper::apply('feed.apply');
 				JToolBarHelper::save('feed.save');
+				JToolBarHelper::save2new('feed.save2new');
 			}
 
 			JToolBarHelper::cancel('feed.cancel');

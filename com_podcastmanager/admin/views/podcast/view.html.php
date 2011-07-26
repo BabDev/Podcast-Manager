@@ -81,6 +81,7 @@ class PodcastManagerViewPodcast extends JView
 			if ($canDo->get('core.create')) {
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');
+				JToolBarHelper::save2new('podcast.save2new');
 			}
 
 			JToolBarHelper::cancel('podcast.cancel');
