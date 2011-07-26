@@ -299,7 +299,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		$fileInfo	= $getID3->analyze($filename);
 
 		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename	= $filename;
+		$data->filename	= $_COOKIE['podManFile'];
 
 		if (isset($fileInfo['tags_html'])) {
 			$t = $fileInfo['tags_html'];

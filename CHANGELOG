@@ -1,3 +1,6 @@
+26-July-2011 Michael Babker Version 1.8 Changes
+# File paths were incorrectly getting the site path stored with them
+
 23-July-2011 Michael Babker Version 1.8 Changes
 - Removed Information view
 - Removed Components submenu items
