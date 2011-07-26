@@ -17,6 +17,13 @@ jimport('joomla.form.formfield');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
+/**
+ * Feed selection class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.7
+ */
 class JFormFieldFeedFilter extends JFormFieldList
 {
 	/**

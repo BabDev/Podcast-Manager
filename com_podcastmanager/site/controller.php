@@ -14,8 +14,22 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
+/**
+ * Podcast Manager base class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
+ */
 class PodcastManagerController extends JController
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param	array	$config	An optional associative array of configuration settings.
+	 * @see		JController
+	 * @since	1.6
+	 */
 	function __construct($config = array())
 	{
 		// Frontpage Editor podcast proxying:

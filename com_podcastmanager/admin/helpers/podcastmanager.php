@@ -13,7 +13,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Podcast Manager component helper.
+ * Podcast Manager helper class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
  */
 class PodcastManagerHelper
 {

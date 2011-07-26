@@ -15,6 +15,13 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
+/**
+ * Podcast edit view class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
+ */
 class PodcastManagerViewPodcast extends JView
 {
 	protected $form;

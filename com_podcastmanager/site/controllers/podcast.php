@@ -15,16 +15,22 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controllerform');
 
 /**
- * Podcast edit view controller class.
+ * Podcast edit controller class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
  */
 class PodcastManagerControllerPodcast extends JControllerForm
 {
 	/**
+	 * @var		string	The default single item view
 	 * @since	1.8
 	 */
 	protected $view_item = 'podcast';
 
 	/**
+	 * @var		string	The default list view
 	 * @since	1.8
 	 */
 	protected $view_list = 'feed';

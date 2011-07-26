@@ -13,8 +13,25 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.helper');
+
+/**
+ * Icon helper class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class JHtmlIcon
 {
+	/** Method to create an edit icon for a feed
+	 *
+	 * @param	object	$feed		The feed object
+	 * @param	object	$params		The item parameters
+	 * @param	array	$attribs	Optional attributes for the link
+	 *
+	 * @return	object	$output		The formatted HTML for the edit icon
+	 * @since	1.8
+	 */
 	static function feedEdit($feed, $params, $attribs = array())
 	{
 		$user = JFactory::getUser();
@@ -55,6 +72,15 @@ class JHtmlIcon
 		return $output;
 	}
 
+	/** Method to create an edit icon for a podcast
+	 *
+	 * @param	object	$podcast	The podcast object
+	 * @param	object	$params		The item parameters
+	 * @param	array	$attribs	Optional attributes for the link
+	 *
+	 * @return	object	$output		The formatted HTML for the edit icon
+	 * @since	1.8
+	 */
 	static function podcastEdit($podcast, $params, $attribs = array())
 	{
 		$user = JFactory::getUser();

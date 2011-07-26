@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
 
+/**
+ * Podcast edit model class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
+ */
 class PodcastManagerModelPodcast extends JModelAdmin
 {
 	/**

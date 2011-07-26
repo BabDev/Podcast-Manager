@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
 
+/**
+ * Podcast edit model class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class PodcastManagerModelPodcast extends JModelForm
 {
 	/**
@@ -31,7 +38,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * @param	mixed	$data	The data object for the form
 	 *
 	 * @return	mixed	$data	The processed data for the form.
-	 * @since	1.6
+	 * @since	1.8
 	 */
 	protected function fillMetaData($data)
 	{
@@ -186,9 +193,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	}
 
 	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
 	 *
 	 * @since	1.8
 	 */
@@ -222,7 +227,8 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * Method to save the form data.
 	 *
 	 * @param	array	$data	The form data.
-	 * @return  boolean	True on success.
+	 *
+	 * @return  boolean			True on success, false on failure.
 	 * @since	1.8
 	 */
 	public function save($data)

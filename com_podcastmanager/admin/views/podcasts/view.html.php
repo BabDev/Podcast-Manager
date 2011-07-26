@@ -12,8 +12,15 @@
 // Restricted access
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 
+/**
+ * Podcast management view class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
+ */
 class PodcastManagerViewPodcasts extends JView
 {
 	protected $items;

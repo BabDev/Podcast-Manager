@@ -15,8 +15,23 @@ defined('_JEXEC') or die;
 // Load framework base classes
 jimport('joomla.application.component.view');
 
+/**
+ * Cpanel view class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class PodcastManagerViewCpanel extends JView
 {
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
 	public function display($tpl = null)
 	{
 		// Check for errors.

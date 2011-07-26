@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
+/**
+ * Feed HTML view class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class PodcastManagerViewFeed extends JView
 {
 	protected $state;
@@ -22,6 +29,14 @@ class PodcastManagerViewFeed extends JView
 	protected $children;
 	protected $pagination;
 
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
 	function display($tpl = null)
 	{
 		$app		= JFactory::getApplication();
@@ -76,6 +91,9 @@ class PodcastManagerViewFeed extends JView
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return	void
+	 * @since	1.8
 	 */
 	protected function _prepareDocument()
 	{

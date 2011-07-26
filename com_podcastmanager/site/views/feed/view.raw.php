@@ -15,6 +15,13 @@ defined('_JEXEC') or die;
 jimport( 'joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
+/**
+ * Feed RAW view class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class PodcastManagerViewFeed extends JView
 {
 	/**

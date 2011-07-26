@@ -4,7 +4,7 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
 
+/**
+ * Feed edit model class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.7
+ */
 class PodcastManagerModelFeed extends JModelAdmin
 {
 	/**
@@ -30,10 +37,10 @@ class PodcastManagerModelFeed extends JModelAdmin
 
 	/**
 	 * Custom clean cache method
-	 * 
+	 *
 	 * @param	string	$group		The component name
 	 * @param	int		$client_id	The client ID
-	 * 
+	 *
 	 * @return	void
 	 * @since	1.7
 	 */
@@ -47,7 +54,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 *
 	 * @param	array	$data		Data for the form.
 	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * 
+	 *
 	 * @return	JForm	$form		A JForm object on success, false on failure
 	 * @since	1.7
 	 */
@@ -68,7 +75,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * @param	string	$type	The table type to instantiate
 	 * @param	string	$prefix	A prefix for the table class name. Optional.
 	 * @param	array	$config	Configuration array for model. Optional.
-	 * 
+	 *
 	 * @return	JTable	A database object
 	 * @since	1.7
 	*/

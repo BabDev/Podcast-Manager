@@ -14,6 +14,13 @@ defined('JPATH_BASE') or die;
 
 jimport('joomla.form.formfield');
 
+/**
+ * Class to create a media selection modal.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
+ */
 class JFormFieldPodcastMedia extends JFormField
 {
 	/**

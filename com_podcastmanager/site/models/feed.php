@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
+/**
+ * Feed list model class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 class PodcastManagerModelFeed extends JModelList
 {
 	/**
@@ -46,7 +53,7 @@ class PodcastManagerModelFeed extends JModelList
 	 * Method to get a feed's parameters.
 	 *
 	 * @return	object	$feed	An object containing the feed record
-	 * @since	1.7
+	 * @since	1.8
 	 */
 	public function getFeed()
 	{
@@ -71,7 +78,7 @@ class PodcastManagerModelFeed extends JModelList
 	 * Method to get a list of items.
 	 *
 	 * @return	mixed	$items	An array of objects on success, false on failure.
-	 * @since	1.6
+	 * @since	1.8
 	 */
 	public function getItems()
 	{
@@ -85,7 +92,7 @@ class PodcastManagerModelFeed extends JModelList
 	 * Method to build an SQL query to load the list data.
 	 *
 	 * @return	string	$query	An SQL query
-	 * @since	1.6
+	 * @since	1.8
 	 */
 	protected function getListQuery()
 	{
@@ -138,7 +145,7 @@ class PodcastManagerModelFeed extends JModelList
 	 * @param   string	$direction	An optional direction.
 	 *
 	 * @return	void
-	 * @since	1.6
+	 * @since	1.8
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

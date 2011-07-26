@@ -40,7 +40,7 @@ function PodcastManagerParseRoute($segments)
 {
 	$vars = array();
 
-	$vars['view'] 		= 'feed';
+	$vars['view'] 		= JRequest::getCmd('view');
 	$vars['feedname']	= JRequest::getInt('feedname');
 
 	return $vars;

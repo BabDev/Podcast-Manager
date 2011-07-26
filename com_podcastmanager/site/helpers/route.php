@@ -14,16 +14,26 @@ defined('_JEXEC') or die;
 
 // Component Helper
 jimport('joomla.application.component.helper');
-jimport('joomla.application.categories');
 
+/**
+ * Routing helper class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.8
+ */
 abstract class PodcastManagerHelperRoute
 {
 	protected static $lookup;
 
 	/**
-	 * @param	int		$id		The id of the feed.
+	 * Method to get the route to the feed edit view
 	 *
+	 * @param	int		$id		The id of the feed.
 	 * @param	string	$return	The return page variable.
+	 *
+	 * @return	string	$link	The link to the item
+	 * @since	1.8
 	 */
 	public static function getFeedEditRoute($id, $return = null)
 	{
@@ -38,9 +48,14 @@ abstract class PodcastManagerHelperRoute
 	}
 
 	/**
-	 * @param	int	The route of the weblink
+	 * Method to get the route to the selected podcast
+	 *
+	 * @param	int		$id		The id of the podcast
+	 *
+	 * @return	string	$link	The link to the item
+	 * @since	1.8
 	 */
-	public static function getPodcastRoute($id, $catid)
+	public static function getPodcastRoute($id)
 	{
 		$needles = array(
 			'podcast'  => array((int) $id)
@@ -60,9 +75,13 @@ abstract class PodcastManagerHelperRoute
 	}
 
 	/**
-	 * @param	int		$id		The id of the podcast.
+	 * Method to get the route to the podcast edit view
 	 *
+	 * @param	int		$id		The id of the podcast.
 	 * @param	string	$return	The return page variable.
+	 *
+	 * @return	string	$link	The link to the item
+	 * @since	1.8
 	 */
 	public static function getPodcastEditRoute($id, $return = null)
 	{
@@ -76,6 +95,14 @@ abstract class PodcastManagerHelperRoute
 		return $link;
 	}
 
+	/**
+	 * Method to lookup whether the item is within the menu structure
+	 *
+	 * @param	array	$needles	The menu items.
+	 *
+	 * @return	various
+	 * @since	1.8
+	 */
 	protected static function _findItem($needles = null)
 	{
 		$app		= JFactory::getApplication();

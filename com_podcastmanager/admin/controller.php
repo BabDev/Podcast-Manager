@@ -15,7 +15,11 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controller');
 
 /**
- * Podcast Manager Controller
+ * Podcast Manager base controller
+ *
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.6
  */
 class PodcastManagerController extends JController
 {

@@ -12,7 +12,9 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @since	1.7
+ * @package		Podcast Manager
+ * @subpackage	com_podcastmanager
+ * @since		1.7
  */
 class Com_PodcastManagerInstallerScript {
 
