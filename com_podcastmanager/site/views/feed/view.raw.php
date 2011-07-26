@@ -185,16 +185,17 @@ class PodcastManagerViewFeed extends JView
 			// Set the file path on the file structure
 			$filepath	= $item->filename;
 
-			$filename	= $filepath;
-
 			// Check if the file is from off site
-			if (!preg_match('/^http/', $filepath)) {
+			if (preg_match('/^http/', $filepath)) {
+				// The file is off set, no verification necessary
+				$filename	= $filepath;
+			} else {
 				// The file is stored on site, check if it exists
 				$filepath	= JPATH_ROOT.'/'.$filename;
 
 				// Check if the file exists
 				if (JFile::exists($filepath)) {
-					$filename = JURI::base().$filename;
+					$filename	= JURI::base().$filename;
 				}
 			}
 
