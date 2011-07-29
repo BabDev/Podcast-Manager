@@ -2,6 +2,7 @@
 # Correct the package XML so that it uninstalls the getID3 library too
 ~ Add script to add dummy menu item to supress error message at uninstall
 ~ Change version check notice to use JText
+~ Add error checking to plugin activation functions
 
 26-July-2011 Michael Babker Version 1.8 Changes
 # File paths were incorrectly getting the site path stored with them

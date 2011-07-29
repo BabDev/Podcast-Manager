@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
 * Podcast Manager for Joomla!
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -15,7 +15,11 @@ defined('_JEXEC') or die;
 jimport('joomla.plugin.plugin');
 
 /**
- * Editor Podcast buton
+ * Podcast Manager button plugin.
+ *
+ * @package		Podcast Manager
+ * @subpackage	plg_editors-xtd_podcastmanager
+ * @since		1.6
  */
 class plgButtonPodcastManager extends JPlugin
 {
@@ -31,7 +35,10 @@ class plgButtonPodcastManager extends JPlugin
 	/**
 	 * Display the button
 	 *
-	 * @return array A single element array of (podcast title)
+	 * @param	string	$name
+	 *
+	 * @return	array	Markup to display the button
+	 * @since	1.6
 	 */
 	function onDisplay($name)
 	{

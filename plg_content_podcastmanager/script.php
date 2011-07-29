@@ -59,6 +59,9 @@ class plgContentPodcastManagerInstallerScript {
 		$query->set($db->quoteName('enabled').' = 1');
 		$query->where($db->quoteName('name').' = "plg_content_podcastmanager"');
 		$db->setQuery($query);
-		$db->query();
+		if (!$db->query()) {
+			JError::raiseWarning(1, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			return false;
+		}
 	}
 }

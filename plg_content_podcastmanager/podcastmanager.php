@@ -14,6 +14,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
 
+/**
+ * Podcast Manager content plugin.
+ *
+ * @package		Podcast Manager
+ * @subpackage	plg_content_podcastmanager
+ * @since		1.6
+ */
 class plgContentPodcastManager extends JPlugin
 {
 	/**
@@ -120,6 +127,13 @@ class plgContentPodcastManager extends JPlugin
 	}
 }
 
+/**
+ * Podcast Manager player building class.
+ *
+ * @package		Podcast Manager
+ * @subpackage	plg_content_podcastmanager
+ * @since		1.6
+ */
 class PodcastManagerPlayer
 {
 	private $playerType = null;
@@ -159,6 +173,7 @@ class PodcastManagerPlayer
 	 * Function to generate the player
 	 *
 	 * @return	object	The player for the article
+	 * @since	1.6
 	 */
 	public function generate()
 	{
@@ -173,6 +188,7 @@ class PodcastManagerPlayer
 	 * @param	object	The filename of the podcast file.
 	 *
 	 * @return	object	The URL to the file
+	 * @since	1.6
 	 */
 	private function determineURL($podfilepath)
 	{
@@ -213,6 +229,7 @@ class PodcastManagerPlayer
 	 * Function to generate a custom player
 	 *
 	 * @return	object	A link to the podcast as defined by the user
+	 * @since	1.7
 	 */
 	private function custom()
 	{
@@ -224,6 +241,7 @@ class PodcastManagerPlayer
 	 * Function to generate a HTML5 player that will fall back to Flash if necessary
 	 *
 	 * @return	object	A HTML5 or Flash player for the podcast
+	 * @since	1.8
 	 */
 	private function html5()
 	{
@@ -234,6 +252,7 @@ class PodcastManagerPlayer
 	 * Function to generate a link player
 	 *
 	 * @return	object	A HTML link to the podcast
+	 * @since	1.6
 	 */
 	private function link()
 	{
@@ -244,6 +263,7 @@ class PodcastManagerPlayer
 	 * Function to generate a flash player
 	 *
 	 * @return	object	A flash player containing the podcast episode
+	 * @since	1.6
 	 */
 	private function player()
 	{
@@ -259,6 +279,7 @@ class PodcastManagerPlayer
 	 * Function to generate a QuickTime player
 	 *
 	 * @return	object	A QuickTime player containing the podcast episode
+	 * @since	1.6
 	 */
 	private function QTplayer()
 	{

@@ -59,6 +59,9 @@ class plgEditorsXtdPodcastManagerInstallerScript {
 		$query->set($db->quoteName('enabled').' = 1');
 		$query->where($db->quoteName('name').' = "plg_editors-xtd_podcastmanager"');
 		$db->setQuery($query);
-		$db->query();
+		if (!$db->query()) {
+			JError::raiseWarning(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			return false;
+		}
 	}
 }
