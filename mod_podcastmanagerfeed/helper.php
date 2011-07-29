@@ -17,8 +17,23 @@ require_once JPATH_SITE.'/components/com_podcastmanager/helpers/route.php';
 jimport('joomla.application.component.model');
 JModel::addIncludePath(JPATH_SITE.'/components/com_podcastmanager/models', 'PodcastManagerModel');
 
+/**
+ * Podcast Manager feed listing module.
+ *
+ * @package		Podcast Manager
+ * @subpackage	mod_podcastmanagerfeed
+ * @since		1.8
+ */
 abstract class modPodcastManagerFeedHelper
 {
+	/**
+	 * Function to get the list of items
+	 *
+	 * @param	array	$params	The module params
+	 *
+	 * @return	array	$items	An array of items
+	 * @since	1.8
+	 */
 	public static function getList(&$params)
 	{
 		// Get the dbo
