@@ -54,8 +54,6 @@ class Com_PodcastMediaInstallerScript {
 	 * @since	1.7
 	 */
 	function removeMenu() {
-		echo '<p>Removing Podcast Manager - File Manager menu item</p>';
-
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$query->delete()->from($db->quoteName('#__menu'))->where($db->quoteName('title').' = "com_podcastmedia"');

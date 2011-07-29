@@ -31,8 +31,51 @@ class Com_PodcastManagerInstallerScript {
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
-			JError::raiseWarning(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
+			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
+		}
+	}
+
+	/**
+	 * Function to perform changes during uninstall
+	 *
+	 * @param	string	$parent	The function calling this method
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
+	function uninstall($parent) {
+		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
+		// Get the component's ID from the database
+		$option	= 'com_podcastmedia';
+		$db = JFactory::getDBO();
+		$query	= $db->getQuery(true);
+		$query->select('extension_id');
+		$query->from('#__extensions');
+		$query->where('element = '.$db->quote($option));
+		$db->setQuery($query);
+		$component_id = $db->loadResult();
+
+		// Add the record
+		$table	= JTable::getInstance('menu');
+
+		$data = array();
+		$data['menutype'] = 'main';
+		$data['client_id'] = 1;
+		$data['title'] = $option;
+		$data['alias'] = $option;
+		$data['link'] = 'index.php?option='.$option;
+		$data['type'] = 'component';
+		$data['published'] = 0;
+		$data['parent_id'] = 1;
+		$data['component_id'] = $component_id;
+		$data['img'] = 'class:component';
+		$data['home'] = 0;
+
+		// All the table processing without error checks since we're hacking to prevent an error message
+		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store()) {
+			echo 'Just another error, keep going';
+			continue;
 		}
 	}
 

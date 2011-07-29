@@ -53,8 +53,6 @@ class plgEditorsXtdPodcastManagerInstallerScript {
 	 * @since	1.7
 	 */
 	function activateButton() {
-		echo '<p>Enabling Podcast Manager button plugin</p>';
-
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$query->update($db->quoteName('#__extensions'));
