@@ -61,7 +61,6 @@ class plgContentPodcastManagerInstallerScript {
 		$db->setQuery($query);
 		if (!$db->query()) {
 			JError::raiseWarning(1, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
-			return false;
 		}
 	}
 }
