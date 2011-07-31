@@ -24,12 +24,30 @@ jimport('joomla.plugin.plugin');
 class plgContentPodcastManager extends JPlugin
 {
 	/**
+	 * Constructor
+	 *
+	 * @param	object	$subject	The object to observe
+	 * @param	array	$config		An array that holds the plugin configuration
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
+	public function __construct(&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+		$this->loadLanguage();
+	}
+
+	/**
 	 * Plugin that loads a podcast player within content
 	 *
 	 * @param	string	The context of the content being passed to the plugin.
 	 * @param	object	The article object.  Note $article->text is also available
 	 * @param	object	The article params
 	 * @param	int		The 'page' number
+	 *
+	 * @return	object	Player object on success, notice on failure
+	 * @since	1.6
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
@@ -110,7 +128,11 @@ class plgContentPodcastManager extends JPlugin
 					$query->from($db->quoteName('#__podcastmanager'));
 					$query->where($db->quoteName('title').' = "'.$podtitle.'"');
 					$db->setQuery($query);
-					$podfilepath = $db->loadObject();
+					if (!$db->loadObject()) {
+						JError::raiseNotice(null, JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle));
+					} else {
+						$podfilepath = $db->loadObject();
+					}
 				}
 
 				// Get the player
