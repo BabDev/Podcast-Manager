@@ -29,7 +29,7 @@ class Com_PodcastMediaInstallerScript {
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
-			JError::raiseWarning(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
+			JError::raiseNotice(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
 			return false;
 		}
 	}
@@ -58,6 +58,8 @@ class Com_PodcastMediaInstallerScript {
 		$query	= $db->getQuery(true);
 		$query->delete()->from($db->quoteName('#__menu'))->where($db->quoteName('title').' = "com_podcastmedia"');
 		$db->setQuery($query);
-		$db->query();
+		if (!$db->query()) {
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+		}
 	}
 }

@@ -31,7 +31,7 @@ class Com_PodcastManagerInstallerScript {
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
-			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
 		}
 	}
@@ -74,7 +74,6 @@ class Com_PodcastManagerInstallerScript {
 
 		// All the table processing without error checks since we're hacking to prevent an error message
 		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store()) {
-			echo 'Just another error, keep going';
 			continue;
 		}
 	}
@@ -90,6 +89,10 @@ class Com_PodcastManagerInstallerScript {
 	function update($parent) {
 		// Check the currently installed version
 		$version	= $this->getVersion();
+		if ($version == 'Error') {
+			JError::raiseNotice(null, 'Could not retreive the version from the database, unable to process updates');
+			return;
+		}
 
 		// If upgrading from 1.6, run the 1.7 schema updates
 		if (substr($version, 0, 3) == '1.6') {
@@ -104,8 +107,7 @@ class Com_PodcastManagerInstallerScript {
 			$query	= 'ALTER TABLE `#__podcastmanager_feeds` CHANGE `description` `description` varchar(5120) NOT NULL default '.$db->quote('');
 			$db->setQuery($query);
 			if (!$db->query()) {
-				JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-				return false;
+				JError::raiseWarning(null, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			}
 		}
 	}
@@ -124,7 +126,12 @@ class Com_PodcastManagerInstallerScript {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = "com_podcastmanager"');
 		$db->setQuery($query);
-		$record = $db->loadObject();
+		if (!$db->loadObject()) {
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			return;
+		} else {
+			$record = $db->loadObject();
+		}
 
 		// Decode the JSON
 		$params	= json_decode($record->params);
@@ -141,7 +148,6 @@ class Com_PodcastManagerInstallerScript {
 		$db->setQuery($addFeed);
 		if (!$db->query()) {
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-			return false;
 		}
 
 		// Set the feed on existing podcasts to this feed
@@ -151,7 +157,6 @@ class Com_PodcastManagerInstallerScript {
 		$db->setQuery($feed);
 		if (!$db->query()) {
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-			return false;
 		}
 	}
 
@@ -170,7 +175,7 @@ class Com_PodcastManagerInstallerScript {
 		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.1.sql');
 
 		if ($SQLupdate === false) {
-			return false;
+			return;
 		}
 
 		// Create an array of queries from the sql file
@@ -188,7 +193,7 @@ class Com_PodcastManagerInstallerScript {
 				$db->setQuery($query);
 				if (!$db->query()) {
 					JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-					return false;
+					return;
 				}
 			}
 		}
@@ -208,7 +213,13 @@ class Com_PodcastManagerInstallerScript {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = "com_podcastmanager"');
 		$db->setQuery($query);
-		$manifest = $db->loadObject();
+		if (!$db->loadObject()) {
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$version = 'Error';
+			return $version;
+		} else {
+			$manifest = $db->loadObject();
+		}
 
 		// Decode the JSON
 		$record	= json_decode($manifest->manifest_cache);

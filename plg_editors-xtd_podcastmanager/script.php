@@ -29,7 +29,7 @@ class plgEditorsXtdPodcastManagerInstallerScript {
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
-			JError::raiseWarning(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
+			JError::raiseNotice(null, 'This release of Podcast Manager requires Joomla! 1.7 or newer');
 			return false;
 		}
 	}
@@ -60,7 +60,7 @@ class plgEditorsXtdPodcastManagerInstallerScript {
 		$query->where($db->quoteName('name').' = "plg_editors-xtd_podcastmanager"');
 		$db->setQuery($query);
 		if (!$db->query()) {
-			JError::raiseWarning(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			JError::raiseNotice(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
 		}
 	}
 }

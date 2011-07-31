@@ -1,3 +1,7 @@
+31-July-2011 Michael Babker Version 1.8 Changes
++ Add scriptfiles to the files packages to do basic pre-install checks
++ Add error checks for SQL in scriptfiles
+
 29-July-2011 Michael Babker Version 1.8 Changes
 # Correct the package XML so that it uninstalls the getID3 library too
 ~ Add script to add dummy menu item to supress error message at uninstall
