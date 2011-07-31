@@ -26,15 +26,15 @@ class files_PodcastManager_HathorInstallerScript {
 	 * @since	1.8
 	 */
 	function preflight($type, $parent) {
-		// Check if the Minima template is installed
+		// Check if the Hathor template is installed
 		if (!JFolder::exists(JPATH_BASE.'/templates/hathor')) {
-			JError::raiseNotice(null, 'You do not have the Hathor administrator template installed.  Please install it before installing this override package.');
+			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_TEMPLATE'));
 			return false;
 		}
 
 		// Check if Podcast Manager is installed
 		if (!JFolder::exists(JPATH_BASE.'/components/com_podcastmanager')) {
-			JError::raiseNotice(null, 'You do not have Podcast Manager installed.  Please install it before installing this override package.');
+			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_COMPONENT'));
 			return false;
 		}
 	}

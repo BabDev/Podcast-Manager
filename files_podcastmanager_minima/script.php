@@ -28,13 +28,13 @@ class files_PodcastManager_MinimaInstallerScript {
 	function preflight($type, $parent) {
 		// Check if the Minima template is installed
 		if (!JFolder::exists(JPATH_BASE.'/templates/minima')) {
-			JError::raiseNotice(null, 'You do not have the Minima administrator template installed.  Please install it before installing this override package.');
+			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_MINIMA_ERROR_TEMPLATE'));
 			return false;
 		}
 
 		// Check if Podcast Manager is installed
 		if (!JFolder::exists(JPATH_BASE.'/components/com_podcastmanager')) {
-			JError::raiseNotice(null, 'You do not have Podcast Manager installed.  Please install it before installing this override package.');
+			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_MINIMA_ERROR_COMPONENT'));
 			return false;
 		}
 	}
