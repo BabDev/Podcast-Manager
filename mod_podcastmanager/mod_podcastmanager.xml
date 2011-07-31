@@ -9,6 +9,7 @@
 	<version>1.8 Beta</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>MOD_PODCASTMANAGER_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder>media</folder>
 		<folder>tmpl</folder>

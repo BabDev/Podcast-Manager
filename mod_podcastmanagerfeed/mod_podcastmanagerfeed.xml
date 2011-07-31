@@ -9,6 +9,7 @@
 	<version>1.8 Beta</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>MOD_PODCASTMANAGERFEED_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder>tmpl</folder>
 		<filename module="mod_podcastmanagerfeed">mod_podcastmanagerfeed.php</filename>
