@@ -90,7 +90,7 @@ class Com_PodcastManagerInstallerScript {
 		// Check the currently installed version
 		$version	= $this->getVersion();
 		if ($version == 'Error') {
-			JError::raiseNotice(null, 'Could not retreive the version from the database, unable to process updates');
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
 			return;
 		}
 
@@ -167,7 +167,6 @@ class Com_PodcastManagerInstallerScript {
 	 * @since	1.7
 	 */
 	protected function db17Update() {
-		echo '<p>Podcast Manager 1.6 to 1.7 SQL changes</p>';
 		$db = JFactory::getDBO();
 
 		// Get the update file
