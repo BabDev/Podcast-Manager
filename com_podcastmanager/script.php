@@ -34,6 +34,13 @@ class Com_PodcastManagerInstallerScript {
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
 		}
+
+		// Bugfix for "Can not build admin menus"
+		if (in_array($type, array('install', 'discover_install'))) {
+			$this->_bugfixDBFunctionReturnedNoError();
+		} else {
+			$this->_bugfixCantBuildAdminMenus();
+		}
 	}
 
 	/**
@@ -124,7 +131,7 @@ class Com_PodcastManagerInstallerScript {
 		$query	= $db->getQuery(true);
 		$query->select($db->quoteName('params'));
 		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element').' = "com_podcastmanager"');
+		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		if (!$db->loadObject()) {
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
@@ -210,7 +217,7 @@ class Com_PodcastManagerInstallerScript {
 		$query	= $db->getQuery(true);
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element').' = "com_podcastmanager"');
+		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		if (!$db->loadObject()) {
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
@@ -227,5 +234,141 @@ class Com_PodcastManagerInstallerScript {
 		$version	= $record->version;
 
 		return $version;
+	}
+
+	/**
+	 * Joomla! 1.6+ bugfix for "DB function returned no error"
+	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
+	private function _bugfixDBFunctionReturnedNoError() {
+		$db = JFactory::getDbo();
+
+		// Fix broken #__assets records
+		$query = $db->getQuery(true);
+		$query->select('id')
+			->from('#__assets')
+			->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		if (!empty($ids)) {
+			foreach($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__assets')
+					->where($db->quoteName('id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+
+		// Fix broken #__extensions records
+		$query = $db->getQuery(true);
+		$query->select('extension_id')
+			->from('#__extensions')
+			->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		if (!empty($ids)) {
+			foreach ($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__extensions')
+					->where($db->quoteName('extension_id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+
+		// Fix broken #__menu records
+		$query = $db->getQuery(true);
+		$query->select('id')
+			->from('#__menu')
+			->where($db->quoteName('type').' = '.$db->quote('component'))
+			->where($db->quoteName('menutype').' = '.$db->quote('main'))
+			->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		if (!empty($ids)) {
+			foreach ($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__menu')
+					->where($db->quoteName('id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+	}
+
+	/**
+	 * Joomla! 1.6+ bugfix for "Can not build admin menus"
+	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
+	 *
+	 * @return	void
+	 * @since	1.8
+	 */
+	private function _bugfixCantBuildAdminMenus() {
+		$db = JFactory::getDbo();
+
+		// If there are multiple #__extensions record, keep one of them
+		$query = $db->getQuery(true);
+		$query->select('extension_id')
+			->from('#__extensions')
+			->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		if (count($ids) > 1) {
+			asort($ids);
+			$extension_id = array_shift($ids); // Keep the oldest id
+
+			foreach ($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__extensions')
+					->where($db->quoteName('extension_id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+
+		// @todo
+
+		// If there are multiple assets records, delete all except the oldest one
+		$query = $db->getQuery(true);
+		$query->select('id')
+			->from('#__assets')
+			->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+		$db->setQuery($query);
+		$ids = $db->loadObjectList();
+		if (count($ids) > 1) {
+			asort($ids);
+			$asset_id = array_shift($ids); // Keep the oldest id
+
+			foreach ($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__assets')
+					->where($db->quoteName('id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+
+		// Remove #__menu records for good measure!
+		$query = $db->getQuery(true);
+		$query->select('id')
+			->from('#__menu')
+			->where($db->quoteName('type').' = '.$db->quote('component'))
+			->where($db->quoteName('menutype').' = '.$db->quote('main'))
+			->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
+		$db->setQuery($query);
+		$ids = $db->loadResultArray();
+		if (!empty($ids)) {
+			foreach($ids as $id) {
+				$query = $db->getQuery(true);
+				$query->delete('#__menu')
+					->where($db->quoteName('id').' = '.$db->quote($id));
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
 	}
 }
