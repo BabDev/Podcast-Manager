@@ -19,5 +19,7 @@
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_content_podcastmanager.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_content_podcastmanager.sys.ini</language>
+		<language tag="pt-BR">language/pt-BR/pt-BR.plg_content_podcastmanager.ini</language>
+		<language tag="pt-BR">language/pt-BR/pt-BR.plg_content_podcastmanager.sys.ini</language>
 	</languages>
 </extension>
