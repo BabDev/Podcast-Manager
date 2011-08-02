@@ -7,11 +7,11 @@
  * Code provided under the BSD License:
  * http://schillmania.com/projects/soundmanager2/license.txt
  *
- * V2.97a.20110706
- */
+ * V2.97a.20110801
+*/
 
-/*jslint white: false, onevar: true, undef: true, nomen: false, eqeqeq: true, plusplus: false, bitwise: true, regexp: false, newcap: true, immed: true */
 /*global window, SM2_DEFER, sm2Debugger, console, document, navigator, setTimeout, setInterval, clearInterval, Audio */
+/*jslint regexp: true, sloppy: true, white: true, nomen: true, plusplus: true */
 
 (function(window) {
 
@@ -36,16 +36,17 @@ function SoundManager(smURL, smID) {
   this.wmode = null;                 // string: flash rendering mode - null, transparent, opaque (last two allow layering of HTML on top)
   this.allowScriptAccess = 'always'; // for scripting the SWF (object/embed property), either 'always' or 'sameDomain'
   this.useFlashBlock = false;        // *requires flashblock.css, see demos* - allow recovery from flash blockers. Wait indefinitely and apply timeout CSS to SWF, if applicable.
-  this.useHTML5Audio = false;        // Beta feature: Use HTML5 Audio() where API is supported (most Safari, Chrome versions), Firefox (no MP3/MP4.) Ideally, transparent vs. Flash API where possible.
-  this.html5Test = /^probably$/i;    // HTML5 Audio().canPlayType() test. /^(probably|maybe)$/i if you want to be more liberal/risky.
-  this.useGlobalHTML5Audio = true;   // (experimental) if true, re-use single HTML5 audio object across all sounds. Force-enabled on mobile devices/iOS.
+  this.useHTML5Audio = true;         // Beta feature: Use HTML5 Audio() where API is supported (most Safari, Chrome versions), Firefox (no MP3/MP4.) Ideally, transparent vs. Flash API where possible.
+  this.html5Test = /^(probably|maybe)$/i; // HTML5 Audio() format support test. Use /^probably$/i; if you want to be more conservative.
   this.preferFlash = true;           // (experimental) if true and flash support present, will try to use flash for MP3/MP4 as needed since HTML5 audio support is still quirky in browsers.
-  this.requireFlash = false;         // (experimental) if true, prevents "HTML5-only" mode when flash present. Allows flash to handle RTMP/serverURL, but HTML5 for other cases unless flash is preferred
 
   this.audioFormats = {
-    // determines HTML5 support, flash requirements
-    // eg. if MP3 or MP4 required, Flash fallback is used if HTML5 can't play it
-    // shotgun approach to MIME testing due to browser variance
+    /*
+     * determines HTML5 support + flash requirements.
+     * if no support for a "required" format, SM2 will fail to start.
+     * flash fallback is used for MP3 or MP4 if HTML5 can't play it (or if preferFlash = true)
+     * multiple MIME types may be tested while trying to get a positive canPlayType() response.
+    */
     'mp3': {
       'type': ['audio/mpeg; codecs="mp3"', 'audio/mpeg', 'audio/mp3', 'audio/MPA', 'audio/mpa-robust'],
       'required': true
@@ -53,7 +54,7 @@ function SoundManager(smURL, smID) {
     'mp4': {
       'related': ['aac','m4a'], // additional formats under the MP4 container
       'type': ['audio/mp4; codecs="mp4a.40.2"', 'audio/aac', 'audio/x-m4a', 'audio/MP4A-LATM', 'audio/mpeg4-generic'],
-      'required': true
+      'required': false
     },
     'ogg': {
       'type': ['audio/ogg; codecs=vorbis'],
@@ -111,7 +112,7 @@ function SoundManager(smURL, smID) {
   };
 
   this.version = null;
-  this.versionNumber = 'V2.97a.20110706';
+  this.versionNumber = 'V2.97a.20110801';
   this.movieURL = null;
   this.url = (smURL || null);
   this.altURL = null;
@@ -175,62 +176,53 @@ function SoundManager(smURL, smID) {
     // </d>
   };
 
-  this.hasHTML5 = null; // switch for handling logic
-  this.html5 = { // stores canPlayType() results, etc. treat as read-only.
+  this.hasHTML5 = (typeof Audio !== 'undefined' && typeof new Audio().canPlayType !== 'undefined'); // switch for handling logic
+
+  // stores canPlayType() results, etc. treat as read-only.
+  this.html5 = {
     // mp3: boolean
     // mp4: boolean
     'usingFlash': null // set if/when flash fallback is needed
   };
-  this.flash = { // format support
+
+  // format support
+  this.flash = {
     // mp3: boolean
     // mp4: boolean
   };
+
+  this.html5Only = false;   // determined at init time
   this.ignoreFlash = false; // used for special cases (eg. iPad/iPhone/palm OS?)
 
-  // --- private SM2 internals ---
+  /*
+   * a few private internals
+  */
 
   var SMSound,
-  _s = this, _sm = 'soundManager', _smc = _sm+'::', _h5 = 'HTML5::', _id, _ua = navigator.userAgent, _win = window, _wl = _win.location.href.toString(), _fV = this.flashVersion, _doc = document, _doNothing, _init, _on_queue = [], _debugOpen = true, _debugTS, _didAppend = false, _appendSuccess = false, _didInit = false, _disabled = false, _windowLoaded = false, _wDS, _wdCount = 0, _initComplete, _mixin, _addOnEvent, _processOnEvents, _initUserOnload, _go, _delayWaitForEI, _waitForEI, _setVersionInfo, _handleFocus, _beginInit, _strings, _initMovie, _dcLoaded, _didDCLoaded, _getDocument, _createMovie, _die, _setPolling, _debugLevels = ['log', 'info', 'warn', 'error'], _defaultFlashVersion = 8, _disableObject, _failSafely, _normalizeMovieURL, _oRemoved = null, _oRemovedHTML = null, _str, _flashBlockHandler, _getSWFCSS, _toggleDebug, _loopFix, _policyFix, _complain, _idCheck, _waitingForEI = false, _initPending = false, _smTimer, _onTimer, _startTimer, _stopTimer, _needsFlash = null, _featureCheck, _html5OK, _html5CanPlay, _html5Ext,  _dcIE, _testHTML5, _event, _slice = Array.prototype.slice, _useGlobalHTML5Audio = false, _hasFlash, _detectFlash, _badSafariFix,
-  _is_pre = _ua.match(/pre\//i), _is_iDevice = _ua.match(/(ipad|iphone|ipod)/i), _isMobile = (_ua.match(/mobile/i) || _is_pre || _is_iDevice), _isIE = _ua.match(/msie/i), _isWebkit = _ua.match(/webkit/i), _isSafari = (_ua.match(/safari/i) && !_ua.match(/chrome/i)), _isOpera = (_ua.match(/opera/i)), 
+  _s = this, _sm = 'soundManager', _smc = _sm+'::', _h5 = 'HTML5::', _id, _ua = navigator.userAgent, _win = window, _wl = _win.location.href.toString(), _fV = this.flashVersion, _doc = document, _doNothing, _init, _on_queue = [], _debugOpen = true, _debugTS, _didAppend = false, _appendSuccess = false, _didInit = false, _disabled = false, _windowLoaded = false, _wDS, _wdCount = 0, _initComplete, _mixin, _addOnEvent, _processOnEvents, _initUserOnload, _delayWaitForEI, _waitForEI, _setVersionInfo, _handleFocus, _strings, _initMovie, _dcLoaded, _didDCLoaded, _getDocument, _createMovie, _catchError, _setPolling, _initDebug, _debugLevels = ['log', 'info', 'warn', 'error'], _defaultFlashVersion = 8, _disableObject, _failSafely, _normalizeMovieURL, _oRemoved = null, _oRemovedHTML = null, _str, _flashBlockHandler, _getSWFCSS, _toggleDebug, _loopFix, _policyFix, _complain, _idCheck, _waitingForEI = false, _initPending = false, _smTimer, _onTimer, _startTimer, _stopTimer, _needsFlash = null, _featureCheck, _html5OK, _html5CanPlay, _html5Ext,  _dcIE, _testHTML5, _event, _slice = Array.prototype.slice, _useGlobalHTML5Audio = false, _hasFlash, _detectFlash, _badSafariFix, _html5_events, _showSupport,
+  _is_iDevice = _ua.match(/(ipad|iphone|ipod)/i), _likesHTML5 = (_ua.match(/(mobile|pre\/|xoom)/i) || _is_iDevice), _isIE = _ua.match(/msie/i), _isWebkit = _ua.match(/webkit/i), _isSafari = (_ua.match(/safari/i) && !_ua.match(/chrome/i)), _isOpera = (_ua.match(/opera/i)), 
   _isBadSafari = (!_wl.match(/usehtml5audio/i) && !_wl.match(/sm2\-ignorebadua/i) && _isSafari && _ua.match(/OS X 10_6_([3-7])/i)), // Safari 4 and 5 occasionally fail to load/play HTML5 audio on Snow Leopard 10.6.3 through 10.6.7 due to bug(s) in QuickTime X and/or other underlying frameworks. :/ Confirmed bug. https://bugs.webkit.org/show_bug.cgi?id=32159
-  _hasConsole = (typeof console !== 'undefined' && typeof console.log !== 'undefined'), _isFocused = (typeof _doc.hasFocus !== 'undefined'?_doc.hasFocus():null), _tryInitOnFocus = (typeof _doc.hasFocus === 'undefined' && _isSafari), _okToDisable = !_tryInitOnFocus, _flashMIME = /(mp3|mp4|mpa)/i;
+  _hasConsole = (typeof console !== 'undefined' && typeof console.log !== 'undefined'), _isFocused = (typeof _doc.hasFocus !== 'undefined'?_doc.hasFocus():null), _tryInitOnFocus = (_isSafari && typeof _doc.hasFocus === 'undefined'), _okToDisable = !_tryInitOnFocus, _flashMIME = /(mp3|mp4|mpa)/i,
+  _overHTTP = (_doc.location?_doc.location.protocol.match(/http/i):null),
+  _http = (!_overHTTP ? 'http:' : '');
 
-  this.html5Only = false; // determined at init time
-  this._use_maybe = (_wl.match(/sm2\-useHTML5Maybe\=1/i)); // temporary feature: #sm2-useHTML5Maybe=1 forces loose canPlay() check
-  this._overHTTP = (_doc.location?_doc.location.protocol.match(/http/i):null);
-  this._http = (!this._overHTTP ? 'http:' : '');
-  this.useAltURL = !this._overHTTP; // use altURL if not "online"
+  this.useAltURL = !_overHTTP; // use altURL if not "online"
   this._global_a = null;
 
-  if (_is_iDevice || _is_pre) {
-    // during HTML5 beta period (off by default), may as well force it on Apple + Palm, flash support unlikely
+  if (_likesHTML5) {
+    // prefer HTML5 for mobile + tablet-like devices, probably more reliable vs. flash at this point.
     _s.useHTML5Audio = true;
-    _s.ignoreFlash = true;
-    // by default, use global feature. iOS onfinish() -> next may fail otherwise.
-    _s.useGlobalHTML5Audio = true;
-    _useGlobalHTML5Audio = true;
-  }
-
-  if (_is_pre || this._use_maybe) {
-    // less-strict canPlayType() checking option
-    _s.html5Test = /^(probably|maybe)$/i;
-  }
-
-  // Temporary feature: allow force of HTML5 via URL: #sm2-usehtml5audio=0 or 1
-  // <d>
-  (function(){
-    var a = '#sm2-usehtml5audio=', l = _wl, b = null;
-    if (l.indexOf(a) !== -1) {
-      b = (l.charAt(l.indexOf(a)+a.length) === '1');
-      if (typeof console !== 'undefined' && typeof console.log !== 'undefined') {
-        console.log((b?'Enabling ':'Disabling ')+'useHTML5Audio via URL parameter');
-      }
-      _s.useHTML5Audio = b;
+    _s.preferFlash = false;
+    if (_is_iDevice) {
+      // by default, use global feature. iOS onfinish() -> next may fail otherwise.
+      _s.ignoreFlash = true;
+      _useGlobalHTML5Audio = true;
     }
-  }());
-  // </d>
+  }
 
-  // --- public API methods ---
+  /*
+   * public soundManager API
+  */
 
   this.ok = function() {
     return (_needsFlash?(_didInit && !_disabled):(_s.useHTML5Audio && _s.hasHTML5));
@@ -313,12 +305,11 @@ function SoundManager(smURL, smID) {
         }
       }
 
-      if ((_tO.autoLoad || _tO.autoPlay) && !_tO.serverURL) {
+      if (!_tO.serverURL && (_tO.autoLoad || _tO.autoPlay)) {
         oSound.load(_tO); // call load for non-rtmp streams
       }
     }
-
-    if (_tO.autoPlay && !_tO.serverURL) { // rtmp will play in onconnect
+    if (!_tO.serverURL && _tO.autoPlay) { // rtmp will play in onconnect
       oSound.play();
     }
     return oSound;
@@ -404,9 +395,10 @@ function SoundManager(smURL, smID) {
   };
 
   this.stopAll = function() {
+    var oSound;
     _s._wD(_sm+'.stopAll()', 1);
-    for (var oSound in _s.sounds) {
-      if (_s.sounds[oSound] instanceof SMSound) {
+    for (oSound in _s.sounds) {
+      if (_s.sounds.hasOwnProperty(oSound)) {
         _s.sounds[oSound].stop(); // apply only to sound objects
       }
     }
@@ -420,7 +412,8 @@ function SoundManager(smURL, smID) {
   };
 
   this.pauseAll = function() {
-    for (var i = _s.soundIDs.length; i--;) {
+    var i;
+    for (i = _s.soundIDs.length; i--;) {
       _s.sounds[_s.soundIDs[i]].pause();
     }
   };
@@ -433,7 +426,8 @@ function SoundManager(smURL, smID) {
   };
 
   this.resumeAll = function() {
-    for (var i = _s.soundIDs.length; i--;) {
+    var i;
+    for (i = _s.soundIDs.length; i--;) {
       _s.sounds[_s.soundIDs[i]].resume();
     }
   };
@@ -518,16 +512,17 @@ function SoundManager(smURL, smID) {
   };
 
   this.getMemoryUse = function() {
-    if (_fV === 8) {
-      return 0;
+    // flash-only
+    var ram = 0;
+    if (_s.o && _fV !== 8) {
+      ram = parseInt(_s.o._getMemoryUse(), 10);
     }
-    if (_s.o) {
-      return parseInt(_s.o._getMemoryUse(), 10);
-    }
+    return ram;
   };
 
   this.disable = function(bNoDisable) {
     // destroy all functions
+    var i;
     if (typeof bNoDisable === 'undefined') {
       bNoDisable = false;
     }
@@ -536,7 +531,7 @@ function SoundManager(smURL, smID) {
     }
     _disabled = true;
     _wDS('shutdown', 1);
-    for (var i = _s.soundIDs.length; i--;) {
+    for (i = _s.soundIDs.length; i--;) {
       _disableObject(_s.sounds[_s.soundIDs[i]]);
     }
     _initComplete(bNoDisable); // fire "complete", despite fail
@@ -624,10 +619,6 @@ function SoundManager(smURL, smID) {
     }
   };
 
-  this.getMoviePercent = function() {
-    return (_s.o && typeof _s.o.PercentLoaded !== 'undefined'?_s.o.PercentLoaded():null);
-  };
-
   this._writeDebug = function(sText, sType, bTimestamp) {
     // pseudo-private console.log()-style output
     // <d>
@@ -685,8 +676,9 @@ function SoundManager(smURL, smID) {
 
   this._debug = function() {
     // <d>
+    var i, j;
     _wDS('currentObj', 1);
-    for (var i = 0, j = _s.soundIDs.length; i < j; i++) {
+    for (i = 0, j = _s.soundIDs.length; i < j; i++) {
       _s.sounds[_s.soundIDs[i]]._debug();
     }
     // </d>
@@ -714,8 +706,8 @@ function SoundManager(smURL, smID) {
       _wDS('badRemove', 2);
     }
     // actually, force recreate of movie.
-    _oRemovedHTML = _oRemoved = null;
-    _s.enabled = _didInit = _waitingForEI = _initPending = _didAppend = _appendSuccess = _disabled = _s.swfLoaded = false;
+    _oRemovedHTML = _oRemoved = _needsFlash = null;
+    _s.enabled = _didDCLoaded = _didInit = _waitingForEI = _initPending = _didAppend = _appendSuccess = _disabled = _s.swfLoaded = false;
     _s.soundIDs = _s.sounds = [];
     _s.o = null;
     for (i in _on_queue) {
@@ -726,9 +718,26 @@ function SoundManager(smURL, smID) {
       }
     }
     _s._wD(_sm + ': Rebooting...');
-    _win.setTimeout(function() {
-      _s.beginDelayedInit();
+    _win.setTimeout(_s.beginDelayedInit, 20);
+  };
+
+  this.getMoviePercent = function() {
+    return (_s.o && typeof _s.o.PercentLoaded !== 'undefined' ? _s.o.PercentLoaded() : null);
+  };
+
+  this.beginDelayedInit = function() {
+    _windowLoaded = true;
+    _dcLoaded();
+    setTimeout(function() {
+      if (_initPending) {
+        return false;
+      }
+      _createMovie();
+      _initMovie();
+      _initPending = true;
+      return true;
     }, 20);
+    _delayWaitForEI();
   };
 
   this.destruct = function() {
@@ -736,15 +745,12 @@ function SoundManager(smURL, smID) {
     _s.disable(true);
   };
 
-  this.beginDelayedInit = function() {
-    _windowLoaded = true;
-   _dcLoaded();
-    setTimeout(_beginInit, 20);
-    _delayWaitForEI();
-  };
+  /*
+   * internal HTML5 event handling
+  */
 
-  // Wrap html5 event handlers so we don't call them on destroyed sounds
   function _html5_event(oFn) {
+    // wrap html5 event handlers so we don't call them on destroyed sounds
     return function(e) {
       if (!this._t || !this._t._a) {
         if (this._t && this._t.sID) {
@@ -759,7 +765,7 @@ function SoundManager(smURL, smID) {
     };
   }
 
-  this._html5_events = {
+  _html5_events = {
 
     // HTML5 event-name-to-handler map
     abort: _html5_event(function(e) {
@@ -778,7 +784,7 @@ function SoundManager(smURL, smID) {
       var position1K = (!isNaN(this._t.position)?this._t.position/1000:null);
       // set the position if position was set before the sound loaded
       if (this._t.position && this.currentTime !== position1K) {
-        _s._wD(_h5+'canplay: setting position to '+position1K+'');
+        _s._wD(_h5+'canplay: setting position to '+position1K);
         try {
           this.currentTime = position1K;
         } catch(ee) {
@@ -812,7 +818,15 @@ function SoundManager(smURL, smID) {
     }),
 
     loadeddata: _html5_event(function(e) {
+      var t = this._t,
+          bytesTotal = t.bytesTotal || 1; // at least 1 byte, so math works
       _s._wD(_h5+'loadeddata: '+this._t.sID);
+      if (!t._loaded && !_isSafari) { // safari seems to nicely report progress events, eventually totalling 100%
+        t.duration = t._get_html5_duration();
+        // fire whileloading() with 100% values
+        t._whileloading(bytesTotal, bytesTotal, t._get_html5_duration());
+        t._onload(true);
+      }
     }),
 
     loadedmetadata: _html5_event(function(e) {
@@ -844,7 +858,7 @@ function SoundManager(smURL, smID) {
         return false;
       }
 
-      var i, j, str, loadSum = 0, buffered = 0,
+      var i, j, str, buffered = 0,
           isProgress = (e.type === 'progress'),
           ranges = e.target.buffered,
           loaded = (e.loaded||0), // firefox 3.6 implements e.loaded/total (bytes)
@@ -885,7 +899,7 @@ function SoundManager(smURL, smID) {
 
         if (loaded && total && loaded === total) {
           // in case "onload" doesn't fire (eg. gecko 1.9.2)
-          _s._html5_events.load.call(this, e);
+          _html5_events.load.call(this, e);
         }
 
       }
@@ -899,7 +913,7 @@ function SoundManager(smURL, smID) {
     suspend: _html5_event(function(e) {
       // download paused/stopped, may have finished (eg. onload)
       _s._wD(_h5+'suspend: '+this._t.sID);
-      _s._html5_events.progress.call(this, e);
+      _html5_events.progress.call(this, e);
     }),
 
     stalled: _html5_event(function(e) {
@@ -918,7 +932,9 @@ function SoundManager(smURL, smID) {
 
   };
 
-  // --- SMSound (sound object) instance ---
+  /*
+   * SMSound() (sound object) instance
+  */
 
   SMSound = function(oOptions) {
 
@@ -962,7 +978,9 @@ function SoundManager(smURL, smID) {
       // </d>
     };
 
+    // <d>
     this._debug();
+    // </d>
 
     this.load = function(oOptions) {
       var oS = null;
@@ -1002,7 +1020,7 @@ function SoundManager(smURL, smID) {
             _t.play();
           }
         } else {
-          _s._wD('HTML5 ignoring request to load again: '+_t.sID);
+          _s._wD(_h5+'ignoring request to load again: '+_t.sID);
         }
       } else {
         try {
@@ -1016,7 +1034,7 @@ function SoundManager(smURL, smID) {
         } catch(e) {
           _wDS('smError', 2);
           _debugTS('onload', false);
-          _die();
+          _catchError({type:'SMSOUND_LOAD_JS_EXCEPTION', fatal:true});
         }
       }
       return _t;
@@ -1063,6 +1081,8 @@ function SoundManager(smURL, smID) {
           if (!_useGlobalHTML5Audio) {
             _t._remove_html5_events();
           }
+          _t._a._t = null; // break potential circular reference
+          _t._a = null;
         }
       }
       if (!_bFromSM) {
@@ -1072,21 +1092,19 @@ function SoundManager(smURL, smID) {
 
     this.play = function(oOptions, _updatePlayState) {
       var fN = 'SMSound.play(): ', allowMulti, a;
-      _updatePlayState = _updatePlayState === undefined ? true : _updatePlayState; // default true
+      _updatePlayState = _updatePlayState === undefined ? true : _updatePlayState; // default to true
       if (!oOptions) {
         oOptions = {};
       }
       _t._iO = _mixin(oOptions, _t._iO);
       _t._iO = _mixin(_t._iO, _t.options);
       _t.instanceOptions = _t._iO;
-      if (_t._iO.serverURL) {
-        if (!_t.connected) {
-          if (!_t.getAutoPlay()) {
-            _s._wD(fN+' Netstream not connected yet - setting autoPlay');
-            _t.setAutoPlay(true);
-          }
-          return _t; // play will be called in _onconnect()
+      if (_t._iO.serverURL && !_t.connected) {
+        if (!_t.getAutoPlay()) {
+          _s._wD(fN+' Netstream not connected yet - setting autoPlay');
+          _t.setAutoPlay(true);
         }
+        return _t; // play will be called in _onconnect()
       }
       if (_html5OK(_t._iO)) {
         _t._setup_html5(_t._iO);
@@ -1107,11 +1125,8 @@ function SoundManager(smURL, smID) {
           // try to get this sound playing ASAP
           if (!_t.isHTML5) {
             _t._iO.autoPlay = true; // assign directly because setAutoPlay() increments the instanceCount
-            _t.load(_t._iO);
-          } else {
-            _t.load(_t._iO);
-            // _t.readyState = 1; // redundant
           }
+          _t.load(_t._iO);
         } else if (_t.readyState === 2) {
           _s._wD(fN + 'Could not load "' + _t.sID + '" - exiting', 2);
           return _t;
@@ -1121,11 +1136,18 @@ function SoundManager(smURL, smID) {
       } else {
         _s._wD(fN + '"' + _t.sID + '"');
       }
-      // Streams will pause when their buffer is full if they are being loaded.
-      // In this case paused is true, but the song hasn't started playing yet. If
-      // we just call resume() the onplay() callback will never be called.  So
-      // only call resume() if the position is > 0.
-      // Another reason is because options like volume won't have been applied yet.
+      if (!_t.isHTML5 && _fV === 9 && _t.position > 0 && _t.position === _t.duration) {
+        // flash 9 needs a position reset if play() is called while at the end of a sound.
+        _s._wD(fN + '"' + _t.sID + '": Sound at end, resetting to position:0');
+        _t._iO.position = 0;
+      }
+      /*
+       * Streams will pause when their buffer is full if they are being loaded.
+       * In this case paused is true, but the song hasn't started playing yet.
+       * If we just call resume() the onplay() callback will never be called.
+       * So only call resume() if the position is > 0.
+       * Another reason is because options like volume won't have been applied yet.
+      */
       if (_t.paused && _t.position && _t.position > 0) { // https://gist.github.com/37b17df75cc4d7a90bf6
         _s._wD(fN + '"' + _t.sID + '" is resuming from paused state',1);
         _t.resume();
@@ -1133,7 +1155,7 @@ function SoundManager(smURL, smID) {
         _s._wD(fN+'"'+ _t.sID+'" is starting to play');
         _t.playState = 1;
         _t.paused = false;
-        if (!_t.instanceCount || _t._iO.multiShotEvents || (_fV > 8 && !_t.isHTML5 && !_t.getAutoPlay())) {
+        if (!_t.instanceCount || _t._iO.multiShotEvents || (!_t.isHTML5 && _fV > 8 && !_t.getAutoPlay())) {
           _t.instanceCount++;
         }
         _t.position = (typeof _t._iO.position !== 'undefined' && !isNaN(_t._iO.position)?_t._iO.position:0);
@@ -1147,11 +1169,11 @@ function SoundManager(smURL, smID) {
         _t.setVolume(_t._iO.volume, true);
         _t.setPan(_t._iO.pan, true);
         if (!_t.isHTML5) {
-          _s.o._start(_t.sID, _t._iO.loops || 1, (_fV === 9?_t.position:_t.position / 1000));
+          _s.o._start(_t.sID, _t._iO.loops || 1, (_fV === 9?_t._iO.position:_t._iO.position / 1000));
         } else {
           _start_html5_timer();
           a = _t._setup_html5();
-          _t.setPosition(_t.position);
+          _t.setPosition(_t._iO.position);
           a.play();
         }
       }
@@ -1196,18 +1218,14 @@ function SoundManager(smURL, smID) {
     this.setAutoPlay = function(autoPlay) {
       _s._wD('sound '+_t.sID+' turned autoplay ' + (autoPlay ? 'on' : 'off'));
       _t._iO.autoPlay = autoPlay;
-      if (_t.isHTML5) {
-        if (_t._a && autoPlay) {
-          _t.play(); // HTML5 onload isn't reliable
-        }
-      } else {
+      if (!_t.isHTML5) {
         _s.o._setAutoPlay(_t.sID, autoPlay);
-      }
-      if (autoPlay) {
-        // only increment the instanceCount if the sound isn't loaded (TODO: verify RTMP)
-        if (!_t.instanceCount && _t.readyState === 1) {
-          _t.instanceCount++;
-          _s._wD('sound '+_t.sID+' incremented instance count to '+_t.instanceCount);
+        if (autoPlay) {
+          // only increment the instanceCount if the sound isn't loaded (TODO: verify RTMP)
+          if (!_t.instanceCount && _t.readyState === 1) {
+            _t.instanceCount++;
+            _s._wD('sound '+_t.sID+' incremented instance count to '+_t.instanceCount);
+          }
         }
       }
     };
@@ -1216,19 +1234,20 @@ function SoundManager(smURL, smID) {
       return _t._iO.autoPlay;
     };
 
-    this.setPosition = function(nMsecOffset, bNoDebug) {
+    this.setPosition = function(nMsecOffset) {
       if (nMsecOffset === undefined) {
         nMsecOffset = 0;
       }
       // Use the duration from the instance options, if we don't have a track duration yet.
-      var original_pos, position, position1K, offset = (_t.isHTML5 ? Math.max(nMsecOffset,0) : Math.min(_t.duration || _t._iO.duration, Math.max(nMsecOffset, 0))); // position >= 0 and <= current available (loaded) duration
+      var original_pos, position, position1K,
+          offset = (_t.isHTML5 ? Math.max(nMsecOffset,0) : Math.min(_t.duration || _t._iO.duration, Math.max(nMsecOffset, 0))); // position >= 0 and <= current available (loaded) duration
       original_pos = _t.position;
       _t.position = offset;
       position1K = _t.position/1000;
       _t.resetOnPosition(_t.position);
       _t._iO.position = offset;
       if (!_t.isHTML5) {
-        position = _fV === 9 ? _t.position : position1K;
+        position = (_fV === 9 ? _t.position : position1K);
         if (_t.readyState && _t.readyState !== 2) {
           _s.o._setPosition(_t.sID, position, (_t.paused || !_t.playState)); // if paused or not playing, will not resume (by playing)
         }
@@ -1236,10 +1255,11 @@ function SoundManager(smURL, smID) {
         // Set the position in the canplay handler if the sound is not ready yet
         if (_t._html5_canplay) {
           if (_t._a.currentTime !== position1K) {
-            // Only set the position if we need to.
-            // DOM/JS errors/exceptions to watch out for:
-            // if seek is beyond (loaded?) position, "DOM exception 11"
-            // "INDEX_SIZE_ERR": DOM exception 1
+            /*
+             * DOM/JS errors/exceptions to watch out for:
+             * if seek is beyond (loaded?) position, "DOM exception 11"
+             * "INDEX_SIZE_ERR": DOM exception 1
+            */
             _s._wD('setPosition('+position1K+'): setting position');
             try {
               _t._a.currentTime = position1K;
@@ -1283,11 +1303,13 @@ function SoundManager(smURL, smID) {
       return _t;
     };
 
-    // When auto-loaded streams pause on buffer full they have a playState of 0.
-    // We need to make sure that the playState is set to 1 when these streams "resume".
-    // When a paused stream is resumed, we need to trigger the onplay() callback if it
-    // hasn't been called already. In this case since the sound is being played for the
-    // first time, I think it's more appropriate to call onplay() rather than onresume().
+    /*
+     * When auto-loaded streams pause on buffer full they have a playState of 0.
+     * We need to make sure that the playState is set to 1 when these streams "resume".
+     * When a paused stream is resumed, we need to trigger the onplay() callback if it
+     * hasn't been called already. In this case since the sound is being played for the
+     * first time, I think it's more appropriate to call onplay() rather than onresume().
+    */
     this.resume = function() {
       if (!_t.paused) {
         return _t;
@@ -1318,7 +1340,7 @@ function SoundManager(smURL, smID) {
       _s._wD('SMSound.togglePause()');
       if (_t.playState === 0) {
         _t.play({
-          position: (_fV === 9 && !_t.isHTML5 ? _t.position:_t.position / 1000)
+          position: (_fV === 9 && !_t.isHTML5 ? _t.position : _t.position / 1000)
         });
         return _t;
       }
@@ -1436,31 +1458,9 @@ function SoundManager(smURL, smID) {
       return true;
     };
 
-    // pseudo-private soundManager reference
-
-    this._onTimer = function(bForce) {
-      // HTML5-only _whileplaying() etc.
-      var time, x = {};
-      if (_t._hasTimer || bForce) {
-        if (_t._a && (bForce || ((_t.playState > 0 || _t.readyState === 1) && !_t.paused))) { // TODO: May not need to track readyState (1 = loading)
-          _t.duration = _t._get_html5_duration();
-          _t.durationEstimate = _t.duration;
-          time = _t._a.currentTime?_t._a.currentTime*1000:0;
-          _t._whileplaying(time,x,x,x,x);
-          return true;
-        } else {
-         _s._wD('_onTimer: Warn for "'+_t.sID+'": '+(!_t._a?'Could not find element. ':'')+(_t.playState === 0?'playState bad, 0?':'playState = '+_t.playState+', OK'));
-          return false;
-        }
-      }
-    };
-
-    // --- private internals ---
-
-    this._get_html5_duration = function() {
-      var d = (_t._a ? _t._a.duration*1000 : (_t._iO ? _t._iO.duration : undefined));
-      return (d && !isNaN(d) && d !== Infinity ? d : (_t._iO ? _t._iO.duration : null));
-    };
+    /*
+     * private internals
+    */
 
     _start_html5_timer = function() {
       if (_t.isHTML5) {
@@ -1474,7 +1474,7 @@ function SoundManager(smURL, smID) {
       }
     };
 
-    _resetProperties = function(bLoaded) {
+    _resetProperties = function() {
       _t._onPositionItems = [];
       _t._onPositionFired = 0;
       _t._hasTimer = null;
@@ -1512,7 +1512,32 @@ function SoundManager(smURL, smID) {
 
     _resetProperties();
 
-    // pseudo-private methods used by soundManager
+    /*
+     * pseudo-private SMSound internals
+    */
+
+    this._onTimer = function(bForce) {
+      // HTML5-only _whileplaying() etc.
+      var time, x = {};
+      if (_t._hasTimer || bForce) {
+        if (_t._a && (bForce || ((_t.playState > 0 || _t.readyState === 1) && !_t.paused))) { // TODO: May not need to track readyState (1 = loading)
+          _t.duration = _t._get_html5_duration();
+          _t.durationEstimate = _t.duration;
+          time = _t._a.currentTime?_t._a.currentTime*1000:0;
+          _t._whileplaying(time,x,x,x,x);
+          return true;
+        } else {
+         _s._wD('_onTimer: Warn for "'+_t.sID+'": '+(!_t._a?'Could not find element. ':'')+(_t.playState === 0?'playState bad, 0?':'playState = '+_t.playState+', OK'));
+          return false;
+        }
+      }
+    };
+
+    this._get_html5_duration = function() {
+      var d = (_t._a ? _t._a.duration*1000 : (_t._iO ? _t._iO.duration : undefined)),
+          result = (d && !isNaN(d) && d !== Infinity ? d : (_t._iO ? _t._iO.duration : null));
+      return result;
+    };
 
     this._setup_html5 = function(oOptions) {
       var _iO = _mixin(_t._iO, oOptions), d = decodeURI,
@@ -1528,7 +1553,7 @@ function SoundManager(smURL, smID) {
          * "First things first, I, Poppa.." (reset the previous state of the old sound, if playing)
          * Fixes case with devices that can only play one sound at a time
          * Otherwise, other sounds in mid-play will be terminated without warning and in a stuck state
-         */
+        */
         if (_useGlobalHTML5Audio && _a._t && _a._t.playState && _iO.url !== _oldIO.url) {
           _a._t.stop();
         }
@@ -1563,8 +1588,6 @@ function SoundManager(smURL, smID) {
       return _a;
     };
 
-    // related private methods
-
     this._add_html5_events = function() {
 
       if (_t._a._added_events) {
@@ -1580,9 +1603,9 @@ function SoundManager(smURL, smID) {
       _s._wD(_h5+'adding event listeners: '+_t.sID);
       _t._a._added_events = true;
 
-      for (f in _s._html5_events) {
-        if (_s._html5_events.hasOwnProperty(f)) {
-          add(f, _s._html5_events[f]);
+      for (f in _html5_events) {
+        if (_html5_events.hasOwnProperty(f)) {
+          add(f, _html5_events[f]);
         }
       }
 
@@ -1590,10 +1613,12 @@ function SoundManager(smURL, smID) {
 
     };
 
-    // Keep this externally accessible
     this._remove_html5_events = function() {
 
       // Remove event listeners
+
+      var f;
+
       function remove(oEvt, oFn, bCapture) {
         return (_t._a ? _t._a.removeEventListener(oEvt, oFn, bCapture||false) : null);
       }
@@ -1601,15 +1626,121 @@ function SoundManager(smURL, smID) {
       _s._wD(_h5+'removing event listeners: '+_t.sID);
       _t._a._added_events = false;
 
-      for (var f in _s._html5_events) {
-        if (_s._html5_events.hasOwnProperty(f)) {
-          remove(f, _s._html5_events[f]);
+      for (f in _html5_events) {
+        if (_html5_events.hasOwnProperty(f)) {
+          remove(f, _html5_events[f]);
         }
       }
 
     };
 
-    // --- "private" methods called by Flash ---
+    /*
+     * pseudo-private event internals
+    */
+
+    this._onload = function(nSuccess) {
+      var fN = 'SMSound._onload(): ', loadOK = (nSuccess?true:false);
+      _s._wD(fN + '"' + _t.sID + '"' + (loadOK?' loaded.':' failed to load? - ' + _t.url), (loadOK?1:2));
+      // <d>
+      if (!loadOK && !_t.isHTML5) {
+        if (_s.sandbox.noRemote === true) {
+          _s._wD(fN + _str('noNet'), 1);
+        }
+        if (_s.sandbox.noLocal === true) {
+          _s._wD(fN + _str('noLocal'), 1);
+        }
+      }
+      // </d>
+      _t.loaded = loadOK;
+      _t.readyState = loadOK?3:2;
+      _t._onbufferchange(0);
+      if (_t._iO.onload) {
+        _t._iO.onload.apply(_t, [loadOK]);
+      }
+      return true;
+    };
+
+    this._onbufferchange = function(nIsBuffering) {
+      var fN = 'SMSound._onbufferchange()';
+      if (_t.playState === 0) {
+        // ignore if not playing
+        return false;
+      }
+      if ((nIsBuffering && _t.isBuffering) || (!nIsBuffering && !_t.isBuffering)) {
+        return false;
+      }
+      _t.isBuffering = (nIsBuffering === 1);
+      if (_t._iO.onbufferchange) {
+        _s._wD(fN + ': ' + nIsBuffering);
+        _t._iO.onbufferchange.apply(_t);
+      }
+      return true;
+    };
+
+    /*
+     * flash-only method, should fire only once at most
+     * at this point we just recreate failed sounds rather than trying to reconnect
+    */
+    this._onfailure = function(msg, level, code) {
+      _t.failures++;
+      _s._wD('SMSound._onfailure(): "'+_t.sID+'" count '+_t.failures);
+      if (_t._iO.onfailure && _t.failures === 1) {
+        _t._iO.onfailure(_t, msg, level, code);
+      } else {
+        _s._wD('SMSound._onfailure(): ignoring');
+      }
+    };
+
+    this._onbeforefinish = function() {
+      if (!_t.didBeforeFinish) {
+        _t.didBeforeFinish = true;
+        if (_t._iO.onbeforefinish) {
+          _s._wD('SMSound._onbeforefinish(): "' + _t.sID + '"');
+          _t._iO.onbeforefinish.apply(_t);
+        }
+      }
+    };
+
+    this._onjustbeforefinish = function(msOffset) {
+      if (!_t.didJustBeforeFinish) {
+        _t.didJustBeforeFinish = true;
+        if (_t._iO.onjustbeforefinish) {
+          _s._wD('SMSound._onjustbeforefinish(): "' + _t.sID + '"');
+          _t._iO.onjustbeforefinish.apply(_t);
+        }
+      }
+    };
+
+    this._onfinish = function() {
+      var _io_onfinish = _t._iO.onfinish; // store local copy before it gets trashed..
+      _t._onbufferchange(0);
+      _t.resetOnPosition(0);
+      if (_t._iO.onbeforefinishcomplete) {
+        _t._iO.onbeforefinishcomplete.apply(_t);
+      }
+      // reset some state items
+      _t.didBeforeFinish = false;
+      _t.didJustBeforeFinish = false;
+      if (_t.instanceCount) {
+        _t.instanceCount--;
+        if (!_t.instanceCount) {
+          // reset instance options
+          _t.playState = 0;
+          _t.paused = false;
+          _t.instanceCount = 0;
+          _t.instanceOptions = {};
+          _t._iO = {};
+          _stop_html5_timer();
+        }
+        if (!_t.instanceCount || _t._iO.multiShotEvents) {
+          // fire onfinish for last, or every instance
+          if (_io_onfinish) {
+            _s._wD('SMSound._onfinish(): "' + _t.sID + '"');
+            _io_onfinish.apply(_t);
+          }
+        }
+      }
+    };
 
     this._whileloading = function(nBytesLoaded, nBytesTotal, nDuration, nBufferLength) {
       _t.bytesLoaded = nBytesLoaded;
@@ -1637,31 +1768,13 @@ function SoundManager(smURL, smID) {
       }
     };
 
-    this._onid3 = function(oID3PropNames, oID3Data) {
-      // oID3PropNames: string array (names)
-      // ID3Data: string array (data)
-      _s._wD('SMSound._onid3(): "' + this.sID + '" ID3 data received.');
-      var oData = [], i, j;
-      for (i = 0, j = oID3PropNames.length; i < j; i++) {
-        oData[oID3PropNames[i]] = oID3Data[i];
-      }
-      _t.id3 = _mixin(_t.id3, oData);
-      if (_t._iO.onid3) {
-        _t._iO.onid3.apply(_t);
-      }
-    };
-
     this._whileplaying = function(nPosition, oPeakData, oWaveformDataLeft, oWaveformDataRight, oEQData) {
       if (isNaN(nPosition) || nPosition === null) {
         return false; // flash safety net
       }
-      if (_t.playState === 0 && nPosition > 0) {
-        // invalid position edge case for end/stop
-        nPosition = 0;
-      }
       _t.position = nPosition;
       _t.processOnPosition();
-      if (_fV > 8 && !_t.isHTML5) {
+      if (!_t.isHTML5 && _fV > 8) {
         if (_t._iO.usePeakData && typeof oPeakData !== 'undefined' && oPeakData) {
           _t.peakData = {
             left: oPeakData.leftPeak,
@@ -1700,7 +1813,21 @@ function SoundManager(smURL, smID) {
       return true;
     };
 
-    // Only applies to RTMP
+    this._onid3 = function(oID3PropNames, oID3Data) {
+      // oID3PropNames: string array (names)
+      // ID3Data: string array (data)
+      _s._wD('SMSound._onid3(): "' + this.sID + '" ID3 data received.');
+      var oData = [], i, j;
+      for (i = 0, j = oID3PropNames.length; i < j; i++) {
+        oData[oID3PropNames[i]] = oID3Data[i];
+      }
+      _t.id3 = _mixin(_t.id3, oData);
+      if (_t._iO.onid3) {
+        _t._iO.onid3.apply(_t);
+      }
+    };
+
+    // flash + RTMP
     this._onconnect = function(bSuccess) {
       var fN = 'SMSound._onconnect(): ';
       bSuccess = (bSuccess === 1);
@@ -1721,109 +1848,6 @@ function SoundManager(smURL, smID) {
       }
     };
 
-    this._onload = function(nSuccess) {
-      var fN = 'SMSound._onload(): ', loadOK = (nSuccess?true:false);
-      _s._wD(fN + '"' + _t.sID + '"' + (loadOK?' loaded.':' failed to load? - ' + _t.url), (loadOK?1:2));
-      // <d>
-      if (!loadOK && !_t.isHTML5) {
-        if (_s.sandbox.noRemote === true) {
-          _s._wD(fN + _str('noNet'), 1);
-        }
-        if (_s.sandbox.noLocal === true) {
-          _s._wD(fN + _str('noLocal'), 1);
-        }
-      }
-      // </d>
-      _t.loaded = loadOK;
-      _t.readyState = loadOK?3:2;
-      _t._onbufferchange(0);
-      if (_t._iO.onload) {
-        _t._iO.onload.apply(_t, [loadOK]);
-      }
-      return true;
-    };
-
-    // fire onfailure() only once at most
-    // at this point we just recreate failed sounds rather than trying to reconnect.
-    this._onfailure = function(msg, level, code) {
-      _t.failures++;
-      _s._wD('SMSound._onfailure(): "'+_t.sID+'" count '+_t.failures);
-      if (_t._iO.onfailure && _t.failures === 1) {
-        _t._iO.onfailure(_t, msg, level, code);
-      } else {
-        _s._wD('SMSound._onfailure(): ignoring');
-      }
-    };
-
-    this._onbeforefinish = function() {
-      if (!_t.didBeforeFinish) {
-        _t.didBeforeFinish = true;
-        if (_t._iO.onbeforefinish) {
-          _s._wD('SMSound._onbeforefinish(): "' + _t.sID + '"');
-          _t._iO.onbeforefinish.apply(_t);
-        }
-      }
-    };
-
-    this._onjustbeforefinish = function(msOffset) {
-      if (!_t.didJustBeforeFinish) {
-        _t.didJustBeforeFinish = true;
-        if (_t._iO.onjustbeforefinish) {
-          _s._wD('SMSound._onjustbeforefinish(): "' + _t.sID + '"');
-          _t._iO.onjustbeforefinish.apply(_t);
-        }
-      }
-    };
-
-    this._onfinish = function() {
-      // _s._wD('SMSound._onfinish(): "' + _t.sID + '" got instanceCount '+_t.instanceCount);
-      var _io_onfinish = _t._iO.onfinish; // store local copy before it gets trashed..
-      _t._onbufferchange(0);
-      _t.resetOnPosition(0);
-      if (_t._iO.onbeforefinishcomplete) {
-        _t._iO.onbeforefinishcomplete.apply(_t);
-      }
-      // reset some state items
-      _t.didBeforeFinish = false;
-      _t.didJustBeforeFinish = false;
-      if (_t.instanceCount) {
-        _t.instanceCount--;
-        if (!_t.instanceCount) {
-          // reset instance options
-          _t.playState = 0;
-          _t.paused = false;
-          _t.instanceCount = 0;
-          _t.instanceOptions = {};
-          _t._iO = {};
-          _stop_html5_timer();
-        }
-        if (!_t.instanceCount || _t._iO.multiShotEvents) {
-          // fire onfinish for last, or every instance
-          if (_io_onfinish) {
-            _s._wD('SMSound._onfinish(): "' + _t.sID + '"');
-            _io_onfinish.apply(_t);
-          }
-        }
-      }
-    };
-
-    this._onbufferchange = function(nIsBuffering) {
-      var fN = 'SMSound._onbufferchange()';
-      if (_t.playState === 0) {
-        // ignore if not playing
-        return false;
-      }
-      if ((nIsBuffering && _t.isBuffering) || (!nIsBuffering && !_t.isBuffering)) {
-        return false;
-      }
-      _t.isBuffering = (nIsBuffering === 1);
-      if (_t._iO.onbufferchange) {
-        _s._wD(fN + ': ' + nIsBuffering);
-        _t._iO.onbufferchange.apply(_t);
-      }
-      return true;
-    };
-
     this._ondataerror = function(sError) {
       // flash 9 wave/eq data handler
       if (_t.playState > 0) { // hack: called at start, and end from flash at/after onfinish()
@@ -1836,10 +1860,12 @@ function SoundManager(smURL, smID) {
 
   }; // SMSound()
 
-  // --- private SM2 internals ---
+  /*
+   * private soundManager internals
+  */
 
   _getDocument = function() {
-    return (_doc.body?_doc.body:(_doc._docElement?_doc.documentElement:_doc.getElementsByTagName('div')[0]));
+    return (_doc.body || _doc._docElement || _doc.getElementsByTagName('div')[0]);
   };
 
   _id = function(sID) {
@@ -1918,7 +1944,7 @@ function SoundManager(smURL, smID) {
     /*
      * try to find MIME, test and return truthiness
      * o = {
-     *  url: 'audio/mp3',
+     *  url: '/path/to/an.mp3',
      *  type: 'audio/mp3'
      * }
     */
@@ -1937,7 +1963,7 @@ function SoundManager(smURL, smID) {
 
     function preferFlashCheck(kind) {
       // whether flash should play a given type
-      return (_s.preferFlash && !_s.ignoreFlash && (typeof _s.flash[kind] !== 'undefined' && _s.flash[kind]));
+      return (_s.preferFlash && _hasFlash && !_s.ignoreFlash && (typeof _s.flash[kind] !== 'undefined' && _s.flash[kind]));
     }
 
     // account for known cases like audio/mp3
@@ -1955,7 +1981,7 @@ function SoundManager(smURL, smID) {
           }
         }
       }
-      _html5Ext = new RegExp('\\.('+_html5Ext.join('|')+')','i');
+      _html5Ext = new RegExp('\\.('+_html5Ext.join('|')+')(\\?.*)?$','i');
     }
 
     fileExt = (url ? url.toLowerCase().match(_html5Ext) : null); // TODO: Strip URL queries, etc.
@@ -1969,7 +1995,7 @@ function SoundManager(smURL, smID) {
         fileExt = (offset !== -1?mime.substr(0,offset):mime).substr(6); // strip "audio/X; codecs.."
       }
     } else {
-      fileExt = fileExt[0].substr(1); // "mp3", for example
+      fileExt = fileExt[1]; // match the raw extension name - "mp3", for example
     }
 
     if (fileExt && typeof _s.html5[fileExt] !== 'undefined') {
@@ -1992,7 +2018,8 @@ function SoundManager(smURL, smID) {
     }
 
     // double-whammy: Opera 9.64 throws WRONG_ARGUMENTS_ERR if no parameter passed to Audio(), and Webkit + iOS happily tries to load "null" as a URL. :/
-    var a = (typeof Audio !== 'undefined' ? (_isOpera ? new Audio(null) : new Audio()) : null), item, support = {}, aF, i, _hasFlash = _detectFlash();
+    var a = (typeof Audio !== 'undefined' ? (_isOpera ? new Audio(null) : new Audio()) : null),
+        item, support = {}, aF, i;
 
     function _cp(m) {
       var canPlay, i, j, isOK = false;
@@ -2006,7 +2033,7 @@ function SoundManager(smURL, smID) {
             isOK = true;
             _s.html5[m[i]] = true;
             // if flash can play and preferred, also mark it for use.
-            _s.flash[m[i]] = !!(_s.preferFlash && m[i].match(_flashMIME));
+            _s.flash[m[i]] = !!(_s.preferFlash && _hasFlash && m[i].match(_flashMIME));
           }
         }
         return isOK;
@@ -2049,7 +2076,7 @@ function SoundManager(smURL, smID) {
     // <d>
     notReady: 'Not loaded yet - wait for soundManager.onload()/onready()',
     notOK: 'Audio support is not available.',
-    appXHTML: _smc + 'createMovie(): appendChild/innerHTML set failed. May be app/xhtml+xml DOM-related.',
+    domError: _smc + 'createMovie(): appendChild/innerHTML call failed. DOM not ready or other error.',
     spcWmode: _smc + 'createMovie(): Removing wmode, preventing known SWF loading issue(s)',
     swf404: _sm + ': Verify that %s is a valid path.',
     tryDebug: 'Try ' + _sm + '.debugFlash = true for more security details (output goes to SWF.)',
@@ -2118,7 +2145,7 @@ function SoundManager(smURL, smID) {
 
   _policyFix = function(sOpt, sPre) {
     if (sOpt && !sOpt.usePolicyFile && (sOpt.onid3 || sOpt.usePeakData || sOpt.useWaveformData || sOpt.useEQData)) {
-      _s._wD((sPre?sPre+':':'') + _str('policy'));
+      _s._wD((sPre || '') + _str('policy'));
       sOpt.usePolicyFile = true;
     }
     return sOpt;
@@ -2137,7 +2164,8 @@ function SoundManager(smURL, smID) {
   };
 
   _disableObject = function(o) {
-    for (var oProp in o) {
+    var oProp;
+    for (oProp in o) {
       if (o.hasOwnProperty(oProp) && typeof o[oProp] === 'function') {
         o[oProp] = _doNothing;
       }
@@ -2172,6 +2200,7 @@ function SoundManager(smURL, smID) {
   };
 
   _setVersionInfo = function() {
+
     if (_fV !== 8 && _fV !== 9) {
       _s._wD(_str('badFV', _fV, _defaultFlashVersion));
       _s.flashVersion = _defaultFlashVersion;
@@ -2210,7 +2239,7 @@ function SoundManager(smURL, smID) {
     _s.o._setPolling(bPolling, bHighPerformance);
   };
 
-  function _initDebug() {
+  _initDebug = function() {
     if (_s.debugURLParam.test(_wl)) {
       _s.debugMode = true; // allow force of debug mode via URL
     }
@@ -2257,334 +2286,16 @@ function SoundManager(smURL, smID) {
           oTarget = _getDocument();
           oTarget.appendChild(oD);
         } catch(e2) {
-          throw new Error(_str('appXHTML'));
+          throw new Error(_str('domError')+' \n'+e2.toString());
         }
         oTarget.appendChild(oDebug);
       }
     }
     oTarget = null;
     // </d>
-  }
-
-  _createMovie = function(smID, smURL) {
-
-    var specialCase = null,
-    remoteURL = (smURL?smURL:_s.url),
-    localURL = (_s.altURL?_s.altURL:remoteURL),
-    oEmbed, oMovie, oTarget = _getDocument(), tmp, movieHTML, oEl, extraClass = _getSWFCSS(), s, x, sClass, side = 'auto', isRTL = null, html = _doc.getElementsByTagName('html')[0];
-    isRTL = (html && html.dir && html.dir.match(/rtl/i));
-    smID = (typeof smID === 'undefined'?_s.id:smID);
-
-    if (_didAppend && _appendSuccess) {
-      return false; // ignore if already succeeded
-    }
-
-    function _initMsg() {
-      _s._wD('-- SoundManager 2 ' + _s.version + (!_s.html5Only && _s.useHTML5Audio?(_s.hasHTML5?' + HTML5 audio':', no HTML5 audio support'):'') + (!_s.html5Only ? (_s.useMovieStar?', MovieStar mode':'') + (_s.useHighPerformance?', high performance mode, ':', ') + (( _s.flashPollingInterval ? 'custom (' + _s.flashPollingInterval + 'ms)' : (_s.useFastPolling?'fast':'normal')) + ' polling') + (_s.wmode?', wmode: ' + _s.wmode:'') + (_s.debugFlash?', flash debug mode':'') + (_s.useFlashBlock?', flashBlock mode':'') : '') + ' --', 1);
-    }
-
-    if (_s.html5Only) {
-      _setVersionInfo();
-      _initMsg();
-      _s.oMC = _id(_s.movieID);
-      _init();
-      // prevent multiple init attempts
-      _didAppend = true;
-      _appendSuccess = true;
-      return false;
-    }
-
-    _didAppend = true;
-
-    // safety check for legacy (change to Flash 9 URL)
-    _setVersionInfo();
-    _s.url = _normalizeMovieURL(_s._overHTTP?remoteURL:localURL);
-    smURL = _s.url;
-
-    _s.wmode = (!_s.wmode && _s.useHighPerformance && !_s.useMovieStar?'transparent':_s.wmode);
-
-    if (_s.wmode !== null && (_ua.match(/msie 8/i) || (!_isIE && !_s.useHighPerformance)) && navigator.platform.match(/win32|win64/i)) {
-      /*
-       * extra-special case: movie doesn't load until scrolled into view when using wmode = anything but 'window' here
-       * does not apply when using high performance (position:fixed means on-screen), OR infinite flash load timeout
-       * wmode breaks IE 8 on Vista + Win7 too in some cases, as of January 2011 (?)
-      */
-      _s.specialWmodeCase = true;
-      _wDS('spcWmode');
-      _s.wmode = null;
-    }
-
-    oEmbed = {
-      'name': smID,
-      'id': smID,
-      'src': smURL,
-      'width': side,
-      'height': side,
-      'quality': 'high',
-      'allowScriptAccess': _s.allowScriptAccess,
-      'bgcolor': _s.bgColor,
-      'pluginspage': _s._http+'//www.macromedia.com/go/getflashplayer',
-      'type': 'application/x-shockwave-flash',
-      'wmode': _s.wmode,
-      'hasPriority': 'true' // http://help.adobe.com/en_US/as3/mobile/WS4bebcd66a74275c36cfb8137124318eebc6-7ffd.html
-    };
-
-    if (_s.debugFlash) {
-      oEmbed.FlashVars = 'debug=1';
-    }
-
-    if (!_s.wmode) {
-      delete oEmbed.wmode; // don't write empty attribute
-    }
-
-    if (_isIE) {
-      // IE is "special".
-      oMovie = _doc.createElement('div');
-      movieHTML = '<object id="' + smID + '" data="' + smURL + '" type="' + oEmbed.type + '" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="'+_s._http+'//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="' + oEmbed.width + '" height="' + oEmbed.height + '"><param name="movie" value="' + smURL + '" /><param name="AllowScriptAccess" value="' + _s.allowScriptAccess + '" /><param name="quality" value="' + oEmbed.quality + '" />' + (_s.wmode?'<param name="wmode" value="' + _s.wmode + '" /> ':'') + '<param name="bgcolor" value="' + _s.bgColor + '" />' + (_s.debugFlash?'<param name="FlashVars" value="' + oEmbed.FlashVars + '" />':'') + '</object>';
-    } else {
-      oMovie = _doc.createElement('embed');
-      for (tmp in oEmbed) {
-        if (oEmbed.hasOwnProperty(tmp)) {
-          oMovie.setAttribute(tmp, oEmbed[tmp]);
-        }
-      }
-    }
-
-    _initDebug();
-    extraClass = _getSWFCSS();
-    oTarget = _getDocument();
-
-    if (oTarget) {
-
-      _s.oMC = _id(_s.movieID)?_id(_s.movieID):_doc.createElement('div');
-
-      if (!_s.oMC.id) {
-
-        _s.oMC.id = _s.movieID;
-        _s.oMC.className = _s.swfCSS.swfDefault + ' ' + extraClass;
-        // "hide" flash movie
-        s = null;
-        oEl = null;
-
-        if (!_s.useFlashBlock) {
-          if (_s.useHighPerformance) {
-            s = {
-              'position': 'fixed',
-              'width': '8px',
-              'height': '8px',
-              // >= 6px for flash to run fast, >= 8px to start up under Firefox/win32 in some cases. odd? yes.
-              'bottom': '0px',
-              'left': '0px',
-              'overflow': 'hidden'
-            };
-          } else {
-            s = {
-              'position': 'absolute',
-              'width': '6px',
-              'height': '6px',
-              'top': '-9999px',
-              'left': '-9999px'
-            };
-            if (isRTL) {
-              s.left = Math.abs(parseInt(s.left,10))+'px';
-            }
-          }
-        }
-
-        if (_isWebkit) {
-          _s.oMC.style.zIndex = 10000; // soundcloud-reported render/crash fix, safari 5
-        }
-
-        if (!_s.debugFlash) {
-          for (x in s) {
-            if (s.hasOwnProperty(x)) {
-              _s.oMC.style[x] = s[x];
-            }
-          }
-        }
-
-        try {
-          if (!_isIE) {
-            _s.oMC.appendChild(oMovie);
-          }
-          oTarget.appendChild(_s.oMC);
-          if (_isIE) {
-            oEl = _s.oMC.appendChild(_doc.createElement('div'));
-            oEl.className = _s.swfCSS.swfBox;
-            oEl.innerHTML = movieHTML;
-          }
-          _appendSuccess = true;
-        } catch(e) {
-          throw new Error(_str('appXHTML'));
-        }
-
-      } else {
-
-        // it's already in the document.
-        sClass = _s.oMC.className;
-        _s.oMC.className = (sClass?sClass+' ':_s.swfCSS.swfDefault) + (extraClass?' '+extraClass:'');
-        _s.oMC.appendChild(oMovie);
-        if (_isIE) {
-          oEl = _s.oMC.appendChild(_doc.createElement('div'));
-          oEl.className = _s.swfCSS.swfBox;
-          oEl.innerHTML = movieHTML;
-        }
-        _appendSuccess = true;
-
-      }
-
-    }
-
-    if (specialCase) {
-      _s._wD(specialCase);
-    }
-
-    _initMsg();
-    _s._wD(_smc+'createMovie(): Trying to load ' + smURL + (!_s._overHTTP && _s.altURL?' (alternate URL)':''), 1);
-
-    return true;
-
   };
 
   _idCheck = this.getSoundById;
-
-  _initMovie = function() {
-
-    if (_s.html5Only) {
-      _createMovie();
-      return false;
-    }
-
-    // attempt to get, or create, movie
-    if (_s.o) {
-      return false; // may already exist
-    }
-
-    _s.o = _s.getMovie(_s.id); // inline markup
-
-    if (!_s.o) {
-      if (!_oRemoved) {
-        // try to create
-        _createMovie(_s.id, _s.url);
-      } else {
-        // try to re-append removed movie after reboot()
-        if (!_isIE) {
-          _s.oMC.appendChild(_oRemoved);
-        } else {
-          _s.oMC.innerHTML = _oRemovedHTML;
-        }
-        _oRemoved = null;
-        _didAppend = true;
-      }
-      _s.o = _s.getMovie(_s.id);
-    }
-
-    if (_s.o) {
-      _wDS('waitEI');
-    }
-
-    if (_s.oninitmovie instanceof Function) {
-      setTimeout(_s.oninitmovie, 1);
-    }
-
-    return true;
-
-  };
-
-  _go = function(sURL) {
-    // where it all begins.
-    if (sURL) {
-      _s.url = sURL;
-    }
-    _initMovie();
-  };
-
-  _delayWaitForEI = function() {
-    setTimeout(_waitForEI, 1000);
-  };
-
-  _waitForEI = function() {
-
-    if (_waitingForEI) {
-      return false;
-    }
-
-    _waitingForEI = true;
-    _event.remove(_win, 'load', _delayWaitForEI);
-
-    if (_tryInitOnFocus && !_isFocused) {
-      _wDS('waitFocus');
-      return false;
-    }
-
-    var p;
-    if (!_didInit) {
-      p = _s.getMoviePercent();
-      _s._wD(_str('waitImpatient', (p === 100?' (SWF loaded)':(p > 0?' (SWF ' + p + '% loaded)':''))));
-    }
-
-    setTimeout(function() {
-
-      p = _s.getMoviePercent();
-
-      if (!_didInit) {
-
-        _s._wD(_sm + ': No Flash response within expected time.\nLikely causes: ' + (p === 0?'Loading ' + _s.movieURL + ' may have failed (and/or Flash ' + _fV + '+ not present?), ':'') + 'Flash blocked or JS-Flash security error.' + (_s.debugFlash?' ' + _str('checkSWF'):''), 2);
-        if (!_s._overHTTP && p) {
-          _wDS('localFail', 2);
-          if (!_s.debugFlash) {
-            _wDS('tryDebug', 2);
-          }
-        }
-
-        if (p === 0) {
-          // if 0 (not null), probably a 404.
-          _s._wD(_str('swf404', _s.url));
-        }
-
-        _debugTS('flashtojs', false, ': Timed out' + _s._overHTTP?' (Check flash security or flash blockers)':' (No plugin/missing SWF?)');
-
-      }
-
-      // give up / time-out, depending
-      if (!_didInit && _okToDisable) {
-
-        if (p === null) {
-          // SWF failed. Maybe blocked.
-          if (_s.useFlashBlock || _s.flashLoadTimeout === 0) {
-            if (_s.useFlashBlock) {
-              _flashBlockHandler();
-            }
-            _wDS('waitForever');
-          } else {
-            // old SM2 behaviour, simply fail
-            _failSafely(true);
-          }
-
-        } else {
-
-          // flash loaded? Shouldn't be a blocking issue, then.
-          if (_s.flashLoadTimeout === 0) {
-             _wDS('waitForever');
-          } else {
-            _failSafely(true);
-          }
-
-        }
-
-      }
-
-    }, _s.flashLoadTimeout);
-
-  };
-
-  _go = function(sURL) {
-    // where it all begins.
-    if (sURL) {
-      _s.url = sURL;
-    }
-    _initMovie();
-  };
 
   // <d>
   _wDS = function(o, errorLevel) {
@@ -2595,7 +2306,8 @@ function SoundManager(smURL, smID) {
     }
   };
 
-  if (_wl.indexOf('debug=alert') + 1 && _s.debugMode) {
+  // last-resort debugging option
+  if (_wl.indexOf('sm2-debug=alert') + 1 && _s.debugMode) {
     _s._wD = function(sText) {window.alert(sText);};
   }
 
@@ -2645,7 +2357,13 @@ function SoundManager(smURL, smID) {
 
   _flashBlockHandler = function() {
     // *possible* flash block situation.
-    var name = _str('fbHandler'), p = _s.getMoviePercent(), css = _s.swfCSS;
+    var name = _str('fbHandler'),
+        p = _s.getMoviePercent(),
+        css = _s.swfCSS,
+        error = {type:'FLASHBLOCK'};
+    if (_s.html5Only) {
+      return false;
+    }
     if (!_s.ok()) {
       if (_needsFlash) {
         // make the movie more visible, so user can fix
@@ -2653,10 +2371,8 @@ function SoundManager(smURL, smID) {
         _s._wD(name+': '+_str('fbTimeout')+(p?' ('+_str('fbLoaded')+')':''));
       }
       _s.didFlashBlock = true;
-      _processOnEvents({type:'ontimeout',ignoreInit:true}); // fire onready(), complain lightly
-      if (_s.onerror instanceof Function) {
-        _s.onerror.apply(_win);
-      }
+      _processOnEvents({type:'ontimeout', ignoreInit:true, error:error}); // fire onready(), complain lightly
+      _catchError(error);
     } else {
       // SM2 loaded OK (or recovered)
       if (_s.didFlashBlock) {
@@ -2666,73 +2382,6 @@ function SoundManager(smURL, smID) {
         _s.oMC.className = [_getSWFCSS(), css.swfDefault, css.swfLoaded + (_s.didFlashBlock?' '+css.swfUnblocked:'')].join(' ');
       }
     }
-  };
-
-  _handleFocus = function() {
-    function cleanup() {
-      _event.remove(_win, 'focus', _handleFocus);
-      _event.remove(_win, 'load', _handleFocus);
-    }
-    if (_isFocused || !_tryInitOnFocus) {
-      cleanup();
-      return true;
-    }
-    _okToDisable = true;
-    _isFocused = true;
-    _s._wD(_smc+'handleFocus()');
-    if (_isSafari && _tryInitOnFocus) {
-      // giant Safari 3.1 hack - assume mousemove = focus given lack of focus event
-      _event.remove(_win, 'mousemove', _handleFocus);
-    }
-    // allow init to restart
-    _waitingForEI = false;
-    cleanup();
-    return true;
-  };
-
-  _initComplete = function(bNoDisable) {
-    if (_didInit) {
-      return false;
-    }
-    if (_s.html5Only) {
-      // all good.
-      _s._wD('-- SoundManager 2: loaded --');
-      _didInit = true;
-      _processOnEvents();
-      _initUserOnload();
-      return true;
-    }
-    var sClass = _s.oMC.className,
-    wasTimeout = (_s.useFlashBlock && _s.flashLoadTimeout && !_s.getMoviePercent());
-    if (!wasTimeout) {
-      _didInit = true;
-    }
-    _s._wD('-- SoundManager 2 ' + (_disabled?'failed to load':'loaded') + ' (' + (_disabled?'security/load error':'OK') + ') --', 1);
-    if (_disabled || bNoDisable) {
-      if (_s.useFlashBlock) {
-        _s.oMC.className = _getSWFCSS() + ' ' + (_s.getMoviePercent() === null?_s.swfCSS.swfTimedout:_s.swfCSS.swfError);
-      }
-      _processOnEvents({type:'ontimeout'});
-      _debugTS('onload', false);
-      if (_s.onerror instanceof Function) {
-        _s.onerror.apply(_win);
-      }
-      return false;
-    } else {
-      _debugTS('onload', true);
-    }
-    _event.add(_win, 'unload', _doNothing); // prevent browser from showing cached state via back button, because flash will be dead
-    if (_s.waitForWindowLoad && !_windowLoaded) {
-      _wDS('waitOnload');
-      _event.add(_win, 'load', _initUserOnload);
-      return false;
-    } else {
-      if (_s.waitForWindowLoad && _windowLoaded) {
-        _wDS('docLoaded');
-      }
-      _initUserOnload();
-    }
-    return true;
   };
 
   _addOnEvent = function(sType, oMethod, oScope) {
@@ -2761,12 +2410,16 @@ function SoundManager(smURL, smID) {
       return false;
     }
     var status = {
-      success: (oOptions && oOptions.ignoreInit?_s.ok():!_disabled)
-    },
-    srcQueue = (oOptions && oOptions.type?_on_queue[oOptions.type]||[]:[]), // queue specified by type, or none
-    queue = [], i, j,
-    canRetry = (_needsFlash && _s.useFlashBlock && !_s.ok());
-    for (i = 0; i < srcQueue.length; i++) {
+          success: (oOptions && oOptions.ignoreInit?_s.ok():!_disabled)
+        },
+        srcQueue = (oOptions && oOptions.type?_on_queue[oOptions.type]||[]:[]), // queue specified by type, or none
+        queue = [], i, j,
+        args = [status],
+        canRetry = (_needsFlash && _s.useFlashBlock && !_s.ok());
+    if (oOptions.error) {
+      args[0].error = oOptions.error;
+    }
+    for (i = 0, j = srcQueue.length; i < j; i++) {
       if (srcQueue[i].fired !== true) {
         queue.push(srcQueue[i]);
       }
@@ -2775,9 +2428,9 @@ function SoundManager(smURL, smID) {
       _s._wD(_sm + ': Firing ' + queue.length + ' '+oOptions.type+'() item' + (queue.length === 1?'':'s'));
       for (i = 0, j = queue.length; i < j; i++) {
         if (queue[i].scope) {
-          queue[i].method.apply(queue[i].scope, [status]);
+          queue[i].method.apply(queue[i].scope, args);
         } else {
-          queue[i].method(status);
+          queue[i].method.apply(this, args);
         }
         if (!canRetry) { // flashblock case doesn't count here
           queue[i].fired = true;
@@ -2844,8 +2497,7 @@ function SoundManager(smURL, smID) {
   _featureCheck = function() {
 
     var needsFlash, item,
-
-    isSpecial = (_ua.match(/iphone os (1|2|3_0|3_1)/i)?true:false); // iPhone <= 3.1 has broken HTML5 audio(), but firmware 3.2 (iPad) + iOS4 works.
+        isSpecial = (_ua.match(/iphone os (1|2|3_0|3_1)/i)?true:false); // iPhone <= 3.1 has broken HTML5 audio(), but firmware 3.2 (iPad) + iOS4 works.
 
     if (isSpecial) {
       _s.hasHTML5 = false; // has Audio(), but is broken; let it load links directly.
@@ -2871,7 +2523,7 @@ function SoundManager(smURL, smID) {
         }
       }
     } else {
-      // flash required.
+      // flash needed (or, HTML5 needs enabling.)
       return true;
     }
 
@@ -2889,107 +2541,10 @@ function SoundManager(smURL, smID) {
       needsFlash = false;
     }
 
-    _s.html5Only = (_s.useHTML5Audio && _s.hasHTML5 && !needsFlash && !_s.requireFlash);
-    return (_detectFlash() && needsFlash);
+    _s.html5Only = (_s.hasHTML5 && _s.useHTML5Audio && !needsFlash);
 
-  };
+    return (!_s.html5Only);
 
-  _init = function() {
-
-    var item, tests = [];
-    _wDS('init');
-
-    // called after onload()
-    if (_didInit) {
-      _wDS('didInit');
-      return false;
-    }
-
-    function _cleanup() {
-      _event.remove(_win, 'load', _s.beginDelayedInit);
-    }
-
-    if (_s.hasHTML5) {
-      for (item in _s.audioFormats) {
-        if (_s.audioFormats.hasOwnProperty(item)) {
-          tests.push(item+': '+_s.html5[item] + (_s.preferFlash && _s.flash[item] ? ' (preferring flash)':''));
-        }
-      }
-      _s._wD('-- SoundManager 2: HTML5 support tests ('+_s.html5Test+'): '+tests.join(', ')+' --',1);
-    }
-
-    if (_s.html5Only) {
-      if (!_didInit) {
-        // we don't need no steenking flash!
-        _cleanup();
-        _s.enabled = true;
-        _initComplete();
-      }
-      return true;
-    }
-
-    // flash path
-    _initMovie();
-
-    try {
-      _wDS('flashJS');
-      _s.o._externalInterfaceTest(false); // attempt to talk to Flash
-      if (!_s.allowPolling) {
-        _wDS('noPolling', 1);
-      } else {
-        _setPolling(true, _s.flashPollingInterval ? _s.flashPollingInterval : (_s.useFastPolling ? 10 : 50));
-      }
-      if (!_s.debugMode) {
-        _s.o._disableDebug();
-      }
-      _s.enabled = true;
-      _debugTS('jstoflash', true);
-    } catch(e) {
-      _s._wD('js/flash exception: ' + e.toString());
-      _debugTS('jstoflash', false);
-      _failSafely(true); // don't disable, for reboot()
-      _initComplete();
-      return false;
-    }
-
-    _initComplete();
-    // event cleanup
-    _cleanup();
-    return true;
-
-  };
-
-  _beginInit = function() {
-    if (_initPending) {
-      return false;
-    }
-    _createMovie();
-    _initMovie();
-    _initPending = true;
-    return true;
-  };
-
-  _dcLoaded = function() {
-    if (_didDCLoaded) {
-      return false;
-    }
-    _didDCLoaded = true;
-    _initDebug();
-    if (!_s.useHTML5Audio) {
-      if (!_detectFlash()) {
-        _s._wD('SoundManager: No Flash detected, trying HTML5');
-        _s.useHTML5Audio = true;
-      }
-    }
-    _testHTML5();
-    _s.html5.usingFlash = _featureCheck();
-    _needsFlash = _s.html5.usingFlash;
-    _didDCLoaded = true;
-    if (_doc.removeEventListener) {
-      _doc.removeEventListener('DOMContentLoaded', _dcLoaded, false);
-    }
-    _go();
-    return true;
   };
 
   _startTimer = function(oSound) {
@@ -3004,15 +2559,18 @@ function SoundManager(smURL, smID) {
     }
   };
 
-  _die = function() {
+  _catchError = function(options) {
+    options = (typeof options !== 'undefined' ? options : {});
     if (_s.onerror instanceof Function) {
-      _s.onerror();
+      _s.onerror.apply(_win, [{type:(typeof options.type !== 'undefined' ? options.type : null)}]);
     }
-    _s.disable();
+    if (typeof options.fatal !== 'undefined' && options.fatal) {
+      _s.disable();
+    }
   };
 
   _badSafariFix = function() {
-    // special case: "bad" Safari can fall back to flash for MP3/MP4
+    // special case: "bad" Safari (OS X 10.3 - 10.7) must fall back to flash for MP3/MP4
     if (!_isBadSafari || !_detectFlash()) {
       return false; // doesn't apply
     }
@@ -3033,7 +2591,9 @@ function SoundManager(smURL, smID) {
     }
   };
 
-  // pseudo-private methods called by Flash
+  /*
+   * pseudo-private flash/ExternalInterface methods
+  */
 
   this._setSandboxType = function(sandboxType) {
     // <d>
@@ -3078,6 +2638,519 @@ function SoundManager(smURL, smID) {
     }
   };
 
+  /*
+   * private initialization helpers
+  */
+
+  _createMovie = function(smID, smURL) {
+
+    if (_didAppend && _appendSuccess) {
+      return false; // ignore if already succeeded
+    }
+
+    function _initMsg() {
+      _s._wD('-- SoundManager 2 ' + _s.version + (!_s.html5Only && _s.useHTML5Audio?(_s.hasHTML5?' + HTML5 audio':', no HTML5 audio support'):'') + (!_s.html5Only ? (_s.useMovieStar?', MovieStar mode':'') + (_s.useHighPerformance?', high performance mode, ':', ') + (( _s.flashPollingInterval ? 'custom (' + _s.flashPollingInterval + 'ms)' : (_s.useFastPolling?'fast':'normal')) + ' polling') + (_s.wmode?', wmode: ' + _s.wmode:'') + (_s.debugFlash?', flash debug mode':'') + (_s.useFlashBlock?', flashBlock mode':'') : '') + ' --', 1);
+    }
+
+    if (_s.html5Only) {
+      // 100% HTML5 mode
+      _setVersionInfo();
+      _initMsg();
+      _s.oMC = _id(_s.movieID);
+      _init();
+      // prevent multiple init attempts
+      _didAppend = true;
+      _appendSuccess = true;
+      return false;
+    }
+
+    // flash path
+    var remoteURL = (smURL || _s.url),
+    localURL = (_s.altURL || remoteURL),
+    swfTitle = 'JS/Flash audio component (SoundManager 2)',
+    oEmbed, oMovie, oTarget = _getDocument(), tmp, movieHTML, oEl, extraClass = _getSWFCSS(), s, x, sClass, side = 'auto', isRTL = null, html = _doc.getElementsByTagName('html')[0];
+
+    isRTL = (html && html.dir && html.dir.match(/rtl/i));
+    smID = (typeof smID === 'undefined'?_s.id:smID);
+
+    function param(name, value) {
+      return '<param name="'+name+'" value="'+value+'" />';
+    }
+
+    // safety check for legacy (change to Flash 9 URL)
+    _setVersionInfo();
+    _s.url = _normalizeMovieURL(_overHTTP?remoteURL:localURL);
+    smURL = _s.url;
+
+    _s.wmode = (!_s.wmode && _s.useHighPerformance && !_s.useMovieStar?'transparent':_s.wmode);
+
+    if (_s.wmode !== null && (_ua.match(/msie 8/i) || (!_isIE && !_s.useHighPerformance)) && navigator.platform.match(/win32|win64/i)) {
+      /*
+       * extra-special case: movie doesn't load until scrolled into view when using wmode = anything but 'window' here
+       * does not apply when using high performance (position:fixed means on-screen), OR infinite flash load timeout
+       * wmode breaks IE 8 on Vista + Win7 too in some cases, as of January 2011 (?)
+      */
+      _s.specialWmodeCase = true;
+      _wDS('spcWmode');
+      _s.wmode = null;
+    }
+
+    oEmbed = {
+      'name': smID,
+      'id': smID,
+      'src': smURL,
+      'width': side,
+      'height': side,
+      'quality': 'high',
+      'allowScriptAccess': _s.allowScriptAccess,
+      'bgcolor': _s.bgColor,
+      'pluginspage': _http+'//www.macromedia.com/go/getflashplayer',
+      'title': swfTitle,
+      'type': 'application/x-shockwave-flash',
+      'wmode': _s.wmode,
+      'hasPriority': 'true' // http://help.adobe.com/en_US/as3/mobile/WS4bebcd66a74275c36cfb8137124318eebc6-7ffd.html
+    };
+
+    if (_s.debugFlash) {
+      oEmbed.FlashVars = 'debug=1';
+    }
+
+    if (!_s.wmode) {
+      delete oEmbed.wmode; // don't write empty attribute
+    }
+
+    if (_isIE) {
+
+      // IE is "special".
+      oMovie = _doc.createElement('div');
+      movieHTML = [
+        '<object id="' + smID + '" data="' + smURL + '" type="' + oEmbed.type + '" title="' + oEmbed.title +'" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="' + _http+'//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="' + oEmbed.width + '" height="' + oEmbed.height + '">',
+        param('movie', smURL),
+        param('AllowScriptAccess', _s.allowScriptAccess),
+        param('quality', oEmbed.quality),
+        (_s.wmode? param('wmode', _s.wmode): ''),
+        param('bgcolor', _s.bgColor),
+        param('hasPriority', 'true'),
+        (_s.debugFlash ? param('FlashVars', oEmbed.FlashVars) : ''),
+        '</object>'
+      ].join('');
+
+    } else {
+
+      oMovie = _doc.createElement('embed');
+      for (tmp in oEmbed) {
+        if (oEmbed.hasOwnProperty(tmp)) {
+          oMovie.setAttribute(tmp, oEmbed[tmp]);
+        }
+      }
+
+    }
+
+    _initDebug();
+    extraClass = _getSWFCSS();
+    oTarget = _getDocument();
+
+    if (oTarget) {
+
+      _s.oMC = (_id(_s.movieID) || _doc.createElement('div'));
+
+      if (!_s.oMC.id) {
+
+        _s.oMC.id = _s.movieID;
+        _s.oMC.className = _s.swfCSS.swfDefault + ' ' + extraClass;
+        s = null;
+        oEl = null;
+
+        if (!_s.useFlashBlock) {
+          if (_s.useHighPerformance) {
+            // on-screen at all times
+            s = {
+              'position': 'fixed',
+              'width': '8px',
+              'height': '8px',
+              // >= 6px for flash to run fast, >= 8px to start up under Firefox/win32 in some cases. odd? yes.
+              'bottom': '0px',
+              'left': '0px',
+              'overflow': 'hidden'
+            };
+          } else {
+            // hide off-screen, lower priority
+            s = {
+              'position': 'absolute',
+              'width': '6px',
+              'height': '6px',
+              'top': '-9999px',
+              'left': '-9999px'
+            };
+            if (isRTL) {
+              s.left = Math.abs(parseInt(s.left,10))+'px';
+            }
+          }
+        }
+
+        if (_isWebkit) {
+          _s.oMC.style.zIndex = 10000; // soundcloud-reported render/crash fix, safari 5
+        }
+
+        if (!_s.debugFlash) {
+          for (x in s) {
+            if (s.hasOwnProperty(x)) {
+              _s.oMC.style[x] = s[x];
+            }
+          }
+        }
+
+        try {
+          if (!_isIE) {
+            _s.oMC.appendChild(oMovie);
+          }
+          oTarget.appendChild(_s.oMC);
+          if (_isIE) {
+            oEl = _s.oMC.appendChild(_doc.createElement('div'));
+            oEl.className = _s.swfCSS.swfBox;
+            oEl.innerHTML = movieHTML;
+          }
+          _appendSuccess = true;
+        } catch(e) {
+          throw new Error(_str('domError')+' \n'+e.toString());
+        }
+
+      } else {
+
+        // SM2 container is already in the document (eg. flashblock use case)
+        sClass = _s.oMC.className;
+        _s.oMC.className = (sClass?sClass+' ':_s.swfCSS.swfDefault) + (extraClass?' '+extraClass:'');
+        _s.oMC.appendChild(oMovie);
+        if (_isIE) {
+          oEl = _s.oMC.appendChild(_doc.createElement('div'));
+          oEl.className = _s.swfCSS.swfBox;
+          oEl.innerHTML = movieHTML;
+        }
+        _appendSuccess = true;
+
+      }
+
+    }
+
+    _didAppend = true;
+    _initMsg();
+    _s._wD(_smc+'createMovie(): Trying to load ' + smURL + (!_overHTTP && _s.altURL?' (alternate URL)':''), 1);
+
+    return true;
+
+  };
+
+  _initMovie = function() {
+
+    if (_s.html5Only) {
+      _createMovie();
+      return false;
+    }
+
+    // attempt to get, or create, movie
+    if (_s.o) {
+      return false; // may already exist
+    }
+
+    _s.o = _s.getMovie(_s.id); // inline markup
+
+    if (!_s.o) {
+      if (!_oRemoved) {
+        // try to create
+        _createMovie(_s.id, _s.url);
+      } else {
+        // try to re-append removed movie after reboot()
+        if (!_isIE) {
+          _s.oMC.appendChild(_oRemoved);
+        } else {
+          _s.oMC.innerHTML = _oRemovedHTML;
+        }
+        _oRemoved = null;
+        _didAppend = true;
+      }
+      _s.o = _s.getMovie(_s.id);
+    }
+
+    if (_s.o) {
+      _wDS('waitEI');
+    }
+
+    if (_s.oninitmovie instanceof Function) {
+      setTimeout(_s.oninitmovie, 1);
+    }
+
+    return true;
+
+  };
+
+  _delayWaitForEI = function() {
+    setTimeout(_waitForEI, 1000);
+  };
+
+  _waitForEI = function() {
+
+    if (_waitingForEI) {
+      return false;
+    }
+
+    _waitingForEI = true;
+    _event.remove(_win, 'load', _delayWaitForEI);
+
+    if (_tryInitOnFocus && !_isFocused) {
+      // giant Safari 3.1 hack - assume mousemove = focus given lack of focus event
+      _wDS('waitFocus');
+      return false;
+    }
+
+    var p;
+    if (!_didInit) {
+      p = _s.getMoviePercent();
+      _s._wD(_str('waitImpatient', (p === 100?' (SWF loaded)':(p > 0?' (SWF ' + p + '% loaded)':''))));
+    }
+
+    setTimeout(function() {
+
+      p = _s.getMoviePercent();
+
+      if (!_didInit) {
+        _s._wD(_sm + ': No Flash response within expected time.\nLikely causes: ' + (p === 0?'Loading ' + _s.movieURL + ' may have failed (and/or Flash ' + _fV + '+ not present?), ':'') + 'Flash blocked or JS-Flash security error.' + (_s.debugFlash?' ' + _str('checkSWF'):''), 2);
+        if (!_overHTTP && p) {
+          _wDS('localFail', 2);
+          if (!_s.debugFlash) {
+            _wDS('tryDebug', 2);
+          }
+        }
+        if (p === 0) {
+          // if 0 (not null), probably a 404.
+          _s._wD(_str('swf404', _s.url));
+        }
+        _debugTS('flashtojs', false, ': Timed out' + _overHTTP?' (Check flash security or flash blockers)':' (No plugin/missing SWF?)');
+      }
+
+      // give up / time-out, depending
+      if (!_didInit && _okToDisable) {
+        if (p === null) {
+          // SWF failed. Maybe blocked.
+          if (_s.useFlashBlock || _s.flashLoadTimeout === 0) {
+            if (_s.useFlashBlock) {
+              _flashBlockHandler();
+            }
+            _wDS('waitForever');
+          } else {
+            // old SM2 behaviour, simply fail
+            _failSafely(true);
+          }
+
+        } else {
+          // flash loaded? Shouldn't be a blocking issue, then.
+          if (_s.flashLoadTimeout === 0) {
+             _wDS('waitForever');
+          } else {
+            _failSafely(true);
+          }
+        }
+      }
+
+    }, _s.flashLoadTimeout);
+
+  };
+
+  _handleFocus = function() {
+    function cleanup() {
+      _event.remove(_win, 'focus', _handleFocus);
+      _event.remove(_win, 'load', _handleFocus);
+    }
+    if (_isFocused || !_tryInitOnFocus) {
+      cleanup();
+      return true;
+    }
+    _okToDisable = true;
+    _isFocused = true;
+    _s._wD(_smc+'handleFocus()');
+    if (_isSafari && _tryInitOnFocus) {
+      _event.remove(_win, 'mousemove', _handleFocus);
+    }
+    // allow init to restart
+    _waitingForEI = false;
+    cleanup();
+    return true;
+  };
+
+  _initComplete = function(bNoDisable) {
+    if (_didInit) {
+      return false;
+    }
+    if (_s.html5Only) {
+      // all good.
+      _s._wD('-- SoundManager 2: loaded --');
+      _didInit = true;
+      _initUserOnload();
+      _debugTS('onload', true);
+      return true;
+    }
+    var wasTimeout = (_s.useFlashBlock && _s.flashLoadTimeout && !_s.getMoviePercent()),
+        error;
+    if (!wasTimeout) {
+      _didInit = true;
+      if (_disabled) {
+        error = {type: (!_hasFlash && _needsFlash ? 'NO_FLASH' : 'INIT_TIMEOUT')};
+      }
+    }
+    _s._wD('-- SoundManager 2 ' + (_disabled?'failed to load':'loaded') + ' (' + (_disabled?'security/load error':'OK') + ') --', 1);
+    if (_disabled || bNoDisable) {
+      if (_s.useFlashBlock && _s.oMC) {
+        _s.oMC.className = _getSWFCSS() + ' ' + (_s.getMoviePercent() === null?_s.swfCSS.swfTimedout:_s.swfCSS.swfError);
+      }
+      _processOnEvents({type:'ontimeout', error:error});
+      _debugTS('onload', false);
+      _catchError(error);
+      return false;
+    } else {
+      _debugTS('onload', true);
+    }
+    _event.add(_win, 'unload', _doNothing); // prevent browser from showing cached state via back button, because flash will be dead
+    if (_s.waitForWindowLoad && !_windowLoaded) {
+      _wDS('waitOnload');
+      _event.add(_win, 'load', _initUserOnload);
+      return false;
+    } else {
+      if (_s.waitForWindowLoad && _windowLoaded) {
+        _wDS('docLoaded');
+      }
+      _initUserOnload();
+    }
+    return true;
+  };
+
+  _showSupport = function() {
+
+    var item, tests = [];
+    if (_s.useHTML5Audio && _s.hasHTML5) {
+      for (item in _s.audioFormats) {
+        if (_s.audioFormats.hasOwnProperty(item)) {
+          tests.push(item + ': ' + _s.html5[item] + (!_s.html5[item] && _hasFlash && _s.flash[item] ? ' (using flash)' : (_s.preferFlash && _s.flash[item] && _hasFlash ? ' (preferring flash)': (!_s.html5[item] ? ' (' + (_s.audioFormats[item].required ? 'required, ':'') + 'and no flash support)' : ''))));
+        }
+      }
+      _s._wD('-- SoundManager 2: HTML5 support tests ('+_s.html5Test+'): '+tests.join(', ')+' --',1);
+    }
+
+  };
+
+  _init = function() {
+
+    _wDS('init');
+
+    // called after onload()
+    if (_didInit) {
+      _wDS('didInit');
+      return false;
+    }
+
+    function _cleanup() {
+      _event.remove(_win, 'load', _s.beginDelayedInit);
+    }
+
+    if (_s.html5Only) {
+      if (!_didInit) {
+        // we don't need no steenking flash!
+        _cleanup();
+        _s.enabled = true;
+        _initComplete();
+      }
+      return true;
+    }
+
+    // flash path
+    _initMovie();
+
+    try {
+      _wDS('flashJS');
+      _s.o._externalInterfaceTest(false); // attempt to talk to Flash
+      if (!_s.allowPolling) {
+        _wDS('noPolling', 1);
+      } else {
+        _setPolling(true, (_s.flashPollingInterval || (_s.useFastPolling ? 10 : 50)));
+      }
+      if (!_s.debugMode) {
+        _s.o._disableDebug();
+      }
+      _s.enabled = true;
+      _debugTS('jstoflash', true);
+    } catch(e) {
+      _s._wD('js/flash exception: ' + e.toString());
+      _debugTS('jstoflash', false);
+      _catchError({type:'JS_TO_FLASH_EXCEPTION', fatal:true});
+      _failSafely(true); // don't disable, for reboot()
+      _initComplete();
+      return false;
+    }
+
+    _initComplete();
+    // event cleanup
+    _cleanup();
+    return true;
+
+  };
+
+  _dcLoaded = function() {
+    if (_didDCLoaded) {
+      return false;
+    }
+    _didDCLoaded = true;
+    _initDebug();
+
+    /*
+     * Temporary feature: allow force of HTML5 via URL params: sm2-usehtml5audio=0 or 1
+     * Ditto for sm2-preferFlash, too.
+    */
+    // <d>
+    (function(){
+      var a = 'sm2-usehtml5audio=', l = _wl.toLowerCase(), b = null,
+      a2 = 'sm2-preferflash=', b2 = null, hasCon = (typeof console !== 'undefined' && typeof console.log !== 'undefined');
+      if (l.indexOf(a) !== -1) {
+        b = (l.charAt(l.indexOf(a)+a.length) === '1');
+        if (hasCon) {
+          console.log((b?'Enabling ':'Disabling ')+'useHTML5Audio via URL parameter');
+        }
+        _s.useHTML5Audio = b;
+      }
+      if (l.indexOf(a2) !== -1) {
+        b2 = (l.charAt(l.indexOf(a2)+a2.length) === '1');
+        if (hasCon) {
+          console.log((b2?'Enabling ':'Disabling ')+'preferFlash via URL parameter');
+        }
+        _s.preferFlash = b2;
+      }
+    }());
+    // </d>
+
+    if (!_hasFlash && _s.hasHTML5) {
+      _s._wD('SoundManager: No Flash detected'+(!_s.useHTML5Audio?', enabling HTML5.':'. Trying HTML5-only mode.'));
+      _s.useHTML5Audio = true;
+      // make sure we aren't preferring flash, either
+      // TODO: preferFlash should not matter if flash is not installed. Currently, stuff breaks without the below tweak.
+      _s.preferFlash = false;
+    }
+
+    _testHTML5();
+    _s.html5.usingFlash = _featureCheck();
+    _needsFlash = _s.html5.usingFlash;
+
+    _showSupport();
+
+    if (!_hasFlash && _needsFlash) {
+      _s._wD('SoundManager: Fatal error: Flash is needed to play some required formats, but is not available.');
+      // TODO: Fatal here vs. timeout approach, etc.
+      _s.flashLoadTimeout = 1; // hack: fail sooner.
+    }
+
+    if (_doc.removeEventListener) {
+      _doc.removeEventListener('DOMContentLoaded', _dcLoaded, false);
+    }
+    _initMovie();
+    return true;
+  };
+
   _dcIE = function() {
     if (_doc.readyState === 'complete') {
       _dcLoaded();
@@ -3086,15 +3159,15 @@ function SoundManager(smURL, smID) {
     return true;
   };
 
-  // focus and window load, init
-  if (!_s.hasHTML5 || _needsFlash) {
-    // only applies to Flash mode
-    _event.add(_win, 'focus', _handleFocus);
-    _event.add(_win, 'load', _handleFocus);
-    _event.add(_win, 'load', _delayWaitForEI);
-    if (_isSafari && _tryInitOnFocus) {
-      _event.add(_win, 'mousemove', _handleFocus); // massive Safari focus hack
-    }
+  // sniff up-front
+  _detectFlash();
+
+  // focus and window load, init (primarily flash-driven)
+  _event.add(_win, 'focus', _handleFocus);
+  _event.add(_win, 'load', _handleFocus);
+  _event.add(_win, 'load', _delayWaitForEI);
+  if (_isSafari && _tryInitOnFocus) {
+    _event.add(_win, 'mousemove', _handleFocus); // massive Safari 3.1 focus hack
   }
 
   if (_doc.addEventListener) {
@@ -3104,7 +3177,7 @@ function SoundManager(smURL, smID) {
   } else {
     // no add/attachevent support - safe to assume no JS -> Flash either
     _debugTS('onload', false);
-    _die();
+    _catchError({type:'NO_DOM2_EVENTS', fatal:true});
   }
 
   if (_doc.readyState === 'complete') {

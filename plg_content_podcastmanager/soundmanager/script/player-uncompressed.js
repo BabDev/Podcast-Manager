@@ -17,6 +17,7 @@
 var inlinePlayer = null;
 
 soundManager.useFlashBlock = true;
+soundManager.preferFlash = false;
 
 // optional: enable MPEG-4/AAC support (requires flash 9)
 soundManager.flashVersion = 9;
