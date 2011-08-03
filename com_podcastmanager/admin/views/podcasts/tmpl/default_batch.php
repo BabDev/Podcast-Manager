@@ -1,13 +1,17 @@
 <?php
 /**
- * @version		$Id: default_batch.php 21663 2011-06-23 13:51:35Z chdemko $
- * @package		Joomla.Administrator
- * @subpackage	com_categories
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+* Podcast Manager for Joomla!
+*
+* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* @package		PodcastManager
+* @subpackage	com_podcastmanager
+*
+* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+*/
 
-// no direct access
+// Restricted access
 defined('_JEXEC') or die;
 
 // Add the HTML Helper
