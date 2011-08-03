@@ -4,7 +4,9 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -18,8 +20,6 @@ jimport('joomla.filesystem.folder');
 /**
  * Folder Media Controller
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaControllerFolder extends JController
@@ -28,8 +28,8 @@ class PodcastMediaControllerFolder extends JController
 	/**
 	 * Deletes paths from the current path
 	 *
-	 * @param string $listFolder The directory to delete a file from
-	 * @since 1.6
+	 * @return	void
+	 * @since	1.6
 	 */
 	function delete()
 	{
@@ -116,8 +116,8 @@ class PodcastMediaControllerFolder extends JController
 	/**
 	 * Create a folder
 	 *
-	 * @param string $path Path of the folder to create
-	 * @since 1.6
+	 * @return	void
+	 * @since	1.6
 	 */
 	function create()
 	{

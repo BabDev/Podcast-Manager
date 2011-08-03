@@ -4,7 +4,9 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -19,8 +21,6 @@ jimport('joomla.error.log');
 /**
  * File Media Controller
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaControllerFile extends JController
@@ -28,7 +28,8 @@ class PodcastMediaControllerFile extends JController
 	/**
 	 * Upload a file
 	 *
-	 * @since 1.6
+	 * @return	void
+	 * @since	1.6
 	 */
 	function upload()
 	{
@@ -58,8 +59,7 @@ class PodcastMediaControllerFile extends JController
 		// Make the filename safe
 		$file['name']	= JFile::makeSafe($file['name']);
 
-		if (isset($file['name']))
-		{
+		if (isset($file['name'])) {
 			// The request is valid
 			$err = null;
 
@@ -68,8 +68,7 @@ class PodcastMediaControllerFile extends JController
 
 			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.strtolower($filename));
 
-			if (!PodcastMediaHelper::canUpload($file, $err))
-			{
+			if (!PodcastMediaHelper::canUpload($file, $err)) {
 				$log->addEntry(array('comment' => 'Invalid: '.$filepath.': '.$err));
 				$response = array(
 					'status' => '0',
@@ -96,8 +95,7 @@ class PodcastMediaControllerFile extends JController
 				return;
 			}
 
-			if (JFile::exists($filepath))
-			{
+			if (JFile::exists($filepath)) {
 				// File exists
 				$log->addEntry(array('comment' => 'File exists: '.$filepath.' by user_id '.$user->id));
 				$response = array(
@@ -106,9 +104,7 @@ class PodcastMediaControllerFile extends JController
 				);
 				echo json_encode($response);
 				return;
-			}
-			elseif (!$user->authorise('core.create', 'com_podcastmanager'))
-			{
+			} else if (!$user->authorise('core.create', 'com_podcastmanager')) {
 				// File does not exist and user is not authorised to create
 				$log->addEntry(array('comment' => 'Create not permitted: '.$filepath.' by user_id '.$user->id));
 				$response = array(
@@ -120,8 +116,7 @@ class PodcastMediaControllerFile extends JController
 			}
 
 			$file = (array) $object_file;
-			if (!JFile::upload($file['tmp_name'], $file['filepath']))
-			{
+			if (!JFile::upload($file['tmp_name'], $file['filepath'])) {
 				// Error in upload
 				$log->addEntry(array('comment' => 'Error on upload: '.$filepath));
 				$response = array(
@@ -130,9 +125,7 @@ class PodcastMediaControllerFile extends JController
 				);
 				echo json_encode($response);
 				return;
-			}
-			else
-			{
+			} else {
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.file', &$object_file, true));
 				$log->addEntry(array('comment' => $folder));
@@ -143,9 +136,7 @@ class PodcastMediaControllerFile extends JController
 				echo json_encode($response);
 				return;
 			}
-		}
-		else
-		{
+		} else {
 			$response = array(
 				'status' => '0',
 				'error' => JText::_('COM_PODCASTMEDIA_ERROR_BAD_REQUEST')

@@ -4,7 +4,9 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -19,13 +21,12 @@ jimport('joomla.filesystem.file');
 /**
  * Podcast Media Component List Model
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaModelList extends JModel
 {
-	function getState($property = null, $default = null) {
+	function getState($property = null, $default = null)
+	{
 		static $set;
 
 		if (!$set) {
@@ -41,13 +42,27 @@ class PodcastMediaModelList extends JModel
 		return parent::getState($property, $default);
 	}
 
-	function getFolders() {
+	/**
+	 * Function to retrieve the available folders
+	 *
+	 * @return	array	An array of folders
+	 * @since	1.6
+	 */
+	function getFolders()
+	{
 		$list = $this->getList();
 
 		return $list['folders'];
 	}
 
-	function getAudio() {
+	/**
+	 * Function to retrieve the available audio files
+	 *
+	 * @return	array	An array of audio files
+	 * @since	1.6
+	 */
+	function getAudio()
+	{
 		$list = $this->getList();
 
 		return $list['audio'];
@@ -56,10 +71,11 @@ class PodcastMediaModelList extends JModel
 	/**
 	 * Build list view
 	 *
-	 * @param string $listFolder The directory to display
-	 * @since 1.6
+	 * @return	array	An array of data for the list view
+	 * @since	1.6
 	 */
-	function getList() {
+	function getList()
+	{
 		static $list;
 
 		// Only process the list once per request

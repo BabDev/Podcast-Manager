@@ -27,7 +27,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	function preflight($type, $parent) {
+	function preflight($type, $parent)
+	{
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
@@ -51,7 +52,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.8
 	 */
-	function uninstall($parent) {
+	function uninstall($parent)
+	{
 		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
 		// Get the component's ID from the database
 		$option	= 'com_podcastmedia';
@@ -93,7 +95,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	function update($parent) {
+	function update($parent)
+	{
 		// Check the currently installed version
 		$version	= $this->getVersion();
 		if ($version == 'Error') {
@@ -125,7 +128,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	protected function createFeed() {
+	protected function createFeed()
+	{
 		// Get the record from the database
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
@@ -173,7 +177,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	protected function db17Update() {
+	protected function db17Update()
+	{
 		$db = JFactory::getDBO();
 
 		// Get the update file
@@ -211,7 +216,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	string	$version	The base version that is installed
 	 * @since	1.7
 	 */
-	protected function getVersion() {
+	protected function getVersion()
+	{
 		// Get the record from the database
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
@@ -243,7 +249,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.8
 	 */
-	private function _bugfixDBFunctionReturnedNoError() {
+	private function _bugfixDBFunctionReturnedNoError()
+	{
 		$db = JFactory::getDbo();
 
 		// Fix broken #__assets records
@@ -307,7 +314,8 @@ class Com_PodcastManagerInstallerScript {
 	 * @return	void
 	 * @since	1.8
 	 */
-	private function _bugfixCantBuildAdminMenus() {
+	private function _bugfixCantBuildAdminMenus()
+	{
 		$db = JFactory::getDbo();
 
 		// If there are multiple #__extensions record, keep one of them

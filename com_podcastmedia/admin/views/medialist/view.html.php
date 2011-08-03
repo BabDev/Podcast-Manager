@@ -4,7 +4,9 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -17,8 +19,6 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Podcast Media component
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaViewMediaList extends JView
@@ -32,7 +32,7 @@ class PodcastMediaViewMediaList extends JView
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
 		$lang	= JFactory::getLanguage();
-		
+
 		JHtml::_('behavior.framework', true);
 
 		$document = JFactory::getDocument();

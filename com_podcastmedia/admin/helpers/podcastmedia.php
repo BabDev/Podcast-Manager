@@ -4,6 +4,8 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
@@ -13,8 +15,7 @@
 defined('_JEXEC') or die;
 
 /**
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
+ * @since	1.6
  */
 abstract class PodcastMediaHelper
 {
@@ -24,7 +25,8 @@ abstract class PodcastMediaHelper
 	 * @param string The filename
 	 * @return boolean
 	 */
-	public static function getTypeIcon($fileName) {
+	public static function getTypeIcon($fileName)
+	{
 		// Get file extension
 		return strtolower(substr($fileName, strrpos($fileName, '.') + 1));
 	}
@@ -36,7 +38,8 @@ abstract class PodcastMediaHelper
 	 * @param string An error message to be returned
 	 * @return boolean
 	 */
-	public static function canUpload($file, &$err) {
+	public static function canUpload($file, &$err)
+	{
 		$medmanparams	= JComponentHelper::getParams('com_media');
 
 		if (empty($file['name'])) {
@@ -107,7 +110,8 @@ abstract class PodcastMediaHelper
 		return true;
 	}
 
-	public static function parseSize($size) {
+	public static function parseSize($size)
+	{
 		if ($size < 1024) {
 			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_BYTES', $size);
 		} elseif ($size < 1024 * 1024) {
@@ -117,7 +121,8 @@ abstract class PodcastMediaHelper
 		}
 	}
 
-	public static function countFiles($dir) {
+	public static function countFiles($dir)
+	{
 		$total_file = 0;
 		$total_dir = 0;
 

@@ -4,7 +4,9 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
@@ -17,14 +19,13 @@ jimport('joomla.application.component.model');
 /**
  * Podcast Media Component Manager Model
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaModelManager extends JModel
 {
 
-	function getState($property = null, $default = null) {
+	function getState($property = null, $default = null)
+	{
 		static $set;
 
 		if (!$set) {
@@ -46,10 +47,11 @@ class PodcastMediaModelManager extends JModel
 	/**
 	 * Audio Manager Popup
 	 *
-	 * @param string $listFolder The directory to display
-	 * @since 1.6
+	 * @param	string	$base
+	 * @since	1.6
 	 */
-	function getFolderList($base = null) {
+	function getFolderList($base = null)
+	{
 		// Get some paths from the request
 		if (empty($base)) {
 			$base = COM_PODCASTMEDIA_BASE;
@@ -89,7 +91,8 @@ class PodcastMediaModelManager extends JModel
 		return $list;
 	}
 
-	function getFolderTree($base = null) {
+	function getFolderTree($base = null)
+	{
 		// Get some paths from the request
 		if (empty($base)) {
 			$base = COM_PODCASTMEDIA_BASE;

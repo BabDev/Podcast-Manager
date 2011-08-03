@@ -4,6 +4,8 @@
 *
 * @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* @package		PodcastManager
+* @subpackage	com_podcastmedia
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
@@ -25,7 +27,8 @@ class Com_PodcastMediaInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	function preflight($type, $parent) {
+	function preflight($type, $parent)
+	{
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
@@ -43,7 +46,8 @@ class Com_PodcastMediaInstallerScript {
 	 * @return	void
 	 * @since	1.6
 	 */
-	function postflight($type, $parent) {
+	function postflight($type, $parent)
+	{
 		$this->removeMenu();
 	}
 
@@ -53,7 +57,8 @@ class Com_PodcastMediaInstallerScript {
 	 * @return	void
 	 * @since	1.7
 	 */
-	function removeMenu() {
+	function removeMenu()
+	{
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$query->delete()->from($db->quoteName('#__menu'))->where($db->quoteName('title').' = "com_podcastmedia"');
