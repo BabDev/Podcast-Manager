@@ -23,16 +23,16 @@
 	</target>
 	<target name="release" description="Builds release packages based on the development head" depends="rebuild-packages">
 		<echo msg="Build Podcast Manager package" />
-		<zip destfile="releases/pkg_podcastmanager_18rc.zip">
+		<zip destfile="releases/pkg_podcastmanager_180.zip">
 			<fileset dir=".">
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
-		<zip destfile="releases/files_podcastmanager_hathor_18rc.zip" basedir="files_podcastmanager_hathor" />
+		<zip destfile="releases/files_podcastmanager_hathor_180.zip" basedir="files_podcastmanager_hathor" />
 		<echo msg="Building Minima Overrides package" />
-		<zip destfile="releases/files_podcastmanager_minima_18rc.zip" basedir="files_podcastmanager_minima" />
+		<zip destfile="releases/files_podcastmanager_minima_180.zip" basedir="files_podcastmanager_minima" />
 	</target>
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packages dir" />

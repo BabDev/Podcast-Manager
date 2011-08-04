@@ -22,6 +22,8 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_hathor.ini</language>
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_hathor.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_hathor.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_hathor.sys.ini</language>
 	</languages>
 	<updateservers>
 		<server type="extension" name="Podcast Manager Hathor HTML Overrides Updates" priority="2">http://www.flbab.com/updates/files_podman_hathor.xml</server>

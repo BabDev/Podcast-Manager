@@ -25,6 +25,8 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_minima.ini</language>
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_minima.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_minima.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_minima.sys.ini</language>
 	</languages>
 	<updateservers>
 		<server type="extension" name="Podcast Manager Minima HTML Overrides Updates" priority="2">http://www.flbab.com/updates/files_podman_minima.xml</server>

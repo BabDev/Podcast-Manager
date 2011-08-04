@@ -15,7 +15,7 @@
  * Installation class to perform additional changes during install/uninstall/update
  *
  * @package		PodcastManager
- * @subpackage	mod_podcastmanager
+ * @subpackage	mod_podcastmanagerfeed
  * @since		1.8
  */
 class Mod_PodcastManagerFeedInstallerScript {
