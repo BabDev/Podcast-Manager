@@ -19,10 +19,20 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Podcast Media component
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaViewMediaList extends JView
 {
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function display($tpl = null)
 	{
 		// Do not allow cache
@@ -64,6 +74,14 @@ class PodcastMediaViewMediaList extends JView
 		parent::display($tpl);
 	}
 
+	/**
+	 * Function to set the current folder
+	 *
+	 * @param	string	$index
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function setFolder($index = 0)
 	{
 		if (isset($this->folders[$index])) {
@@ -73,6 +91,14 @@ class PodcastMediaViewMediaList extends JView
 		}
 	}
 
+	/**
+	 * Function to set the current audio
+	 *
+	 * @param	string	$index
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function setAudio($index = 0)
 	{
 		if (isset($this->audio[$index])) {

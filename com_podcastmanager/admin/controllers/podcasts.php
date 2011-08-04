@@ -19,6 +19,8 @@ jimport('joomla.application.component.controlleradmin');
 /**
  * Podcast management controller class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.6
  */
 class PodcastManagerControllerPodcasts extends JControllerAdmin

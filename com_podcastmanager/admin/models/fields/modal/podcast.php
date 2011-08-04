@@ -19,6 +19,8 @@ jimport('joomla.form.formfield');
 /**
  * Supports a modal podcast selection.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.6
  */
 class JFormFieldModal_Podcast extends JFormField

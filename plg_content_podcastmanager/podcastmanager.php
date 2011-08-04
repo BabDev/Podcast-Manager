@@ -19,6 +19,8 @@ jimport('joomla.plugin.plugin');
 /**
  * Podcast Manager content plugin.
  *
+ * @package		PodcastManager
+ * @subpackage	plg_content_podcastmanager
  * @since		1.6
  */
 class plgContentPodcastManager extends JPlugin

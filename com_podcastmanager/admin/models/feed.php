@@ -19,6 +19,8 @@ jimport('joomla.application.component.modeladmin');
 /**
  * Feed edit model class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class PodcastManagerModelFeed extends JModelAdmin

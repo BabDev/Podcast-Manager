@@ -19,6 +19,8 @@ jimport('joomla.form.formfield');
 /**
  * Class to create a media selection modal.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.6
  */
 class JFormFieldPodcastMedia extends JFormField

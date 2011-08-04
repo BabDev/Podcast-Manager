@@ -19,11 +19,21 @@ jimport('joomla.application.component.model');
 /**
  * Podcast Media Component Manager Model
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaModelManager extends JModel
 {
-
+	/**
+	* Method to get model state variables
+	*
+	* @param	string	$property	Optional parameter name
+	* @param	mixed	$default	Optional default value
+	*
+	* @return	object	The property where specified, the state object where omitted
+	* @since   1.6
+	*/
 	function getState($property = null, $default = null)
 	{
 		static $set;
@@ -45,9 +55,11 @@ class PodcastMediaModelManager extends JModel
 	}
 
 	/**
-	 * Audio Manager Popup
+	 * Retrieves the list of folders
 	 *
-	 * @param	string	$base
+	 * @param	string	$base	The base file path
+	 *
+	 * @return	object	$list	A formatted object containing a list of folders
 	 * @since	1.6
 	 */
 	function getFolderList($base = null)
@@ -91,6 +103,14 @@ class PodcastMediaModelManager extends JModel
 		return $list;
 	}
 
+	/**
+	 * Creates a tree of folders
+	 *
+	 * @param	string	$base	The base file path
+	 *
+	 * @return	array	$list	An array containing the folders and their children
+	 * @since	1.6
+	 */
 	function getFolderTree($base = null)
 	{
 		// Get some paths from the request

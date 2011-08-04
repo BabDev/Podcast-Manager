@@ -20,6 +20,8 @@ jimport('joomla.application.component.view');
 /**
  * Cpanel view class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.8
  */
 class PodcastManagerViewCpanel extends JView

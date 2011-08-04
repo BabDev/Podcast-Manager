@@ -19,6 +19,8 @@ jimport('joomla.application.component.view');
 /**
  * Podcast edit view class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.8
  */
 class PodcastManagerViewPodcast extends JView

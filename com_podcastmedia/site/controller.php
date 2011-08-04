@@ -19,15 +19,17 @@ jimport('joomla.application.component.controller');
 /**
  * Podcast Media Manager Component Controller
  *
- * @version		1.6
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
 class PodcastMediaController extends JController
 {
 	/**
 	 * Method to display a view.
 	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param	boolean	$cachable	If true, the view output will be cached
+	 * @param	array	$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return	JController		This object to support chaining.
 	 * @since	1.6
@@ -76,6 +78,12 @@ class PodcastMediaController extends JController
 		return $this;
 	}
 
+	/**
+	 * Function to validate FTP credentials
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function ftpValidate()
 	{
 		// Set FTP credentials, if given

@@ -15,15 +15,18 @@
 defined('_JEXEC') or die;
 
 /**
- * @since	1.6
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
 abstract class PodcastMediaHelper
 {
 	/**
 	 * Gets the icon type
 	 *
-	 * @param string The filename
-	 * @return boolean
+	 * @param	string	$fileName	The filename
+	 *
+	 * @return	string	The file's extension
 	 */
 	public static function getTypeIcon($fileName)
 	{
@@ -34,9 +37,11 @@ abstract class PodcastMediaHelper
 	/**
 	 * Checks if the file can be uploaded
 	 *
-	 * @param array File information
-	 * @param string An error message to be returned
-	 * @return boolean
+	 * @param	array	$file	File information
+	 * @param	string	$err	An error message to be returned
+	 *
+	 * @return	boolean	True on success, false on error
+	 * @since	1.6
 	 */
 	public static function canUpload($file, &$err)
 	{
@@ -110,6 +115,13 @@ abstract class PodcastMediaHelper
 		return true;
 	}
 
+	/**
+	 * Function to parse a file size to the correct measurement
+	 *
+	 * @param	string	$size	The file size in bytes
+	 *
+	 * @return	JText	A translated string with the converted file size
+	 */
 	public static function parseSize($size)
 	{
 		if ($size < 1024) {
@@ -121,6 +133,14 @@ abstract class PodcastMediaHelper
 		}
 	}
 
+	/**
+	 * Count the number of files in a directory
+	 *
+	 * @param	string	$dir	Path to the directory to be counted
+	 *
+	 * @return	array	An array containing the number of files and folders
+	 * @since	1.6
+	 */
 	public static function countFiles($dir)
 	{
 		$total_file = 0;

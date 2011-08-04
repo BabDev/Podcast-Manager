@@ -14,7 +14,9 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @package		Podcast Manager
+ * @package		PodcastManager
+ * @subpackage	files_podcastmanager_hathor
+ * @since		1.8
  */
 class files_PodcastManager_HathorInstallerScript {
 

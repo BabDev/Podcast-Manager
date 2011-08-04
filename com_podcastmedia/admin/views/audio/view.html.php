@@ -19,10 +19,20 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Podcast Media component
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaViewAudio extends JView
 {
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function display($tpl = null)
 	{
 		$medmanparams	= JComponentHelper::getParams('com_media');

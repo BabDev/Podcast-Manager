@@ -17,6 +17,8 @@ defined('_JEXEC') or die;
 /**
  * Feed table interaction class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class PodcastManagerTableFeed extends JTable

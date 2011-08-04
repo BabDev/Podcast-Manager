@@ -17,6 +17,8 @@ defined('JPATH_LIBRARIES') or die;
 /**
  * HTML Utility class for Podcast Manager
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.8
  */
 abstract class JHtmlPodcast

@@ -14,6 +14,8 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
+ * @package		PodcastManager
+ * @subpackage	files_podcastmanager_minima
  * @since		1.8
  */
 class files_PodcastManager_MinimaInstallerScript {

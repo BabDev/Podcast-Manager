@@ -14,6 +14,8 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since	1.6
  */
 class Com_PodcastMediaInstallerScript {

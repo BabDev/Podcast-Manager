@@ -19,7 +19,9 @@ jimport('joomla.application.component.controller');
 /**
  * Podcast Media Manager Component Controller
  *
- * @version		1.6
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
 class PodcastMediaController extends JController
 {
@@ -86,6 +88,12 @@ class PodcastMediaController extends JController
 		return $this;
 	}
 
+	/**
+	 * Function to validate FTP credentials
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function ftpValidate()
 	{
 		// Set FTP credentials, if given

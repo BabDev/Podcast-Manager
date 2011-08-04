@@ -14,6 +14,8 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
+ * @package		PodcastManager
+ * @subpackage	plg_content_podcastmanager
  * @since	1.6
  */
 class plgContentPodcastManagerInstallerScript {

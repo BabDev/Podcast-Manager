@@ -20,11 +20,12 @@ jimport('joomla.filesystem.folder');
 /**
  * Folder Media Controller
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaControllerFolder extends JController
 {
-
 	/**
 	 * Deletes paths from the current path
 	 *

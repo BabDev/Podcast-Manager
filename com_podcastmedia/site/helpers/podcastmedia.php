@@ -15,7 +15,11 @@
 defined('_JEXEC') or die;
 
 /**
- * @since	1.6
+ * Podcast Manager Media Component Helper
+ *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
+ * @since		1.6
  */
 class PodcastMediaHelper
 {
@@ -66,6 +70,13 @@ class PodcastMediaHelper
 		return true;
 	}
 
+	/**
+	 * Function to parse a file size to the correct measurement
+	 *
+	 * @param	string	$size	The file size in bytes
+	 *
+	 * @return	JText	A translated string with the converted file size
+	 */
 	public static function parseSize($size)
 	{
 		if ($size < 1024) {
@@ -79,6 +90,14 @@ class PodcastMediaHelper
 		}
 	}
 
+	/**
+	 * Count the number of files in a directory
+	 *
+	 * @param	string	$dir	Path to the directory to be counted
+	 *
+	 * @return	array	An array containing the number of files and folders
+	 * @since	1.6
+	 */
 	function countFiles($dir)
 	{
 		$total_file = 0;

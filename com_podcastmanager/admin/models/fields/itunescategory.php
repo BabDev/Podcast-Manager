@@ -22,6 +22,8 @@ JFormHelper::loadFieldClass('list');
 /**
  * iTunes Category selection class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class JFormFieldItunesCategory extends JFormFieldList

@@ -19,6 +19,8 @@ jimport('joomla.application.component.view');
 /**
  * Feed management view class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class PodcastManagerViewFeeds extends JView

@@ -19,14 +19,22 @@ jimport('joomla.plugin.plugin');
 /**
  * Podcast Manager button plugin.
  *
+ * @package		PodcastManager
+ * @subpackage	plg_editors-xtd_podcastmanager
  * @since		1.6
  */
 class plgButtonPodcastManager extends JPlugin
 {
 	/**
 	 * Constructor
+	 *
+	 * @param	object	$subject	The object to observe
+	 * @param	array	$config		An array that holds the plugin configuration
+	 *
+	 * @return	void
+	 * @since	1.6
 	 */
-	public function __construct(& $subject, $config)
+	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();

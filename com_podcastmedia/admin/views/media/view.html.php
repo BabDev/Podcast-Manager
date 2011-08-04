@@ -19,10 +19,20 @@ jimport('joomla.application.component.view');
 /**
  * HTML View class for the Podcast Media component
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaViewMedia extends JView
 {
+	/**
+	 * Display the view
+	 *
+	 * @param   string $tpl	The name of the template file to parse
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
 	function display($tpl = null)
 	{
 		$app			= JFactory::getApplication();
@@ -85,8 +95,7 @@ class PodcastMediaViewMedia extends JView
 			);
 		}
 
-		if (DS == '\\')
-		{
+		if (DS == '\\') {
 			$base = str_replace(DS,"\\\\",COM_PODCASTMEDIA_BASE);
 		} else {
 			$base = COM_PODCASTMEDIA_BASE;
@@ -124,6 +133,7 @@ class PodcastMediaViewMedia extends JView
 	/**
 	 * Add the page title and toolbar.
 	 *
+	 * @return	void
 	 * @since	1.6
 	 */
 	protected function addToolbar()
@@ -136,8 +146,7 @@ class PodcastMediaViewMedia extends JView
 		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
 
 		// Add a delete button
-		if ($user->authorise('core.delete','com_podcastmanager'))
-		{
+		if ($user->authorise('core.delete','com_podcastmanager')) {
 			$title = JText::_('JTOOLBAR_DELETE');
 			$dhtml = "<a href=\"#\" onclick=\"PodcastMediaManager.submit('folder.delete')\" class=\"toolbar\">
 						<span class=\"icon-32-delete\" title=\"$title\"></span>
@@ -145,14 +154,21 @@ class PodcastMediaViewMedia extends JView
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}
-		if ($user->authorise('core.admin', 'com_podcastmanager'))
-		{
+		if ($user->authorise('core.admin', 'com_podcastmanager')) {
 			JToolBarHelper::preferences('com_podcastmedia');
 			JToolBarHelper::divider();
 		}
 		JToolBarHelper::help('JHELP_CONTENT_MEDIA_MANAGER');
 	}
 
+	/**
+	 * Function to determine the folder level
+	 *
+	 * @param	string	$folder	The current folder
+	 *
+	 * @return	string	$txt	The folder level
+	 * @since	1.6
+	 */
 	function getFolderLevel($folder)
 	{
 		$this->folders_id = null;

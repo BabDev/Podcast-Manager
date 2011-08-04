@@ -19,6 +19,8 @@ jimport('joomla.application.component.controllerform');
 /**
  * Feed edit controller class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class PodcastManagerControllerFeed extends JControllerForm

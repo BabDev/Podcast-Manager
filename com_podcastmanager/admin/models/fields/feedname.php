@@ -22,6 +22,8 @@ JFormHelper::loadFieldClass('list');
 /**
  * Feed selection class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.7
  */
 class JFormFieldFeedName extends JFormFieldList

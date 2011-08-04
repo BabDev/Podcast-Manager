@@ -20,6 +20,8 @@ jimport('joomla.filesystem.file');
 /**
  * Feed RAW view class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.8
  */
 class PodcastManagerViewFeed extends JView

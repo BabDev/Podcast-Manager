@@ -21,10 +21,21 @@ jimport('joomla.filesystem.file');
 /**
  * Podcast Media Component List Model
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaModelList extends JModel
 {
+	/**
+	 * Method to get model state variables
+	 *
+	 * @param	string	$property	Optional parameter name
+	 * @param	mixed	$default	Optional default value
+	 *
+	 * @return	object	The property where specified, the state object where omitted
+	 * @since   1.6
+	 */
 	function getState($property = null, $default = null)
 	{
 		static $set;

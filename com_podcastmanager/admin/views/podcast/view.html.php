@@ -20,6 +20,8 @@ jimport('joomla.filesystem.file');
 /**
  * Podcast edit view class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.6
  */
 class PodcastManagerViewPodcast extends JView

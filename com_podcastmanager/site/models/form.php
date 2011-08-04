@@ -19,6 +19,8 @@ jimport('joomla.application.component.modelform');
 /**
  * Feed edit model class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.8
  */
 class PodcastManagerModelForm extends JModelForm

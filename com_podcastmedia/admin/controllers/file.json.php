@@ -21,6 +21,8 @@ jimport('joomla.error.log');
 /**
  * File Media Controller
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmedia
  * @since		1.6
  */
 class PodcastMediaControllerFile extends JController

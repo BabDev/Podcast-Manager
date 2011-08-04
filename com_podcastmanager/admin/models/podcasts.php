@@ -19,6 +19,8 @@ jimport('joomla.application.component.modellist');
 /**
  * Podcast management model class.
  *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
  * @since		1.6
  */
 class PodcastManagerModelPodcasts extends JModelList
