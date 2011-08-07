@@ -193,11 +193,11 @@ class PodcastManagerViewFeed extends JView
 				$filename	= $filepath;
 			} else {
 				// The file is stored on site, check if it exists
-				$filepath	= JPATH_ROOT.'/'.$filename;
+				$filepath	= JPATH_ROOT.'/'.$item->filename;
 
 				// Check if the file exists
 				if (JFile::exists($filepath)) {
-					$filename	= JURI::base().$filename;
+					$filename	= JURI::base().$item->filename;
 				}
 			}
 

@@ -14,6 +14,10 @@
 // No direct access
 defined('_JEXEC') or die;
 ?>
+
+8-August-2011 Michael Babker
+# Fix a bug with the RSS path generation logic
+
 2-August-2011 Michael Babker
 ~ Update pt-BR translation
 ~ Update SM2 to V2.97a.20110801
