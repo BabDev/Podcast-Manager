@@ -28,7 +28,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
+	 * @param	array	$config	An optional associative array of configuration settings.
 	 * @see		JController
 	 * @since	1.6
 	 */
@@ -51,9 +51,9 @@ class PodcastManagerModelPodcasts extends JModelList
 	}
 
 	/**
-	 * Build an SQL query to load the list data.
+	 * Method to build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery	$query	A JDatabaseQuery object
+	 * @return	string	$query	An SQL query
 	 * @since	1.6
 	 */
 	protected function getListQuery()
@@ -127,6 +127,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	 * ordering requirements.
 	 *
 	 * @param	string	$id	A prefix for the store id.
+	 *
 	 * @return	string	$id	A store id.
 	 * @since	1.6
 	 */
@@ -147,6 +148,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	 * @param   string	$ordering	An optional ordering field.
 	 * @param   string	$direction	An optional direction.
 	 *
+	 * @return	void
 	 * @since	1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)

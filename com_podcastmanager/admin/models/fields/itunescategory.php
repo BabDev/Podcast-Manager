@@ -29,9 +29,7 @@ JFormHelper::loadFieldClass('list');
 class JFormFieldItunesCategory extends JFormFieldList
 {
 	/**
-	 * The form field type.
-	 *
-	 * @var		string
+	 * @var		string	$type	The form field type.
 	 * @since	1.7
 	 */
 	protected $type = 'ItunesCategory';
@@ -39,7 +37,7 @@ class JFormFieldItunesCategory extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
+	 * @return	array	$options	The field options.
 	 * @since	1.7
 	 */
 	public function getOptions()

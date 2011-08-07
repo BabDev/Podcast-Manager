@@ -23,6 +23,10 @@ defined('_JEXEC') or die;
  */
 class PodcastManagerHelper
 {
+	/**
+	 * @var		string	$extension	The extension name
+	 * @since	1.6
+	 */
 	public static $extension = 'com_podcastmanager';
 
 	/**

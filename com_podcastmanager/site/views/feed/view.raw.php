@@ -140,9 +140,9 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to set the feed categories
 	 *
-	 * @param	object	$xw		XMLWriter object containing generated feed output
-	 * @param	array	$params	The component parameters
-	 * @param	object	$feed	An object containing the feed record
+	 * @param	XMLWriter	$xw		XMLWriter object containing generated feed output
+	 * @param	array		$params	The component parameters
+	 * @param	object		$feed	An object containing the feed record
 	 *
 	 * @return	void
 	 * @since	1.6
@@ -174,9 +174,9 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to generate the feed items
 	 *
-	 * @param	object	$xw		XMLWriter object containing generated feed output
-	 * @param	array	$params	The component parameters
-	 * @param	object	$feed	An object containing the feed record
+	 * @param	XMLWriter	$xw		XMLWriter object containing generated feed output
+	 * @param	array		$params	The component parameters
+	 * @param	object		$feed	An object containing the feed record
 	 *
 	 * @return	void
 	 * @since	1.6

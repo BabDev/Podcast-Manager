@@ -26,14 +26,14 @@ jimport('joomla.application.component.modeladmin');
 class PodcastManagerModelPodcast extends JModelAdmin
 {
 	/**
-	 * @var		string	The prefix to use with controller messages.
+	 * @var		string	$text_prefix	The prefix to use with controller messages.
+	 * @since	1.6
 	 */
 	protected $text_prefix = 'COM_PODCASTMANAGER';
 
 	/**
-	 * Model context string.
-	 *
-	 * @var		string	The context of the model
+	 * @var		string	$_context	Model context string.
+	 * @since	1.6
 	 */
 	protected $_context		= 'com_podcastmanager.podcast';
 
@@ -90,12 +90,11 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Batch copy podcasts to a new feed or current.
 	 *
-	 * @param	int		$value  The new feed.
-	 * @param	array	$pks    An array of row IDs.
+	 * @param	int		$value	The new feed.
+	 * @param	array	$pks	An array of row IDs.
 	 *
-	 * @return	boolean  True if successful, false otherwise and internal error is set.
-	 *
-	 * @since	11.1
+	 * @return	boolean	True if successful, false otherwise and internal error is set.
+	 * @since	1.8
 	 */
 	protected function batchCopy($value, $pks)
 	{
@@ -186,12 +185,11 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Batch move podcasts to a new feed
 	 *
-	 * @param	int	   $value  The new feed ID.
-	 * @param	array  $pks    An array of row IDs.
+	 * @param	int		$value	The new feed ID.
+	 * @param	array	$pks	An array of row IDs.
 	 *
-	 * @return	booelan  True if successful, false otherwise and internal error is set.
-	 *
-	 * @since	11.1
+	 * @return	booelan	True if successful, false otherwise and internal error is set.
+	 * @since	1.8
 	 */
 	protected function batchMove($value, $pks)
 	{
@@ -376,6 +374,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @param	array	$config	Configuration array for model. Optional.
 	 *
 	 * @return	JTable	A database object
+	 * @since	1.6
 	*/
 	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = array())
 	{

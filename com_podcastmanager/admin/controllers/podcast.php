@@ -28,7 +28,9 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	/**
 	 * Method to run batch operations.
 	 *
-	 * @return	void
+	 * @param	object	$model	The model of the component being processed.
+	 *
+	 * @return	boolean	True if successful, false otherwise and internal error is set.
 	 * @since	1.8
 	 */
 	public function batch($model)

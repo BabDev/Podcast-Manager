@@ -23,6 +23,14 @@ defined('_JEXEC') or die;
  */
 class PodcastManagerTablePodcast extends JTable
 {
+	/**
+	 * The class constructor.
+	 *
+	 * @param	object	&$db	JDatabase connector object.
+	 *
+	 * @return	void
+	 * @since	1.7
+	 */
 	function __construct(&$db)
 	{
 		parent::__construct('#__podcastmanager', 'id', $db);

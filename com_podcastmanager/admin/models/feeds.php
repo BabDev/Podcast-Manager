@@ -175,6 +175,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 * @param   string	$ordering	An optional ordering field.
 	 * @param   string	$direction	An optional direction.
 	 *
+	 * @return	void
 	 * @since	1.7
 	 */
 	protected function populateState($ordering = null, $direction = null)

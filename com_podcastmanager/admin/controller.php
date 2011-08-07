@@ -26,7 +26,7 @@ jimport('joomla.application.component.controller');
 class PodcastManagerController extends JController
 {
 	/**
-	 * @var		string	The default view.
+	 * @var		string	$default_view	The default view.
 	 * @since	1.6
 	 */
 	protected $default_view = 'cpanel';

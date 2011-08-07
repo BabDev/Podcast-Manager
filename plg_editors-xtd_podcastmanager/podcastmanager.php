@@ -43,7 +43,7 @@ class plgButtonPodcastManager extends JPlugin
 	/**
 	 * Display the button
 	 *
-	 * @param	string	$name
+	 * @param	string	$name	The name of the editor
 	 *
 	 * @return	array	Markup to display the button
 	 * @since	1.6

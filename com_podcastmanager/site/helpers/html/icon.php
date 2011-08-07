@@ -25,7 +25,8 @@ jimport('joomla.application.component.helper');
  */
 class JHtmlIcon
 {
-	/** Method to create an edit icon for a feed
+	/**
+	 * Method to create an edit icon for a feed
 	 *
 	 * @param	object	$feed		The feed object
 	 * @param	object	$params		The item parameters
@@ -59,22 +60,23 @@ class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date = JHtml::_('date', $feed->created);
-		$author = $feed->author;
+		$date	= JHtml::_('date', $feed->created);
+		$author	= $feed->author;
 
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= $date;
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
+		$overlib	.= '&lt;br /&gt;';
+		$overlib	.= $date;
+		$overlib	.= '&lt;br /&gt;';
+		$overlib	.= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		$button = JHtml::_('link', JRoute::_($url), $text);
+		$button	= JHtml::_('link', JRoute::_($url), $text);
 
-		$output = '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
+		$output	= '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
 
 		return $output;
 	}
 
-	/** Method to create an edit icon for a podcast
+	 /**
+	 * Method to create an edit icon for a podcast
 	 *
 	 * @param	object	$podcast	The podcast object
 	 * @param	object	$params		The item parameters
@@ -108,17 +110,17 @@ class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date = JHtml::_('date', $podcast->created);
-		$author = $podcast->itAuthor;
+		$date	= JHtml::_('date', $podcast->created);
+		$author	= $podcast->itAuthor;
 
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= $date;
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
+		$overlib	.= '&lt;br /&gt;';
+		$overlib	.= $date;
+		$overlib	.= '&lt;br /&gt;';
+		$overlib	.= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		$button = JHtml::_('link', JRoute::_($url), $text);
+		$button	= JHtml::_('link', JRoute::_($url), $text);
 
-		$output = '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
+		$output	= '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
 
 		return $output;
 	}

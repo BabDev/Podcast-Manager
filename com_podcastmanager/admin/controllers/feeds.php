@@ -28,6 +28,10 @@ class PodcastManagerControllerFeeds extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
+	 * @param	string	$name	The model name. Optional.
+	 * @param	string	$prefix	The class prefix. Optional.
+	 *
+	 * @return	object	The model.
 	 * @since	1.7
 	 */
 	public function &getModel($name = 'Feed', $prefix = 'PodcastManagerModel')

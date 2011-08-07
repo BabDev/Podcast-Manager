@@ -26,6 +26,10 @@ jimport('joomla.application.component.helper');
  */
 abstract class PodcastManagerHelperRoute
 {
+	/**
+	 * @var		array	$lookup	An array of data to reference
+	 * @since	1.8
+	 */
 	protected static $lookup;
 
 	/**
@@ -68,8 +72,7 @@ abstract class PodcastManagerHelperRoute
 
 		if ($item = self::_findItem($needles)) {
 			$link .= '&Itemid='.$item;
-		}
-		else if ($item = self::_findItem()) {
+		} else if ($item = self::_findItem()) {
 			$link .= '&Itemid='.$item;
 		}
 
@@ -116,8 +119,7 @@ abstract class PodcastManagerHelperRoute
 
 			$component	= JComponentHelper::getComponent('com_podcastmanager');
 			$items		= $menus->getItems('component_id', $component->id);
-			foreach ($items as $item)
-			{
+			foreach ($items as $item) {
 				if (isset($item->query) && isset($item->query['view'])) {
 					$view = $item->query['view'];
 
@@ -133,19 +135,16 @@ abstract class PodcastManagerHelperRoute
 		}
 
 		if ($needles) {
-			foreach ($needles as $view => $ids)
-			{
+			foreach ($needles as $view => $ids) {
 				if (isset(self::$lookup[$view])) {
-					foreach($ids as $id)
-					{
+					foreach($ids as $id) {
 						if (isset(self::$lookup[$view][(int)$id])) {
 							return self::$lookup[$view][(int)$id];
 						}
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			$active = $menus->getActive();
 			if ($active) {
 				return $active->id;

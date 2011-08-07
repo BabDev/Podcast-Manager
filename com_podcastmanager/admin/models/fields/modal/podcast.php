@@ -26,9 +26,7 @@ jimport('joomla.form.formfield');
 class JFormFieldModal_Podcast extends JFormField
 {
 	/**
-	 * The form field type.
-	 *
-	 * @var		string
+	 * @var		string	$type	The form field type.
 	 * @since	1.6
 	 */
 	protected $type = 'Modal_Podcast';

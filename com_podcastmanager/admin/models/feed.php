@@ -26,14 +26,14 @@ jimport('joomla.application.component.modeladmin');
 class PodcastManagerModelFeed extends JModelAdmin
 {
 	/**
-	 * @var		string	The prefix to use with controller messages.
+	 * @var		string	$text_prefix	The prefix to use with controller messages.
+	 * @since	1.7
 	 */
 	protected $text_prefix	= 'COM_PODCASTMANAGER';
 
 	/**
-	 * Model context string.
-	 *
-	 * @var		string	The context of the model
+	 * @var		string	$_context	Model context string.
+	 * @since	1.7
 	 */
 	protected $_context		= 'com_podcastmanager.feed';
 

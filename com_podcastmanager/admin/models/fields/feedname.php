@@ -29,9 +29,7 @@ JFormHelper::loadFieldClass('list');
 class JFormFieldFeedName extends JFormFieldList
 {
 	/**
-	 * The form field type.
-	 *
-	 * @var		string
+	 * @var		string	$type	The form field type.
 	 * @since	1.7
 	 */
 	protected $type = 'FeedName';
@@ -39,7 +37,7 @@ class JFormFieldFeedName extends JFormFieldList
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
+	 * @return	array	$options	The field options.
 	 * @since	1.7
 	 */
 	protected function getOptions()
@@ -53,7 +51,7 @@ class JFormFieldFeedName extends JFormFieldList
 		$query->select($db->quoteName('a.id').' AS value, '.$db->quoteName('a.name').' AS text');
 		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
 		$query->where($db->quoteName('a.name').' != '.$db->quote(''));
-		$query->where($db->quoteName('a.id').' != -2');
+		$query->where($db->quoteName('a.published').' != -2');
 		$query->group($db->quoteName('a.id'));
 		$query->order('a.id ASC');
 

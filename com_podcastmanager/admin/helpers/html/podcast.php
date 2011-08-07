@@ -24,17 +24,19 @@ defined('JPATH_LIBRARIES') or die;
 abstract class JHtmlPodcast
 {
 	/**
-	 * @var    array  Cached array of the category items.
+	 * @var		array	$items	Cached array of the feed items.
+	 * @since	1.8
 	 */
 	protected static $items = array();
 
 	/**
 	 * Returns an array of categories for the given extension.
 	 *
-	 * @param   string  The extension option.
-	 * @param   array   An array of configuration options. By default, only published and unpulbished categories are returned.
+	 * @param	string	$extension	The extension option.
+	 * @param	array	$config		An array of configuration options. By default, only published and unpulbished categories are returned.
 	 *
-	 * @return  array
+	 * @return	array	$item		An array of items
+	 * @since	1.8
 	 */
 	public static function feeds($extension, $config = array('filter.published' => array(0,1)))
 	{

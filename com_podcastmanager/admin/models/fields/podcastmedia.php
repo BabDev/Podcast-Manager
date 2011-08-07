@@ -26,17 +26,13 @@ jimport('joomla.form.formfield');
 class JFormFieldPodcastMedia extends JFormField
 {
 	/**
-	 * The form field type.
-	 *
-	 * @var		string
+	 * @var		string	$type	The form field type.
 	 * @since	1.6
 	 */
 	protected $type = 'PodcastMedia';
 
 	/**
-	 * The initialised state of the document object.
-	 *
-	 * @var		boolean
+	 * @var		boolean	$initialised	The initialised state of the document object.
 	 * @since	1.6
 	 */
 	protected static $initialised = false;
@@ -44,7 +40,7 @@ class JFormFieldPodcastMedia extends JFormField
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return	string	The field input markup.
+	 * @return	string	$html	The field input markup.
 	 * @since	1.6
 	 */
 	protected function getInput()

@@ -160,22 +160,63 @@ class plgContentPodcastManager extends JPlugin
  */
 class PodcastManagerPlayer
 {
-	private $playerType = null;
+	/**
+	 * @var		string	$playerType	The type of player being rendered
+	 * @since	1.6
+	 */
+	private $playerType = 'player';
+
+	/**
+	 * @var		string	$podtitle	The title of the podcast being processed
+	 * @since	1.6
+	 */
 	private $podtitle = null;
+
+	/**
+	 * @var		string	$fileURL	The URL of the file being processed
+	 * @since	1.6
+	 */
 	private $fileURL = null;
+
+	/**
+	 * @var		array	$podmanparams	Podcast Manager component parameters
+	 * @since	1.6
+	 */
 	private $podmanparams = null;
+
+	/**
+	 * @var		string	$podfilepath	The server file path to the file being processed
+	 * @since	1.6
+	 */
 	private $podfilepath = null;
+
+	/**
+	 * @var		array	$validTypes	An array of valid player types
+	 * @since	1.6
+	 */
 	private $validTypes = array('custom', 'html5', 'link', 'player', 'QTplayer');
+
+	/**
+	 * @var		array	$fileTypes	An array of valid file types
+	 * @since	1.6
+	 */
 	private $fileTypes = array (
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
 		'mov' => 'video/quicktime',
 		'mp3' => 'audio/mpeg',
-		'mp4' => 'video/mp4',
+		'mp4' => 'video/mp4'
 	);
 
 	/**
 	 * The class constructor
+	 *
+	 * @param	array	&$podmanparams	The Podcast Manager parameters
+	 * @param	string	$podfilepath	The path to the file being processed
+	 * @param	string	$podtitle		The title of the podcast being processed
+	 *
+	 * @return	void
+	 * @since	1.6
 	 */
 	function __construct(&$podmanparams, $podfilepath, $podtitle)
 	{
@@ -185,8 +226,6 @@ class PodcastManagerPlayer
 
 		if (in_array($playerType, $this->validTypes)) {
 			$this->playerType = $playerType;
-		} else {
-			$this->playerType = 'player';
 		}
 
 		$this->fileURL		= $this->determineURL($podfilepath);
@@ -209,9 +248,9 @@ class PodcastManagerPlayer
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
-	 * @param	object	The filename of the podcast file.
+	 * @param	object	$podfilepath	The filename of the podcast file.
 	 *
-	 * @return	object	The URL to the file
+	 * @return	object	$filename		The URL to the file
 	 * @since	1.6
 	 */
 	private function determineURL($podfilepath)

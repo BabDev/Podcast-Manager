@@ -26,13 +26,13 @@ jimport('joomla.application.component.controllerform');
 class PodcastManagerControllerForm extends JControllerForm
 {
 	/**
-	 * @var		string	The default single item view
+	 * @var		string	$view_item	The default single item view
 	 * @since	1.8
 	 */
 	protected $view_item = 'form';
 
 	/**
-	 * @var		string	The default list view
+	 * @var		string	$view_list	The default list view
 	 * @since	1.8
 	 */
 	protected $view_list = 'feed';
@@ -56,7 +56,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 *
 	 * @param	string	$key	The name of the primary key of the URL variable.
 	 *
-	 * @return	Boolean	True if access level checks pass, false otherwise.
+	 * @return	boolean	True if access level checks pass, false otherwise.
 	 * @since	1.8
 	 */
 	public function cancel($key = 'feedname')
@@ -73,7 +73,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @param	string	$key	The name of the primary key of the URL variable.
 	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
-	 * @return	Boolean	True if access level check and checkout passes, false otherwise.
+	 * @return	boolean	True if access level check and checkout passes, false otherwise.
 	 * @since	1.8
 	 */
 	public function edit($key = null, $urlVar = 'feedname')
@@ -172,9 +172,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	}
 
 	/**
-	 * Get the return URL.
-	 *
-	 * If a "return" variable has been passed in the request
+	 * Get the return URL if a "return" variable has been passed in the request
 	 *
 	 * @return	string	The return URL.
 	 * @since	1.8
@@ -185,8 +183,7 @@ class PodcastManagerControllerForm extends JControllerForm
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return))) {
 			return JURI::base();
-		}
-		else {
+		} else {
 			return base64_decode($return);
 		}
 	}
@@ -215,7 +212,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @param	string	$key	The name of the primary key of the URL variable.
 	 * @param	string	$urlVar	The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
-	 * @return	Boolean	True if successful, false otherwise.
+	 * @return	boolean	True if successful, false otherwise.
 	 * @since	1.8
 	 */
 	public function save($key = null, $urlVar = 'feedname')

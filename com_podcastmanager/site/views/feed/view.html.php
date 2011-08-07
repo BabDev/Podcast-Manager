@@ -27,8 +27,7 @@ class PodcastManagerViewFeed extends JView
 {
 	protected $state;
 	protected $items;
-	protected $category;
-	protected $children;
+	protected $feed;
 	protected $pagination;
 
 	/**

@@ -24,12 +24,15 @@ jimport('joomla.application.component.modelform');
 class PodcastManagerModelPodcast extends JModelForm
 {
 	/**
-	 * Model context string.
-	 *
-	 * @var		string
+	 * @var		string	$_context	Model context string.
+	 * @since	1.8
 	 */
 	protected $_context = 'com_podcastmanager.podcast';
 
+	/**
+	 * @var		object	$_item	The item being pulled
+	 * @since	1.8
+	 */
 	protected $_item = null;
 
 	/**
@@ -104,15 +107,14 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to get an object.
 	 *
-	 * @param	integer	The id of the object to get.
+	 * @param	integer	$id		The id of the object to get.
 	 *
-	 * @return	mixed	Object on success, false on failure.
+	 * @return	mixed	$_item	Object on success, false on failure.
 	 * @since	1.8
 	 */
 	public function &getItem($id = null)
 	{
-		if ($this->_item === null)
-		{
+		if ($this->_item === null) {
 			$this->_item = false;
 
 			if (empty($id)) {
@@ -123,11 +125,9 @@ class PodcastManagerModelPodcast extends JModelForm
 			$table = JTable::getInstance('Podcast', 'PodcastManagerTable');
 
 			// Attempt to load the row.
-			if ($table->load($id))
-			{
+			if ($table->load($id)) {
 				// Check published state.
-				if ($published = $this->getState('filter.published'))
-				{
+				if ($published = $this->getState('filter.published')) {
 					if ($table->published != $published) {
 						return $this->_item;
 					}
@@ -136,8 +136,7 @@ class PodcastManagerModelPodcast extends JModelForm
 				// Convert the JTable to a clean JObject.
 				$properties = $table->getProperties(1);
 				$this->_item = JArrayHelper::toObject($properties, 'JObject');
-			}
-			else if ($error = $table->getError()) {
+			} else if ($error = $table->getError()) {
 				$this->setError($error);
 			}
 		}
@@ -195,6 +194,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
 	 *
+	 * @return	void
 	 * @since	1.8
 	 */
 	protected function populateState()

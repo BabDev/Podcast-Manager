@@ -26,9 +26,8 @@ jimport('joomla.application.component.modellist');
 class PodcastManagerModelFeed extends JModelList
 {
 	/**
-	 * Model context string.
-	 *
-	 * @var		string
+	 * @var		string	$_context	Model context string.
+	 * @since	1.8
 	 */
 	public $_context = 'com_podcastmanager.feed';
 
