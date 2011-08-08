@@ -66,10 +66,6 @@ $params = $this->state->get('params');
 			<?php echo $this->form->getInput('itBlock'); ?>
 		</div>
 		<div class="formelm">
-			<?php echo $this->form->getLabel('itCategory'); ?>
-			<?php echo $this->form->getInput('itCategory'); ?>
-		</div>
-		<div class="formelm">
 			<?php echo $this->form->getLabel('itDuration'); ?>
 			<?php echo $this->form->getInput('itDuration'); ?>
 		</div>

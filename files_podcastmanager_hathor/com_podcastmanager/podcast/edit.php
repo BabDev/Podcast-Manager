@@ -55,9 +55,6 @@ JHtml::_('behavior.formvalidation');
 			<li><?php echo $this->form->getLabel('itBlock'); ?>
 			<?php echo $this->form->getInput('itBlock'); ?></li>
 
-			<li><?php echo $this->form->getLabel('itCategory'); ?>
-			<?php echo $this->form->getInput('itCategory'); ?></li>
-
 			<li><?php echo $this->form->getLabel('itDuration'); ?>
 			<?php echo $this->form->getInput('itDuration'); ?></li>
 

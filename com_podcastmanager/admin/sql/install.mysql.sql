@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `publish_up` datetime NOT NULL default '0000-00-00 00:00:00',
   `itAuthor` varchar(255) NOT NULL default '',
   `itBlock` tinyint(1) NOT NULL default '0',
-  `itCategory` varchar(255) NOT NULL default '',
   `itDuration` varchar(10) NOT NULL default '',
   `itExplicit` tinyint(1) NOT NULL default '0',
   `itKeywords` varchar(255) NOT NULL default '',
