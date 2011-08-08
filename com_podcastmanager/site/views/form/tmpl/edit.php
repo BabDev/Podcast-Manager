@@ -106,6 +106,45 @@ $params = $this->state->get('params');
 		<?php endif; ?>
 	</fieldset>
 	<fieldset>
+		<legend><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'); ?></legend>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('block'); ?>
+			<?php echo $this->form->getInput('block'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('explicit'); ?>
+			<?php echo $this->form->getInput('explicit'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('category1'); ?>
+			<?php echo $this->form->getInput('category1'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('category2'); ?>
+			<?php echo $this->form->getInput('category2'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('category3'); ?>
+			<?php echo $this->form->getInput('category3'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('ownername'); ?>
+			<?php echo $this->form->getInput('ownername'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('owneremail'); ?>
+			<?php echo $this->form->getInput('owneremail'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('keywords'); ?>
+			<?php echo $this->form->getInput('keywords'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('newFeed'); ?>
+			<?php echo $this->form->getInput('newFeed'); ?>
+		</div>
+	</fieldset>
+	<fieldset>
 		<legend><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></legend>
 		<div class="formelm-area">
 		<?php echo $this->form->getLabel('language'); ?>

@@ -24,6 +24,9 @@
 			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL" description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
 		<field name="author" type="text" class="inputbox" size="30" filter="safehtml"
 			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" />
+		<field name="newFeed" type="text" class="inputbox" filter="url"
+			label="COM_PODCASTMANAGER_FEED_FIELD_NEWFEED_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_NEWFEED_DESCRIPTION"
+			size="30" />
 		<field name="image" type="media" hide_none="1"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITIMAGE_DESCRIPTION" />
 		<field name="category1" type="itunescategory" default=""

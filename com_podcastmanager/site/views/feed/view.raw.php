@@ -81,6 +81,10 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->writeElement('copyright', $feed->copyright);
 
+		if (!is_null($feed->newFeed)) {
+			$xw->writeElement('itunes:new-feed-url', $feed->newFeed);
+		}
+
 		$xw->writeElement('itunes:subtitle', $feed->subtitle);
 		$xw->writeElement('itunes:author', $feed->author);
 
@@ -115,8 +119,7 @@ class PodcastManagerViewFeed extends JView
 
 		$imageURL = $feed->image;
 
-		if (!preg_match('/^http/', $imageURL))
-		{
+		if (!preg_match('/^http/', $imageURL)) {
 			$imageURL = JURI::root().$imageURL;
 		}
 

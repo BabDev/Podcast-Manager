@@ -1,5 +1,8 @@
-8-August-2011
+8-August-2011 Michael Babker
 - Remove category field from podcast
++ Add <itunes:new-feed-url> definition
+~ Modify the ordering clauses
+# Add missing fields to front end feed edit
 
 --------------------------------------------------
 Podcast Manager 1.8.0 - Released 8-August-2011

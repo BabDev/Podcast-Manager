@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `owneremail` varchar(255) NOT NULL default '',
   `keywords` varchar(255) NOT NULL default '',
   `author` varchar(255) NOT NULL default '',
+  `newFeed` varchar(255) NOT NULL default '',
   `image` varchar(255) NOT NULL default '',
   `category1` varchar(255) NOT NULL default '',
   `category2` varchar(255) NOT NULL default '',

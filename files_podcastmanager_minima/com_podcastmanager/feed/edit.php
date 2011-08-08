@@ -118,6 +118,9 @@ JHtml::_('behavior.keepalive');
 
 					<li><?php echo $this->form->getLabel('keywords'); ?>
 					<?php echo $this->form->getInput('keywords'); ?></li>
+
+					<li><?php echo $this->form->getLabel('newFeed'); ?>
+					<?php echo $this->form->getInput('newFeed'); ?></li>
 				</ol>
 			</fieldset>
 		</div><!-- /#tabs -->
