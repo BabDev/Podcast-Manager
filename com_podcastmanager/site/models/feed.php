@@ -133,8 +133,12 @@ class PodcastManagerModelFeed extends JModelList
 			$query->where($db->quoteName('a.language').' in ('.$db->Quote(JFactory::getLanguage()->getTag()).','.$db->Quote('*').')');
 		}
 
-		// Add the list ordering clause.
-		$query->order($this->getState('list.ordering', 'a.publish_up').' '.$this->getState('list.direction', 'DESC'));
+		// Handle the list ordering.
+		$ordering	= $this->getState('list.ordering', 'a.publish_up');
+		$direction	= $this->getState('list.direction', 'DESC');
+		if (!empty($ordering)) {
+			$query->order($db->getEscaped($ordering).' '.$db->getEscaped($direction));
+		}
 
 		return $query;
 	}
