@@ -1,3 +1,7 @@
+12-August-2011 Michael Babker
+~ Tweaks to RSS Feed to assist in validation
+~ Use the feed language versus site
+
 8-August-2011 Michael Babker
 - Remove category field from podcast
 + Add <itunes:new-feed-url> definition
