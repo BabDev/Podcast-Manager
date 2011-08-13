@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 // Load framework base classes
@@ -20,24 +20,26 @@ jimport('joomla.application.component.view');
 /**
  * Cpanel view class.
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.8
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.8
  */
 class PodcastManagerViewCpanel extends JView
 {
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl	The name of the template file to parse
+	 * @param   string  $tpl  The name of the template file to parse
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	public function display($tpl = null)
 	{
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
@@ -56,8 +58,9 @@ class PodcastManagerViewCpanel extends JView
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	protected function addToolbar()
 	{
@@ -65,7 +68,8 @@ class PodcastManagerViewCpanel extends JView
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER'), 'podcastmanager.png');
 
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin'))
+		{
 			JToolBarHelper::preferences('com_podcastmanager');
 		}
 	}

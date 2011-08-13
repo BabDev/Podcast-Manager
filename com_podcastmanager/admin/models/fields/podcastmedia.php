@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('JPATH_BASE') or die;
 
 jimport('joomla.form.formfield');
@@ -19,29 +19,34 @@ jimport('joomla.form.formfield');
 /**
  * Class to create a media selection modal.
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.6
  */
 class JFormFieldPodcastMedia extends JFormField
 {
 	/**
-	 * @var		string	$type	The form field type.
-	 * @since	1.6
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  1.6
 	 */
 	protected $type = 'PodcastMedia';
 
 	/**
-	 * @var		boolean	$initialised	The initialised state of the document object.
-	 * @since	1.6
+	 * The initialised state of the document object.
+	 *
+	 * @var    boolean
+	 * @since  1.6
 	 */
 	protected static $initialised = false;
 
 	/**
 	 * Method to get the field input markup.
 	 *
-	 * @return	string	$html	The field input markup.
-	 * @since	1.6
+	 * @return  string  The field input markup.
+	 *
+	 * @since   1.6
 	 */
 	protected function getInput()
 	{
@@ -49,13 +54,14 @@ class JFormFieldPodcastMedia extends JFormField
 		$authorField= $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
 		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'] ;
 
-		if ($asset == "") {
-			 $asset = JRequest::getCmd('option');
+		if ($asset == "")
+		{
+			$asset = JRequest::getCmd('option');
 		}
 
 		$link = (string) $this->element['link'];
-		if (!self::$initialised) {
-
+		if (!self::$initialised)
+		{
 			// Load the modal behavior script.
 			JHtml::_('behavior.modal');
 
@@ -95,23 +101,26 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '</div>';
 
 		$directory = (string)$this->element['directory'];
-		if ($this->value && file_exists(JPATH_ROOT.'/'.$this->value)) {
-			$folder = explode ('/',$this->value);
+		if ($this->value && file_exists(JPATH_ROOT.'/'.$this->value))
+		{
+			$folder = explode('/', $this->value);
 			array_shift($folder);
 			array_pop($folder);
-			$folder = implode('/',$folder);
+			$folder = implode('/', $folder);
 		}
-		elseif (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory))) {
+		else if (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory)))
+		{
 			$folder = $directory;
 		}
-		else {
+		else
+		{
 			$folder='';
 		}
 		// The button.
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
 		$html[] = '		<a class="modal" title="'.JText::_('JLIB_FORM_BUTTON_SELECT').'"' .
-					' href="'.($this->element['readonly'] ? '' : ($link ? $link : 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset='.$asset.'&amp;author='.$this->form->getValue($authorField)) . '&amp;fieldid='.$this->id.'&amp;folder='.$folder).'"' .
+					' href="'.($this->element['readonly'] ? '' : ($link ? $link : 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset='.$asset.'&amp;author='.$this->form->getValue($authorField)).'&amp;fieldid='.$this->id.'&amp;folder='.$folder).'"' .
 					' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 		$html[] = '			'.JText::_('JLIB_FORM_BUTTON_SELECT').'</a>';
 		$html[] = '	</div>';

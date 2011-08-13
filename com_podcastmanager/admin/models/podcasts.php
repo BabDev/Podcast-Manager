@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
@@ -19,22 +19,26 @@ jimport('joomla.application.component.modellist');
 /**
  * Podcast management model class.
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.6
  */
 class PodcastManagerModelPodcasts extends JModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	$config	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 * @see     JController
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'title', 'a.title',
@@ -53,8 +57,9 @@ class PodcastManagerModelPodcasts extends JModelList
 	/**
 	 * Method to build an SQL query to load the list data.
 	 *
-	 * @return	string	$query	An SQL query
-	 * @since	1.6
+	 * @return  string  An SQL query
+	 *
+	 * @since   1.6
 	 */
 	protected function getListQuery()
 	{
@@ -63,10 +68,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$query	= $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select(
-			$this->getState('list.select', 'a.*'
-			)
-		);
+		$query->select($this->getState('list.select', 'a.*'));
 		$query->from($db->quoteName('#__podcastmanager').' AS a');
 
 		// Join over the language
@@ -83,38 +85,48 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
-		if (is_numeric($published)) {
+		if (is_numeric($published))
+		{
 			$query->where($db->quoteName('a.published').' = '.(int) $published);
-		} else if ($published === '') {
+		}
+		else if ($published === '')
+		{
 			$query->where('('.$db->quoteName('a.published').' IN (0, 1))');
 		}
 
 		// Filter by feedname.
 		$feedname = $this->getState('filter.feedname');
-		if (is_numeric($feedname)) {
+		if (is_numeric($feedname))
+		{
 			$query->where($db->quoteName('a.feedname').' = '.(int) $feedname);
 		}
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
 				$query->where($db->quoteName('a.id').' = '.(int) substr($search, 3));
-			} else {
+			}
+			else
+			{
 				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
 				$query->where('('.$db->quoteName('a.title').' LIKE '.$search.')');
 			}
 		}
 
 		// Filter on the language.
-		if ($language = $this->getState('filter.language')) {
-			$query->where($db->quoteName('a.language').' = ' . $db->quote($language));
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where($db->quoteName('a.language').' = '.$db->quote($language));
 		}
 
 		// Handle the list ordering.
 		$ordering	= $this->getState('list.ordering');
 		$direction	= $this->getState('list.direction');
-		if (!empty($ordering)) {
+		if (!empty($ordering))
+		{
 			$query->order($db->getEscaped($ordering).' '.$db->getEscaped($direction));
 		}
 
@@ -128,10 +140,11 @@ class PodcastManagerModelPodcasts extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string	$id	A prefix for the store id.
+	 * @param   string  $id  A prefix for the store id.
 	 *
-	 * @return	string	$id	A store id.
-	 * @since	1.6
+	 * @return  string  A store id.
+	 *
+	 * @since   1.6
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -147,11 +160,12 @@ class PodcastManagerModelPodcasts extends JModelList
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
 	 *
-	 * @param   string	$ordering	An optional ordering field.
-	 * @param   string	$direction	An optional direction.
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction.
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -166,12 +180,15 @@ class PodcastManagerModelPodcasts extends JModelList
 		$this->setState('filter.published', $published);
 
 		$feedname = JRequest::getVar('feedname', null);
-		if ($feedname) {
-			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '')) {
+		if ($feedname)
+		{
+			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', ''))
+			{
 				$this->setUserState($this->context.'.filter.feedname', $feedname);
 			}
 		}
-		else {
+		else
+		{
 			$feedname = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
 		}
 
