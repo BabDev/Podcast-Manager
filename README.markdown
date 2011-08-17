@@ -19,3 +19,9 @@ Installation Package
 ===============
 * Installation packages for *Podcast Manager* are available from the downloads section of this repository.
 * If you have made a checkout of the repository, you can build installation packages using Phing by running 'phing dev_head' from your interface.
+
+Stable Master Policy
+===============
+The master branch will at all times remain stable.  Development for new features will occur in branches and when ready, will be pulled into the master branch.
+
+In the event features have already been merged for the next release series and an issue arises that warrants a fix on the current release series, the developer will create a branch based off the tag created from the previous release, make the necessary changes, package a new release, and tag the new release.  If necessary, the commits made in the temporary branch will be merged into master.
