@@ -257,52 +257,52 @@ class Com_PodcastManagerInstallerScript {
 
 		// Fix broken #__assets records
 		$query = $db->getQuery(true);
-		$query->select('id')
-			->from('#__assets')
-			->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+		$query->select('id');
+		$query->from('#__assets');
+		$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
 		if (!empty($ids)) {
 			foreach($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__assets')
-					->where($db->quoteName('id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete('#__assets');
+				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}
 		}
 
 		// Fix broken #__extensions records
-		$query = $db->getQuery(true);
-		$query->select('extension_id')
-			->from('#__extensions')
-			->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
+		$query->clear();
+		$query->select('extension_id');
+		$query->from('#__extensions');
+		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
 		if (!empty($ids)) {
 			foreach ($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__extensions')
-					->where($db->quoteName('extension_id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete('#__extensions');
+				$query->where($db->quoteName('extension_id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}
 		}
 
 		// Fix broken #__menu records
-		$query = $db->getQuery(true);
-		$query->select('id')
-			->from('#__menu')
-			->where($db->quoteName('type').' = '.$db->quote('component'))
-			->where($db->quoteName('menutype').' = '.$db->quote('main'))
-			->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
+		$query->clear();
+		$query->select($db->quoteName('id'));
+		$query->from('#__menu');
+		$query->where($db->quoteName('type').' = '.$db->quote('component'));
+		$query->where($db->quoteName('menutype').' = '.$db->quote('main'));
+		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
 		if (!empty($ids)) {
 			foreach ($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__menu')
-					->where($db->quoteName('id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete('#__menu');
+				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}
@@ -322,9 +322,9 @@ class Com_PodcastManagerInstallerScript {
 
 		// If there are multiple #__extensions record, keep one of them
 		$query = $db->getQuery(true);
-		$query->select('extension_id')
-			->from('#__extensions')
-			->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
+		$query->select($db->quoteName('extension_id'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
 		if (count($ids) > 1) {
@@ -332,9 +332,9 @@ class Com_PodcastManagerInstallerScript {
 			$extension_id = array_shift($ids); // Keep the oldest id
 
 			foreach ($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__extensions')
-					->where($db->quoteName('extension_id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete($db->quoteName('#__extensions'));
+				$query->where($db->quoteName('extension_id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}
@@ -343,10 +343,10 @@ class Com_PodcastManagerInstallerScript {
 		// @todo
 
 		// If there are multiple assets records, delete all except the oldest one
-		$query = $db->getQuery(true);
-		$query->select('id')
-			->from('#__assets')
-			->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+		$query->clear();
+		$query->select('id');
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadObjectList();
 		if (count($ids) > 1) {
@@ -354,28 +354,28 @@ class Com_PodcastManagerInstallerScript {
 			$asset_id = array_shift($ids); // Keep the oldest id
 
 			foreach ($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__assets')
-					->where($db->quoteName('id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete($db->quoteName('#__assets'));
+				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}
 		}
 
 		// Remove #__menu records for good measure!
-		$query = $db->getQuery(true);
-		$query->select('id')
-			->from('#__menu')
-			->where($db->quoteName('type').' = '.$db->quote('component'))
-			->where($db->quoteName('menutype').' = '.$db->quote('main'))
-			->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
+		$query->clear();
+		$query->select($db->quoteName('id'));
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('type').' = '.$db->quote('component'));
+		$query->where($db->quoteName('menutype').' = '.$db->quote('main'));
+		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
 		if (!empty($ids)) {
 			foreach($ids as $id) {
-				$query = $db->getQuery(true);
-				$query->delete('#__menu')
-					->where($db->quoteName('id').' = '.$db->quote($id));
+				$query->clear();
+				$query->delete($db->quoteName('#__menu'));
+				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
 			}

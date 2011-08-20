@@ -1,3 +1,6 @@
+20-August-2011 Michael Babker
+~ Ensure queries are properly quoted and not chained
+
 12-August-2011 Michael Babker
 ~ Tweaks to RSS Feed to assist in validation
 ~ Use the feed language versus site
