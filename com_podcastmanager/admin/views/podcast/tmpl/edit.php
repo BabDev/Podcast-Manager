@@ -78,8 +78,7 @@ JHtml::_('behavior.keepalive');
 
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'podcastmanager-podcast-sliders-'.$this->item->id); ?>
-
-			<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('created'); ?>

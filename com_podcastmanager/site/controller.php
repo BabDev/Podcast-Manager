@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
@@ -19,23 +19,27 @@ jimport('joomla.application.component.controller');
 /**
  * Podcast Manager base class.
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.6
  */
 class PodcastManagerController extends JController
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	$config	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 * @see     JController
 	 */
 	function __construct($config = array())
 	{
 		// Frontpage Editor podcast proxying:
-		if(JRequest::getCmd('view') === 'podcasts' && JRequest::getCmd('layout') === 'modal') {
+		if (JRequest::getCmd('view') === 'podcasts' && JRequest::getCmd('layout') === 'modal')
+		{
 			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
@@ -46,11 +50,13 @@ class PodcastManagerController extends JController
 	/**
 	 * Method to display a view.
 	 *
-	 * @param	boolean	$cachable	If true, the view output will be cached
-	 * @param	array	$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
+	 *                               for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return	JController			This object is to support chaining.
-	 * @since	1.6
+	 * @return  JController  This object is to support chaining.
+	 *
+	 * @since   1.6
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -64,7 +70,8 @@ class PodcastManagerController extends JController
 		$vName	= JRequest::getCmd('view', 'feed');
 		JRequest::setVar('view', $vName);
 
-		if ($user->get('id') ||($_SERVER['REQUEST_METHOD'] == 'POST' && $vName = 'feed')) {
+		if ($user->get('id') ||($_SERVER['REQUEST_METHOD'] == 'POST' && $vName = 'feed'))
+		{
 			$cachable = false;
 		}
 
@@ -79,7 +86,8 @@ class PodcastManagerController extends JController
 		);
 
 		// Check for edit form.
-		if ($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id)) {
+		if ($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))
+		{
 			// Somehow the person just went to the form - we don't allow that.
 			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}

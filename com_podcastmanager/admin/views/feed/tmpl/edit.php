@@ -66,8 +66,7 @@ JHtml::_('behavior.keepalive');
 
 	<div class="width-40 fltrt">
 		<?php echo JHtml::_('sliders.start', 'podcastmanager-feed-sliders-'.$this->item->id); ?>
-
-			<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+			<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('created'); ?>
@@ -86,7 +85,7 @@ JHtml::_('behavior.keepalive');
 				</ul>
 			</fieldset>
 
-			<?php echo JHtml::_('sliders.panel',JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
 			<fieldset class="panelform">
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('block'); ?>

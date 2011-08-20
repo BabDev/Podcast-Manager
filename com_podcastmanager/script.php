@@ -2,10 +2,11 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
@@ -14,34 +15,39 @@
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.7
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.7
  */
-class Com_PodcastManagerInstallerScript {
-
+class Com_PodcastManagerInstallerScript
+{
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param	string	$type	The action being performed
-	 * @param	string	$parent	The function calling this method
+	 * @param   string  $type    The action being performed
+	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return	void
-	 * @since	1.7
+	 * @return  void
+	 *
+	 * @since   1.7
 	 */
 	function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7
 		$jversion = new JVersion();
-		if (version_compare($jversion->getShortVersion(), '1.7', 'lt')) {
+		if (version_compare($jversion->getShortVersion(), '1.7', 'lt'))
+		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
 		}
 
 		// Bugfix for "Can not build admin menus"
-		if (in_array($type, array('install', 'discover_install'))) {
+		if (in_array($type, array('install', 'discover_install')))
+		{
 			$this->_bugfixDBFunctionReturnedNoError();
-		} else {
+		}
+		else
+		{
 			$this->_bugfixCantBuildAdminMenus();
 		}
 	}
@@ -49,10 +55,11 @@ class Com_PodcastManagerInstallerScript {
 	/**
 	 * Function to perform changes during uninstall
 	 *
-	 * @param	string	$parent	The function calling this method
+	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	function uninstall($parent)
 	{
@@ -84,7 +91,8 @@ class Com_PodcastManagerInstallerScript {
 		$data['home'] = 0;
 
 		// All the table processing without error checks since we're hacking to prevent an error message
-		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store()) {
+		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store())
+		{
 			continue;
 		}
 	}
@@ -92,33 +100,40 @@ class Com_PodcastManagerInstallerScript {
 	/**
 	 * Function to perform updates when method=upgrade is used
 	 *
-	 * @param	string	$parent	The function calling this method
+	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return	void
-	 * @since	1.7
+	 * @return  void
+	 *
+	 * @since   1.7
 	 */
 	function update($parent)
 	{
 		// Check the currently installed version
 		$version	= $this->getVersion();
-		if ($version == 'Error') {
+		if ($version == 'Error')
+		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
 			return;
 		}
 
 		// If upgrading from 1.6, run the 1.7 schema updates
-		if (substr($version, 0, 3) == '1.6') {
+		if (substr($version, 0, 3) == '1.6')
+		{
 			// Update the tables then create the new feed
 			$this->db17Update();
 			$this->createFeed();
 		}
 
 		// If upgrading from 1.7 Beta releases, update the description field
-		if (strpos($version, '1.7 Beta') != false) {
+		if (strpos($version, '1.7 Beta') != false)
+		{
 			$db = JFactory::getDBO();
-			$query	= 'ALTER TABLE `#__podcastmanager_feeds` CHANGE `description` `description` varchar(5120) NOT NULL default '.$db->quote('');
+			$query	= 'ALTER TABLE '.$db->quoteName('#__podcastmanager_feeds')
+					. ' CHANGE '.$db->quoteName('description')
+					. $db->quoteName('description').' varchar(5120) NOT NULL default '.$db->quote('');
 			$db->setQuery($query);
-			if (!$db->query()) {
+			if (!$db->query())
+			{
 				JError::raiseWarning(null, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			}
 		}
@@ -127,8 +142,9 @@ class Com_PodcastManagerInstallerScript {
 	/**
 	 * Function to create a new feed based on the 1.6 parameters when upgrading to 1.7
 	 *
-	 * @return	void
-	 * @since	1.7
+	 * @return  void
+	 *
+	 * @since   1.7
 	 */
 	protected function createFeed()
 	{
@@ -139,10 +155,13 @@ class Com_PodcastManagerInstallerScript {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		if (!$db->loadObject()) {
+		if (!$db->loadObject())
+		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			return;
-		} else {
+		}
+		else
+		{
 			$record = $db->loadObject();
 		}
 
@@ -150,16 +169,17 @@ class Com_PodcastManagerInstallerScript {
 		$params	= json_decode($record->params);
 
 		// Query to create new feed record
-		$addFeed	= 'INSERT INTO `#__podcastmanager_feeds` (`id`, `name`, `subtitle`, `description`, `copyright`,'.
-				  ' `explicit`, `block`, `ownername`, `owneremail`, `keywords`, `author`, `image`, `category1`,'.
-				  ' `category2`, `category3`, `published`) VALUES'.
-				  ' (1, '.$db->quote($params->title).', '.$db->quote($params->itSubtitle).', '.$db->quote($params->description).','.
-				  $db->quote($params->copyright).', '.$db->quote($params->itExplicit).', '.$db->quote($params->itBlock).','.
-				  $db->quote($params->itOwnerName).', '.$db->quote($params->itOwnerEmail).', '.$db->quote($params->itKeywords).','.
-				  $db->quote($params->itAuthor).', '.$db->quote($params->itImage).', '.$db->quote($params->itCategory1).','.
-				  $db->quote($params->itCategory2).', '.$db->quote($params->itCategory3).', '.$db->quote('1').');';
+		$addFeed	= 'INSERT INTO `#__podcastmanager_feeds` (`id`, `name`, `subtitle`, `description`, `copyright`,'
+					. ' `explicit`, `block`, `ownername`, `owneremail`, `keywords`, `author`, `image`, `category1`,'
+					. ' `category2`, `category3`, `published`) VALUES'
+					. ' (1, '.$db->quote($params->title).', '.$db->quote($params->itSubtitle).', '.$db->quote($params->description).','
+					. $db->quote($params->copyright).', '.$db->quote($params->itExplicit).', '.$db->quote($params->itBlock).','
+					. $db->quote($params->itOwnerName).', '.$db->quote($params->itOwnerEmail).', '.$db->quote($params->itKeywords).','
+					. $db->quote($params->itAuthor).', '.$db->quote($params->itImage).', '.$db->quote($params->itCategory1).','
+					. $db->quote($params->itCategory2).', '.$db->quote($params->itCategory3).', '.$db->quote('1').');';
 		$db->setQuery($addFeed);
-		if (!$db->query()) {
+		if (!$db->query())
+		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 		}
 
@@ -168,7 +188,8 @@ class Com_PodcastManagerInstallerScript {
 		$query->update($db->quoteName('#__podcastmanager'));
 		$query->set($db->quoteName('feedname').' = '.$db->quote('1'));
 		$db->setQuery($feed);
-		if (!$db->query()) {
+		if (!$db->query())
+		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 		}
 	}
@@ -176,8 +197,9 @@ class Com_PodcastManagerInstallerScript {
 	/**
 	 * Function to update the Podcast Manager tables from the 1.6 to 1.7 schema
 	 *
-	 * @return	void
-	 * @since	1.7
+	 * @return  void
+	 *
+	 * @since   1.7
 	 */
 	protected function db17Update()
 	{
@@ -187,7 +209,8 @@ class Com_PodcastManagerInstallerScript {
 		$SQLupdate	= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.0.sql');
 		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.1.sql');
 
-		if ($SQLupdate === false) {
+		if ($SQLupdate === false)
+		{
 			return;
 		}
 
@@ -195,16 +218,20 @@ class Com_PodcastManagerInstallerScript {
 		jimport('joomla.installer.helper');
 		$queries = JInstallerHelper::splitSql($SQLupdate);
 
-		if (count($queries) == 0) {
+		if (count($queries) == 0)
+		{
 			continue;
 		}
 
 		// Process each query in the $queries array (split out of sql file).
-		foreach ($queries as $query) {
+		foreach ($queries as $query)
+		{
 			$query = trim($query);
-			if ($query != '' && $query{0} != '#') {
+			if ($query != '' && $query{0} != '#')
+			{
 				$db->setQuery($query);
-				if (!$db->query()) {
+				if (!$db->query())
+				{
 					JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 					return;
 				}
@@ -215,8 +242,9 @@ class Com_PodcastManagerInstallerScript {
 	/**
 	 * Function to get the currently installed version from the manifest cache
 	 *
-	 * @return	string	$version	The base version that is installed
-	 * @since	1.7
+	 * @return  string  $version  The version that is installed
+	 *
+	 * @since   1.7
 	 */
 	protected function getVersion()
 	{
@@ -227,11 +255,14 @@ class Com_PodcastManagerInstallerScript {
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		if (!$db->loadObject()) {
+		if (!$db->loadObject())
+		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			$version = 'Error';
 			return $version;
-		} else {
+		}
+		else
+		{
 			$manifest = $db->loadObject();
 		}
 
@@ -246,10 +277,12 @@ class Com_PodcastManagerInstallerScript {
 
 	/**
 	 * Joomla! 1.6+ bugfix for "DB function returned no error"
+	 *
 	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	private function _bugfixDBFunctionReturnedNoError()
 	{
@@ -262,8 +295,10 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
-		if (!empty($ids)) {
-			foreach($ids as $id) {
+		if (!empty($ids))
+		{
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete('#__assets');
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
@@ -279,8 +314,10 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
-		if (!empty($ids)) {
-			foreach ($ids as $id) {
+		if (!empty($ids))
+		{
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete('#__extensions');
 				$query->where($db->quoteName('extension_id').' = '.$db->quote($id));
@@ -298,8 +335,10 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
-		if (!empty($ids)) {
-			foreach ($ids as $id) {
+		if (!empty($ids))
+		{
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete('#__menu');
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
@@ -311,10 +350,12 @@ class Com_PodcastManagerInstallerScript {
 
 	/**
 	 * Joomla! 1.6+ bugfix for "Can not build admin menus"
+	 *
 	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	private function _bugfixCantBuildAdminMenus()
 	{
@@ -327,11 +368,13 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
-		if (count($ids) > 1) {
+		if (count($ids) > 1)
+		{
 			asort($ids);
 			$extension_id = array_shift($ids); // Keep the oldest id
 
-			foreach ($ids as $id) {
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete($db->quoteName('#__extensions'));
 				$query->where($db->quoteName('extension_id').' = '.$db->quote($id));
@@ -349,11 +392,13 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadObjectList();
-		if (count($ids) > 1) {
+		if (count($ids) > 1)
+		{
 			asort($ids);
 			$asset_id = array_shift($ids); // Keep the oldest id
 
-			foreach ($ids as $id) {
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete($db->quoteName('#__assets'));
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
@@ -371,8 +416,10 @@ class Com_PodcastManagerInstallerScript {
 		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadResultArray();
-		if (!empty($ids)) {
-			foreach($ids as $id) {
+		if (!empty($ids))
+		{
+			foreach ($ids as $id)
+			{
 				$query->clear();
 				$query->delete($db->quoteName('#__menu'));
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
