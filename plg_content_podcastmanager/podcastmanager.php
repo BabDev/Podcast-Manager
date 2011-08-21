@@ -31,7 +31,7 @@ class plgContentPodcastManager extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return  void
+	 * @return  plgContentPodcastManager
 	 *
 	 * @since   1.8
 	 */
@@ -44,14 +44,14 @@ class plgContentPodcastManager extends JPlugin
 	/**
 	 * Plugin that loads a podcast player within content
 	 *
-	 * @param   string  $context   The context of the content being passed to the plugin.
-	 * @param   object  &$article  The article object.  Note $article->text is also available
-	 * @param   object  &$params   The article params
-	 * @param   int     $page      The 'page' number
+	 * @param   string   $context   The context of the content being passed to the plugin.
+	 * @param   object   &$article  The article object.  Note $article->text is also available
+	 * @param   object   &$params   The article params
+	 * @param   integer  $page      The 'page' number
 	 *
-	 * @return	object	Player object on success, notice on failure
+	 * @return  mixed  Player object on success, notice on failure
 	 *
-	 * @since	1.6
+	 * @since   1.6
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
@@ -154,11 +154,14 @@ class plgContentPodcastManager extends JPlugin
 					}
 				}
 
-				// Get the player
-				$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
+				if (isset($podfilepath))
+				{
+					// Get the player
+					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
 
-				// Replace the {podcast marker with the player
-				$article->text = JString::str_ireplace($matches[0][$i], $player->generate(), $article->text);
+					// Replace the {podcast marker with the player
+					$article->text = JString::str_ireplace($matches[0][$i], $player->generate(), $article->text);
+				}
 
 				$i++;
 			}
@@ -246,11 +249,11 @@ class PodcastManagerPlayer
 	 * @param   string  $podfilepath    The path to the file being processed
 	 * @param   string  $podtitle       The title of the podcast being processed
 	 *
-	 * @return  void
+	 * @return  PodcastManagerPlayer
 	 *
 	 * @since   1.6
 	 */
-	function __construct(&$podmanparams, $podfilepath, $podtitle)
+	public function __construct(&$podmanparams, $podfilepath, $podtitle)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath	= $podfilepath;
@@ -284,7 +287,7 @@ class PodcastManagerPlayer
 	 *
 	 * @param   object  $podfilepath  The filename of the podcast file.
 	 *
-	 * @return  object  The URL to the file
+	 * @return  string  The URL to the file
 	 *
 	 * @since   1.6
 	 */

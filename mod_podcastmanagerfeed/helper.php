@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	mod_podcastmanagerfeed
+* @package     PodcastManager
+* @subpackage  mod_podcastmanagerfeed
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 // Import the external requirements
@@ -22,19 +22,20 @@ JModel::addIncludePath(JPATH_SITE.'/components/com_podcastmanager/models', 'Podc
 /**
  * Podcast Manager feed listing module.
  *
- * @package		Podcast Manager
- * @subpackage	mod_podcastmanagerfeed
- * @since		1.8
+ * @package     PodcastManager
+ * @subpackage  mod_podcastmanagerfeed
+ * @since       1.8
  */
-abstract class modPodcastManagerFeedHelper
+abstract class ModPodcastManagerFeedHelper
 {
 	/**
 	 * Function to get the list of items
 	 *
-	 * @param	array	$params	The module params
+	 * @param   array  &$params  The module params
 	 *
-	 * @return	array	$items	An array of items
-	 * @since	1.8
+	 * @return  array  An array of items
+	 *
+	 * @since   1.8
 	 */
 	public static function getList(&$params)
 	{
@@ -66,11 +67,13 @@ abstract class modPodcastManagerFeedHelper
 
 		$items = $model->getItems();
 
-		foreach ($items as &$item) {
+		foreach ($items as &$item)
+		{
 			$item->link = $item->filename;
 
 			// Check if the file is from off site
-			if (!preg_match('/^http/', $item->link)) {
+			if (!preg_match('/^http/', $item->link))
+			{
 				$item->link = JURI::base().$item->filename;
 			}
 		}

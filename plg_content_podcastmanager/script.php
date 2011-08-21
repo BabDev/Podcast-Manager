@@ -21,7 +21,6 @@
  */
 class plgContentPodcastManagerInstallerScript
 {
-
 	/**
 	 * Function to act prior to installation process begins
 	 *
