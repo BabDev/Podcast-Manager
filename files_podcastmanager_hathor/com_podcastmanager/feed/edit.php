@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	files_podcastmanager_hathor
+* @package     PodcastManager
+* @subpackage  files_podcastmanager_hathor
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
@@ -57,7 +57,7 @@ JHtml::_('behavior.keepalive');
 
 <div class="col options-section">
 	<?php echo JHtml::_('sliders.start', 'podcastmanager-feed-sliders-'.$this->item->id); ?>
-		<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 		<fieldset class="panelform">
 		<legend class="element-invisible"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
 		<ul class="adminformlist">
@@ -80,7 +80,7 @@ JHtml::_('behavior.keepalive');
 
 		</fieldset>
 
-		<?php echo JHtml::_('sliders.panel',JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
 		<fieldset class="panelform">
 		<legend class="element-invisible"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'); ?></legend>
 		<ul class="adminformlist">

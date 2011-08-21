@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	files_podcastmanager_minima
+* @package     PodcastManager
+* @subpackage  files_podcastmanager_minima
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
@@ -29,7 +29,7 @@ JHtml::_('behavior.keepalive');
 			<fieldset class="adminform">
 				<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></legend>
 				<ol class="adminformlist">
-					<li">
+					<li>
 						<?php echo $this->form->getLabel('name'); ?>
 						<?php echo $this->form->getInput('name'); ?>
 					</li>
