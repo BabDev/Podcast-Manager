@@ -2,14 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
@@ -17,31 +19,36 @@ jimport('joomla.application.component.modelform');
 /**
  * Podcast edit model class.
  *
- * @package		Podcast Manager
- * @subpackage	com_podcastmanager
- * @since		1.8
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.8
  */
 class PodcastManagerModelPodcast extends JModelForm
 {
 	/**
-	 * @var		string	$_context	Model context string.
-	 * @since	1.8
+	 * Model context string.
+	 *
+	 * @var    string
+	 * @since  1.8
 	 */
 	protected $_context = 'com_podcastmanager.podcast';
 
 	/**
-	 * @var		object	$_item	The item being pulled
-	 * @since	1.8
+	 * The item being pulled
+	 *
+	 * @var    object
+	 * @since  1.8
 	 */
 	protected $_item = null;
 
 	/**
 	 * Method to process the file through the getID3 library to extract key data
 	 *
-	 * @param	mixed	$data	The data object for the form
+	 * @param   mixed  $data  The data object for the form
 	 *
-	 * @return	mixed	$data	The processed data for the form.
-	 * @since	1.8
+	 * @return  mixed  The processed data for the form.
+	 *
+	 * @since  1.8
 	 */
 	protected function fillMetaData($data)
 	{
@@ -49,7 +56,8 @@ class PodcastManagerModelPodcast extends JModelForm
 		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
 
 		$filename	= $_COOKIE['podManFile'];
-		if (!preg_match('/^http/', $filename)) {
+		if (!preg_match('/^http/', $filename))
+		{
 			$filename	= JPATH_ROOT.'/'.$filename;
 		}
 		$getID3		= new getID3($filename);
@@ -58,46 +66,54 @@ class PodcastManagerModelPodcast extends JModelForm
 		// Set the filename field (fallback for if session data doesn't retain)
 		$data->filename	= $_COOKIE['podManFile'];
 
-		if (isset($fileInfo['tags_html'])) {
+		if (isset($fileInfo['tags_html']))
+		{
 			$t = $fileInfo['tags_html'];
 			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
-			if ($tags) {
+			if ($tags)
+			{
 				// Set the title field
-				if (isset($tags['title'])) {
+				if (isset($tags['title']))
+				{
 					$data->title = $tags['title'][0];
 				}
 				// Set the album field
-				if (isset($tags['album'])) {
+				if (isset($tags['album']))
+				{
 					$data->itSubtitle = $tags['album'][0];
 				}
 				// Set the artist field
-				if (isset($tags['artist'])) {
+				if (isset($tags['artist']))
+				{
 					$data->itAuthor = $tags['artist'][0];
 				}
 			}
 		}
 
 		// Set the duration field
-		if (isset($fileInfo['playtime_string'])) {
+		if (isset($fileInfo['playtime_string']))
+		{
 			$data->itDuration = $fileInfo['playtime_string'];
 		}
 		return $data;
 	}
 
 	/**
-	 * Method to get the record form.
+	 * Abstract method for getting the form from the model.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return	mixed	$form		A JForm object on success, false on failure
-	 * @since	1.8
+	 * @return  mixed  A JForm object on success, false on failure
+	 *
+	 * @since   1.8
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -107,17 +123,20 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to get an object.
 	 *
-	 * @param	integer	$id		The id of the object to get.
+	 * @param   integer  $id  The id of the object to get.
 	 *
-	 * @return	mixed	$_item	Object on success, false on failure.
-	 * @since	1.8
+	 * @return  mixed  Object on success, false on failure.
+	 *
+	 * @since   1.8
 	 */
 	public function &getItem($id = null)
 	{
-		if ($this->_item === null) {
+		if ($this->_item === null)
+		{
 			$this->_item = false;
 
-			if (empty($id)) {
+			if (empty($id))
+			{
 				$id = $this->getState('podcast.id');
 			}
 
@@ -125,10 +144,13 @@ class PodcastManagerModelPodcast extends JModelForm
 			$table = JTable::getInstance('Podcast', 'PodcastManagerTable');
 
 			// Attempt to load the row.
-			if ($table->load($id)) {
+			if ($table->load($id))
+			{
 				// Check published state.
-				if ($published = $this->getState('filter.published')) {
-					if ($table->published != $published) {
+				if ($published = $this->getState('filter.published'))
+				{
+					if ($table->published != $published)
+					{
 						return $this->_item;
 					}
 				}
@@ -136,7 +158,9 @@ class PodcastManagerModelPodcast extends JModelForm
 				// Convert the JTable to a clean JObject.
 				$properties = $table->getProperties(1);
 				$this->_item = JArrayHelper::toObject($properties, 'JObject');
-			} else if ($error = $table->getError()) {
+			}
+			else if ($error = $table->getError())
+			{
 				$this->setError($error);
 			}
 		}
@@ -147,8 +171,9 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Get the return URL.
 	 *
-	 * @return	string	The return URL.
-	 * @since	1.8
+	 * @return  string  The return URL.
+	 *
+	 * @since   1.8
 	 */
 	public function getReturnPage()
 	{
@@ -156,35 +181,39 @@ class PodcastManagerModelPodcast extends JModelForm
 	}
 
 	/**
-	 * Returns a JTable object, always creating it
+	 * Method to get a table object, load it if necessary.
 	 *
-	 * @param	string	$type	The table type to instantiate
-	 * @param	string	$prefix	A prefix for the table class name. Optional.
-	 * @param	array	$config	Configuration array for model. Optional.
+	 * @param   string  $name     The table name. Optional.
+	 * @param   string  $prefix   The class prefix. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
-	 * @since	1.8
-	*/
-	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = array())
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   1.8
+	 */
+	public function getTable($name = 'Podcast', $prefix = 'PodcastManagerTable', $options = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return JTable::getInstance($name, $prefix, $options);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return	mixed	$data	The data for the form.
-	 * @since	1.8
+	 * @return  mixed  The data for the form.
+	 *
+	 * @since   1.8
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 			// If changing the selected file, process the new data through getID3
-			if (isset($_COOKIE['podManFile'])) {
+			if (isset($_COOKIE['podManFile']))
+			{
 				$data = $this->fillMetaData($data);
 			}
 		}
@@ -194,8 +223,9 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to auto-populate the model state.  Calling getState in this method will result in recursion.
 	 *
-	 * @return	void
-	 * @since	1.8
+	 * @return  void
+	 *
+	 * @since   1.8
 	 */
 	protected function populateState()
 	{
@@ -210,7 +240,8 @@ class PodcastManagerModelPodcast extends JModelForm
 
 		$return = JRequest::getVar('return', null, 'default', 'base64');
 
-		if (!JUri::isInternal(base64_decode($return))) {
+		if (!JUri::isInternal(base64_decode($return)))
+		{
 			$return = null;
 		}
 
@@ -226,10 +257,11 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param	array	$data	The form data.
+	 * @param   array  $data  The form data.
 	 *
-	 * @return  boolean			True on success, false on failure.
-	 * @since	1.8
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since   1.8
 	 */
 	public function save($data)
 	{
@@ -244,34 +276,40 @@ class PodcastManagerModelPodcast extends JModelForm
 		JPluginHelper::importPlugin('content');
 
 		// Allow an exception to be thrown.
-		try {
+		try
+		{
 		// Load the row if saving an existing record.
-			if ($pk > 0) {
+			if ($pk > 0)
+			{
 				$table->load($pk);
 				$isNew = false;
 			}
 
 			// Bind the data.
-			if (!$table->bind($data)) {
+			if (!$table->bind($data))
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// Check the data.
-			if (!$table->check()) {
+			if (!$table->check())
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// Trigger the onContentBeforeSave event.
 			$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, &$table, $isNew));
-			if (in_array(false, $result, true)) {
+			if (in_array(false, $result, true))
+			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// Store the data.
-			if (!$table->store()) {
+			if (!$table->store())
+			{
 				$this->setError($table->getError());
 				return false;
 			}
@@ -281,14 +319,17 @@ class PodcastManagerModelPodcast extends JModelForm
 
 			// Trigger the onContentAfterSave event.
 			$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, &$table, $isNew));
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			$this->setError($e->getMessage());
 			return false;
 		}
 
 		$pkName = $table->getKeyName();
 
-		if (isset($table->$pkName)) {
+		if (isset($table->$pkName))
+		{
 			$this->setState($this->getName().'.id', $table->$pkName);
 		}
 		$this->setState($this->getName().'.new', $isNew);

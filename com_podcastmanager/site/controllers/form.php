@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controllerform');
 
 /**
- * Podcast edit controller class.
+ * Feed edit controller class.
  *
  * @package     PodcastManager
  * @subpackage  com_podcastmanager
