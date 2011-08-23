@@ -65,6 +65,50 @@ class PodcastManagerTableFeed extends JTable
 	}
 
 	/**
+	 * Method to get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object for the asset parent
+	 * @param   integer  $id     Id to look up
+	 *
+	 * @return  integer  The parent id
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		// Initialise variables.
+		$assetId = null;
+		$db = $this->getDbo();
+
+		// Feeds are nested directly underneath the component.
+		if ($assetId === null)
+		{
+			// Build the query to get the asset id for the component.
+			$query	= $db->getQuery(true);
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__assets'));
+			$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+
+			// Get the asset id from the database.
+			$db->setQuery($query);
+			if ($result = $db->loadResult())
+			{
+				$assetId = (int) $result;
+			}
+		}
+
+		// Return the asset id.
+		if ($assetId)
+		{
+			return $assetId;
+		}
+		else
+		{
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+
+	/**
 	 * Overloaded bind function.
 	 *
 	 * @param   array   $array   Named array

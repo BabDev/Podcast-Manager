@@ -55,6 +55,18 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('image'); ?>
 					<?php echo $this->form->getInput('image'); ?></li>
 
+					<?php if ($this->canDo->get('core.admin')): ?>
+					<li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
+					<div class="button2-left">
+						<div class="blank">
+		      				<button type="button" onclick="document.location.href='#access-rules';">
+		      				<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
+		      				</button>
+		      			</div>
+		      		</div>
+		    		</li>
+					<?php endif; ?>
+
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
 
@@ -72,6 +84,9 @@ JHtml::_('behavior.keepalive');
 				<ul class="adminformlist">
 					<li><?php echo $this->form->getLabel('created'); ?>
 					<?php echo $this->form->getInput('created'); ?></li>
+
+					<li><?php echo $this->form->getLabel('created_by'); ?>
+					<?php echo $this->form->getInput('created_by'); ?></li>
 
 					<li><?php echo $this->form->getLabel('publish_up'); ?>
 					<?php echo $this->form->getInput('publish_up'); ?></li>
