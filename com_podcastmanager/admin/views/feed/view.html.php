@@ -25,10 +25,6 @@ jimport('joomla.application.component.view');
  */
 class PodcastManagerViewFeed extends JView
 {
-	protected $form;
-	protected $item;
-	protected $state;
-
 	/**
 	 * Display the view
 	 *
@@ -43,6 +39,7 @@ class PodcastManagerViewFeed extends JView
 		$this->form		= $this->get('Form');
 		$this->item		= $this->get('Item');
 		$this->state	= $this->get('State');
+		$this->canDo	= PodcastManagerHelper::getActions();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
