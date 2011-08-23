@@ -2,37 +2,38 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmanager
+* @package     PodcastManager
+* @subpackage  com_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
 /**
  * Feed RAW view class.
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmanager
- * @since		1.8
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ * @since       1.6
  */
 class PodcastManagerViewFeed extends JView
 {
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl	The name of the template file to parse
+	 * @param   string  $tpl  The name of the template file to parse
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	function display($tpl = null)
 	{
@@ -46,9 +47,11 @@ class PodcastManagerViewFeed extends JView
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 
-		if ($params->get('cache', true)) {
+		if ($params->get('cache', true))
+		{
 			$cache = JFactory::getCache('com_podcastmanager', 'output');
-			if ($cache->start('feed', 'com_podcastmanager')) {
+			if ($cache->start('feed', 'com_podcastmanager'))
+			{
 				return;
 			}
 		}
@@ -58,7 +61,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->setIndent(true);
 		$xw->setIndentString("\t");
 
-		$xw->startDocument('1.0','UTF-8');
+		$xw->startDocument('1.0', 'UTF-8');
 
 		$xw->startElement('rss');
 		$xw->writeAttribute('xmlns:itunes', 'http://www.itunes.com/dtds/podcast-1.0.dtd');
@@ -81,7 +84,8 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->writeElement('copyright', $feed->copyright);
 
-		if (!is_null($feed->newFeed)) {
+		if (!is_null($feed->newFeed))
+		{
 			$xw->writeElement('itunes:new-feed-url', $feed->newFeed);
 		}
 
@@ -90,17 +94,23 @@ class PodcastManagerViewFeed extends JView
 
 		$itBlock = $feed->block;
 
-		if ($itBlock == 1) {
+		if ($itBlock == 1)
+		{
 			$xw->writeElement('itunes:block', 'yes');
 		}
 
 		$itExplicit = $feed->explicit;
 
-		if ($itExplicit == 1) {
+		if ($itExplicit == 1)
+		{
 			$xw->writeElement('itunes:explicit', 'yes');
-		} else if ($itExplicit == 2) {
+		}
+		else if ($itExplicit == 2)
+		{
 			$xw->writeElement('itunes:explicit', 'clean');
-		} else {
+		}
+		else
+		{
 			$xw->writeElement('itunes:explicit', 'no');
 		}
 
@@ -119,23 +129,25 @@ class PodcastManagerViewFeed extends JView
 
 		$imageURL = $feed->image;
 
-		if (!preg_match('/^http/', $imageURL)) {
+		if (!preg_match('/^http/', $imageURL))
+		{
 			$imageURL = JURI::root().$imageURL;
 		}
 
 		$xw->writeAttribute('href', $imageURL);
 		$xw->endElement();
 
-		$this->setCategories($xw, $params, $feed);
+		$this->_setCategories($xw, $params, $feed);
 
-		$this->setItems($xw, $params, $items);
+		$this->_setItems($xw, $params, $items);
 
 		$xw->endElement(); // channel
 		$xw->endElement(); // rss
 
 		echo $xw->outputMemory(true);
 
-		if (isset($cache)) {
+		if (isset($cache))
+		{
 			$cache->end(); // cache output
 		}
 	}
@@ -143,26 +155,30 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to set the feed categories
 	 *
-	 * @param	XMLWriter	$xw		XMLWriter object containing generated feed output
-	 * @param	array		$params	The component parameters
-	 * @param	object		$feed	An object containing the feed record
+	 * @param   XMLWriter  &$xw     XMLWriter object containing generated feed output
+	 * @param   array      $params  The component parameters
+	 * @param   object     $feed    An object containing the feed record
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
-	private function setCategories(&$xw, $params, $feed)
+	private function _setCategories(&$xw, $params, $feed)
 	{
 		$cats = array('category1', 'category2', 'category3');
 		$i = 1;
 
-		foreach ($cats as $cat) {
+		foreach ($cats as $cat)
+		{
 			$pieces = explode('>', $feed->$cat);
 
-			if ($pieces[0] != '') {
+			if ($pieces[0] != '')
+			{
 				$xw->startElement('itunes:category');
 				$xw->writeAttribute('text', trim($pieces[0]));
 
-				if (count($pieces) > 1) {
+				if (count($pieces) > 1)
+				{
 					$xw->startElement('itunes:category');
 					$xw->writeAttribute('text', trim($pieces[1]));
 					$xw->endElement();
@@ -177,29 +193,35 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to generate the feed items
 	 *
-	 * @param	XMLWriter	$xw		XMLWriter object containing generated feed output
-	 * @param	array		$params	The component parameters
-	 * @param	object		$feed	An object containing the feed record
+	 * @param   XMLWriter  &$xw     XMLWriter object containing generated feed output
+	 * @param   array      $params  The component parameters
+	 * @param   object     $items   An object containing the feed record
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
-	private function setItems(&$xw, $params, $items)
+	private function _setItems(&$xw, $params, $items)
 	{
-		foreach ($items as $item) {
+		foreach ($items as $item)
+		{
 			// Set the file path on the file structure
 			$filepath	= $item->filename;
 
 			// Check if the file is from off site
-			if (preg_match('/^http/', $filepath)) {
-				// The file is off set, no verification necessary
+			if (preg_match('/^http/', $filepath))
+			{
+				// The file is off site, no verification necessary
 				$filename	= $filepath;
-			} else {
+			}
+			else
+			{
 				// The file is stored on site, check if it exists
 				$filepath	= JPATH_ROOT.'/'.$item->filename;
 
 				// Check if the file exists
-				if (JFile::exists($filepath)) {
+				if (JFile::exists($filepath))
+				{
 					$filename	= JURI::base().$item->filename;
 				}
 			}
@@ -225,15 +247,21 @@ class PodcastManagerViewFeed extends JView
 			$itBlock	= $item->itBlock;
 			$itExplicit	= $item->itExplicit;
 
-			if ($itBlock == 1) {
+			if ($itBlock == 1)
+			{
 				$xw->writeElement('itunes:block', 'yes');
 			}
 
-			if ($itExplicit == 1) {
+			if ($itExplicit == 1)
+			{
 				$xw->writeElement('itunes:explicit', 'yes');
-			} else if ($itExplicit == 2) {
+			}
+			else if ($itExplicit == 2)
+			{
 				$xw->writeElement('itunes:explicit', 'clean');
-			} else {
+			}
+			else
+			{
 				$xw->writeElement('itunes:explicit', 'no');
 			}
 

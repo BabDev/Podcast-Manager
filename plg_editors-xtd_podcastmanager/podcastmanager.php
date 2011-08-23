@@ -2,16 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	plg_editors-xtd_podcastmanager
+* @package     PodcastManager
+* @subpackage  plg_editors-xtd_podcastmanager
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
@@ -19,19 +19,20 @@ jimport('joomla.plugin.plugin');
 /**
  * Podcast Manager button plugin.
  *
- * @package		PodcastManager
- * @subpackage	plg_editors-xtd_podcastmanager
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  plg_editors-xtd_podcastmanager
+ * @since       1.6
  */
 class plgButtonPodcastManager extends JPlugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @param	object	$subject	The object to observe
-	 * @param	array	$config		An array that holds the plugin configuration
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return	void
+	 * @return	plgButtonPodcastManager
+	 *
 	 * @since	1.6
 	 */
 	public function __construct(&$subject, $config)
@@ -43,10 +44,11 @@ class plgButtonPodcastManager extends JPlugin
 	/**
 	 * Display the button
 	 *
-	 * @param	string	$name	The name of the editor
+	 * @param   string  $name  The name of the editor
 	 *
-	 * @return	array	Markup to display the button
-	 * @since	1.6
+	 * @return  array  Markup to display the button
+	 *
+	 * @since   1.6
 	 */
 	function onDisplay($name)
 	{

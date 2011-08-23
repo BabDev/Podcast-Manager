@@ -30,7 +30,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @return  void
+	 * @return  PodcastManagerModelPodcasts
 	 *
 	 * @since   1.6
 	 * @see     JController
@@ -55,9 +55,9 @@ class PodcastManagerModelPodcasts extends JModelList
 	}
 
 	/**
-	 * Method to build an SQL query to load the list data.
+	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
 	 *
-	 * @return  string  An SQL query
+	 * @return  JDatabaseQuery  A JDatabaseQuery object to retrieve the data set.
 	 *
 	 * @since   1.6
 	 */
@@ -184,7 +184,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		{
 			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', ''))
 			{
-				$this->setUserState($this->context.'.filter.feedname', $feedname);
+				$this->setState($this->context.'.filter.feedname', $feedname);
 			}
 		}
 		else

@@ -2,20 +2,20 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	files_podcastmanager_minima
+* @package     PodcastManager
+* @subpackage  files_podcastmanager_minima
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 *
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.DS.'helpers'.DS.'html');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
@@ -32,7 +32,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		}
 	}
 </script>
-<?php if( $this->items ): ?>
+<?php if ($this->items): ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feeds');?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
@@ -41,19 +41,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th rowspan="2%">
-					<?php echo JHtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
 					<?php echo JText::_('COM_PODCASTMANAGER_HEADING_NUMBER_ITEMS'); ?>
 				</th>
 				<th width="5%" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			<tr>
@@ -75,19 +75,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th rowspan="2%">
-					<?php echo JHtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
 					<?php echo JText::_('COM_PODCASTMANAGER_HEADING_NUMBER_ITEMS'); ?>
 				</th>
 				<th width="5%" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%" rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap" rowspan="2">
-					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 			<tr>
@@ -141,8 +141,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language=='*') {
-						echo JText::alt('JALL','language');
+					<?php if ($item->language == '*') {
+						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
 					} ?>

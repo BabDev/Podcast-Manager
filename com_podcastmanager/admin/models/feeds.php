@@ -30,7 +30,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @return  void
+	 * @return  PodcastManagerModelFeeds
 	 *
 	 * @since   1.7
 	 * @see     JController
@@ -113,7 +113,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published').' = 0');
 		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
 		$db->setQuery($query);
-		$countUnpublished = $db->loadAssocList('feedname', 'count_unpublished');
+		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
 		if ($db->getErrorNum())
 		{
@@ -126,7 +126,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published').' = -2');
 		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
 		$db->setQuery($query);
-		$countTrashed = $db->loadAssocList('feedname', 'count_trashed');
+		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
 		if ($db->getErrorNum())
 		{
@@ -149,9 +149,9 @@ class PodcastManagerModelFeeds extends JModelList
 	}
 
 	/**
-	 * Method to build an SQL query to load the list data.
+	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
 	 *
-	 * @return  string  An SQL query
+	 * @return  JDatabaseQuery  A JDatabaseQuery object to retrieve the data set.
 	 *
 	 * @since   1.7
 	 */

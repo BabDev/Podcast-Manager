@@ -81,7 +81,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php if ($item->language=='*') {
-						echo JText::alt('JALL','language');
+						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
 					} ?>

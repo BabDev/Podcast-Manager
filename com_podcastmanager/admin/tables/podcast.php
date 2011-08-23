@@ -28,7 +28,7 @@ class PodcastManagerTablePodcast extends JTable
 	 *
 	 * @param   object  &$db  JDatabase connector object.
 	 *
-	 * @return  void
+	 * @return  PodcastManagerTablePodcast
 	 *
 	 * @since   1.6
 	 */

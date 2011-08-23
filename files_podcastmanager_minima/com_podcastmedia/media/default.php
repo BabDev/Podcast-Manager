@@ -2,14 +2,16 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* 
+* @package     PodcastManager
+* @subpackage  files_podcastmanager_minima
+*
+* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+*
 * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 $user = JFactory::getUser();
@@ -17,7 +19,7 @@ $user = JFactory::getUser();
 <div class="width-100 fltlft">
 <table width="100%" class="media-manager">
 	<tr valign="top">
-		<td width="200">		
+		<td width="200">
 			<fieldset id="treeview" class="adminform">
 				<legend><?php echo JText::_('COM_PODCASTMEDIA_FOLDERS'); ?></legend>
 				<div id="media-tree_tree"></div>
@@ -25,11 +27,11 @@ $user = JFactory::getUser();
 			</fieldset>
 		</td>
 		<td>
-		<?php if ($user->authorise('core.create','com_podcastmanager')):?>
+		<?php if ($user->authorise('core.create', 'com_podcastmanager')):?>
 			<!-- File Upload Form -->
 			<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1&amp;format=json" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform" class="adminform">
-					<legend><?php echo $this->medmanparams->get('upload_maxsize')=='0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
+					<legend><?php echo $this->medmanparams->get('upload_maxsize') == '0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
 					<fieldset id="upload-noflash" class="actions">
 						<!--<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_UPLOAD_FILE'); ?></label>-->
 						<input type="file" id="upload-file" name="Filedata" />
@@ -44,10 +46,10 @@ $user = JFactory::getUser();
 						</ul>
 						<div class="clr"> </div>
 						<p class="overall-title"></p>
-						<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
 						<div class="clr"> </div>
 						<p class="current-title"></p>
-						<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
 						<p class="current-text"></p>
 					</div>
 					<ul class="upload-queue hide" id="upload-queue">
@@ -58,7 +60,7 @@ $user = JFactory::getUser();
 				</fieldset>
 			</form>
 			<?php endif;?>
-			<?php if (($user->authorise('core.create','com_podcastmanager')) and $this->require_ftp): ?>
+			<?php if (($user->authorise('core.create', 'com_podcastmanager')) and $this->require_ftp): ?>
 				<form action="index.php?option=com_podcastmedia&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
 					<fieldset title="<?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?>" class="adminform">
 						<legend><?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?></legend>
@@ -85,7 +87,7 @@ $user = JFactory::getUser();
 					</div>
 					<legend><?php echo JText::_('COM_PODCASTMEDIA_FILES'); ?></legend>
 					<div class="path">
-					<?php if ($user->authorise('core.create','com_podcastmanager')): ?>
+					<?php if ($user->authorise('core.create', 'com_podcastmanager')): ?>
 						<input class="inputbox" type="text" id="folderpath" readonly="readonly" />
 						<input class="inputbox" type="text" id="foldername" name="foldername"  />
 						<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="<?php echo $this->state->folder; ?>" />
@@ -94,7 +96,7 @@ $user = JFactory::getUser();
 					</div>
 					<?php echo JHtml::_('form.token'); ?>
 				</fieldset>
-			</form>			
+			</form>
 		</td>
 	</tr>
 </table>
