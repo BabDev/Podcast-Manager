@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
 
 CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `id` int(11) NOT NULL auto_increment,
+  `asset_id` int(11) UNSIGNED NOT NULL default '0',
   `name` varchar(255) default NULL,
   `subtitle` varchar(255) NOT NULL default '',
   `description` varchar(5120) NOT NULL default '',

@@ -7,5 +7,13 @@
 		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
+	</section>
+	<section name="feed">
+		<action name="core.create" title="JACTION_CREATE" description="COM_PODCASTMANAGER_ACCESS_CREATE_DESCRIPTION" />
+		<action name="core.delete" title="JACTION_DELETE" description="COM_PODCASTMANAGER_ACCESS_DELETE_DESCRIPTION" />
+		<action name="core.edit" title="JACTION_EDIT" description="COM_PODCASTMANAGER_ACCESS_EDIT_DESCRIPTION" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="COM_PODCASTMANAGER_ACCESS_EDITSTATE_DESCRIPTION" />
+		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_PODCASTMANAGER_ACCESS_EDITOWN_DESCRIPTION" />
 	</section>
 </access>

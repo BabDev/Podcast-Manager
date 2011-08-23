@@ -126,6 +126,17 @@ JHtml::_('behavior.keepalive');
 		</div><!-- /#tabs -->
 	</div><!-- /#item-advanced -->
 
+	<div id="item-permissions">
+	<?php if ($this->canDo->get('core.admin')): ?>
+		<div class="width-100 fltlft">
+			<fieldset class="panelform">
+				<?php echo $this->form->getLabel('rules'); ?>
+				<?php echo $this->form->getInput('rules'); ?>
+			</fieldset>
+		</div>
+	<?php endif; ?>
+	</div><!-- /#item-permissions -->
+
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
