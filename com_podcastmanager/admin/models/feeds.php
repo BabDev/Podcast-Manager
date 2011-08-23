@@ -113,7 +113,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published').' = 0');
 		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
 		$db->setQuery($query);
-		$countUnpublished = $db->loadAssocList('feedname', 'count_unpublished');
+		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
 		if ($db->getErrorNum())
 		{
@@ -126,7 +126,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published').' = -2');
 		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
 		$db->setQuery($query);
-		$countTrashed = $db->loadAssocList('feedname', 'count_trashed');
+		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
 		if ($db->getErrorNum())
 		{
