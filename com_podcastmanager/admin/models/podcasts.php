@@ -184,7 +184,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		{
 			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', ''))
 			{
-				$this->setUserState($this->context.'.filter.feedname', $feedname);
+				$this->setState($this->context.'.filter.feedname', $feedname);
 			}
 		}
 		else
