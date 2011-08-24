@@ -154,11 +154,14 @@ class PodcastManagerTableFeed extends JTable
 		}
 		else
 		{
-			// New item. A podcast's created field can be set by the user,
+			// New item. A feed's created field can be set by the user,
 			// so we don't touch it if it is set.
 			if (!intval($this->created))
 			{
 				$this->created = $date->toMySQL();
+			}
+			if (empty($this->created_by)) {
+				$this->created_by = $user->get('id');
 			}
 		}
 		return parent::store($updateNulls);
