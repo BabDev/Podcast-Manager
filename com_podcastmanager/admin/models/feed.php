@@ -65,13 +65,13 @@ class PodcastManagerModelFeed extends JModelAdmin
 	}
 
 	/**
-	 * Method to test whether a record can be deleted.
+	 * Method to test whether a record's state can be modified.
 	 *
 	 * @param   object  $record  A record object.
 	 *
 	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
 	 *
-	 * @since   11.1
+	 * @since   2.0
 	 */
 	protected function canEditState($record)
 	{

@@ -160,7 +160,8 @@ class PodcastManagerTableFeed extends JTable
 			{
 				$this->created = $date->toMySQL();
 			}
-			if (empty($this->created_by)) {
+			if (empty($this->created_by))
+			{
 				$this->created_by = $user->get('id');
 			}
 		}

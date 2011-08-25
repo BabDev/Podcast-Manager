@@ -80,7 +80,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
 				</td>
 				<td class="center">
-					<?php if ($item->language=='*') {
+					<?php if ($item->language == '*') {
 						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');

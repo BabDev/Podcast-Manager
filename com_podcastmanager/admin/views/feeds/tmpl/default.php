@@ -76,7 +76,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.'.$item->id);
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.feed.'.$item->id);
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out == 0;
+			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
 			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.feed.'.$item->id) && $item->created_by == $userId;
 			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.feed.'.$item->id) && $canCheckin;
 		?>
@@ -111,7 +111,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language=='*') {
+					<?php if ($item->language == '*') {
 						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');

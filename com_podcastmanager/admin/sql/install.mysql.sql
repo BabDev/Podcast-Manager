@@ -1,10 +1,12 @@
 CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `id` int(11) NOT NULL auto_increment,
+  `asset_id` int(11) UNSIGNED NOT NULL default '0',
   `filename` varchar(255) default NULL,
   `feedname` int(11) NOT NULL,
   `title` varchar(255) NOT NULL default '',
   `published` tinyint(1) NOT NULL default '0',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` integer unsigned NOT NULL default '0',
   `modified` datetime NOT NULL default '0000-00-00 00:00:00',
   `modified_by` integer unsigned NOT NULL default '0',
   `checked_out` integer unsigned NOT NULL default '0',

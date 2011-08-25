@@ -84,6 +84,9 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('created'); ?>
 					<?php echo $this->form->getInput('created'); ?></li>
 
+					<li><?php echo $this->form->getLabel('created_by'); ?>
+					<?php echo $this->form->getInput('created'); ?></li>
+
 					<li><?php echo $this->form->getLabel('publish_up'); ?>
 					<?php echo $this->form->getInput('publish_up'); ?></li>
 

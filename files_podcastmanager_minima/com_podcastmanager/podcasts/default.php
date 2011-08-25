@@ -108,10 +108,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php endif; ?>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_podcastmanager');
-			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager') && $canCheckin;
+			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.podcast.'.$item->id);
+			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.'.$item->id);
+			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.'.$item->id) && $item->created_by == $userId;
+			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.podcast.'.$item->id) && $canCheckin;
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">

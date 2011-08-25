@@ -31,7 +31,7 @@ class PodcastManagerControllerFeed extends JControllerForm
 	 * @param   array   $data  An array of input data.
 	 * @param   string  $key   The name of the key for the primary key; default is id.
 	 *
-	 * @return  boolean
+	 * @return  boolean  True if allowed
 	 *
 	 * @since   2.0
 	 */
