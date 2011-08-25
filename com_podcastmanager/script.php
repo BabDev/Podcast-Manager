@@ -109,6 +109,7 @@ class Com_PodcastManagerInstallerScript
 	 */
 	function update($parent)
 	{
+		JLog::add('com_podcastmanager update method is deprecated.', JLog::WARNING, 'deprecated');
 		// Check the currently installed version
 		$version	= $this->getVersion();
 		if ($version == 'Error')
@@ -117,7 +118,7 @@ class Com_PodcastManagerInstallerScript
 			return;
 		}
 
-		// If upgrading from 1.6, run the 1.7 schema updates
+		// If upgrading from 1.6, run the 1.7/1.8 schema updates
 		if (substr($version, 0, 3) == '1.6')
 		{
 			// Update the tables then create the new feed
@@ -211,6 +212,7 @@ class Com_PodcastManagerInstallerScript
 		// Get the update file
 		$SQLupdate	= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.0.sql');
 		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.1.sql');
+		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.8.1.sql');
 
 		if ($SQLupdate === false)
 		{
