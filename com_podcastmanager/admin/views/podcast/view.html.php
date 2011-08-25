@@ -76,7 +76,7 @@ class PodcastManagerViewPodcast extends JView
 		$userId		= $user->get('id');
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo		= PodcastManagerHelper::getActions();
+		$canDo		= PodcastManagerHelper::getActions($this->state->get('filter.feedname'), $this->item->id);
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
@@ -96,7 +96,7 @@ class PodcastManagerViewPodcast extends JView
 		else
 		{
 			// Since it's an existing record, check the edit permission.
-			if ($canDo->get('core.edit'))
+			if (!$checkedOut && ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)))
 			{
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');

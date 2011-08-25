@@ -67,7 +67,12 @@ class PodcastManagerViewFeeds extends JView
 	 */
 	protected function addToolbar()
 	{
-		$canDo	= PodcastManagerHelper::getActions();
+		$user		= JFactory::getUser();
+		$userId		= $user->get('id');
+		foreach ($this->items as $item)
+		{
+			$canDo	= PodcastManagerHelper::getActions($item->id);
+		}
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');
 
@@ -75,7 +80,7 @@ class PodcastManagerViewFeeds extends JView
 		{
 			JToolBarHelper::addNew('feed.add');
 		}
-		if ($canDo->get('core.edit'))
+		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
 		{
 			JToolBarHelper::editList('feed.edit');
 		}
@@ -88,12 +93,12 @@ class PodcastManagerViewFeeds extends JView
 			JToolBarHelper::checkin('feeds.checkin');
 			JToolBarHelper::divider();
 		}
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		if ($canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_DELETE');
 			JToolBarHelper::divider();
 		}
-		else if ($canDo->get('core.edit.state'))
+		else if ($canDo->get('core.edit.state') && !$canDo->get('core.delete'))
 		{
 			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();

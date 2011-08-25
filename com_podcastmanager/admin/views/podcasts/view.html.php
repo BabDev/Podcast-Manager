@@ -75,7 +75,7 @@ class PodcastManagerViewPodcasts extends JView
 	 */
 	protected function addToolbar()
 	{
-		$canDo	= PodcastManagerHelper::getActions();
+		$canDo	= PodcastManagerHelper::getActions($this->state->get('filter.feedname'));
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
 
@@ -83,7 +83,7 @@ class PodcastManagerViewPodcasts extends JView
 		{
 			JToolBarHelper::addNew('podcast.add');
 		}
-		if ($canDo->get('core.edit'))
+		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
 		{
 			JToolBarHelper::editList('podcast.edit');
 		}

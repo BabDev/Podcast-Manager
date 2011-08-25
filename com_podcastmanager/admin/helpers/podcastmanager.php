@@ -62,18 +62,33 @@ class PodcastManagerHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
+	 * @param   integer  $feedId     The feed ID.
+	 * @param   integer  $podcastId  The podcast ID
+	 *
 	 * @return  JObject  A JObject containing the allowed actions
 	 *
 	 * @since   1.6
 	 */
-	public static function getActions()
+	public static function getActions($feedId = 0, $podcastId = 0)
 	{
 		$user		= JFactory::getUser();
 		$result		= new JObject;
-		$assetName	= 'com_podcastmanager';
+
+		if (empty($podcastId) && empty($feedId))
+		{
+			$assetName = 'com_podcastmanager';
+		}
+		else if (empty($podcastId))
+		{
+			$assetName = 'com_podcastmanager.feed.'.(int) $feedId;
+		}
+		else
+		{
+			$assetName = 'com_podcastmanager.podcast.'.(int) $podcastId;
+		}
 
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.edit.own', 'core.delete'
 		);
 
 		foreach ($actions as $action)

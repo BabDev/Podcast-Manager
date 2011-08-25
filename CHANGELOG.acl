@@ -1,6 +1,7 @@
 25-August-2011 Michal Babker
 + Add ACL to the podcast level
 ~ Code review on feed ACL
+~ Update getActions to handle permissions checks, update views permissions checks
 
 23-August-2011 Michael Babker
 + First pass at adding ACL to feed level
