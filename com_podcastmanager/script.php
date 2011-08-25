@@ -100,11 +100,12 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform updates when method=upgrade is used
 	 *
-	 * @param   string  $parent  The function calling this method
+	 * @param       string  $parent  The function calling this method
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0  Update method unnecessary upon removal of legacy upgrade
 	 */
 	function update($parent)
 	{
@@ -142,9 +143,10 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to create a new feed based on the 1.6 parameters when upgrading to 1.7
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0
 	 */
 	protected function createFeed()
 	{
@@ -197,9 +199,10 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to update the Podcast Manager tables from the 1.6 to 1.7 schema
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0
 	 */
 	protected function db17Update()
 	{
