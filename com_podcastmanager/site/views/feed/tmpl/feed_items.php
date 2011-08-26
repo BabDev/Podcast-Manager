@@ -24,11 +24,6 @@ JHtml::core();
 // Get the user object.
 $user = JFactory::getUser();
 
-// Check if user is allowed to add/edit based on component permissinos.
-$canEdit = $user->authorise('core.edit', 'com_podcastmanager');
-$canCreate = $user->authorise('core.create', 'com_podcastmanager');
-$canEditState = $user->authorise('core.edit.state', 'com_podcastmanager');
-
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
@@ -69,7 +64,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
 		<?php else : ?>
 			<tr class="cat-list-row<?php echo $i % 2; ?>" >
-		<?php endif; ?>
+		<?php endif;
+		// Check permissions.
+		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.'.$item->id);
+		?>
 				<td class="title">
 					<p>
 					<?php // Compute the correct link

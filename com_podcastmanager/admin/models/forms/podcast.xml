@@ -5,6 +5,7 @@
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
 			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" 
 			readonly="true" />
+		<field name="asset_id" type="hidden" filter="unset" />
 		<field name="filename" type="podcastmedia" hide_none="1"
 			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
 			required="true" onchange="makeCookie();" />
