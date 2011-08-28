@@ -37,6 +37,15 @@ class PodcastManagerViewFeed extends JView
 	 */
 	function display($tpl = null)
 	{
+		static $log;
+
+		if ($log == null)
+		{
+			$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
+			$options['text_file'] = 'podcastmanager.php';
+			$log = JLog::addLogger($options);
+		}
+
 		// Get the component params
 		$params = JComponentHelper::getParams('com_podcastmanager');
 
@@ -80,7 +89,13 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeElement('title', $feed->name);
 		$xw->writeElement('link', JURI::base());
 
-		$xw->writeElement('language', $feed->language);
+		$feedLang = $feed->language;
+		if ($feedLang == '*')
+		{
+			$feedLang = JFactory::getLanguage()->getTag();
+
+		}
+		$xw->writeElement('language', $feedLang);
 
 		$xw->writeElement('copyright', $feed->copyright);
 
@@ -226,51 +241,59 @@ class PodcastManagerViewFeed extends JView
 				}
 			}
 
-			// Start writing the element
-			$xw->startElement('item');
-
-			$xw->writeElement('title', $item->title);
-			$xw->writeElement('itunes:author', $item->itAuthor);
-			$xw->writeElement('itunes:subtitle', $item->itSubtitle);
-			$xw->writeElement('itunes:summary', $item->itSummary);
-			$xw->writeElement('description', $item->itSummary);
-
-			// Write the enclosure element
-			$xw->startElement('enclosure');
-			$xw->writeAttribute('url', $filename);
-			$xw->writeAttribute('length', filesize($filepath));
-			$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
-			$xw->endElement();
-
-			$xw->writeElement('guid', $filename);
-
-			$itBlock	= $item->itBlock;
-			$itExplicit	= $item->itExplicit;
-
-			if ($itBlock == 1)
+			if (!isset($filename))
 			{
-				$xw->writeElement('itunes:block', 'yes');
-			}
-
-			if ($itExplicit == 1)
-			{
-				$xw->writeElement('itunes:explicit', 'yes');
-			}
-			else if ($itExplicit == 2)
-			{
-				$xw->writeElement('itunes:explicit', 'clean');
+				// Write the DB error to the log
+				JLog::add((JText::sprintf('COM_PODCASTMANAGER_ERROR_FINDING_FILE', $item->filename)), JLog::ERROR);
 			}
 			else
 			{
-				$xw->writeElement('itunes:explicit', 'no');
+				// Start writing the element
+				$xw->startElement('item');
+
+				$xw->writeElement('title', $item->title);
+				$xw->writeElement('itunes:author', $item->itAuthor);
+				$xw->writeElement('itunes:subtitle', $item->itSubtitle);
+				$xw->writeElement('itunes:summary', $item->itSummary);
+				$xw->writeElement('description', $item->itSummary);
+
+				// Write the enclosure element
+				$xw->startElement('enclosure');
+				$xw->writeAttribute('url', $filename);
+				$xw->writeAttribute('length', filesize($filepath));
+				$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
+				$xw->endElement();
+
+				$xw->writeElement('guid', $filename);
+
+				$itBlock	= $item->itBlock;
+				$itExplicit	= $item->itExplicit;
+
+				if ($itBlock == 1)
+				{
+					$xw->writeElement('itunes:block', 'yes');
+				}
+
+				if ($itExplicit == 1)
+				{
+					$xw->writeElement('itunes:explicit', 'yes');
+				}
+				else if ($itExplicit == 2)
+				{
+					$xw->writeElement('itunes:explicit', 'clean');
+				}
+				else
+				{
+					$xw->writeElement('itunes:explicit', 'no');
+				}
+
+				$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
+
+				$xw->writeElement('itunes:duration', $item->itDuration);
+				$xw->writeElement('itunes:keywords', $item->itKeywords);
+
+				$xw->endElement();
 			}
-
-			$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
-
-			$xw->writeElement('itunes:duration', $item->itDuration);
-			$xw->writeElement('itunes:keywords', $item->itKeywords);
-
-			$xw->endElement();
 		}
 	}
 }
