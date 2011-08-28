@@ -79,7 +79,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeAttribute('type', 'application/rss+xml');
 
 		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&amp;view=feed&amp;feedname='.$feed->id.'&amp;format=raw');
+		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&view=feed&feedname='.$feed->id.'&format=raw');
 		$xw->writeAttribute('rel', 'self');
 		$xw->writeAttribute('type', 'application/rss+xml');
 		$xw->endElement();
@@ -99,7 +99,7 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->writeElement('copyright', $feed->copyright);
 
-		if (!is_null($feed->newFeed))
+		if (strlen($feed->newFeed) > 1)
 		{
 			$xw->writeElement('itunes:new-feed-url', $feed->newFeed);
 		}
@@ -140,17 +140,19 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeElement('itunes:email', $feed->owneremail);
 		$xw->endElement();
 
-		$xw->startElement('itunes:image');
-
 		$imageURL = $feed->image;
 
-		if (!preg_match('/^http/', $imageURL))
+		if (strlen($imageURL) > 1)
 		{
-			$imageURL = JURI::root().$imageURL;
-		}
+			$xw->startElement('itunes:image');
 
-		$xw->writeAttribute('href', $imageURL);
-		$xw->endElement();
+			if (!preg_match('/^http/', $imageURL))
+			{
+				$imageURL = JURI::root().$imageURL;
+			}
+			$xw->writeAttribute('href', $imageURL);
+			$xw->endElement();
+		}
 
 		$this->_setCategories($xw, $params, $feed);
 
