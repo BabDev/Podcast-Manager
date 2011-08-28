@@ -16,6 +16,10 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
+// Get the application and input
+$app = JFactory::getApplication('administrator');
+$input = $app->input;
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager'))
 {
@@ -24,12 +28,12 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager'))
 
 // Check if Live Update is being accessed and bypass all other component data
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/liveupdate/liveupdate.php';
-if (JRequest::getCmd('view') == 'liveupdate')
+if ($input->get('view', '', 'cmd') == 'liveupdate')
 {
 	LiveUpdate::handleRequest();
 	return;
 }
 
 $controller = JController::getInstance('PodcastManager');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

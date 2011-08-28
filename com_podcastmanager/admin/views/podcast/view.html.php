@@ -70,7 +70,9 @@ class PodcastManagerViewPodcast extends JView
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$app = JFactory::getApplication('administrator');
+		$input = $app->input;
+		$input->set('hidemainmenu', true);
 
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');

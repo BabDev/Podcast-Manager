@@ -110,6 +110,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 */
 	protected function batchCopy($value, $pks)
 	{
+		$app = JFactory::getApplication('administrator');
+		$input = $app->input;
 		$feedId	= (int) $value;
 
 		$table	= $this->getTable();
@@ -142,7 +144,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= $input->get('option', 'com_podcastmanager', 'cmd');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension))
 		{
@@ -217,6 +219,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 */
 	protected function batchMove($value, $pks)
 	{
+		$app = JFactory::getApplication('administrator');
+		$input = $app->input;
 		$feedId	= (int) $value;
 
 		$table	= $this->getTable();
@@ -249,7 +253,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JRequest::getCmd('option');
+		$extension	= $input->get('option', 'com_podcastmanager', 'cmd');
 		$user		= JFactory::getUser();
 		if (!$user->authorise('core.create', $extension))
 		{

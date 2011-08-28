@@ -171,6 +171,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
+		$input = $app->input;
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -179,7 +180,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
 
-		$feedname = JRequest::getVar('feedname', null);
+		$feedname = $input->get('feedname', '', 'var');
 		if ($feedname)
 		{
 			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', ''))
