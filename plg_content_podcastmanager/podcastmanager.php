@@ -55,6 +55,15 @@ class plgContentPodcastManager extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
+		static $log;
+
+		if ($log == null)
+		{
+			$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
+			$options['text_file'] = 'podcastmanager.php';
+			$log = JLog::addLogger($options);
+		}
+
 		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1)
 		{
 			$article->text = $article->player;
@@ -146,6 +155,9 @@ class plgContentPodcastManager extends JPlugin
 					$db->setQuery($query);
 					if (!$db->loadObject())
 					{
+						// Write the DB error to the log
+						JLog::add((JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle).'  '.$db->stderr(true)), JLog::ERROR);
+
 						JError::raiseNotice(null, JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle));
 					}
 					else
@@ -161,6 +173,13 @@ class plgContentPodcastManager extends JPlugin
 
 					// Replace the {podcast marker with the player
 					$article->text = JString::str_ireplace($matches[0][$i], $player->generate(), $article->text);
+				}
+				else
+				{
+					JLog::add(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_NO_FILEPATH'), JLog::INFO);
+
+					// Remove the {podcast marker
+					$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
 				}
 
 				$i++;

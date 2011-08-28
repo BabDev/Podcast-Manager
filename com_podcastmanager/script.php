@@ -100,14 +100,16 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform updates when method=upgrade is used
 	 *
-	 * @param   string  $parent  The function calling this method
+	 * @param       string  $parent  The function calling this method
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0  Update method unnecessary upon removal of legacy upgrade
 	 */
 	function update($parent)
 	{
+		JLog::add('com_podcastmanager update method is deprecated.', JLog::WARNING, 'deprecated');
 		// Check the currently installed version
 		$version	= $this->getVersion();
 		if ($version == 'Error')
@@ -116,7 +118,7 @@ class Com_PodcastManagerInstallerScript
 			return;
 		}
 
-		// If upgrading from 1.6, run the 1.7 schema updates
+		// If upgrading from 1.6, run the 1.7/1.8 schema updates
 		if (substr($version, 0, 3) == '1.6')
 		{
 			// Update the tables then create the new feed
@@ -142,9 +144,10 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to create a new feed based on the 1.6 parameters when upgrading to 1.7
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0
 	 */
 	protected function createFeed()
 	{
@@ -197,9 +200,10 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to update the Podcast Manager tables from the 1.6 to 1.7 schema
 	 *
-	 * @return  void
+	 * @return      void
 	 *
-	 * @since   1.7
+	 * @since       1.7
+	 * @deprecated  2.0
 	 */
 	protected function db17Update()
 	{
@@ -208,6 +212,7 @@ class Com_PodcastManagerInstallerScript
 		// Get the update file
 		$SQLupdate	= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.0.sql');
 		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.7.1.sql');
+		$SQLupdate	.= file_get_contents(dirname(__FILE__).'/admin/sql/updates/mysql/1.8.1.sql');
 
 		if ($SQLupdate === false)
 		{
