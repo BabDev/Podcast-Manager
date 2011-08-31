@@ -33,20 +33,34 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 <?php else : ?>
 
 <form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
-	<?php if ($this->params->get('show_pagination_limit')) : ?>
+	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
  	<fieldset class="filters">
-		<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
+		<?php if ($this->params->get('filter_field') != 'hide') :?>
+		<legend class="hidelabeltxt">
+			<?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
+		</legend>
+
+		<div class="filter-search">
+			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_PODCASTMANAGER_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
+			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
+		</div>
+		<?php endif; ?>
+
+		<?php if ($this->params->get('show_pagination_limit')) : ?>
 		<div class="display-limit">
 			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
 		</div>
+		<?php endif; ?>
+
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
 	<?php endif; ?>
 
 	<table class="category">
-		<?php if ($this->params->get('show_headings')==1) : ?>
+		<?php if ($this->params->get('show_headings')) : ?>
 		<thead>
 			<tr>
 				<th class="title">
@@ -79,8 +93,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
 						<?php echo $this->escape($item->title); ?></a>
 					<?php } ?></p>
-					<?php // Code to add the edit link for the podcast.
-					if ($canEdit) : ?>
+					<?php if ($canEdit) : ?>
 					<ul class="actions">
 						<li class="edit-icon">
 							<?php echo JHtml::_('icon.podcastedit', $item, $params); ?>
