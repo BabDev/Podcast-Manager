@@ -62,6 +62,14 @@
 			</field>
 		</fieldset>
 		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
+			<field name="filter_field" type="list"
+				description="JGLOBAL_FILTER_FIELD_DESC"
+				label="JGLOBAL_FILTER_FIELD_LABEL" >
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="hide">JHIDE</option>
+				<option value="title">JGLOBAL_TITLE</option>
+				<option value="date">JDATE</option>
+			</field>
 			<field name="show_pagination_limit" type="list"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
 			description="JGLOBAL_DISPLAY_SELECT_DESC">
