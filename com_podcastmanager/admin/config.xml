@@ -66,6 +66,17 @@
 			default="audio/mpeg"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
+		<field
+			name="minstability"
+			type="radio"
+			default="alpha"
+			label="COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_MINSTABILITY_LABEL"
+			description="CONFIG_LIVEUPDATE_MINSTABILITY_DESC" >
+			<option value="alpha">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_ALPHA</option>
+			<option value="beta">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_BETA</option>
+			<option value="rc">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_RC</option>
+			<option value="stable">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_STABLE</option>
+		</field>
 	</fieldset>
 	<fieldset
 		name="permissions"
