@@ -1,3 +1,6 @@
+10-September-2011 Michael Babker
++ Add method to check permissions on all feeds
+
 25-August-2011 Michal Babker
 + Add ACL to the podcast level
 ~ Code review on feed ACL

@@ -98,4 +98,32 @@ class PodcastManagerHelper
 
 		return $result;
 	}
+
+	/**
+	 * Method to return a list of all feeds that a user has permission for a given action
+	 *
+	 * @param   string  $action  The action to check.
+	 *
+	 * @return  array  List of feeds that this group can do this action to (empty array if none).  Feeds must be published.
+	 *
+	 * @since   2.0
+	 */
+	public function getAuthorisedCategories($action)
+	{
+		$db = JFactory::getDbo();
+		$query	= $db->getQuery(true);
+		$query->select('f.id AS id, a.name as asset_name');
+		$query->from('#__podcastmanager_feeds AS f');
+		$query->innerJoin('#__assets AS a ON f.asset_id = a.id');
+		$query->where('f.published = 1');
+		$db->setQuery($query);
+		$allFeeds = $db->loadObjectList('id');
+		$allowedFeeds = array();
+		foreach ($allFeeds as $feed) {
+			if ($this->authorise($action, $feed->asset_name)) {
+				$allowedFeeds[] = (int) $feed->id;
+			}
+		}
+		return $allowedFeeds;
+	}
 }
