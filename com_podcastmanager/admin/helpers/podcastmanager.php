@@ -108,8 +108,9 @@ class PodcastManagerHelper
 	 *
 	 * @since   2.0
 	 */
-	public function getAuthorisedCategories($action)
+	public function getAuthorisedFeeds($action)
 	{
+		$user = JFactory::getUser();
 		$db = JFactory::getDbo();
 		$query	= $db->getQuery(true);
 		$query->select('f.id AS id, a.name as asset_name');
@@ -120,7 +121,7 @@ class PodcastManagerHelper
 		$allFeeds = $db->loadObjectList('id');
 		$allowedFeeds = array();
 		foreach ($allFeeds as $feed) {
-			if ($this->authorise($action, $feed->asset_name)) {
+			if ($user->authorise($action, $feed->asset_name)) {
 				$allowedFeeds[] = (int) $feed->id;
 			}
 		}
