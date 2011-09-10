@@ -108,7 +108,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php endif; ?>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.podcast.'.$item->id);
+			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.'.$item->feedname);
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.'.$item->id);
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
 			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.'.$item->id) && $item->created_by == $userId;
