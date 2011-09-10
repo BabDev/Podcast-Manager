@@ -51,5 +51,6 @@
 		<zip destfile="packages/mod_podcastmanagerfeed.zip" basedir="mod_podcastmanagerfeed" />
 		<zip destfile="packages/plg_content_podcastmanager.zip" basedir="plg_content_podcastmanager" />
 		<zip destfile="packages/plg_editors-xtd_podcastmanager.zip" basedir="plg_editors-xtd_podcastmanager" />
+		<zip destfile="packages/plg_podcastmedia_user.zip" basedir="plg_podcastmedia_user" />
 	</target>
 </project>

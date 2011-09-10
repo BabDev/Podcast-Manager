@@ -60,6 +60,27 @@ class PodcastManagerHelper
 	}
 
 	/**
+	 * Counts the number of active podcastmedia plugins
+	 *
+	 * @return  string  The number of active plugins
+	 *
+	 * @since   2.0
+	 */
+	public static function countMediaPlugins()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('COUNT(extension_id)');
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('folder').' = '.$db->quote('podcastmedia'));
+		$query->where($db->quoteName('enabled').' = 1');
+		$db->setQuery($query);
+		$count = $db->loadResult();
+
+		return $count;
+	}
+
+	/**
 	 * Gets a list of the actions that can be performed.
 	 *
 	 * @param   integer  $feedId     The feed ID.
