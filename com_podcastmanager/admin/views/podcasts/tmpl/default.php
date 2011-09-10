@@ -84,10 +84,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_podcastmanager');
-			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id') || $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager') && $canCheckin;
+			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.'.$item->feedname);
+			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.'.$item->id);
+			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.'.$item->id) && $item->created_by == $userId;
+			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.podcast.'.$item->id) && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -97,7 +98,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php if ($item->checked_out) {
 						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
 					} ?>
-					<?php if ($canEdit) { ?>
+					<?php if ($canEdit || $canEditOwn) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id='.(int) $item->id); ?>">
 							<?php echo $this->escape($item->title); ?></a>
 					<?php } else {
@@ -114,7 +115,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language=='*') {
+					<?php if ($item->language == '*') {
 						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');

@@ -62,18 +62,33 @@ class PodcastManagerHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
+	 * @param   integer  $feedId     The feed ID.
+	 * @param   integer  $podcastId  The podcast ID
+	 *
 	 * @return  JObject  A JObject containing the allowed actions
 	 *
 	 * @since   1.6
 	 */
-	public static function getActions()
+	public static function getActions($feedId = 0, $podcastId = 0)
 	{
 		$user		= JFactory::getUser();
 		$result		= new JObject;
-		$assetName	= 'com_podcastmanager';
+
+		if (empty($podcastId) && empty($feedId))
+		{
+			$assetName = 'com_podcastmanager';
+		}
+		else if (empty($podcastId))
+		{
+			$assetName = 'com_podcastmanager.feed.'.(int) $feedId;
+		}
+		else
+		{
+			$assetName = 'com_podcastmanager.podcast.'.(int) $podcastId;
+		}
 
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.edit.own', 'core.delete'
 		);
 
 		foreach ($actions as $action)
@@ -82,5 +97,34 @@ class PodcastManagerHelper
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Method to return a list of all feeds that a user has permission for a given action
+	 *
+	 * @param   string  $action  The action to check.
+	 *
+	 * @return  array  List of feeds that this group can do this action to (empty array if none).  Feeds must be published.
+	 *
+	 * @since   2.0
+	 */
+	public function getAuthorisedFeeds($action)
+	{
+		$user = JFactory::getUser();
+		$db = JFactory::getDbo();
+		$query	= $db->getQuery(true);
+		$query->select('f.id AS id, a.name as asset_name');
+		$query->from('#__podcastmanager_feeds AS f');
+		$query->innerJoin('#__assets AS a ON f.asset_id = a.id');
+		$query->where('f.published = 1');
+		$db->setQuery($query);
+		$allFeeds = $db->loadObjectList('id');
+		$allowedFeeds = array();
+		foreach ($allFeeds as $feed) {
+			if ($user->authorise($action, $feed->asset_name)) {
+				$allowedFeeds[] = (int) $feed->id;
+			}
+		}
+		return $allowedFeeds;
 	}
 }

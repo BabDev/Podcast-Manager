@@ -308,6 +308,54 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	}
 
 	/**
+	 * Method to test whether a record can be deleted.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
+	 *
+	 * @since   2.0
+	 */
+	protected function canDelete($record)
+	{
+		if (!empty($record->id))
+		{
+			if ($record->published != -2)
+			{
+				return;
+			}
+			$user = JFactory::getUser();
+
+			return $user->authorise('core.delete', 'com_podcastmanager.podcast.'.(int) $record->id);
+		}
+	}
+
+	/**
+	 * Method to test whether a record's state can be modified.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+	 *
+	 * @since   2.0
+	 */
+	protected function canEditState($record)
+	{
+		$user = JFactory::getUser();
+
+		// Check for existing podcast.
+		if (!empty($record->id))
+		{
+			return $user->authorise('core.edit.state', 'com_podcastmanager.podcast.'.(int) $record->id);
+		}
+		// Default to component settings if no feed to check.
+		else
+		{
+			return $user->authorise('core.edit.state', 'com_podcastmanager');
+		}
+	}
+
+	/**
 	 * Custom clean cache method
 	 *
 	 * @param   string   $group      The component name

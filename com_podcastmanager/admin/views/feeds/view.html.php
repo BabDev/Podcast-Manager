@@ -67,19 +67,24 @@ class PodcastManagerViewFeeds extends JView
 	 */
 	protected function addToolbar()
 	{
+		$user		= JFactory::getUser();
+		$userId		= $user->get('id');
 		$canDo	= PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');
 
-		if ($canDo->get('core.create'))
+		if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 		{
 			JToolBarHelper::addNew('feed.add');
 		}
-		if ($canDo->get('core.edit'))
+		if (
+			$canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0) ||
+			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0)
+		)
 		{
 			JToolBarHelper::editList('feed.edit');
 		}
-		if ($canDo->get('core.edit.state'))
+		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::divider();
 			JToolBarHelper::publish('feeds.publish', 'JTOOLBAR_PUBLISH', true);
@@ -88,12 +93,12 @@ class PodcastManagerViewFeeds extends JView
 			JToolBarHelper::checkin('feeds.checkin');
 			JToolBarHelper::divider();
 		}
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		if ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0))
 		{
-			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_DELETE');
 			JToolBarHelper::divider();
 		}
-		else if ($canDo->get('core.edit.state'))
+		else if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0) && !$canDo->get('core.delete'))
 		{
 			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();

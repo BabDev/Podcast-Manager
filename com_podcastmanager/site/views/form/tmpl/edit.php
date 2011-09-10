@@ -86,6 +86,10 @@ $params = $this->state->get('params');
 			<?php echo $this->form->getInput('created'); ?>
 		</div>
 		<div class="formelm">
+			<?php echo $this->form->getLabel('created_by'); ?>
+			<?php echo $this->form->getInput('created_by'); ?>
+		</div>
+		<div class="formelm">
 			<?php echo $this->form->getLabel('published'); ?>
 			<?php echo $this->form->getInput('published'); ?>
 		</div>

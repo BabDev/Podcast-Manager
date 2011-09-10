@@ -22,7 +22,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 $user = JFactory::getUser();
 
 // Check if user is allowed to add/edit based on component permissinos.
-$canEdit = $user->authorise('core.edit', 'com_podcastmanager');
+$canEdit = $user->authorise('core.edit', 'com_podcastmanager.feed.'.$this->feed->id);
 ?>
 <div class="podcastmanager-feed<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->def('show_page_heading', 1)) : ?>

@@ -76,7 +76,7 @@ class PodcastManagerViewPodcast extends JView
 		$userId		= $user->get('id');
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo		= PodcastManagerHelper::getActions();
+		$canDo		= PodcastManagerHelper::getActions($this->state->get('filter.feedname'), $this->item->id);
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_'.($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
@@ -84,7 +84,7 @@ class PodcastManagerViewPodcast extends JView
 		if ($isNew)
 		{
 			// For new records, check the create permission.
-			if ($canDo->get('core.create'))
+			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');
@@ -96,19 +96,23 @@ class PodcastManagerViewPodcast extends JView
 		else
 		{
 			// Since it's an existing record, check the edit permission.
-			if ($canDo->get('core.edit'))
+			if (
+				!$checkedOut &&
+				($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
+				|| ($canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId))
+			)
 			{
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');
 
 				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create'))
+				if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 				{
 					JToolBarHelper::save2new('podcast.save2new');
 				}
 			}
 			// If an existing item, can save as a copy
-			if ($canDo->get('core.create'))
+			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{
 				JToolBarHelper::save2copy('podcast.save2copy');
 			}

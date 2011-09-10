@@ -55,7 +55,7 @@ class PodcastManagerViewForm extends JView
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_podcastmanager');
+			$authorised = $user->authorise('core.edit', 'com_podcastmanager.feed.'.$this->item->id);
 		}
 
 		if ($authorised !== true)
