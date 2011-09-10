@@ -39,7 +39,7 @@ source_lang = en
 
 [podcast-manager.podcast-manager-feed-link-module-system]
 file_filter = mod_podcastmanager/language/<lang>/<lang>.mod_podcastmanager.sys.ini
-source_file = mod_podcastmanager/language/en-GB/en-GB. mod_podcastmanager.sys.ini
+source_file = mod_podcastmanager/language/en-GB/en-GB.mod_podcastmanager.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-feed-listing-module]
