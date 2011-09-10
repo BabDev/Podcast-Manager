@@ -97,7 +97,7 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '<div class="fltlft">';
 		$html[] = '	<input type="text" name="'.$this->name.'" id="'.$this->id.'"' .
 					' value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'"' .
-					' readonly="readonly"'.$attr.' />';
+					$attr.' />';
 		$html[] = '</div>';
 
 		// Check if only one podcastmedia plugin is enabled
