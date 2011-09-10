@@ -1,0 +1,93 @@
+[main]
+host = https://www.transifex.net
+lang_map = en: en-GB, pt_br: pt-BR
+
+[podcast-manager.podcast-manager-administrator-component]
+file_filter = com_podcastmanager/admin/language/<lang>/<lang>.com_podcastmanager.ini
+source_file = com_podcastmanager/admin/language/en-GB/en-GB.com_podcastmanager.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-administrator-system]
+file_filter = com_podcastmanager/admin/language/<lang>/<lang>.com_podcastmanager.sys.ini
+source_file = com_podcastmanager/admin/language/en-GB/en-GB.com_podcastmanager.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-button-plugin]
+file_filter = plg_editors-xtd_podcastmanager/language/<lang>/<lang>.plg_editors-xtd_podcastmanager.ini
+source_file = plg_editors-xtd_podcastmanager/language/en-GB/en-GB.plg_editors-xtd_podcastmanager.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-button-plugin-system]
+file_filter = plg_editors-xtd_podcastmanager/language/<lang>/<lang>.plg_editors-xtd_podcastmanager.sys.ini
+source_file = plg_editors-xtd_podcastmanager/language/en-GB/en-GB.plg_editors-xtd_podcastmanager.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-content-plugin]
+file_filter = plg_content_podcastmanager/language/<lang>/<lang>.plg_content_podcastmanager.ini
+source_file = plg_content_podcastmanager/language/en-GB/en-GB.plg_content_podcastmanager.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-content-plugin-system]
+file_filter = plg_content_podcastmanager/language/<lang>/<lang>.plg_content_podcastmanager.sys.ini
+source_file = plg_content_podcastmanager/language/en-GB/en-GB.plg_content_podcastmanager.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-feed-link-module]
+file_filter = mod_podcastmanager/language/<lang>/<lang>.mod_podcastmanager.ini
+source_file = mod_podcastmanager/language/en-GB/en-GB.mod_podcastmanager.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-feed-link-module-system]
+file_filter = mod_podcastmanager/language/<lang>/<lang>.mod_podcastmanager.sys.ini
+source_file = mod_podcastmanager/language/en-GB/en-GB. mod_podcastmanager.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-feed-listing-module]
+file_filter = mod_podcastmanagerfeed/language/<lang>/<lang>.mod_podcastmanagerfeed.ini
+source_file = mod_podcastmanagerfeed/language/en-GB/en-GB.mod_podcastmanagerfeed.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-feed-listing-module-system]
+file_filter = mod_podcastmanagerfeed/language/<lang>/<lang>.mod_podcastmanagerfeed.sys.ini
+source_file = mod_podcastmanagerfeed/language/en-GB/en-GB. mod_podcastmanagerfeed.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-file-manager]
+file_filter = com_podcastmedia/admin/language/<lang>/<lang>.com_podcastmedia.ini
+source_file = com_podcastmedia/admin/language/en-GB/en-GB.com_podcastmedia.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-file-manager-system]
+file_filter = com_podcastmedia/admin/language/<lang>/<lang>.com_podcastmedia.sys.ini
+source_file = com_podcastmedia/admin/language/en-GB/en-GB.com_podcastmedia.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-hathor-overrides]
+file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
+source_file = files_podcastmanager_hathor/language/en-GB/en-GB. files_podcastmanager_hathor.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-hathor-overrides-system]
+file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
+source_file = files_podcastmanager_hathor/language/en-GB/en-GB. files_podcastmanager_hathor.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-installation-package]
+file_filter = language/<lang>/<lang>.pkg_podcastmanager.sys.ini
+source_file = language/en-GB/en-GB.pkg_podcastmanager.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-minima-overrides]
+file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
+source_file = files_podcastmanager_minima/language/en-GB/en-GB. files_podcastmanager_minima.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-minima-overrides-system]
+file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
+source_file = files_podcastmanager_minima/language/en-GB/en-GB. files_podcastmanager_minima.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-site-component]
+file_filter = com_podcastmanager/site/language/<lang>/<lang>.com_podcastmanager.ini
+source_file = com_podcastmanager/site/language/en-GB/en-GB.com_podcastmanager.ini
+source_lang = en
