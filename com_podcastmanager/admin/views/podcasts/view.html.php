@@ -79,15 +79,18 @@ class PodcastManagerViewPodcasts extends JView
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
 
-		if ($canDo->get('core.create'))
+		if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 		{
 			JToolBarHelper::addNew('podcast.add');
 		}
-		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
+		if (
+			$canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0) ||
+			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0)
+		)
 		{
 			JToolBarHelper::editList('podcast.edit');
 		}
-		if ($canDo->get('core.edit.state'))
+		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::divider();
 			JToolBarHelper::publish('podcasts.publish', 'JTOOLBAR_PUBLISH', true);
@@ -96,12 +99,12 @@ class PodcastManagerViewPodcasts extends JView
 			JToolBarHelper::checkin('podcasts.checkin');
 			JToolBarHelper::divider();
 		}
-		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
 			JToolBarHelper::deleteList('', 'podcasts.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
-		else if ($canDo->get('core.edit.state'))
+		else if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::trash('podcasts.trash');
 			JToolBarHelper::divider();
