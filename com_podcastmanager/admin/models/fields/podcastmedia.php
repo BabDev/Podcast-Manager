@@ -100,7 +100,25 @@ class JFormFieldPodcastMedia extends JFormField
 					' readonly="readonly"'.$attr.' />';
 		$html[] = '</div>';
 
-		$directory = (string)$this->element['directory'];
+		// Check if only one podcastmedia plugin is enabled
+		if (PodcastManagerHelper::countMediaPlugins() == '1')
+		{
+			JPluginHelper::importPlugin('podcastmedia');
+			$dispatcher	= JDispatcher::getInstance();
+			$results = $dispatcher->trigger('onPathFind');
+			$directory = $results['0'];
+		}
+		// Can only handle one at a time, throw a warning and default
+		else if (PodcastManagerHelper::countMediaPlugins() > '1')
+		{
+			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_TOO_MANY_MEDIA_PLUGINS'));
+			$directory = '';
+		}
+		else
+		{
+			$directory = '';
+		}
+
 		if ($this->value && file_exists(JPATH_ROOT.'/'.$this->value))
 		{
 			$folder = explode('/', $this->value);
@@ -108,7 +126,7 @@ class JFormFieldPodcastMedia extends JFormField
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
-		else if (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory)))
+		else if (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager').'/'.$directory))
 		{
 			$folder = $directory;
 		}
