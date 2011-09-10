@@ -18,6 +18,7 @@
 		<filename>router.php</filename>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
+		<folder>language</folder>
 		<folder>media</folder>
 		<folder>models</folder>
 		<folder>views</folder>
@@ -37,12 +38,6 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
-	<languages folder="site/language">
-		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
-		<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
-		<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
-	</languages>
 	<media destination="com_podcastmanager">
 		<filename>index.html</filename>
 	</media>
@@ -55,6 +50,7 @@
 			<filename>podcastmanager.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
+			<folder>language</folder>
 			<folder>liveupdate</folder>
 			<folder>media</folder>
 			<folder>models</folder>
@@ -62,12 +58,6 @@
 			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
-		<languages folder="admin/language">
-			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.ini</language>
-			<language tag="en-GB">en-GB/en-GB.com_podcastmanager.sys.ini</language>
-			<language tag="pt-BR">pt-BR/pt-BR.com_podcastanager.ini</language>
-			<language tag="pt-BR">pt-BR/pt-BR.com_podcastmanager.sys.ini</language>
-		</languages>
 		<menu img="../administrator/components/com_podcastmanager/media/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
 	</administration>
 	<!-- Below section is data for Akeeba Backup System Restore Points -->

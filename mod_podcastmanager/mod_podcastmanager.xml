@@ -11,17 +11,12 @@
 	<description>MOD_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<files>
+		<folder>language</folder>
 		<folder>media</folder>
 		<folder>tmpl</folder>
 		<filename module="mod_podcastmanager">mod_podcastmanager.php</filename>
 		<filename>index.html</filename>
 	</files>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_podcastmanager.sys.ini</language>
-		<language tag="pt-BR">language/pt-BR/pt-BR.mod_podcastmanager.ini</language>
-		<language tag="pt-BR">language/pt-BR/pt-BR.mod_podcastmanager.sys.ini</language>
-	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic"
