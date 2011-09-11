@@ -49,7 +49,7 @@ source_lang = en
 
 [podcast-manager.podcast-manager-feed-listing-module-system]
 file_filter = mod_podcastmanagerfeed/language/<lang>/<lang>.mod_podcastmanagerfeed.sys.ini
-source_file = mod_podcastmanagerfeed/language/en-GB/en-GB. mod_podcastmanagerfeed.sys.ini
+source_file = mod_podcastmanagerfeed/language/en-GB/en-GB.mod_podcastmanagerfeed.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-file-manager]
@@ -64,12 +64,12 @@ source_lang = en
 
 [podcast-manager.podcast-manager-hathor-overrides]
 file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
-source_file = files_podcastmanager_hathor/language/en-GB/en-GB. files_podcastmanager_hathor.sys.ini
+source_file = files_podcastmanager_hathor/language/en-GB/en-GB.files_podcastmanager_hathor.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-hathor-overrides-system]
 file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
-source_file = files_podcastmanager_hathor/language/en-GB/en-GB. files_podcastmanager_hathor.sys.ini
+source_file = files_podcastmanager_hathor/language/en-GB/en-GB.files_podcastmanager_hathor.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-installation-package]
@@ -79,12 +79,12 @@ source_lang = en
 
 [podcast-manager.podcast-manager-minima-overrides]
 file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
-source_file = files_podcastmanager_minima/language/en-GB/en-GB. files_podcastmanager_minima.sys.ini
+source_file = files_podcastmanager_minima/language/en-GB/en-GB.files_podcastmanager_minima.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-minima-overrides-system]
 file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
-source_file = files_podcastmanager_minima/language/en-GB/en-GB. files_podcastmanager_minima.sys.ini
+source_file = files_podcastmanager_minima/language/en-GB/en-GB.files_podcastmanager_minima.sys.ini
 source_lang = en
 
 [podcast-manager.podcast-manager-site-component]
