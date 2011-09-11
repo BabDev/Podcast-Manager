@@ -1,5 +1,6 @@
 10-September-2011 Michael Babker
 + Allow minimum stability to be user defined
+# Display the batch process form in overrides
 
 31-August-2011 Michael Babker
 + Add search filter for front end feed view
