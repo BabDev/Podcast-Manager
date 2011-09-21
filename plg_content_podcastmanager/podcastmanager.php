@@ -148,7 +148,7 @@ class plgContentPodcastManager extends JPlugin
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
-					if ($context == 'com_k2.item')
+					if ($context == 'com_k2.item' && strpos($episode, '{K2Splitter'))
 					{
 						$podtitle	= substr($episode, 9, -17);
 					}
@@ -179,7 +179,7 @@ class plgContentPodcastManager extends JPlugin
 					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
 
 					// Fix for K2 Item
-					if ($context == 'com_k2.item')
+					if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
 					{
 						$string	= JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
 					}
