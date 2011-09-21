@@ -146,6 +146,13 @@ class plgContentPodcastManager extends JPlugin
 					// 9 offset for {podcast marker, -1 offset for closing }
 					$podtitle	= substr($episode, 9, -1);
 
+					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
+					// -17 offset removes '}</p>{K2Splitter'
+					if ($context == 'com_k2.item')
+					{
+						$podtitle	= substr($episode, 9, -17);
+					}
+
 					// Query the DB for the title string, returning the filename
 					$db 	= JFactory::getDBO();
 					$query	= $db->getQuery(true);
@@ -171,8 +178,18 @@ class plgContentPodcastManager extends JPlugin
 					// Get the player
 					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
 
+					// Fix for K2 Item
+					if ($context == 'com_k2.item')
+					{
+						$string	= JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+					}
+					else
+					{
+						$string	= $matches[0][$i];
+					}
+
 					// Replace the {podcast marker with the player
-					$article->text = JString::str_ireplace($matches[0][$i], $player->generate(), $article->text);
+					$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
 				}
 				else
 				{

@@ -30,5 +30,7 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.pkg_podcastmanager.ini</language>
 		<language tag="en-GB">en-GB/en-GB.pkg_podcastmanager.sys.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.pkg_podcastmanager.ini</language>
+		<language tag="pt-BR">pt-BR/pt-BR.pkg_podcastmanager.sys.ini</language>
 	</languages>
 </extension>
