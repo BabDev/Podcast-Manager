@@ -146,6 +146,13 @@ class plgContentPodcastManager extends JPlugin
 					// 9 offset for {podcast marker, -1 offset for closing }
 					$podtitle	= substr($episode, 9, -1);
 
+					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
+					// -17 offset removes '}</p>{K2Splitter'
+					if ($context == 'com_k2.item')
+					{
+						$podtitle	= substr($episode, 9, -17);
+					}
+
 					// Query the DB for the title string, returning the filename
 					$db 	= JFactory::getDBO();
 					$query	= $db->getQuery(true);
