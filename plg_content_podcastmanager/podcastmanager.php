@@ -178,8 +178,18 @@ class plgContentPodcastManager extends JPlugin
 					// Get the player
 					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
 
+					// Fix for K2 Item
+					if ($context == 'com_k2.item')
+					{
+						$string	= JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+					}
+					else
+					{
+						$string	= $matches[0][$i];
+					}
+
 					// Replace the {podcast marker with the player
-					$article->text = JString::str_ireplace($matches[0][$i], $player->generate(), $article->text);
+					$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
 				}
 				else
 				{
