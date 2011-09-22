@@ -77,6 +77,7 @@ $pane =& JPane::getInstance('Sliders');
 			<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_LINK')?></li>
 			<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_CONTENT')?></li>
 			<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_EDITOR')?></li>
+			<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_PODCASTMEDIA')?></li>
 		</ul>
 	</div>
 	<?php echo $pane->endPanel()."\n"; ?>
