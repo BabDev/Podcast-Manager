@@ -40,7 +40,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="1%" rowspan="2">
 					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 				</th>
-				<th rowspan="2%">
+				<th rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">
@@ -52,7 +52,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="5%" rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap" rowspan="2">
+				<th width="2%" class="nowrap" rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -74,7 +74,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th width="1%" rowspan="2">
 					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 				</th>
-				<th rowspan="2%">
+				<th rowspan="2">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th width="30%" colspan="3">

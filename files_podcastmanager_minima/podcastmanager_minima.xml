@@ -15,7 +15,6 @@
 			<folder>cpanel</folder>
 			<folder>feed</folder>
 			<folder>feeds</folder>
-			<folder>podcast</folder>
 			<folder>podcasts</folder>
 		</files>
 		<files folder="com_podcastmedia" target="administrator/templates/minima/html/com_podcastmedia">
