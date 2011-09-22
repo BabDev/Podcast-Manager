@@ -22,6 +22,9 @@ JHtml::_('behavior.keepalive');
 <ul id="submenu" class="out">
 	<li class="item-content"><a href="#" class="active"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_CONTENT'); ?></a></li>
 	<li class="item-parameters"><a href="#"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_PARAMETERS'); ?></a></li>
+    <?php if ($this->canDo->get('core.admin')): ?>
+    <li class="item-permissions"><a href="#"><?php echo JText::_('TPL_MINIMA_CONTENT_LABEL_PERMISSIONS'); ?></a></li>
+    <?php endif; ?>
 </ul>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feed&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div id="item-basic">
