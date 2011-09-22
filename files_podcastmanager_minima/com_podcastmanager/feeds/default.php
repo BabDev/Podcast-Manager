@@ -32,7 +32,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		}
 	}
 </script>
-<?php if ($this->items): ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feeds');?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
@@ -168,6 +167,3 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
-<?php else: ?>
-    <div class="noresults"><p><?php echo JText::_('No items'); ?></p></div>
-<?php endif; ?>
