@@ -27,7 +27,7 @@ class Com_PodcastManagerInstallerScript
 	 * @param   string  $type    The action being performed
 	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return  void
+	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
 	 * @since   1.7
 	 */
@@ -247,7 +247,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to get the currently installed version from the manifest cache
 	 *
-	 * @return  string  $version  The version that is installed
+	 * @return  string  The version that is installed
 	 *
 	 * @since   1.7
 	 */
