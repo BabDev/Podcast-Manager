@@ -92,7 +92,7 @@ class plgContentPodcastManager extends JPlugin
 			// We only want to process ID 0
 			if ($id > 0)
 			{
-				return;
+				return true;
 			}
 
 			// If using SM2 player, define the scripts only on the first iteration
