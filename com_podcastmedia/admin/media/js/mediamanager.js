@@ -35,7 +35,7 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 						window.frames[target].location.href = node.data.url;
 					}
 				}.bind(this)
-			},{ text: 'Media', open: true, data: { url: 'index.php?option=com_podcastmedia&view=mediaList&tmpl=component', target: 'folderframe'}});
+			},{ text: '', open: true, data: { url: 'index.php?option=com_podcastmedia&view=mediaList&tmpl=component', target: 'folderframe'}});
 		this.tree.adopt('media-tree');
 	},
 
