@@ -71,7 +71,7 @@ JHtml::_('behavior.keepalive');
 	</div><!-- #item-basic -->
 
 	<div id="item-advanced">
-		<ul id="vertical-tabs">
+		<ul class="vertical-tabs">
 			<li class="publishing"><a href="#" class="active"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></a></li>
 			<li class="details"><a href="#"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'); ?></a></li>
 		</ul>

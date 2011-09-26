@@ -18,3 +18,4 @@ files_podman_hathor.xml
 .project
 .settings
 .DS_Store
+.idea

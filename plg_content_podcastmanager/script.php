@@ -27,7 +27,7 @@ class plgContentPodcastManagerInstallerScript
 	 * @param   string  $type    The action being performed
 	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return  void
+	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
 	 * @since   1.7
 	 */
