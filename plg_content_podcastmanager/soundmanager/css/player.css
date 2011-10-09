@@ -52,8 +52,8 @@
 /* background-image-based CSS3 */
 
 div.sm2-player {
-margin: 0px;
-padding: 0px;
+margin: 0;
+padding: 0;
 }
 
 div.sm2-player a.sm2_link {
@@ -77,7 +77,6 @@ border-radius: 3px;
 color: #ffffff;
 display: inline-block;
 font-weight: normal;
-padding-left: 22px;
 min-height: 16px;
 min-width: 19em;
 padding: 3px 3px 3px 25px;
@@ -160,9 +159,9 @@ cursor: grabbing;
 
 div.sm2-player div.sm2_elements div.controls div.statusbar div.position, div.sm2-player div.sm2_elements div.controls div.statusbar div.loading {
 height: 0.5em;
-left: 0px;
+left: 0;
 position: absolute;
-top: 0px;
+top: 0;
 }
 
 div.sm2-player div.position {
@@ -187,7 +186,7 @@ background-color: #EEEEEE;
 }
 
 div.sm2-player div.position, div.sm2-player div.loading {
-width: 0px;
+width: 0;
 }
 
 div.sm2-player a.sm2_link div.timing {
