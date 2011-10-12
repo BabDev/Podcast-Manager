@@ -79,7 +79,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			{
 				return false;
 			}
-			else if ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
+			elseif ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
 			{
 				return false;
 			}

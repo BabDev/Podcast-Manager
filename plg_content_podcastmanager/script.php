@@ -34,7 +34,7 @@ class plgContentPodcastManagerInstallerScript
 	function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7
-		$jversion = new JVersion();
+		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_INSTALL_J17'));

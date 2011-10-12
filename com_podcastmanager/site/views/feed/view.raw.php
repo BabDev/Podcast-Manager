@@ -65,7 +65,7 @@ class PodcastManagerViewFeed extends JView
 			}
 		}
 
-		$xw = new xmlWriter();
+		$xw = new xmlWriter;
 		$xw->openMemory();
 		$xw->setIndent(true);
 		$xw->setIndentString("\t");
@@ -120,7 +120,7 @@ class PodcastManagerViewFeed extends JView
 		{
 			$xw->writeElement('itunes:explicit', 'yes');
 		}
-		else if ($itExplicit == 2)
+		elseif ($itExplicit == 2)
 		{
 			$xw->writeElement('itunes:explicit', 'clean');
 		}
@@ -280,7 +280,7 @@ class PodcastManagerViewFeed extends JView
 				{
 					$xw->writeElement('itunes:explicit', 'yes');
 				}
-				else if ($itExplicit == 2)
+				elseif ($itExplicit == 2)
 				{
 					$xw->writeElement('itunes:explicit', 'clean');
 				}

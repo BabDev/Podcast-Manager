@@ -34,7 +34,7 @@ class Com_PodcastManagerInstallerScript
 	function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7
-		$jversion = new JVersion();
+		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '1.7', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
@@ -100,11 +100,11 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform updates when method=upgrade is used
 	 *
-	 * @param       string  $parent  The function calling this method
+	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return      void
+	 * @return  void
 	 *
-	 * @since       1.7
+	 * @since   1.7
 	 * @deprecated  2.0  Update method unnecessary upon removal of legacy upgrade
 	 */
 	function update($parent)

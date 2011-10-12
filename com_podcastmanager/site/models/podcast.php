@@ -159,7 +159,7 @@ class PodcastManagerModelPodcast extends JModelForm
 				$properties = $table->getProperties(1);
 				$this->_item = JArrayHelper::toObject($properties, 'JObject');
 			}
-			else if ($error = $table->getError())
+			elseif ($error = $table->getError())
 			{
 				$this->setError($error);
 			}

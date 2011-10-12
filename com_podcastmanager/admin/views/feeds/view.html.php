@@ -93,7 +93,7 @@ class PodcastManagerViewFeeds extends JView
 			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
-		else if ($canDo->get('core.edit.state'))
+		elseif ($canDo->get('core.edit.state'))
 		{
 			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();

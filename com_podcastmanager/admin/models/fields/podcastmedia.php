@@ -52,7 +52,7 @@ class JFormFieldPodcastMedia extends JFormField
 	{
 		$assetField	= $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
 		$authorField= $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
-		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'] ;
+		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
 
 		if ($asset == "")
 		{
@@ -108,7 +108,7 @@ class JFormFieldPodcastMedia extends JFormField
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
-		else if (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory)))
+		elseif (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory)))
 		{
 			$folder = $directory;
 		}
