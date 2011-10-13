@@ -1538,7 +1538,7 @@ function SoundManager(smURL, smID) {
           }
           _t.load(_t._iO);
 
-        } elseif (_t.readyState === 2) {
+        } else if (_t.readyState === 2) {
 
           _s._wD(fN + 'Could not load "' + _t.sID + '" - exiting', 2);
           return _t;
@@ -1747,7 +1747,7 @@ function SoundManager(smURL, smID) {
           _s.o._setPosition(_t.sID, position, (_t.paused || !_t.playState));
         }
 
-      } elseif (_t._a) {
+      } else if (_t._a) {
 
         // Set the position in the canplay handler if the sound is not ready yet
         if (_t._html5_canplay) {
@@ -1857,7 +1857,7 @@ function SoundManager(smURL, smID) {
       if (!_t._onplay_called && _t._iO.onplay) {
         _t._iO.onplay.apply(_t);
         _t._onplay_called = true;
-      } elseif (_t._iO.onresume) {
+      } else if (_t._iO.onresume) {
         _t._iO.onresume.apply(_t);
       }
 
@@ -1943,7 +1943,7 @@ function SoundManager(smURL, smID) {
 
       if (!_t.isHTML5) {
         _s.o._setVolume(_t.sID, (_s.muted && !_t.muted) || _t.muted?0:nVol);
-      } elseif (_t._a) {
+      } else if (_t._a) {
         _t._a.volume = Math.max(0, Math.min(1, nVol/100)); // valid range: 0-1
       }
 
@@ -1970,7 +1970,7 @@ function SoundManager(smURL, smID) {
 
       if (!_t.isHTML5) {
         _s.o._setVolume(_t.sID, 0);
-      } elseif (_t._a) {
+      } else if (_t._a) {
         _t._a.muted = true;
       }
 
@@ -1991,7 +1991,7 @@ function SoundManager(smURL, smID) {
 
       if (!_t.isHTML5) {
         _s.o._setVolume(_t.sID, hasIO?_t._iO.volume:_t.options.volume);
-      } elseif (_t._a) {
+      } else if (_t._a) {
         _t._a.muted = false;
       }
 
@@ -2557,7 +2557,7 @@ function SoundManager(smURL, smID) {
           if (_t.getAutoPlay()) {
             // only update the play state if auto playing
             _t.play(undefined, _t.getAutoPlay());
-          } elseif (_t._iO.autoLoad) {
+          } else if (_t._iO.autoLoad) {
             _t.load();
           }
         }
@@ -2643,7 +2643,7 @@ function SoundManager(smURL, smID) {
           // no capture
           args.pop();
         }
-      } elseif (len === 3) {
+      } else if (len === 3) {
         args.push(false);
       }
       return args;
@@ -3254,7 +3254,7 @@ function SoundManager(smURL, smID) {
           // assume user knows what they're doing
           return smURL;
         }
-      } elseif (smURL.lastIndexOf('/') !== smURL.length - 1) {
+      } else if (smURL.lastIndexOf('/') !== smURL.length - 1) {
         smURL = smURL + '/';
       }
     }
@@ -3629,7 +3629,7 @@ function SoundManager(smURL, smID) {
       if (types && types[type] && types[type].enabledPlugin && types[type].enabledPlugin.description) {
         hasPlugin = true;
       }
-    } elseif (typeof AX !== 'undefined') {
+    } else if (typeof AX !== 'undefined') {
       try {
         obj = new AX('ShockwaveFlash.ShockwaveFlash');
       } catch(e) {
@@ -3787,12 +3787,12 @@ function SoundManager(smURL, smID) {
       sb.noLocal = false;
       _wDS('secNote', 2);
 
-    } elseif (sb.type === 'localWithNetwork') {
+    } else if (sb.type === 'localWithNetwork') {
 
       sb.noRemote = false;
       sb.noLocal = true;
 
-    } elseif (sb.type === 'localTrusted') {
+    } else if (sb.type === 'localTrusted') {
 
       sb.noRemote = false;
       sb.noLocal = false;
@@ -4439,7 +4439,7 @@ function SoundManager(smURL, smID) {
 
     _doc.addEventListener('DOMContentLoaded', _domContentLoaded, false);
 
-  } elseif (_doc.attachEvent) {
+  } else if (_doc.attachEvent) {
 
     _doc.attachEvent('onreadystatechange', _domContentLoadedIE);
 
