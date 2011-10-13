@@ -61,7 +61,7 @@ abstract class JHtmlPodcast
 				{
 					$query->where($db->quoteName('a.published').' = '.(int) $config['filter.published']);
 				}
-				else if (is_array($config['filter.published']))
+				elseif (is_array($config['filter.published']))
 				{
 					JArrayHelper::toInteger($config['filter.published']);
 					$query->where($db->quoteName('a.published').' IN ('.implode(',', $config['filter.published']).')');

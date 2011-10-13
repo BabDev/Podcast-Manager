@@ -148,9 +148,9 @@ class PodcastMediaViewMedia extends JView
 		// Add a delete button
 		if ($user->authorise('core.delete','com_podcastmanager')) {
 			$title = JText::_('JTOOLBAR_DELETE');
-			$dhtml = "<a href=\"#\" onclick=\"PodcastMediaManager.submit('folder.delete')\" class=\"toolbar\">
-						<span class=\"icon-32-delete\" title=\"$title\"></span>
-						$title</a>";
+			$dhtml = '<a href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="toolbar">
+						<span class="icon-32-delete" title="'.$title.'"></span>
+						'.$title.'</a>';
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}

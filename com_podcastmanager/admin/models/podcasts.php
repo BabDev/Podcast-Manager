@@ -89,7 +89,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		{
 			$query->where($db->quoteName('a.published').' = '.(int) $published);
 		}
-		else if ($published === '')
+		elseif ($published === '')
 		{
 			$query->where('('.$db->quoteName('a.published').' IN (0, 1))');
 		}

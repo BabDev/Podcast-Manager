@@ -79,7 +79,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			{
 				return false;
 			}
-			else if ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
+			elseif ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
 			{
 				return false;
 			}
@@ -230,7 +230,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if ($feedId != '0')
 		{
 			$feedTable = $this->getTable();
-			if (!$feedTable->load($categoryId))
+			if (!$feedTable->load($feedId))
 			{
 				if ($error = $feedTable->getError())
 				{
