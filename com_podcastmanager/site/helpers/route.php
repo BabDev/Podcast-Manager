@@ -78,7 +78,7 @@ abstract class PodcastManagerHelperRoute
 		{
 			$link .= '&Itemid='.$item;
 		}
-		else if ($item = self::findItem())
+		elseif ($item = self::findItem())
 		{
 			$link .= '&Itemid='.$item;
 		}

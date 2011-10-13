@@ -76,7 +76,7 @@ class plgButtonPodcastManager extends JPlugin
 		 */
 		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component';
 
-		$button = new JObject();
+		$button = new JObject;
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON'));
