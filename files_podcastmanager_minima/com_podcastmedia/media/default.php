@@ -15,6 +15,7 @@
 defined('_JEXEC') or die;
 
 $user = JFactory::getUser();
+$input = JFactory::getApplication()->input;
 ?>
 <div class="width-100 fltlft">
 <table width="100%" class="media-manager">
@@ -80,7 +81,7 @@ $user = JFactory::getUser();
 				<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
 			</form>
 
-			<form action="index.php?option=com_podcastmedia&amp;task=folder.create&amp;tmpl=<?php echo JRequest::getCmd('tmpl','index');?>" name="folderForm" id="folderForm" method="post">
+			<form action="index.php?option=com_podcastmedia&amp;task=folder.create&amp;tmpl=<?php echo $input->get('tmpl', 'index', 'cmd');?>" name="folderForm" id="folderForm" method="post">
 				<fieldset id="folderview" class="adminform">
 					<div class="view">
 						<iframe src="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder;?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto" style="background:#ffffff"></iframe>
