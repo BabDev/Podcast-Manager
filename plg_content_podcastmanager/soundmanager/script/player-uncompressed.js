@@ -184,7 +184,7 @@ function InlinePlayer() {
         curleft += o.offsetLeft;
         o = o.offsetParent;
       }
-    } elseif (o.x) {
+    } else if (o.x) {
       curleft += o.x;
     }
     return curleft;
@@ -298,7 +298,7 @@ function InlinePlayer() {
   this.stopEvent = function (e) {
     if (typeof e !== 'undefined' && typeof e.preventDefault !== 'undefined') {
       e.preventDefault();
-    } elseif (typeof event !== 'undefined' && typeof event.returnValue !== 'undefined') {
+    } else if (typeof event !== 'undefined' && typeof event.returnValue !== 'undefined') {
       event.returnValue = false;
     }
     return false;
