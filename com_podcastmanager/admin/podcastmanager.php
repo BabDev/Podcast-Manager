@@ -17,8 +17,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controller');
 
 // Get the application and input
-$app = JFactory::getApplication('administrator');
-$input = $app->input;
+$input = JFactory::getApplication()->input;
 
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager'))

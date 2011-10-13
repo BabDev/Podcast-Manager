@@ -56,8 +56,7 @@ class JFormFieldPodcastMedia extends JFormField
 
 		if ($asset == '')
 		{
-			$app = JFactory::getApplication('administrator');
-			$input = $app->input;
+			$input = JFactory::getApplication('administrator')->input;
 			$asset = $input->get('option', '', 'cmd');
 		}
 

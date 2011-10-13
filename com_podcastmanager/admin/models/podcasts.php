@@ -170,8 +170,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
-		$input = $app->input;
+		$input = JFactory::getApplication('administrator')->input;
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');

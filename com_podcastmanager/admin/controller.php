@@ -46,12 +46,11 @@ class PodcastManagerController extends JController
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-		$app = JFactory::getApplication('administrator');
-		$input = $app->input;
+		$input = JFactory::getApplication('administrator')->input;
 		include_once JPATH_COMPONENT.'/helpers/podcastmanager.php';
 
 		// Load the submenu.
-		PodcastManagerHelper::addSubmenu(JRequest::getWord('view', 'feeds'));
+		PodcastManagerHelper::addSubmenu($input->get('view', 'feeds', 'word'));
 
 		$view		= $input->get('view', 'feeds', 'word');
 		$layout 	= $input->get('layout', 'feeds', 'word');
