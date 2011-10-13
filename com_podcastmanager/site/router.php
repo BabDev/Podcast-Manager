@@ -44,10 +44,11 @@ function PodcastManagerBuildRoute(&$query)
  */
 function PodcastManagerParseRoute($segments)
 {
+	$input = JFactory::getApplication()->input;
 	$vars = array();
 
-	$vars['view'] 		= JRequest::getCmd('view');
-	$vars['feedname']	= JRequest::getInt('feedname');
+	$vars['view'] 		= $input->get('view', '', 'cmd');
+	$vars['feedname']	= $input->get('feedname', '', 'int');
 
 	return $vars;
 }
