@@ -55,14 +55,14 @@ class PodcastMediaHelper
 		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
 
 		if (!in_array($format, $allowable)) {
-			$err = JText('COM_PODCASTMEDIA_ERROR_WARNFILETYPE');
+			$err = JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETYPE');
 			return false;
 		}
 
 		$maxSize = (int) ($medmanparams->get('upload_maxsize', 0) * 1024 * 1024);
 
 		if ($maxSize > 0 && (int) $file['size'] > $maxSize) {
-			$err = JText('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE');
+			$err = JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE');
 
 			return false;
 		}

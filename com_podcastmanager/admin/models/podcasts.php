@@ -111,7 +111,7 @@ class PodcastManagerModelPodcasts extends JModelList
 			}
 			else
 			{
-				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$search = $db->Quote('%'.$db->escpae($search, true).'%');
 				$query->where('('.$db->quoteName('a.title').' LIKE '.$search.')');
 			}
 		}
@@ -127,7 +127,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$direction	= $this->getState('list.direction');
 		if (!empty($ordering))
 		{
-			$query->order($db->getEscaped($ordering).' '.$db->getEscaped($direction));
+			$query->order($db->escape($ordering).' '.$db->escape($direction));
 		}
 
 		return $query;
