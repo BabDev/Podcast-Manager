@@ -54,6 +54,7 @@ abstract class ModPodcastManagerFeedHelper
 		$model->setState('list.start', 0);
 		$model->setState('list.limit', (int) $params->get('count', 5));
 		$model->setState('filter.published', 1);
+		$model->setState('filter.publish_date', true);
 
 		// Feed filter
 		$model->setState('feed.id', $params->get('feed', array()));
