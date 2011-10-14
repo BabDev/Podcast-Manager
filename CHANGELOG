@@ -1,3 +1,12 @@
+14-October-2011 Michael Babker
+# The feed listing module displayed all items regardless of publish date
+
+26-September-2011 Michael Babker
+~ Synchronize Media Manager
+
+22-September-2011 Michael Babker
+~ Update Minima layout overrides
+
 21-September-2011 Michael Babker
 # Fix for K2 Items when adding a podcast as the last line of text in an item with no fulltext
 
