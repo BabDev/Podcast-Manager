@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="podcast-manager" default="dev_head" basedir=".">
+	<property name="repo.dir" value="." />
+	<resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
+	<property name="version" value="1.8.1" />
 	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages">
 		<echo msg="Deleting old master builds" />
 		<delete quiet="yes" includeemptydirs="true">
@@ -24,16 +27,20 @@
 	</target>
 	<target name="release" description="Builds release packages based on the development head" depends="rebuild-packages">
 		<echo msg="Build Podcast Manager package" />
-		<zip destfile="releases/pkg_podcastmanager_dev-20110820.zip">
+		<zip destfile="releases/pkg_podcastmanager_${version}.zip">
 			<fileset dir=".">
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
-		<zip destfile="releases/files_podcastmanager_hathor_dev-20110820.zip" basedir="files_podcastmanager_hathor" />
+		<zip destfile="releases/files_podcastmanager_hathor_${version}.zip" basedir="files_podcastmanager_hathor" />
 		<echo msg="Building Minima Overrides package" />
-		<zip destfile="releases/files_podcastmanager_minima_dev-20110820.zip" basedir="files_podcastmanager_minima" />
+		<zip destfile="releases/files_podcastmanager_minima_${version}.zip" basedir="files_podcastmanager_minima" />
+		<echo msg="Creating Git tag" />
+		<gittag repository="${repo.dir.resolved}" name="${version}" />
+		<echo msg="Pushing Version commit and tag to GitHub" />
+		<gitpush repository="${repo.dir.resolved}" tags="true" />
 	</target>
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packages dir" />
