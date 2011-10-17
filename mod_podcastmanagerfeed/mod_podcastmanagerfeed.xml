@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.7" client="site" method="upgrade">
 	<name>mod_podcastmanagerfeed</name>
-	<creationDate>June 2011</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<author>Michael Babker</author>
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.8.1</version>
+	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>MOD_PODCASTMANAGERFEED_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>

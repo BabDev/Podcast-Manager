@@ -3,6 +3,7 @@
 
 # Packages directories #
 packages
+packaging
 releases
 
 # Update Server #
@@ -19,3 +20,6 @@ files_podman_hathor.xml
 .settings
 .DS_Store
 .idea
+
+# Phing #
+build.properties

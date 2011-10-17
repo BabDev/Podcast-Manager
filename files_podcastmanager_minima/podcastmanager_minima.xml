@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="file" version="1.7" method="upgrade">
 	<name>files_podcastmanager_minima</name>
-	<creationDate>March 2011</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<author>Michael Babker</author>
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.8.1</version>
+	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>FILES_PODCASTMANAGER_MINIMA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>

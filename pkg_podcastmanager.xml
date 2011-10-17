@@ -2,7 +2,7 @@
 <extension type="package" version="1.7" method="upgrade">
 	<name>pkg_podcastmanager</name>
 	<packagename>podcastmanager</packagename>
-	<creationDate>January 2011</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<packager>Michael Babker</packager>
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<packageremail>mbabker@flbab.com</packageremail>
@@ -10,7 +10,7 @@
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.8.1</version>
+	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PKG_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<update>http://www.flbab.com/updates/podman.xml</update>
