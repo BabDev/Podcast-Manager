@@ -38,9 +38,10 @@
 		<echo msg="Building Minima Overrides package" />
 		<zip destfile="releases/files_podcastmanager_minima_${version}.zip" basedir="files_podcastmanager_minima" />
 		<echo msg="Creating Git tag" />
-		<gittag repository="${repo.dir.resolved}" name="${version}" />
+		<gittag repository="${repo.dir.resolved}" name="${version}" gitPath="/usr/local/git/bin/git" />
 		<echo msg="Pushing Version commit and tag to GitHub" />
-		<gitpush repository="${repo.dir.resolved}" tags="true" />
+		<gitpush repository="${repo.dir.resolved}" gitPath="/usr/local/git/bin/git" />
+		<gitpush repository="${repo.dir.resolved}" tags="true" gitPath="/usr/local/git/bin/git" />
 	</target>
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packages dir" />
