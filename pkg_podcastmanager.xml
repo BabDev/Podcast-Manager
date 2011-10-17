@@ -10,7 +10,7 @@
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.8.0</version>
+	<version>1.8.1</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PKG_PODCASTMANAGER_XML_DESCRIPTION</description>
 	<update>http://www.flbab.com/updates/podman.xml</update>

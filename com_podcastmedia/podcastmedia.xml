@@ -7,7 +7,7 @@
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
 	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>1.8.0</version>
+	<version>1.8.1</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>COM_PODCASTMEDIA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
