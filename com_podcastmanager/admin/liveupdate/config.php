@@ -24,5 +24,6 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 		jimport('joomla.application.component.helper');
 		$podmanparams			= JComponentHelper::getParams('com_podcastmanager');
 		$this->_minStability	= $podmanparams->get('minstability', 'alpha');
+		parent::__construct();
 	}
 }
