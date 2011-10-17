@@ -3,6 +3,7 @@
 	<!-- Project properties -->
 	<property file="./build.properties" />
 	<property name="repo.dir" value="." />
+	<property name="version" value="1.8.2" />
 	<resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
 	<tstamp>
 		<format property="build.date" pattern="%Y-%m-%d" />
@@ -10,9 +11,6 @@
 
 	<!-- Build a package for testing -->
 	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
-		<!-- Target properties -->
-		<property name="version" value="1.8.2-dev" />
-
 		<echo msg="Deleting old master builds" />
 		<delete quiet="yes" includeemptydirs="true">
 			<fileset dir="*">
@@ -37,9 +35,6 @@
 
 	<!-- Build a package for release -->
 	<target name="release" description="Builds release packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
-		<!-- Target properties -->
-		<property name="version" value="1.8.2" />
-
 		<echo msg="Build Podcast Manager package" />
 		<mkdir dir="releases" />
 		<zip destfile="releases/pkg_podcastmanager_${version}.zip">
