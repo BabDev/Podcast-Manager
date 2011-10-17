@@ -29,6 +29,7 @@
 		<echo msg="Build Podcast Manager package" />
 		<zip destfile="releases/pkg_podcastmanager_${version}.zip">
 			<fileset dir=".">
+				<include name="language/**" />
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 			</fileset>
