@@ -23,3 +23,6 @@ files_podman_hathor.xml
 
 # Phing #
 build.properties
+
+# Personal stuff #
+build

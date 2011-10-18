@@ -23,7 +23,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  plg_editors-xtd_podcastmanager
  * @since       1.6
  */
-class plgButtonPodcastManager extends JPlugin
+class PlgButtonPodcastManager extends JPlugin
 {
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ class plgButtonPodcastManager extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return	plgButtonPodcastManager
+	 * @return	PlgButtonPodcastManager
 	 *
 	 * @since	1.6
 	 */

@@ -23,7 +23,7 @@ jimport('joomla.plugin.plugin');
  * @subpackage  plg_content_podcastmanager
  * @since       1.6
  */
-class plgContentPodcastManager extends JPlugin
+class PlgContentPodcastManager extends JPlugin
 {
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ class plgContentPodcastManager extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return  plgContentPodcastManager
+	 * @return  PlgContentPodcastManager
 	 *
 	 * @since   1.8
 	 */
