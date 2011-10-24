@@ -70,6 +70,7 @@
 			<dir>modules/mod_podcastmanagerfeed</dir>
 			<dir>plugins/content/podcastmanager</dir>
 			<dir>plugins/editors-xtd/podcastmanager</dir>
+			<dir>plugins/podcastmedia/user</dir>
 		</customdirs>
 		<langfiles>
 			<lang>com_podcastmedia</lang>
@@ -77,6 +78,7 @@
 			<lang>mod_podcastmanagerfeed</lang>
 			<lang>plg_content_podcastmanager</lang>
 			<lang>plg_editors-xtd_podcastmanager</lang>
+			<lang>plg_podcastmedia_user</lang>
 		</langfiles>
 		<extratables>
 			<table>podcastmanager_feeds</table>

@@ -3,7 +3,7 @@
 	<!-- Project properties -->
 	<property file="./build.properties" />
 	<property name="repo.dir" value="." />
-	<property name="version" value="1.8.2" />
+	<property name="version" value="2.0-alpha-dev" />
 	<resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
 	<tstamp>
 		<format property="build.date" pattern="%Y-%m-%d" />
@@ -129,6 +129,18 @@
             <mkdir dir="packaging/staging" />
             <copy todir="packaging/staging/plg_editors-xtd_podcastmanager">
                 <fileset dir="plg_editors-xtd_podcastmanager" />
+				<filterchain>
+					<replacetokens begintoken="##" endtoken="##">
+						<token key="DATE" value="${build.date}" />
+						<token key="VERSION" value="${version}" />
+					</replacetokens>
+				</filterchain>
+            </copy>
+
+		<echo msg="Create plg_podcastmedia_user package" />
+            <mkdir dir="packaging/staging" />
+            <copy todir="packaging/staging/plg_podcastmedia_user">
+                <fileset dir="plg_podcastmedia_user" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
