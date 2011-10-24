@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/cpanel/cpanel.css', false, false, false);
 
 // Site addresses to be processed outside JText
-$flbab		= '<a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a>';
+$babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
 $liveupdate	= '<b><a href=https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
 $sm2		= '<b><a href="http://www.schillmania.com/projects/soundmanager2/" target="_blank">SoundManager2</a></b>';
@@ -31,7 +31,7 @@ $icons = JURI::base().'components/com_podcastmanager/media/images/icons';
 JHtml::_('behavior.framework');
 ?>
 
-<p class="intro"><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $flbab);?></p>
+<p class="intro"><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></p>
 <div class="cpanel-icons">
 	<div id="cpanel">
 		<div class="icon-wrapper">

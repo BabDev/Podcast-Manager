@@ -19,7 +19,7 @@
  * @subpackage  plg_editors-xtd_podcastmanager
  * @since       1.6
  */
-class plgEditorsXtdPodcastManagerInstallerScript
+class PlgEditorsXtdPodcastManagerInstallerScript
 {
 	/**
 	 * Function to act prior to installation process begins

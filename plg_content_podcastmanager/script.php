@@ -19,7 +19,7 @@
  * @subpackage  plg_content_podcastmanager
  * @since       1.6
  */
-class plgContentPodcastManagerInstallerScript
+class PlgContentPodcastManagerInstallerScript
 {
 	/**
 	 * Function to act prior to installation process begins

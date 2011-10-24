@@ -19,7 +19,7 @@
  * @subpackage  files_podcastmanager_hathor
  * @since       1.8
  */
-class files_PodcastManager_HathorInstallerScript
+class Files_PodcastManager_HathorInstallerScript
 {
 	/**
 	 * Function to act prior to installation process begins

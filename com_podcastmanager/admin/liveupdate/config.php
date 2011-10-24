@@ -15,7 +15,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 	var $_extensionName			= 'pkg_podcastmanager';
 	var $_extensionTitle		= 'Podcast Manager';
 	var $_requiresAuthorization	= false;
-	var $_updateURL				= 'http://www.flbab.com/index.php?option=com_ars&view=update&format=ini&id=3';
+	var $_updateURL				= 'http://www.babdev.com/index.php?option=com_ars&view=update&format=ini&id=3';
 	var $_versionStrategy		= 'different';
 	var $_xmlFilename			= 'pkg_podcastmanager.xml';
 
@@ -24,5 +24,6 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 		jimport('joomla.application.component.helper');
 		$podmanparams			= JComponentHelper::getParams('com_podcastmanager');
 		$this->_minStability	= $podmanparams->get('minstability', 'alpha');
+		parent::__construct();
 	}
 }
