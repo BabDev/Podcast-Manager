@@ -15,7 +15,7 @@
 defined('_JEXEC') or die;
 
 // Site addresses to be processed outside JText
-$flbab		= '<a href="http://www.flbab.com/extensions/podcast-manager" target="_blank">http://www.flbab.com/extensions/podcast-manager</a>';
+$babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
 $liveupdate	= '<b><a href=https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
 $sm2		= '<b><a href="http://www.schillmania.com/projects/soundmanager2/" target="_blank">SoundManager2</a></b>';
@@ -31,7 +31,7 @@ $pane =& JPane::getInstance('Sliders');
 ?>
 
 <div id="cpanel">
-	<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $flbab);?></p>
+	<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></p>
 	<div class="cpanel-left">
 		<div class="icon">
 			<a href="index.php?option=com_podcastmanager&amp;view=feeds">
