@@ -19,7 +19,7 @@
  * @subpackage  files_podcastmanager_minima
  * @since       1.8
  */
-class files_PodcastManager_MinimaInstallerScript
+class Files_PodcastManager_MinimaInstallerScript
 {
 	/**
 	 * Function to act prior to installation process begins

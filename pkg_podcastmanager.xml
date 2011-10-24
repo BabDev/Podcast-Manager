@@ -2,20 +2,20 @@
 <extension type="package" version="1.7" method="upgrade">
 	<name>pkg_podcastmanager</name>
 	<packagename>podcastmanager</packagename>
-	<creationDate>January 2011</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<packager>Michael Babker</packager>
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<packageremail>mbabker@flbab.com</packageremail>
-	<packagerurl>http://www.flbab.com</packagerurl>
+	<packagerurl>http://www.babdev.com</packagerurl>
 	<author>Michael Babker</author>
 	<authorEmail>mbabker@flbab.com</authorEmail>
-	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>2.0 Alpha</version>
+	<authorUrl>http://www.babdev.com</authorUrl>
+	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PKG_PODCASTMANAGER_XML_DESCRIPTION</description>
-	<update>http://www.flbab.com/updates/podman.xml</update>
+	<update>http://www.babdev.com/updates/podman.xml</update>
 	<updateservers>
-		<server type="extension" name="Podcast Manager Updates" priority="2">http://www.flbab.com/updates/podman.xml</server>
+		<server type="extension" name="Podcast Manager Updates" priority="2">http://www.babdev.com/updates/podman.xml</server>
 	</updateservers>
 	<files folder="packages">
 		<!-- The id for each extension is the element stored in the DB -->

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="file" version="1.7" method="upgrade">
 	<name>files_podcastmanager_minima</name>
-	<creationDate>March 2011</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<author>Michael Babker</author>
 	<copyright>(C) 2011 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
-	<authorUrl>http://www.flbab.com</authorUrl>
-	<version>2.0 Alpha</version>
+	<authorUrl>http://www.babdev.com</authorUrl>
+	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>FILES_PODCASTMANAGER_MINIMA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
@@ -28,6 +28,6 @@
 		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_minima.sys.ini</language>
 	</languages>
 	<updateservers>
-		<server type="extension" name="Podcast Manager Minima HTML Overrides Updates" priority="2">http://www.flbab.com/updates/files_podman_minima.xml</server>
+		<server type="extension" name="Podcast Manager Minima HTML Overrides Updates" priority="2">http://www.babdev.com/updates/files_podman_minima.xml</server>
 	</updateservers>
 </extension>
