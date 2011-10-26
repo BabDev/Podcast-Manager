@@ -23,15 +23,13 @@ jimport('joomla.plugin.plugin');
  * @subpackage  plg_podcastmedia_user
  * @since       2.0
  */
-class plgPodcastMediaUser extends JPlugin
+class PlgPodcastMediaUser extends JPlugin
 {
 	/**
 	 * Constructor
 	 *
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
-	 *
-	 * @return	plgPodcastMediaUser
 	 *
 	 * @since	2.0
 	 */

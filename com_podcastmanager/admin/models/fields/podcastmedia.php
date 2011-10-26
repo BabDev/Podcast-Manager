@@ -59,7 +59,6 @@ class JFormFieldPodcastMedia extends JFormField
 			$input = JFactory::getApplication('administrator')->input;
 			$asset = $input->get('option', '', 'cmd');
 		}
-
 		$link = (string) $this->element['link'];
 		if (!self::$initialised)
 		{
@@ -110,7 +109,7 @@ class JFormFieldPodcastMedia extends JFormField
 			$directory = $results['0'];
 		}
 		// Can only handle one at a time, throw a warning and default
-		else if (PodcastManagerHelper::countMediaPlugins() > '1')
+		elseif (PodcastManagerHelper::countMediaPlugins() > '1')
 		{
 			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_TOO_MANY_MEDIA_PLUGINS'));
 			$directory = '';

@@ -79,8 +79,7 @@ class PodcastManagerViewFeeds extends JView
 		}
 		if (
 			$canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0) ||
-			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0)
-		)
+			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
 			JToolBarHelper::editList('feed.edit');
 		}

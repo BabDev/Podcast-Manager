@@ -39,7 +39,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 * @var    string
 	 * @since  1.7
 	 */
-	protected $_context = 'com_podcastmanager.feed';
+	protected $context = 'com_podcastmanager.feed';
 
 	/**
 	 * Method to test whether a record can be deleted.

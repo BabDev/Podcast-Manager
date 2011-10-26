@@ -39,7 +39,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @var    string
 	 * @since  1.6
 	 */
-	protected $_context = 'com_podcastmanager.podcast';
+	protected $context = 'com_podcastmanager.podcast';
 
 	/**
 	 * Method to perform batch operations on an item or a set of items.

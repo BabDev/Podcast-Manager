@@ -99,7 +99,7 @@ class PodcastManagerHelper
 		{
 			$assetName = 'com_podcastmanager';
 		}
-		else if (empty($podcastId))
+		elseif (empty($podcastId))
 		{
 			$assetName = 'com_podcastmanager.feed.'.(int) $feedId;
 		}
@@ -141,7 +141,8 @@ class PodcastManagerHelper
 		$db->setQuery($query);
 		$allFeeds = $db->loadObjectList('id');
 		$allowedFeeds = array();
-		foreach ($allFeeds as $feed) {
+		foreach ($allFeeds as $feed)
+		{
 			if ($user->authorise($action, $feed->asset_name))
 			{
 				$allowedFeeds[] = (int) $feed->id;

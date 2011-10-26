@@ -112,9 +112,9 @@ class PodcastManagerControllerForm extends JControllerForm
 			}
 		}
 		return false;
-	 }
+	}
 
-	 /**
+	/**
 	 * Method to cancel an edit.
 	 *
 	 * @param   string  $key  The name of the primary key of the URL variable.

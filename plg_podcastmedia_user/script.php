@@ -19,7 +19,7 @@
  * @subpackage  plg_podcastmedia_user
  * @since       2.0
  */
-class plgPodcastMediaUserInstallerScript
+class PlgPodcastMediaUserInstallerScript
 {
 	/**
 	 * Function to act prior to installation process begins
@@ -34,7 +34,7 @@ class plgPodcastMediaUserInstallerScript
 	function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7
-		$jversion = new JVersion();
+		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '1.7.1', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PLG_PODCASTMEDIA_USER_ERROR_INSTALL_J17'));

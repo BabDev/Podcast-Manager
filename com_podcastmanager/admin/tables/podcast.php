@@ -28,8 +28,6 @@ class PodcastManagerTablePodcast extends JTable
 	 *
 	 * @param   object  &$db  JDatabase connector object.
 	 *
-	 * @return  PodcastManagerTablePodcast
-	 *
 	 * @since   1.6
 	 */
 	function __construct(&$db)

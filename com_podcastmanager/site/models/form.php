@@ -31,7 +31,7 @@ class PodcastManagerModelForm extends JModelForm
 	 * @var    string
 	 * @since  1.8
 	 */
-	protected $_context = 'com_podcastmanager.form';
+	protected $context = 'com_podcastmanager.form';
 
 	/**
 	 * The item being pulled
@@ -39,7 +39,7 @@ class PodcastManagerModelForm extends JModelForm
 	 * @var    object
 	 * @since  1.8
 	 */
-	protected $_item = null;
+	protected $item = null;
 
 	/**
 	 * Abstract method for getting the form from the model.
@@ -74,9 +74,9 @@ class PodcastManagerModelForm extends JModelForm
 	 */
 	public function &getItem($id = null)
 	{
-		if ($this->_item === null)
+		if ($this->item === null)
 		{
-			$this->_item = false;
+			$this->item = false;
 
 			if (empty($id))
 			{
@@ -94,13 +94,13 @@ class PodcastManagerModelForm extends JModelForm
 				{
 					if ($table->published != $published)
 					{
-						return $this->_item;
+						return $this->item;
 					}
 				}
 
 				// Convert the JTable to a clean JObject.
 				$properties = $table->getProperties(1);
-				$this->_item = JArrayHelper::toObject($properties, 'JObject');
+				$this->item = JArrayHelper::toObject($properties, 'JObject');
 			}
 			elseif ($error = $table->getError())
 			{
@@ -108,7 +108,7 @@ class PodcastManagerModelForm extends JModelForm
 			}
 		}
 
-		return $this->_item;
+		return $this->item;
 	}
 
 	/**

@@ -30,8 +30,6 @@ class PodcastManagerModelPodcasts extends JModelList
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @return  PodcastManagerModelPodcasts
-	 *
 	 * @since   1.6
 	 * @see     JController
 	 */

@@ -80,5 +80,5 @@ class PodcastManagerControllerFeed extends JControllerForm
 			}
 		}
 		return false;
-	 }
+	}
 }

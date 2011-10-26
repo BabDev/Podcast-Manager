@@ -31,7 +31,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * @var    string
 	 * @since  1.8
 	 */
-	protected $_context = 'com_podcastmanager.podcast';
+	protected $context = 'com_podcastmanager.podcast';
 
 	/**
 	 * The item being pulled
@@ -39,7 +39,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * @var    object
 	 * @since  1.8
 	 */
-	protected $_item = null;
+	protected $item = null;
 
 	/**
 	 * Method to process the file through the getID3 library to extract key data
@@ -131,9 +131,9 @@ class PodcastManagerModelPodcast extends JModelForm
 	 */
 	public function &getItem($id = null)
 	{
-		if ($this->_item === null)
+		if ($this->item === null)
 		{
-			$this->_item = false;
+			$this->item = false;
 
 			if (empty($id))
 			{
@@ -151,13 +151,13 @@ class PodcastManagerModelPodcast extends JModelForm
 				{
 					if ($table->published != $published)
 					{
-						return $this->_item;
+						return $this->item;
 					}
 				}
 
 				// Convert the JTable to a clean JObject.
 				$properties = $table->getProperties(1);
-				$this->_item = JArrayHelper::toObject($properties, 'JObject');
+				$this->item = JArrayHelper::toObject($properties, 'JObject');
 			}
 			elseif ($error = $table->getError())
 			{
@@ -165,7 +165,7 @@ class PodcastManagerModelPodcast extends JModelForm
 			}
 		}
 
-		return $this->_item;
+		return $this->item;
 	}
 
 	/**

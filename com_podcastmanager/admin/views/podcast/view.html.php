@@ -100,8 +100,7 @@ class PodcastManagerViewPodcast extends JView
 			if (
 				!$checkedOut &&
 				($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
-				|| ($canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId))
-			)
+				|| ($canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId)))
 			{
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');

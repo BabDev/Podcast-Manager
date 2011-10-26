@@ -30,8 +30,6 @@ class PodcastManagerController extends JController
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @return  PodcastManagerController
-	 *
 	 * @since   1.6
 	 * @see     JController
 	 */

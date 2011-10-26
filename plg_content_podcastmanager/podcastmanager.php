@@ -31,8 +31,6 @@ class PlgContentPodcastManager extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return  PlgContentPodcastManager
-	 *
 	 * @since   1.8
 	 */
 	public function __construct(&$subject, $config)
@@ -284,8 +282,6 @@ class PodcastManagerPlayer
 	 * @param   JRegistry  &$podmanparams  The Podcast Manager parameters
 	 * @param   string     $podfilepath    The path to the file being processed
 	 * @param   string     $podtitle       The title of the podcast being processed
-	 *
-	 * @return  PodcastManagerPlayer
 	 *
 	 * @since   1.6
 	 */

@@ -31,14 +31,12 @@ class PodcastManagerModelFeed extends JModelList
 	 * @var    string
 	 * @since  1.8
 	 */
-	public $_context = 'com_podcastmanager.feed';
+	public $context = 'com_podcastmanager.feed';
 
 	/**
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @return  PodcastManagerModelFeed
 	 *
 	 * @since   1.8
 	 * @see     JController

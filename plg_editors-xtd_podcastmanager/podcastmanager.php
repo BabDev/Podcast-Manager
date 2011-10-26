@@ -31,8 +31,6 @@ class PlgButtonPodcastManager extends JPlugin
 	 * @param   object  &$subject  The object to observe
 	 * @param   array   $config    An array that holds the plugin configuration
 	 *
-	 * @return	PlgButtonPodcastManager
-	 *
 	 * @since	1.6
 	 */
 	public function __construct(&$subject, $config)
