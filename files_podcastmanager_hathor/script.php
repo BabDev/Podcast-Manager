@@ -46,5 +46,7 @@ class Files_PodcastManager_HathorInstallerScript
 			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_COMPONENT'));
 			return false;
 		}
+
+		return true;
 	}
 }

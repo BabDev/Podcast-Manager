@@ -40,6 +40,8 @@ class Com_PodcastMediaInstallerScript
 			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_J17'));
 			return false;
 		}
+
+		return true;
 	}
 
 	/**

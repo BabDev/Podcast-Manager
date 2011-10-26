@@ -27,7 +27,7 @@ class plgPodcastMediaUserInstallerScript
 	 * @param   string  $type    The action being performed
 	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return  void
+	 * @return  boolean  True on success, false on error
 	 *
 	 * @since   2.0
 	 */
@@ -40,5 +40,7 @@ class plgPodcastMediaUserInstallerScript
 			JError::raiseNotice(null, JText::_('PLG_PODCASTMEDIA_USER_ERROR_INSTALL_J17'));
 			return false;
 		}
+
+		return true;
 	}
 }

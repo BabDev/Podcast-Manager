@@ -35,7 +35,7 @@ class PodcastManagerViewPodcast extends JView
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
 	 *
-	 * @return  void
+	 * @return  mixed  A string if successful, otherwise a JError object.
 	 *
 	 * @since   1.6
 	 */

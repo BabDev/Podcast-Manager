@@ -44,7 +44,7 @@ class PodcastManagerController extends JController
 	 *
 	 * @since   1.6
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		include_once JPATH_COMPONENT.'/helpers/podcastmanager.php';
 

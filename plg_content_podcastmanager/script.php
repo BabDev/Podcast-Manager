@@ -40,6 +40,8 @@ class PlgContentPodcastManagerInstallerScript
 			JError::raiseNotice(null, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
 		}
+
+		return true;
 	}
 
 	/**

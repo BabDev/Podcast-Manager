@@ -27,7 +27,7 @@ class Com_PodcastManagerInstallerScript
 	 * @param   string  $type    The action being performed
 	 * @param   string  $parent  The function calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean  True on success
 	 *
 	 * @since   1.7
 	 */
@@ -50,6 +50,8 @@ class Com_PodcastManagerInstallerScript
 		{
 			$this->_bugfixCantBuildAdminMenus();
 		}
+
+		return true;
 	}
 
 	/**

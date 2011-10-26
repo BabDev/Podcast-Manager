@@ -243,7 +243,7 @@ class PodcastManagerPlayer
 	/**
 	 * Podcast Manager component parameters
 	 *
-	 * @var    array
+	 * @var    JRegistry
 	 * @since  1.6
 	 */
 	protected $podmanparams = null;
@@ -281,9 +281,9 @@ class PodcastManagerPlayer
 	/**
 	 * The class constructor
 	 *
-	 * @param   array   &$podmanparams  The Podcast Manager parameters
-	 * @param   string  $podfilepath    The path to the file being processed
-	 * @param   string  $podtitle       The title of the podcast being processed
+	 * @param   JRegistry  &$podmanparams  The Podcast Manager parameters
+	 * @param   string     $podfilepath    The path to the file being processed
+	 * @param   string     $podtitle       The title of the podcast being processed
 	 *
 	 * @return  PodcastManagerPlayer
 	 *

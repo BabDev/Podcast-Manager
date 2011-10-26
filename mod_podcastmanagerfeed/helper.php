@@ -39,14 +39,11 @@ abstract class ModPodcastManagerFeedHelper
 	 */
 	public static function getList(&$params)
 	{
-		// Get the dbo
-		$db = JFactory::getDbo();
-
 		// Get an instance of the generic feed model
 		$model = JModel::getInstance('Feed', 'PodcastManagerModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app = JFactory::getApplication();
+		$app = JFactory::getApplication('site');
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 

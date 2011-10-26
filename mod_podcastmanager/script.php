@@ -47,5 +47,7 @@ class Mod_PodcastManagerInstallerScript
 			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGER_ERROR_COMPONENT'));
 			return false;
 		}
+
+		return true;
 	}
 }

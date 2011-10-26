@@ -46,5 +46,7 @@ class Files_PodcastManager_MinimaInstallerScript
 			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_MINIMA_ERROR_COMPONENT'));
 			return false;
 		}
+
+		return true;
 	}
 }

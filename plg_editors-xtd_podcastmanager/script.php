@@ -40,6 +40,8 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 			JError::raiseNotice(null, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
 		}
+
+		return true;
 	}
 
 	/**
