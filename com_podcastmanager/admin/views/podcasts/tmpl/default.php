@@ -18,9 +18,6 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-// Add the HTML Helper
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -41,7 +38,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</select>
 			<select name="filter_feedname" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
-				<?php echo JHtml::_('select.options', JFormFieldFeedFilter::getOptions(), 'value', 'text', $this->state->get('filter.feedname'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds', 'com_podcastmanager'), 'value', 'text', $this->state->get('filter.feedname'));?>
 			</select>
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>

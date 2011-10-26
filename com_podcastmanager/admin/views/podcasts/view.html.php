@@ -62,7 +62,9 @@ class PodcastManagerViewPodcasts extends JView
 			$this->addToolbar();
 		}
 
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/models/fields/feedfilter.php';
+		// Add the HTML Helper
+		JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/html');
+
 		parent::display($tpl);
 	}
 

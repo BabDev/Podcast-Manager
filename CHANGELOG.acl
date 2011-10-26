@@ -2,6 +2,7 @@
 + Allow all feeds to be displayed in front end views
 ~ Merge deprecated branch into 2.0-wip branch
 ! Raise minimum version to Joomla! 1.7.1 due to deprecated code removal
+- Remove JFormFieldFeedFilter and use JHtmlPodcast::feeds instead
 
 25-October-2011 Michael Babker
 ~ Add podcastmedia plugin to ARP and build process
