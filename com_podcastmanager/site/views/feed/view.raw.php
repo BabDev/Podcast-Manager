@@ -259,6 +259,20 @@ class PodcastManagerViewFeed extends JView
 				$xw->writeElement('itunes:summary', $item->itSummary);
 				$xw->writeElement('description', $item->itSummary);
 
+				$imageURL = $item->itImage;
+
+				if (strlen($imageURL) > 1)
+				{
+					$xw->startElement('itunes:image');
+
+					if (!preg_match('/^http/', $imageURL))
+					{
+						$imageURL = JURI::root().$imageURL;
+					}
+					$xw->writeAttribute('href', $imageURL);
+					$xw->endElement();
+				}
+
 				// Write the enclosure element
 				$xw->startElement('enclosure');
 				$xw->writeAttribute('url', $filename);
