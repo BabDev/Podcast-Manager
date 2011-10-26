@@ -33,9 +33,9 @@ class Com_PodcastManagerInstallerScript
 	 */
 	function preflight($type, $parent)
 	{
-		// Requires Joomla! 1.7
+		// Requires Joomla! 1.7.1
 		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '1.7', 'lt'))
+		if (version_compare($jversion->getShortVersion(), '1.7.1', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_J17'));
 			return false;
@@ -95,7 +95,7 @@ class Com_PodcastManagerInstallerScript
 		// All the table processing without error checks since we're hacking to prevent an error message
 		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store())
 		{
-			continue;
+			// Do nothing ;-)
 		}
 	}
 

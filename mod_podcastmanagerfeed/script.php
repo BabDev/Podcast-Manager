@@ -35,7 +35,7 @@ class Mod_PodcastManagerFeedInstallerScript
 	{
 		// Requires Joomla! 1.7
 		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '1.7', 'lt'))
+		if (version_compare($jversion->getShortVersion(), '1.7.1', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGERFEED_ERROR_INSTALL_J17'));
 			return false;
