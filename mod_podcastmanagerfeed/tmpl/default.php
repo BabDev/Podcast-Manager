@@ -18,8 +18,14 @@ defined('_JEXEC') or die;
 <?php foreach ($list as $item) : ?>
 	<li>
 		<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
+		<?php if ($params->get('author') == 1) : ?>
+		<?php echo 'by '.$item->itAuthor; ?>
+		<?php endif; ?>
 		<?php if ($params->get('description') == 1) : ?>
 		<br /><?php echo $item->itSummary; ?>
+		<?php endif; ?>
+		<?php if ($params->get('created') == 1) : ?>
+		<br /><?php echo JText::sprintf('JGLOBAL_CREATED_DATE_ON', $item->created); ?>
 		<?php endif; ?>
 	</li>
 <?php endforeach; ?>
