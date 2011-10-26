@@ -110,6 +110,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 */
 	protected function batchCopy($value, $pks)
 	{
+		$input = JFactory::getApplication('administrator')->input;
 		$feedId	= (int) $value;
 
 		$table	= $this->getTable();
@@ -142,9 +143,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$extension	= JRequest::getCmd('option');
 		$user		= JFactory::getUser();
-		if (!$user->authorise('core.create', $extension))
+		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
@@ -217,6 +217,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 */
 	protected function batchMove($value, $pks)
 	{
+		$input = JFactory::getApplication('administrator')->input;
 		$feedId	= (int) $value;
 
 		$table	= $this->getTable();
@@ -249,15 +250,14 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that user has create and edit permission for the component
-		$extension	= JRequest::getCmd('option');
 		$user		= JFactory::getUser();
-		if (!$user->authorise('core.create', $extension))
+		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 			return false;
 		}
 
-		if (!$user->authorise('core.edit', $extension))
+		if (!$user->authorise('core.edit', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 			return false;

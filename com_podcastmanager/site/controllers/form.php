@@ -146,9 +146,11 @@ class PodcastManagerControllerForm extends JControllerForm
 	{
 		// Initialise variables.
 		$app		= JFactory::getApplication();
+		$input		= $app->input;
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= JRequest::getVar('cid', array(), 'post', 'array');
+		//$cid		= $input->get('cid', array());
 		$context	= "$this->option.edit.$this->context";
 		$append		= '';
 
@@ -165,7 +167,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		}
 
 		// Get the previous record id (if any) and the current record id.
-		$recordId	= (int) (count($cid) ? $cid[0] : JRequest::getInt($urlVar));
+		$recordId	= (int) (count($cid) ? $cid[0] : $input->get($urlVar, '', 'int'));
 		$checkin	= property_exists($table, 'checked_out');
 
 		// Access check.
@@ -229,8 +231,9 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
+		$input = JFactory::getApplication()->input;
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId	= JRequest::getInt('Itemid');
+		$itemId = $input->get('Itemid', '', 'int');
 		$return	= $this->getReturnPage();
 
 		if ($itemId)
@@ -255,7 +258,9 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		$return = JRequest::getVar('return', null, 'default', 'base64');
+		$input = JFactory::getApplication()->input;
+		//$return = JRequest::getVar('return', null, 'default', 'base64');
+		$return = base64_encode($input->get('return', null));
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
 		{

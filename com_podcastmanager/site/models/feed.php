@@ -151,7 +151,7 @@ class PodcastManagerModelFeed extends JModelList
 		$direction	= $this->getState('list.direction', 'DESC');
 		if (!empty($ordering))
 		{
-			$query->order($db->getEscaped($ordering).' '.$db->getEscaped($direction));
+			$query->order($db->escape($ordering).' '.$db->escape($direction));
 		}
 
 		return $query;
@@ -171,26 +171,27 @@ class PodcastManagerModelFeed extends JModelList
 	{
 		// Initialise variables.
 		$app	= JFactory::getApplication();
+		$input	= $app->input;
 		$params	= JComponentHelper::getParams('com_podcastmanager');
 
 		// List state information
-		$feed = JRequest::getInt('feedname');
+		$feed = $input->get('feedname', '', 'int');
 		$this->setState('feed.id', $feed);
 
-		$limit = JRequest::getInt('limit');
+		$limit = $input->get('limit', '', 'int');
 		$this->setState('list.limit', $limit);
 
-		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+		$limitstart = $input->get('limitstart', 0, 'int');
 		$this->setState('list.start', $limitstart);
 
-		$orderCol	= JRequest::getCmd('filter_order', 'a.publish_up');
+		$orderCol	= $input->get('filter_order', 'a.publish_up', 'cmd');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
 			$orderCol = 'a.publish_up';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'DESC');
+		$listOrder	= $input->get('filter_order_Dir', 'DESC', 'cmd');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
 			$listOrder = 'DESC';

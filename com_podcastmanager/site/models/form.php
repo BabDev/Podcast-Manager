@@ -168,12 +168,14 @@ class PodcastManagerModelForm extends JModelForm
 	protected function populateState()
 	{
 		$app = JFactory::getApplication();
+		$input = $app->input;
 
 		// Load state from the request.
-		$pk = JRequest::getInt('feedname');
+		$pk = $input->get('feedname', '', 'int');
 		$this->setState('feed.id', $pk);
 
-		$return = JRequest::getVar('return', null, 'default', 'base64');
+		//$return = JRequest::getVar('return', null, 'default', 'base64');
+		$return = base64_encode($input->get('return', null));
 
 		if (!JUri::isInternal(base64_decode($return)))
 		{
@@ -186,7 +188,7 @@ class PodcastManagerModelForm extends JModelForm
 		$params	= $app->getParams();
 		$this->setState('params', $params);
 
-		$this->setState('layout', JRequest::getCmd('layout'));
+		$this->setState('layout', $input->get('layout', '', 'cmd'));
 	}
 
 	/**

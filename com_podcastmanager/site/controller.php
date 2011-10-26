@@ -37,8 +37,9 @@ class PodcastManagerController extends JController
 	 */
 	function __construct($config = array())
 	{
+		$input = JFactory::getApplication()->input;
 		// Frontpage Editor podcast proxying:
-		if (JRequest::getCmd('view') === 'podcasts' && JRequest::getCmd('layout') === 'modal')
+		if ($input->get('view', '', 'cmd') === 'podcasts' && $input->get('layout', '', 'cmd') === 'modal')
 		{
 			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
@@ -61,14 +62,15 @@ class PodcastManagerController extends JController
 	public function display($cachable = false, $urlparams = array())
 	{
 		// Initialise variables.
+		$input = JFactory::getApplication()->input;
 		$cachable	= true;
 		$user		= JFactory::getUser();
 
 		// Set the default view name and format from the Request.
-		$id		= JRequest::getInt('p_id');
-		$feed	= JRequest::getInt('feedname');
-		$vName	= JRequest::getCmd('view', 'feed');
-		JRequest::setVar('view', $vName);
+		$id		= $input->get('p_id', '', 'int');
+		$feed	= $input->get('feedname', '', 'int');
+		$vName	= $input->get('view', 'feed', 'cmd');
+		$input->set('view', $vName);
 
 		if ($user->get('id') ||($_SERVER['REQUEST_METHOD'] == 'POST' && $vName = 'feed'))
 		{

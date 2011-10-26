@@ -176,7 +176,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$direction	= $this->getState('list.direction');
 		if (!empty($ordering))
 		{
-			$query->order($db->getEscaped($ordering).' '.$db->getEscaped($direction));
+			$query->order($db->escape($ordering).' '.$db->escape($direction));
 		}
 
 		return $query;

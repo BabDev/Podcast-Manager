@@ -54,9 +54,10 @@ class JFormFieldPodcastMedia extends JFormField
 		$authorField= $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
 		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
 
-		if ($asset == "")
+		if ($asset == '')
 		{
-			$asset = JRequest::getCmd('option');
+			$input = JFactory::getApplication('administrator')->input;
+			$asset = $input->get('option', '', 'cmd');
 		}
 
 		$link = (string) $this->element['link'];

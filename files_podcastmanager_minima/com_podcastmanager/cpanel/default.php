@@ -28,9 +28,7 @@ $xspf		= '<b><a href="http://musicplayer.sourceforge.net" target="_blank">XSPF P
 // Icons folder
 $icons = JURI::base().'components/com_podcastmanager/media/images/icons';
 
-jimport('joomla.html.pane');
 JHtml::_('behavior.framework');
-$pane =& JPane::getInstance('Sliders');
 ?>
 
 <div id="content-cpanel">
@@ -58,8 +56,8 @@ $pane =& JPane::getInstance('Sliders');
 	</div>
 
 	<div class="widgets-last">
-	<?php echo $pane->startPane('podmancpanel')."\n"; ?>
-		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'), 'howitworks')."\n"; ?>
+	<?php echo JHtml::_('sliders.start', 'podmancpanel'); ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'), 'howitworks'); ?>
 		<div>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_INTRO')?></p>
 			<ul>
@@ -73,8 +71,7 @@ $pane =& JPane::getInstance('Sliders');
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_PODCASTMEDIA')?></li>
 			</ul>
 		</div>
-		<?php echo $pane->endPanel()."\n"; ?>
-		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'), 'filetypes')."\n"; ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'), 'filetypes'); ?>
 		<div>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_INTRO')?></p>
 			<ul>
@@ -82,8 +79,7 @@ $pane =& JPane::getInstance('Sliders');
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_VIDEO')?></li>
 			</ul>
 		</div>
-		<?php echo $pane->endPanel()."\n"; ?>
-		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'), 'whattoexpect')."\n"; ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'), 'whattoexpect'); ?>
 		<div>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_1')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_2')?></p>
@@ -91,8 +87,7 @@ $pane =& JPane::getInstance('Sliders');
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_4')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_5')?></p>
 		</div>
-		<?php echo $pane->endPanel()."\n"; ?>
-		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'), 'translations')."\n"; ?>
+		<?php JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'), 'translations'); ?>
 		<div>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
 			<ul>
@@ -100,8 +95,7 @@ $pane =& JPane::getInstance('Sliders');
 			</ul>
 			<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_TRANSLATIONS_CONTRIBUTE', $transifex);?></p>
 		</div>
-		<?php echo $pane->endPanel()."\n"; ?>
-		<?php echo $pane->startPanel(JText::_('COM_PODCASTMANAGER_INFO_CREDITS'), 'credits')."\n"; ?>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_CREDITS'), 'credits'); ?>
 		<div>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS_INTRO')?></p>
 			<ul>
@@ -111,7 +105,6 @@ $pane =& JPane::getInstance('Sliders');
 				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_XSPF', $xspf);?></li>
 			</ul>
 		</div>
-		<?php echo $pane->endPanel()."\n"; ?>
-	<?php echo $pane->endPane()."\n"; ?>
+	<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 </div>

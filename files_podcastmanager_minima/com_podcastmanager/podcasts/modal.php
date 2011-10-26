@@ -16,7 +16,8 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 
-$function	= JRequest::getCmd('function', 'PodcastManagerSelectPodcast');
+$input = JFactory::getApplication()->input;
+$function	= $input->get('function', 'PodcastManagerSelectPodcast', 'cmd');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>

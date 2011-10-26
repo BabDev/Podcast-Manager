@@ -17,6 +17,8 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controller');
 require_once JPATH_COMPONENT.'/helpers/route.php';
 
+$input = JFactory::getApplication()->input;
+
 $controller	= JController::getInstance('PodcastManager');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

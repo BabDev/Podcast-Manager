@@ -70,9 +70,9 @@ class Com_PodcastManagerInstallerScript
 		$option	= 'com_podcastmedia';
 		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
-		$query->select('extension_id');
-		$query->from('#__extensions');
-		$query->where('element = '.$db->quote($option));
+		$query->select($db->quoteName('extension_id'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element').' = '.$db->quote($option));
 		$db->setQuery($query);
 		$component_id = $db->loadResult();
 
@@ -151,16 +151,16 @@ class Com_PodcastManagerInstallerScript
 		// Fix broken #__assets records
 		$query = $db->getQuery(true);
 		$query->select('id');
-		$query->from('#__assets');
+		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
 				$query->clear();
-				$query->delete('#__assets');
+				$query->delete($db->quoteName('#__assets'));
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
@@ -170,16 +170,16 @@ class Com_PodcastManagerInstallerScript
 		// Fix broken #__extensions records
 		$query->clear();
 		$query->select('extension_id');
-		$query->from('#__extensions');
+		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
 				$query->clear();
-				$query->delete('#__extensions');
+				$query->delete($db->quoteName('#__extensions'));
 				$query->where($db->quoteName('extension_id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
@@ -189,18 +189,18 @@ class Com_PodcastManagerInstallerScript
 		// Fix broken #__menu records
 		$query->clear();
 		$query->select($db->quoteName('id'));
-		$query->from('#__menu');
+		$query->from($db->quoteName('#__menu'));
 		$query->where($db->quoteName('type').' = '.$db->quote('component'));
 		$query->where($db->quoteName('menutype').' = '.$db->quote('main'));
 		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
 				$query->clear();
-				$query->delete('#__menu');
+				$query->delete($db->quoteName('#__menu'));
 				$query->where($db->quoteName('id').' = '.$db->quote($id));
 				$db->setQuery($query);
 				$db->query();
@@ -227,7 +227,7 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element').' = '.$db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (count($ids) > 1)
 		{
 			asort($ids);
@@ -275,7 +275,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('menutype').' = '.$db->quote('main'));
 		$query->where($db->quoteName('link').' LIKE '.$db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
-		$ids = $db->loadResultArray();
+		$ids = $db->loadColumn();
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)

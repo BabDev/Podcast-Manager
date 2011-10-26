@@ -46,14 +46,15 @@ class PodcastManagerController extends JController
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
+		$input = JFactory::getApplication('administrator')->input;
 		include_once JPATH_COMPONENT.'/helpers/podcastmanager.php';
 
 		// Load the submenu.
-		PodcastManagerHelper::addSubmenu(JRequest::getWord('view', 'feeds'));
+		PodcastManagerHelper::addSubmenu($input->get('view', 'feeds', 'word'));
 
-		$view		= JRequest::getWord('view', 'feeds');
-		$layout 	= JRequest::getWord('layout', 'feeds');
-		$id			= JRequest::getInt('id');
+		$view		= $input->get('view', 'feeds', 'word');
+		$layout 	= $input->get('layout', 'feeds', 'word');
+		$id			= $input->get('id', null, 'int');
 
 		// Check for edit form.
 		if ($view == 'feed' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.feed', $id))
