@@ -150,7 +150,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= JRequest::getVar('cid', array(), 'post', 'array');
-		//$cid		= $input->get('cid', array());
+		//$cid		= $input->post->get('cid', array());
 		$context	= "$this->option.edit.$this->context";
 		$append		= '';
 

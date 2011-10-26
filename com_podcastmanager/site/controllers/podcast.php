@@ -70,7 +70,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	{
 		// Initialise variables.
 		$user		= JFactory::getUser();
-		$feedId		= JArrayHelper::getValue($data, 'feedname', JRequest::getInt('filter_feedname'), 'int');
+		$feedId		= JArrayHelper::getValue($data, 'feedname', JFactory::getApplication()->input->get('filter_feedname', '', 'int'), 'int');
 		$allow		= null;
 
 		if ($feedId)
@@ -179,7 +179,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		$model		= $this->getModel();
 		$table		= $model->getTable();
 		$cid		= JRequest::getVar('cid', array(), 'post', 'array');
-		//$cid		= $input->get('cid', array());
+		//$cid		= $input->post->get('cid', array());
 		$context	= "$this->option.edit.$this->context";
 		$append		= '';
 

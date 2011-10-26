@@ -38,7 +38,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	{
 		// Initialise variables.
 		$user		= JFactory::getUser();
-		$feedId		= JArrayHelper::getValue($data, 'feedname', JRequest::getInt('filter_feedname'), 'int');
+		$feedId		= JArrayHelper::getValue($data, 'feedname', JFactory::getApplication()->input->get('filter_feedname', '', 'int'), 'int');
 		$allow		= null;
 
 		if ($feedId)
@@ -49,7 +49,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 
 		if ($allow === null)
 		{
-			// In the absense of better information, revert to the component permissions.
+			// In the absence of better information, revert to the component permissions.
 			return parent::allowAdd();
 		}
 		else
