@@ -57,7 +57,7 @@ abstract class ModPodcastManagerFeedHelper
 		$model->setState('filter.publish_date', true);
 
 		// Feed filter
-		$model->setState('feed.id', $params->get('feed', array()));
+		$model->setState('feed.id', $params->get('feed', ''));
 
 		// Filter by language
 		$model->setState('filter.language', $app->getLanguageFilter());

@@ -27,7 +27,10 @@
 					class="inputbox"
 					label="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_LABEL"
 					description="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_DESCRIPTION"
-					size="1" />
+					size="1">
+					<option
+						value="">JALL</option>
+				</field>
 				<field
 					name="count"
 					type="text"

@@ -14,7 +14,9 @@
 			<field name="feedname" type="feedname"
 				description="COM_PODCASTMANAGER_MENU_FEEDNAME_DESCRIPTION"
 				label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL"
-				required="true" />
+				required="true">
+				<option value="">JALL</option>
+			</field>
 			<field name="limit" type="text"
 				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
 				label="COM_PODCASTMANAGER_LIMIT_LABEL"
