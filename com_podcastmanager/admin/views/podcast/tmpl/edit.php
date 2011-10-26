@@ -49,6 +49,9 @@ JHtml::_('behavior.keepalive');
 				<li><?php echo $this->form->getLabel('itSummary'); ?>
 				<?php echo $this->form->getInput('itSummary'); ?></li>
 
+				<li><?php echo $this->form->getLabel('itImage'); ?>
+				<?php echo $this->form->getInput('itImage'); ?></li>
+
 				<li><?php echo $this->form->getLabel('itAuthor'); ?>
 				<?php echo $this->form->getInput('itAuthor'); ?></li>
 

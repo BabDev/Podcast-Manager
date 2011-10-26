@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itBlock` tinyint(1) NOT NULL default '0',
   `itDuration` varchar(10) NOT NULL default '',
   `itExplicit` tinyint(1) NOT NULL default '0',
+  `itImage` varchar(255) NOT NULL default '',
   `itKeywords` varchar(255) NOT NULL default '',
   `itSubtitle` varchar(255) NOT NULL default '',
   `itSummary` varchar(5120) NOT NULL default '',

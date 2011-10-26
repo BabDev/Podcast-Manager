@@ -58,6 +58,10 @@ $params = $this->state->get('params');
 			<?php echo $this->form->getInput('itSummary'); ?>
 		</div>
 		<div class="formelm">
+			<?php echo $this->form->getLabel('itImage'); ?>
+			<?php echo $this->form->getInput('itImage'); ?>
+		</div>
+		<div class="formelm">
 			<?php echo $this->form->getLabel('itAuthor'); ?>
 			<?php echo $this->form->getInput('itAuthor'); ?>
 		</div>
