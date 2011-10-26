@@ -84,7 +84,7 @@ class PodcastManagerViewFeed extends JView
 			$this->setLayout($active->query['layout']);
 		}
 
-		$this->prepareDocument();
+		$this->prepareDocument($feed);
 
 		parent::display($tpl);
 	}
@@ -92,11 +92,13 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Prepares the document
 	 *
+	 * @param   object  $feed  The feed object
+	 *
 	 * @return  void
 	 *
 	 * @since   1.8
 	 */
-	protected function prepareDocument()
+	protected function prepareDocument($feed)
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
