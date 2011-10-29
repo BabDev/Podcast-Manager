@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -50,8 +50,8 @@ class PodcastManagerViewFeed extends JView
 		$params = JComponentHelper::getParams('com_podcastmanager');
 
 		// Get the data from the model
-		$items	= $this->get('Items');
-		$feed	= $this->get('Feed');
+		$items = $this->get('Items');
+		$feed = $this->get('Feed');
 
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
@@ -79,7 +79,7 @@ class PodcastManagerViewFeed extends JView
 		$xw->writeAttribute('type', 'application/rss+xml');
 
 		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false).'index.php?option=com_podcastmanager&view=feed&feedname='.$feed->id.'&format=raw');
+		$xw->writeAttribute('href', JURI::root(false) . 'index.php?option=com_podcastmanager&view=feed&feedname=' . $feed->id . '&format=raw');
 		$xw->writeAttribute('rel', 'self');
 		$xw->writeAttribute('type', 'application/rss+xml');
 		$xw->endElement();
@@ -93,7 +93,6 @@ class PodcastManagerViewFeed extends JView
 		if ($feedLang == '*')
 		{
 			$feedLang = JFactory::getLanguage()->getTag();
-
 		}
 		$xw->writeElement('language', $feedLang);
 
@@ -148,7 +147,7 @@ class PodcastManagerViewFeed extends JView
 
 			if (!preg_match('/^http/', $imageURL))
 			{
-				$imageURL = JURI::root().$imageURL;
+				$imageURL = JURI::root() . $imageURL;
 			}
 			$xw->writeAttribute('href', $imageURL);
 			$xw->endElement();
@@ -223,23 +222,23 @@ class PodcastManagerViewFeed extends JView
 		foreach ($items as $item)
 		{
 			// Set the file path on the file structure
-			$filepath	= $item->filename;
+			$filepath = $item->filename;
 
 			// Check if the file is from off site
 			if (preg_match('/^http/', $filepath))
 			{
 				// The file is off site, no verification necessary
-				$filename	= $filepath;
+				$filename = $filepath;
 			}
 			else
 			{
 				// The file is stored on site, check if it exists
-				$filepath	= JPATH_ROOT.'/'.$item->filename;
+				$filepath = JPATH_ROOT . '/' . $item->filename;
 
 				// Check if the file exists
 				if (JFile::exists($filepath))
 				{
-					$filename	= JURI::base().$item->filename;
+					$filename = JURI::base() . $item->filename;
 				}
 			}
 
@@ -267,7 +266,7 @@ class PodcastManagerViewFeed extends JView
 
 					if (!preg_match('/^http/', $imageURL))
 					{
-						$imageURL = JURI::root().$imageURL;
+						$imageURL = JURI::root() . $imageURL;
 					}
 					$xw->writeAttribute('href', $imageURL);
 					$xw->endElement();
@@ -282,8 +281,8 @@ class PodcastManagerViewFeed extends JView
 
 				$xw->writeElement('guid', $filename);
 
-				$itBlock	= $item->itBlock;
-				$itExplicit	= $item->itExplicit;
+				$itBlock = $item->itBlock;
+				$itExplicit = $item->itExplicit;
 
 				if ($itBlock == 1)
 				{

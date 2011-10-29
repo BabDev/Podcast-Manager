@@ -72,8 +72,8 @@ class PodcastManagerHelper
 		$query = $db->getQuery(true);
 		$query->select('COUNT(extension_id)');
 		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('folder').' = '.$db->quote('podcastmedia'));
-		$query->where($db->quoteName('enabled').' = 1');
+		$query->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'));
+		$query->where($db->quoteName('enabled') . ' = 1');
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -101,11 +101,11 @@ class PodcastManagerHelper
 		}
 		elseif (empty($podcastId))
 		{
-			$assetName = 'com_podcastmanager.feed.'.(int) $feedId;
+			$assetName = 'com_podcastmanager.feed.' . (int) $feedId;
 		}
 		else
 		{
-			$assetName = 'com_podcastmanager.podcast.'.(int) $podcastId;
+			$assetName = 'com_podcastmanager.podcast.' . (int) $podcastId;
 		}
 
 		$actions = array(

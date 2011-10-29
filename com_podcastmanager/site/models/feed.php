@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -46,8 +46,7 @@ class PodcastManagerModelFeed extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'title', 'a.title',
-				'publish_up', 'a.publish_up',
+				'title', 'a.title', 'publish_up', 'a.publish_up',
 			);
 		}
 
@@ -64,15 +63,15 @@ class PodcastManagerModelFeed extends JModelList
 	public function getFeed()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 
 		$feedId = $this->getState('feed.id');
-		$query->where($db->quoteName('a.id').' = '.(int) $feedId);
+		$query->where($db->quoteName('a.id') . ' = ' . (int) $feedId);
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
@@ -105,28 +104,28 @@ class PodcastManagerModelFeed extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager').' AS a');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
 
 		// Join over the users for the modified_by name.
-		$query->join('LEFT', $db->quoteName('#__users').' AS uam ON '.$db->quoteName('uam.id').' = '.$db->quoteName('a.modified_by'));
+		$query->join('LEFT', $db->quoteName('#__users') . ' AS uam ON ' . $db->quoteName('uam.id') . ' = ' . $db->quoteName('a.modified_by'));
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
 		if (is_numeric($feed))
 		{
-			$query->where($db->quoteName('a.feedname').' = '.(int) $feed);
+			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feed);
 		}
 
 		// Filter by state
 		$state = $this->getState('filter.published');
 		if (is_numeric($state))
 		{
-			$query->where($db->quoteName('a.published').' = '.(int) $state);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $state);
 		}
 
 		// Filter by start date.
@@ -135,21 +134,21 @@ class PodcastManagerModelFeed extends JModelList
 
 		if ($this->getState('filter.publish_date'))
 		{
-			$query->where('('.$db->quoteName('a.publish_up').' = '.$nullDate.' OR '.$db->quoteName('a.publish_up').' <= '.$nowDate.')');
+			$query->where('(' . $db->quoteName('a.publish_up') . ' = ' . $nullDate . ' OR ' . $db->quoteName('a.publish_up') . ' <= ' . $nowDate . ')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where($db->quoteName('a.language').' in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
+			$query->where($db->quoteName('a.language') . ' in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
 		// Handle the list ordering.
-		$ordering	= $this->getState('list.ordering', 'a.publish_up');
-		$direction	= $this->getState('list.direction', 'DESC');
+		$ordering = $this->getState('list.ordering', 'a.publish_up');
+		$direction = $this->getState('list.direction', 'DESC');
 		if (!empty($ordering))
 		{
-			$query->order($db->escape($ordering).' '.$db->escape($direction));
+			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
 		}
 
 		return $query;
@@ -168,9 +167,9 @@ class PodcastManagerModelFeed extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app	= JFactory::getApplication();
-		$input	= $app->input;
-		$params	= JComponentHelper::getParams('com_podcastmanager');
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$params = JComponentHelper::getParams('com_podcastmanager');
 
 		// List state information
 		$feed = $input->get('feedname', '', 'int');
@@ -182,14 +181,14 @@ class PodcastManagerModelFeed extends JModelList
 		$limitstart = $input->get('limitstart', 0, 'int');
 		$this->setState('list.start', $limitstart);
 
-		$orderCol	= $input->get('filter_order', 'a.publish_up', 'cmd');
+		$orderCol = $input->get('filter_order', 'a.publish_up', 'cmd');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
 			$orderCol = 'a.publish_up';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	= $input->get('filter_order_Dir', 'DESC', 'cmd');
+		$listOrder = $input->get('filter_order_Dir', 'DESC', 'cmd');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
 			$listOrder = 'DESC';
@@ -197,10 +196,10 @@ class PodcastManagerModelFeed extends JModelList
 		$this->setState('list.direction', $listOrder);
 
 		$user = JFactory::getUser();
-		if ((!$user->authorise('core.edit.state', 'com_podcastmanager')) &&  (!$user->authorise('core.edit', 'com_podcastmanager')))
+		if ((!$user->authorise('core.edit.state', 'com_podcastmanager')) && (!$user->authorise('core.edit', 'com_podcastmanager')))
 		{
 			// Limit to published for people who can't edit or edit.state.
-			$this->setState('filter.published',	1);
+			$this->setState('filter.published', 1);
 
 			// Filter by published dates.
 			$this->setState('filter.publish_date', true);

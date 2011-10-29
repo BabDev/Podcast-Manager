@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -110,11 +110,9 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 */
 	protected function batchCopy($value, $pks)
 	{
-		$input = JFactory::getApplication('administrator')->input;
-		$feedId	= (int) $value;
+		$feedId = (int) $value;
 
-		$table	= $this->getTable();
-		$db		= $this->getDbo();
+		$table = $this->getTable();
 
 		// Check that the category exists
 		if ($feedId != '0')
@@ -143,7 +141,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -176,7 +174,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			}
 
 			// Alter the title & alias
-			$table->title = 'Copy of '.$table->title;
+			$table->title = 'Copy of ' . $table->title;
 
 			// Reset the ID because we are making a copy
 			$table->id = 0;
@@ -211,17 +209,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @param   integer  $value  The new feed ID.
 	 * @param   array    $pks    An array of row IDs.
 	 *
-	 * @return  booelan  True if successful, false otherwise and internal error is set.
+	 * @return  boolean  True if successful, false otherwise and internal error is set.
 	 *
 	 * @since   1.8
 	 */
 	protected function batchMove($value, $pks)
 	{
-		$input = JFactory::getApplication('administrator')->input;
-		$feedId	= (int) $value;
+		$feedId = (int) $value;
 
-		$table	= $this->getTable();
-		$db		= $this->getDbo();
+		$table = $this->getTable();
 
 		// Check that the feed exists
 		if ($feedId != '0')
@@ -250,7 +246,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that user has create and edit permission for the component
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
 		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -326,7 +322,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			}
 			$user = JFactory::getUser();
 
-			return $user->authorise('core.delete', 'com_podcastmanager.podcast.'.(int) $record->id);
+			return $user->authorise('core.delete', 'com_podcastmanager.podcast.' . (int) $record->id);
 		}
 	}
 
@@ -346,7 +342,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		// Check for existing podcast.
 		if (!empty($record->id))
 		{
-			return $user->authorise('core.edit.state', 'com_podcastmanager.podcast.'.(int) $record->id);
+			return $user->authorise('core.edit.state', 'com_podcastmanager.podcast.' . (int) $record->id);
 		}
 		// Default to component settings if no feed to check.
 		else
@@ -382,18 +378,18 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	protected function fillMetaData($data)
 	{
 		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES.DS.'getid3');
+		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES . '/getid3');
 
-		$filename	= $_COOKIE['podManFile'];
+		$filename = $_COOKIE['podManFile'];
 		if (!preg_match('/^http/', $filename))
 		{
-			$filename	= JPATH_ROOT.'/'.$filename;
+			$filename = JPATH_ROOT . '/' . $filename;
 		}
-		$getID3		= new getID3($filename);
-		$fileInfo	= $getID3->analyze($filename);
+		$getID3 = new getID3($filename);
+		$fileInfo = $getID3->analyze($filename);
 
 		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename	= $_COOKIE['podManFile'];
+		$data->filename = $_COOKIE['podManFile'];
 
 		if (isset($fileInfo['tags_html']))
 		{

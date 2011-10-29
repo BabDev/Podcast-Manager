@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -47,7 +47,7 @@ class PodcastManagerTablePodcast extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
-		return 'com_podcastmanager.podcast.'.(int) $this->$k;
+		return 'com_podcastmanager.podcast.' . (int) $this->$k;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class PodcastManagerTablePodcast extends JTable
 	 *
 	 * @return  integer  The parent id
 	 *
-	 * @since   11.1
+	 * @since   2.0
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
@@ -82,10 +82,10 @@ class PodcastManagerTablePodcast extends JTable
 		if ($this->feedname > 0)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('asset_id');
 			$query->from('#__podcastmanager_feeds');
-			$query->where('id = '.(int) $this->feedname);
+			$query->where('id = ' . (int) $this->feedname);
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -99,10 +99,10 @@ class PodcastManagerTablePodcast extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the component.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__assets'));
-			$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -134,14 +134,14 @@ class PodcastManagerTablePodcast extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified		= $date->toMySQL();
-			$this->modified_by	= $user->get('id');
+			$this->modified = $date->toMySQL();
+			$this->modified_by = $user->get('id');
 		}
 		else
 		{

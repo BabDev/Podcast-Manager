@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -36,10 +36,10 @@ class PodcastManagerViewFeed extends JView
 	 */
 	public function display($tpl = null)
 	{
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
-		$this->canDo	= PodcastManagerHelper::getActions();
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->state = $this->get('State');
+		$this->canDo = PodcastManagerHelper::getActions();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -67,13 +67,13 @@ class PodcastManagerViewFeed extends JView
 		$input = JFactory::getApplication('administrator')->input;
 		$input->set('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
-		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo		= PodcastManagerHelper::getActions($this->item->id);
+		$user = JFactory::getUser();
+		$userId = $user->get('id');
+		$isNew = ($this->item->id == 0);
+		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
+		$canDo = PodcastManagerHelper::getActions($this->item->id);
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEED_'.($isNew ? 'ADD_FEED' : 'EDIT_FEED')), 'podcastmanager.png');
+		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEED_' . ($isNew ? 'ADD_FEED' : 'EDIT_FEED')), 'podcastmanager.png');
 
 		// Set the actions for new and existing records.
 		if ($isNew)

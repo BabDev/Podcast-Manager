@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -36,14 +36,14 @@ class PodcastManagerViewFeed extends JView
 	 */
 	function display($tpl = null)
 	{
-		$app		= JFactory::getApplication();
-		$params		= $app->getParams();
+		$app = JFactory::getApplication();
+		$params = $app->getParams();
 
 		// Get some data from the models
-		$state		= $this->get('State');
-		$items		= $this->get('Items');
-		$feed		= $this->get('Feed');
-		$pagination	= $this->get('Pagination');
+		$state = $this->get('State');
+		$items = $this->get('Items');
+		$feed = $this->get('Feed');
+		$pagination = $this->get('Pagination');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -52,19 +52,19 @@ class PodcastManagerViewFeed extends JView
 			return false;
 		}
 
-		$this->assignRef('state',	$state);
-		$this->assignRef('items',	$items);
-		$this->assignRef('feed',	$feed);
-		$this->assignRef('params',	$params);
-		$this->assignRef('pagination',	$pagination);
+		$this->assignRef('state', $state);
+		$this->assignRef('items', $items);
+		$this->assignRef('feed', $feed);
+		$this->assignRef('params', $params);
+		$this->assignRef('pagination', $pagination);
 
 		// Prepare the content (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
 			$item = &$items[$i];
-			$item->player	= '{podcast '.$item->title.'}';
+			$item->player = '{podcast ' . $item->title . '}';
 			// Set the text object to prevent errors with other plugins
-			$item->text		= '';
+			$item->text = '';
 			$dispatcher = JDispatcher::getInstance();
 
 			// Process the content plugins.
@@ -77,7 +77,7 @@ class PodcastManagerViewFeed extends JView
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
-		$active	= $app->getMenu()->getActive();
+		$active = $app->getMenu()->getActive();
 		if (isset($active->query['layout']))
 		{
 			// We need to set the layout in case this is an alternative menu item (with an alternative layout)
@@ -100,10 +100,10 @@ class PodcastManagerViewFeed extends JView
 	 */
 	protected function prepareDocument($feed)
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
-		$title 		= null;
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$pathway = $app->getPathway();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -174,7 +174,7 @@ class PodcastManagerViewFeed extends JView
 		// Add alternative feed link
 		if ($this->params->get('show_feed_link', 1) == 1)
 		{
-			$link	= '&format=raw&layout=default&feedname='.$feed->id;
+			$link = '&format=raw&layout=default&feedname=' . $feed->id;
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 			$this->document->addHeadLink(JRoute::_($link), 'alternate', 'rel', $attribs);
 		}

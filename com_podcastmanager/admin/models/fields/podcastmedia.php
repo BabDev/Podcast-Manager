@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('JPATH_BASE') or die;
 
@@ -50,9 +50,9 @@ class JFormFieldPodcastMedia extends JFormField
 	 */
 	protected function getInput()
 	{
-		$assetField	= $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
-		$authorField= $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
-		$asset		= $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
+		$assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
+		$authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
+		$asset = $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
 
 		if ($asset == '')
 		{
@@ -87,24 +87,22 @@ class JFormFieldPodcastMedia extends JFormField
 		$attr = '';
 
 		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="'.(string) $this->element['class'].'"' : '';
-		$attr .= $this->element['size'] ? ' size="'.(int) $this->element['size'].'"' : '';
+		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
 		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
+		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// The text field.
 		$html[] = '<div class="fltlft">';
-		$html[] = '	<input type="text" name="'.$this->name.'" id="'.$this->id.'"' .
-					' value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'"' .
-					$attr.' />';
+		$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
 		$html[] = '</div>';
 
 		// Check if only one podcastmedia plugin is enabled
 		if (PodcastManagerHelper::countMediaPlugins() == '1')
 		{
 			JPluginHelper::importPlugin('podcastmedia');
-			$dispatcher	= JDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$results = $dispatcher->trigger('onPathFind');
 			$directory = $results['0'];
 		}
@@ -119,37 +117,35 @@ class JFormFieldPodcastMedia extends JFormField
 			$directory = '';
 		}
 
-		if ($this->value && file_exists(JPATH_ROOT.'/'.$this->value))
+		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
 		{
 			$folder = explode('/', $this->value);
 			array_shift($folder);
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
-		elseif (file_exists(JPATH_ROOT.'/'.JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'.'/'.$directory)))
+		elseif (file_exists(JPATH_ROOT . '/' . JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager' . '/' . $directory)))
 		{
 			$folder = $directory;
 		}
 		else
 		{
-			$folder='';
+			$folder = '';
 		}
 		// The button.
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
-		$html[] = '		<a class="modal" title="'.JText::_('JLIB_FORM_BUTTON_SELECT').'"' .
-					' href="'.($this->element['readonly'] ? '' : ($link ? $link : 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset='.$asset.'&amp;author='.$this->form->getValue($authorField)).'&amp;fieldid='.$this->id.'&amp;folder='.$folder).'"' .
-					' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-		$html[] = '			'.JText::_('JLIB_FORM_BUTTON_SELECT').'</a>';
+		$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="' . ($this->element['readonly'] ? ''
+					: ($link ? $link
+					: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+		$html[] = '			' . JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
 
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
-		$html[] = '		<a title="'.JText::_('JLIB_FORM_BUTTON_CLEAR').'"' .
-					' href="#"'.
-					' onclick="document.getElementById(\''.$this->id.'\').value=\'\'; document.getElementById(\''.$this->id.'\').onchange();">';
-		$html[] = '			'.JText::_('JLIB_FORM_BUTTON_CLEAR').'</a>';
+		$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
+		$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
 

@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -52,9 +52,9 @@ class JHtmlIcon
 		}
 
 		JHtml::_('behavior.tooltip');
-		$url	= PodcastManagerHelperRoute::getFeedEditRoute($feed->id, base64_encode($uri));
-		$icon	= $feed->published ? 'edit.png' : 'edit_unpublished.png';
-		$text	= JHtml::_('image', 'system/'.$icon, JText::_('JGLOBAL_EDIT'), null, true);
+		$url = PodcastManagerHelperRoute::getFeedEditRoute($feed->id, base64_encode($uri));
+		$icon = $feed->published ? 'edit.png' : 'edit_unpublished.png';
+		$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
 
 		if ($feed->published == 0)
 		{
@@ -65,17 +65,17 @@ class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date	= JHtml::_('date', $feed->created);
-		$author	= $feed->author;
+		$date = JHtml::_('date', $feed->created);
+		$author = $feed->author;
 
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		$button	= JHtml::_('link', JRoute::_($url), $text);
+		$button = JHtml::_('link', JRoute::_($url), $text);
 
-		$output	= '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
+		$output = '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
 
 		return $output;
 	}
@@ -107,9 +107,9 @@ class JHtmlIcon
 		}
 
 		JHtml::_('behavior.tooltip');
-		$url	= PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
-		$icon	= $podcast->published ? 'edit.png' : 'edit_unpublished.png';
-		$text	= JHtml::_('image', 'system/'.$icon, JText::_('JGLOBAL_EDIT'), null, true);
+		$url = PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
+		$icon = $podcast->published ? 'edit.png' : 'edit_unpublished.png';
+		$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
 
 		if ($podcast->published == 0)
 		{
@@ -120,17 +120,17 @@ class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date	= JHtml::_('date', $podcast->created);
-		$author	= $podcast->itAuthor;
+		$date = JHtml::_('date', $podcast->created);
+		$author = $podcast->itAuthor;
 
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		$button	= JHtml::_('link', JRoute::_($url), $text);
+		$button = JHtml::_('link', JRoute::_($url), $text);
 
-		$output	= '<span class="hasTip" title="'.JText::_('JGLOBAL_EDIT').' :: '.$overlib.'">'.$button.'</span>';
+		$output = '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
 
 		return $output;
 	}

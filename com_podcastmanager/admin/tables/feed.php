@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -47,7 +47,7 @@ class PodcastManagerTableFeed extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
-		return 'com_podcastmanager.feed.'.(int) $this->$k;
+		return 'com_podcastmanager.feed.' . (int) $this->$k;
 	}
 
 	/**
@@ -82,10 +82,10 @@ class PodcastManagerTableFeed extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the component.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select($db->quoteName('id'));
 			$query->from($db->quoteName('#__assets'));
-			$query->where($db->quoteName('name').' = '.$db->quote('com_podcastmanager'));
+			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -116,7 +116,7 @@ class PodcastManagerTableFeed extends JTable
 	 * @return  mixed  Null if operation was satisfactory, otherwise returns an error
 	 *
 	 * @since   2.0
-	 * @see     JTable:bind
+	 * @see     JTable:bind()
 	 */
 	public function bind($array, $ignore = '')
 	{
@@ -141,14 +141,14 @@ class PodcastManagerTableFeed extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified		= $date->toMySQL();
-			$this->modified_by	= $user->get('id');
+			$this->modified = $date->toMySQL();
+			$this->modified_by = $user->get('id');
 		}
 		else
 		{

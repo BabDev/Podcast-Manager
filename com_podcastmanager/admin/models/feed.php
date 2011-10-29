@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -60,7 +60,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 			}
 			$user = JFactory::getUser();
 
-			return $user->authorise('core.delete', 'com_podcastmanager.feed.'.(int) $record->id);
+			return $user->authorise('core.delete', 'com_podcastmanager.feed.' . (int) $record->id);
 		}
 	}
 
@@ -80,7 +80,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 		// Check for existing feed.
 		if (!empty($record->id))
 		{
-			return $user->authorise('core.edit.state', 'com_podcastmanager.feed.'.(int) $record->id);
+			return $user->authorise('core.edit.state', 'com_podcastmanager.feed.' . (int) $record->id);
 		}
 		// Default to component settings if no feed to check.
 		else
@@ -92,8 +92,8 @@ class PodcastManagerModelFeed extends JModelAdmin
 	/**
 	 * Custom clean cache method
 	 *
-	 * @param   string  $group      The component name
-	 * @param   int     $client_id  The client ID
+	 * @param   string   $group      The component name
+	 * @param   integer  $client_id  The client ID
 	 *
 	 * @return  void
 	 *

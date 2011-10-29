@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -45,7 +45,7 @@ class PodcastManagerModelPodcasts extends JModelList
 				'feedname', 'a.feedname',
 				'published', 'a.published',
 				'created', 'a.created',
-				'language', 'a.language',
+				'language', 'a.language'
 			);
 		}
 
@@ -62,41 +62,41 @@ class PodcastManagerModelPodcasts extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager').' AS a');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
 
 		// Join over the language
-		$query->select($db->quoteName('l.title').' AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title') . ' AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
 		// Join over the feed name
-		$query->select($db->quoteName('f.name').' AS feed_name');
-		$query->join('LEFT', $db->quoteName('#__podcastmanager_feeds').' AS f ON f.id = a.feedname');
+		$query->select($db->quoteName('f.name') . ' AS feed_name');
+		$query->join('LEFT', $db->quoteName('#__podcastmanager_feeds') . ' AS f ON f.id = a.feedname');
 
 		// Join over the users for the checked out user.
-		$query->select($db->quoteName('uc.name').' AS editor');
-		$query->join('LEFT', $db->quoteName('#__users').' AS uc ON uc.id=a.checked_out');
+		$query->select($db->quoteName('uc.name') . ' AS editor');
+		$query->join('LEFT', $db->quoteName('#__users') . ' AS uc ON uc.id=a.checked_out');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$query->where($db->quoteName('a.published').' = '.(int) $published);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('('.$db->quoteName('a.published').' IN (0, 1))');
+			$query->where('(' . $db->quoteName('a.published') . ' IN (0, 1))');
 		}
 
-		// Filter by feedname.
+		// Filter by feed ID
 		$feedname = $this->getState('filter.feedname');
 		if (is_numeric($feedname))
 		{
-			$query->where($db->quoteName('a.feedname').' = '.(int) $feedname);
+			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feedname);
 		}
 
 		// Filter by search in title
@@ -105,27 +105,27 @@ class PodcastManagerModelPodcasts extends JModelList
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where($db->quoteName('a.id').' = '.(int) substr($search, 3));
+				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
 			}
 			else
 			{
-				$search = $db->Quote('%'.$db->escpae($search, true).'%');
-				$query->where('('.$db->quoteName('a.title').' LIKE '.$search.')');
+				$search = $db->Quote('%' . $db->escpae($search, true) . '%');
+				$query->where('(' . $db->quoteName('a.title') . ' LIKE ' . $search . ')');
 			}
 		}
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where($db->quoteName('a.language').' = '.$db->quote($language));
+			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
 		// Handle the list ordering.
-		$ordering	= $this->getState('list.ordering');
-		$direction	= $this->getState('list.direction');
+		$ordering = $this->getState('list.ordering');
+		$direction = $this->getState('list.direction');
 		if (!empty($ordering))
 		{
-			$query->order($db->escape($ordering).' '.$db->escape($direction));
+			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
 		}
 
 		return $query;
@@ -147,10 +147,10 @@ class PodcastManagerModelPodcasts extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id.= ':' . $this->getState('filter.search');
-		$id.= ':' . $this->getState('filter.published');
-		$id.= ':' . $this->getState('filter.feedname');
-		$id.= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.feedname');
+		$id .= ':' . $this->getState('filter.language');
 
 		return parent::getStoreId($id);
 	}
@@ -171,28 +171,28 @@ class PodcastManagerModelPodcasts extends JModelList
 		$input = JFactory::getApplication('administrator')->input;
 
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.published', $published);
 
 		$feedname = $input->get('feedname', '', 'var');
 		if ($feedname)
 		{
-			if ($feedname != $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', ''))
+			if ($feedname != $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', ''))
 			{
-				$this->setState($this->context.'.filter.feedname', $feedname);
+				$this->setState($this->context . '.filter.feedname', $feedname);
 			}
 		}
 		else
 		{
-			$feedname = $this->getUserStateFromRequest($this->context.'.filter.feedname', 'filter_feedname', '');
+			$feedname = $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', '');
 		}
 
 		$this->setState('filter.feedname', $feedname);
 
-		$language = $this->getUserStateFromRequest($this->context.'.filter.language', 'filter_language', '');
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.

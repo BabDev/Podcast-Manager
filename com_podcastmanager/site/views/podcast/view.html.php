@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -37,14 +37,13 @@ class PodcastManagerViewPodcast extends JView
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
 
 		// Get model data.
-		$this->state		= $this->get('State');
-		$this->item			= $this->get('Item');
-		$this->form			= $this->get('Form');
-		$this->return_page	= $this->get('ReturnPage');
+		$this->state = $this->get('State');
+		$this->item = $this->get('Item');
+		$this->form = $this->get('Form');
+		$this->return_page = $this->get('ReturnPage');
 
 		// Add the component media
 		JHtml::script('components/com_podcastmanager/media/js/podcast.js', false, false);
@@ -55,7 +54,7 @@ class PodcastManagerViewPodcast extends JView
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_podcastmanager.podcast.'.$this->item->id);
+			$authorised = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $this->item->id);
 		}
 
 		if ($authorised !== true)
@@ -77,13 +76,13 @@ class PodcastManagerViewPodcast extends JView
 		}
 
 		// Create a shortcut to the parameters.
-		$params	= &$this->state->params;
+		$params = $this->state->params;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->params	= $params;
-		$this->user		= $user;
+		$this->params = $params;
+		$this->user = $user;
 
 		$this->prepareDocument();
 		parent::display($tpl);
@@ -98,9 +97,9 @@ class PodcastManagerViewPodcast extends JView
 	 */
 	protected function prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

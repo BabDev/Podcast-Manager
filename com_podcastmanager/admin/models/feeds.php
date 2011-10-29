@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -43,7 +43,7 @@ class PodcastManagerModelFeeds extends JModelList
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'published', 'a.published',
-				'language', 'a.language',
+				'language', 'a.language'
 			);
 		}
 
@@ -71,7 +71,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// Load the list items.
 		$items = parent::getItems();
 
-		// If emtpy or an error, just return.
+		// If empty or an error, just return.
 		if (empty($items))
 		{
 			return array();
@@ -85,17 +85,14 @@ class PodcastManagerModelFeeds extends JModelList
 		$feedNames = JArrayHelper::getColumn($items, 'id');
 
 		// Quote the strings.
-		$feedNames = implode(
-			',',
-			array_map(array($db, 'quote'), $feedNames)
-		);
+		$feedNames = implode(',', array_map(array($db, 'quote'), $feedNames));
 
 		// Get the published menu counts.
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName('p.feedname').', COUNT(DISTINCT p.id) AS count_published');
-		$query->from($db->quoteName('#__podcastmanager').' AS p');
-		$query->where($db->quoteName('p.published').' = 1');
-		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
+		$query->select($db->quoteName('p.feedname') . ', COUNT(DISTINCT p.id) AS count_published');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS p');
+		$query->where($db->quoteName('p.published') . ' = 1');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$query->group($db->quoteName('p.feedname'));
 		$db->setQuery($query);
 		$countPublished = $db->loadAssocList('feedname', 'count_published');
@@ -108,8 +105,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the unpublished menu counts.
 		$query->clear('where');
-		$query->where($db->quoteName('p.published').' = 0');
-		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
+		$query->where($db->quoteName('p.published') . ' = 0');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
@@ -121,8 +118,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the trashed menu counts.
 		$query->clear('where');
-		$query->where($db->quoteName('p.published').' = -2');
-		$query->where($db->quoteName('p.feedname').' IN ('.$feedNames.')');
+		$query->where($db->quoteName('p.published') . ' = -2');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
@@ -135,9 +132,9 @@ class PodcastManagerModelFeeds extends JModelList
 		// Inject the values back into the array.
 		foreach ($items as $item)
 		{
-			$item->count_published		= isset($countPublished[$item->id]) ? $countPublished[$item->id] : 0;
-			$item->count_unpublished	= isset($countUnpublished[$item->id]) ? $countUnpublished[$item->id] : 0;
-			$item->count_trashed		= isset($countTrashed[$item->id]) ? $countTrashed[$item->id] : 0;
+			$item->count_published = isset($countPublished[$item->id]) ? $countPublished[$item->id] : 0;
+			$item->count_unpublished = isset($countUnpublished[$item->id]) ? $countUnpublished[$item->id] : 0;
+			$item->count_trashed = isset($countTrashed[$item->id]) ? $countTrashed[$item->id] : 0;
 		}
 
 		// Add the items to the internal cache.
@@ -161,20 +158,20 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 
 		$query->group($db->quoteName('a.id'));
 
 		// Join over the language
-		$query->select($db->quoteName('l.title').' AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages').' AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title') . ' AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
 		// Handle the list ordering.
-		$ordering	= $this->getState('list.ordering');
-		$direction	= $this->getState('list.direction');
+		$ordering = $this->getState('list.ordering');
+		$direction = $this->getState('list.direction');
 		if (!empty($ordering))
 		{
-			$query->order($db->escape($ordering).' '.$db->escape($direction));
+			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
 		}
 
 		return $query;
@@ -192,9 +189,6 @@ class PodcastManagerModelFeeds extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
-
 		// List state information.
 		parent::populateState('a.id', 'asc');
 	}

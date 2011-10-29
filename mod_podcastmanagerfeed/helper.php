@@ -1,23 +1,23 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  mod_podcastmanagerfeed
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  mod_podcastmanagerfeed
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
 // Import the external requirements
-require_once JPATH_SITE.'/components/com_podcastmanager/helpers/route.php';
+require_once JPATH_SITE . '/components/com_podcastmanager/helpers/route.php';
 jimport('joomla.application.component.model');
-JModel::addIncludePath(JPATH_SITE.'/components/com_podcastmanager/models', 'PodcastManagerModel');
+JModel::addIncludePath(JPATH_SITE . '/components/com_podcastmanager/models', 'PodcastManagerModel');
 
 /**
  * Podcast Manager feed listing module.
@@ -72,7 +72,7 @@ abstract class ModPodcastManagerFeedHelper
 			// Check if the file is from off site
 			if (!preg_match('/^http/', $item->link))
 			{
-				$item->link = JURI::base().$item->filename;
+				$item->link = JURI::base() . $item->filename;
 			}
 		}
 

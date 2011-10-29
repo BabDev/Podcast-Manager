@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -74,11 +74,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.'.$item->id);
-			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.feed.'.$item->id);
+			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->id);
+			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.feed.' . $item->id);
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.feed.'.$item->id) && $item->created_by == $userId;
-			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.feed.'.$item->id) && $canCheckin;
+			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.feed.' . $item->id) && $item->created_by == $userId;
+			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.feed.' . $item->id) && $canCheckin;
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -89,22 +89,22 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
 					} ?>
 					<?php if ($canEdit || $canEditOwn) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id='.$item->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id=' . $item->id); ?>">
 							<?php echo $this->escape($item->name); ?></a>
 					<?php } else {
 							echo $this->escape($item->name);
 					} ?>
 				</td>
 				<td class="center btns">
-					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=1');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=1');?>">
 						<?php echo $item->count_published; ?></a>
 				</td>
 				<td class="center btns">
-					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=0');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=0');?>">
 						<?php echo $item->count_unpublished; ?></a>
 				</td>
 				<td class="center btns">
-					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname='.$item->id.'&filter_published=-2');?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=-2');?>">
 						<?php echo $item->count_trashed; ?></a>
 				</td>
 				<td class="center">

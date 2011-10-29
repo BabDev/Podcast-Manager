@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -47,14 +47,14 @@ class PodcastManagerController extends JController
 	public function display($cachable = false, $urlparams = array())
 	{
 		$input = JFactory::getApplication('administrator')->input;
-		include_once JPATH_COMPONENT.'/helpers/podcastmanager.php';
+		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
 
 		// Load the submenu.
 		PodcastManagerHelper::addSubmenu($input->get('view', 'feeds', 'word'));
 
-		$view		= $input->get('view', 'feeds', 'word');
-		$layout 	= $input->get('layout', 'feeds', 'word');
-		$id			= $input->get('id', null, 'int');
+		$view = $input->get('view', 'feeds', 'word');
+		$layout = $input->get('layout', 'feeds', 'word');
+		$id = $input->get('id', null, 'int');
 
 		// Check for edit form.
 		if ($view == 'feed' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.feed', $id))

@@ -1,23 +1,23 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
 $params = &$this->item->params;
 
 // Add external behaviors
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::core();
 
@@ -41,7 +41,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</legend>
 
 		<div class="filter-search">
-			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_PODCASTMANAGER_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
+			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_PODCASTMANAGER_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;'; ?></label>
 			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
 		</div>
 		<?php endif; ?>
@@ -80,7 +80,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<tr class="cat-list-row<?php echo $i % 2; ?>" >
 		<?php endif;
 		// Check permissions.
-		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.'.$item->id);
+		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
 		?>
 				<td class="title">
 					<p>
@@ -88,7 +88,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $this->params->get('show_item_player')) {
 						echo $item->text;
 					} else {
-						$menuclass = 'podcast'.$this->pageclass_sfx;
+						$menuclass = 'podcast' . $this->pageclass_sfx;
 						$link = JURI::base().$item->filename; ?>
 						<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
 						<?php echo $this->escape($item->title); ?></a>

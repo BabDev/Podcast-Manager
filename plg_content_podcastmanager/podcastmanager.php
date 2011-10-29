@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  plg_content_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  plg_content_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -65,7 +65,7 @@ class PlgContentPodcastManager extends JPlugin
 		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1)
 		{
 			$article->text = $article->player;
-			$feedView	= 'com_podcastmanager.feed';
+			$feedView = 'com_podcastmanager.feed';
 		}
 
 		// Simple performance check to determine whether plugin should process further
@@ -75,7 +75,7 @@ class PlgContentPodcastManager extends JPlugin
 		}
 
 		// Expression to search for
-		$regex	= '/\{(podcast) (.*)\}/i';
+		$regex = '/\{(podcast) (.*)\}/i';
 
 		// Find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches);
@@ -85,7 +85,7 @@ class PlgContentPodcastManager extends JPlugin
 		foreach ($matches as $id => $podcast)
 		{
 			// Set $i for multiple {podcast instances
-			$i	= 0;
+			$i = 0;
 
 			// We only want to process ID 0
 			if ($id > 0)
@@ -97,19 +97,19 @@ class PlgContentPodcastManager extends JPlugin
 			if (($podmanparams->get('linkhandling') == 'html5') && ($i == 0))
 			{
 				// Initialize variables
-				$document	= JFactory::getDocument();
+				$document = JFactory::getDocument();
 
 				// Define non debug settings
-				$file		= 'soundmanager2-nodebug-jsmin.js';
-				$debugMode	= 'false';
-				$player		= 'player.js';
+				$file = 'soundmanager2-nodebug-jsmin.js';
+				$debugMode = 'false';
+				$player = 'player.js';
 
 				// If site debug enabled, enable SoundManager debug
 				if (JDEBUG)
 				{
-					$file		= 'soundmanager2.js';
-					$debugMode	= 'true';
-					$player		= 'player-uncompressed.js';
+					$file = 'soundmanager2.js';
+					$debugMode = 'true';
+					$player = 'player-uncompressed.js';
 				}
 
 				// Declare the stylesheets
@@ -117,17 +117,17 @@ class PlgContentPodcastManager extends JPlugin
 				JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
 
 				// Declare the scripts
-				JHtml::script('plugins/content/podcastmanager/soundmanager/script/'.$file, false, false);
+				JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $file, false, false);
 				// Check if the custom tags are already defined first; if not, add them
-				if (!in_array('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>', $document->_custom))
+				if (!in_array('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>', $document->_custom))
 				{
-					$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = '.$debugMode.';</script>');
+					$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>');
 				}
-				if (!in_array('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom))
+				if (!in_array('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom))
 				{
-					$document->addCustomTag('<script type="text/javascript">soundManager.url = "'.JURI::base().'plugins/content/podcastmanager/soundmanager/swf/"</script>');
+					$document->addCustomTag('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>');
 				}
-				JHtml::script('plugins/content/podcastmanager/soundmanager/script/'.$player, false, false);
+				JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $player, false, false);
 			}
 
 			foreach ($podcast as $episode)
@@ -135,33 +135,33 @@ class PlgContentPodcastManager extends JPlugin
 				// Check if we're in the Podcast Manager Feed view; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
 				{
-					$podtitle		= $article->title;
-					$podfilepath	= $article->filename;
+					$podtitle = $article->title;
+					$podfilepath = $article->filename;
 				}
 				else
 				{
 					// Retrieve the title from the object and prepare it for a DB query
 					// 9 offset for {podcast marker, -1 offset for closing }
-					$podtitle	= substr($episode, 9, -1);
+					$podtitle = substr($episode, 9, -1);
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
 					if ($context == 'com_k2.item' && strpos($episode, '{K2Splitter'))
 					{
-						$podtitle	= substr($episode, 9, -17);
+						$podtitle = substr($episode, 9, -17);
 					}
 
 					// Query the DB for the title string, returning the filename
-					$db 	= JFactory::getDBO();
-					$query	= $db->getQuery(true);
+					$db = JFactory::getDBO();
+					$query = $db->getQuery(true);
 					$query->select($db->quoteName('filename'));
 					$query->from($db->quoteName('#__podcastmanager'));
-					$query->where($db->quoteName('title').' = '.$db->quote($podtitle));
+					$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
 					$db->setQuery($query);
 					if (!$db->loadObject())
 					{
 						// Write the DB error to the log
-						JLog::add((JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle).'  '.$db->stderr(true)), JLog::ERROR);
+						JLog::add((JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle) . '  ' . $db->stderr(true)), JLog::ERROR);
 
 						JError::raiseNotice(null, JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle));
 					}
@@ -179,11 +179,11 @@ class PlgContentPodcastManager extends JPlugin
 					// Fix for K2 Item
 					if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
 					{
-						$string	= JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+						$string = JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
 					}
 					else
 					{
-						$string	= $matches[0][$i];
+						$string = $matches[0][$i];
 					}
 
 					// Replace the {podcast marker with the player
@@ -201,7 +201,7 @@ class PlgContentPodcastManager extends JPlugin
 			}
 		}
 
-	return true;
+		return true;
 	}
 }
 
@@ -268,7 +268,7 @@ class PodcastManagerPlayer
 	 * @var    array
 	 * @since  1.6
 	 */
-	protected $fileTypes = array (
+	protected $fileTypes = array(
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
 		'mov' => 'video/quicktime',
@@ -288,16 +288,16 @@ class PodcastManagerPlayer
 	public function __construct(&$podmanparams, $podfilepath, $podtitle)
 	{
 		$this->podmanparams = $podmanparams;
-		$this->podfilepath	= $podfilepath;
-		$playerType			= $this->podmanparams->get('linkhandling', 'player');
+		$this->podfilepath = $podfilepath;
+		$playerType = $this->podmanparams->get('linkhandling', 'player');
 
 		if (in_array($playerType, $this->validTypes))
 		{
 			$this->playerType = $playerType;
 		}
 
-		$this->fileURL		= $this->determineURL($podfilepath);
-		$this->podtitle		= $podtitle;
+		$this->fileURL = $this->determineURL($podfilepath);
+		$this->podtitle = $podtitle;
 	}
 
 	/**
@@ -326,15 +326,15 @@ class PodcastManagerPlayer
 	protected function determineURL($podfilepath)
 	{
 		// Convert the file path to a string
-		$tempfile	= $podfilepath;
+		$tempfile = $podfilepath;
 
 		if (isset($tempfile->filename))
 		{
-			$filepath	= $tempfile->filename;
+			$filepath = $tempfile->filename;
 		}
 		else
 		{
-			$filepath	= $tempfile;
+			$filepath = $tempfile;
 		}
 
 		$filename = $filepath;
@@ -343,12 +343,12 @@ class PodcastManagerPlayer
 		if (!preg_match('/^http/', $filename))
 		{
 			// The file is stored on site, check if it exists
-			$filepath	= JPATH_ROOT.'/'.$filename;
+			$filepath = JPATH_ROOT . '/' . $filename;
 
 			// Check if the file exists
 			if (JFile::exists($filepath))
 			{
-				$filename = JURI::base().$filename;
+				$filename = JURI::base() . $filename;
 			}
 		}
 
@@ -379,7 +379,7 @@ class PodcastManagerPlayer
 	{
 		$player = '<div id="sm2-container">'
 				. '<div class="sm2-player">'
-				. '<a class="sm2_link" href="'.$this->fileURL.'">'.htmlspecialchars($this->podtitle).'</a>'
+				. '<a class="sm2_link" href="' . $this->fileURL . '">' . htmlspecialchars($this->podtitle) . '</a>'
 				. '</div>'
 				. '</div>';
 		return $player;
@@ -394,7 +394,7 @@ class PodcastManagerPlayer
 	 */
 	protected function link()
 	{
-		return '<a href="'.$this->fileURL.'">'.htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))).'</a>';
+		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))) . '</a>';
 	}
 
 	/**
@@ -409,10 +409,10 @@ class PodcastManagerPlayer
 		$width = $this->podmanparams->get('playerwidth', 400);
 		$height = $this->podmanparams->get('playerheight', 15);
 
-		$playerURL = JURI::base().'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
+		$playerURL = JURI::base() . 'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
-		$player	= '<object type="application/x-shockwave-flash" width="'.$width.'" height="'.$height.'" data="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'">'
-				. '<param name="movie" value="'.$playerURL.'?song_url='.$this->fileURL.'&song_title='.$this->podtitle.'&player_title='.$this->podtitle.'" />'
+		$player	= '<object type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" data="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '">'
+				. '<param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '" />'
 				. '</object>';
 
 		return $player;
@@ -427,22 +427,22 @@ class PodcastManagerPlayer
 	 */
 	protected function QTplayer()
 	{
-		$tempfile	= get_object_vars($this->podfilepath);
-		$filepath	= substr(implode('', $tempfile), 0);
+		$tempfile = get_object_vars($this->podfilepath);
+		$filepath = substr(implode('', $tempfile), 0);
 		$ext = substr($filepath, strlen($filepath) - 3);
 
 		$width = $this->podmanparams->get('playerwidth', 320);
 		$height = $this->podmanparams->get('playerheight', 240);
 
-		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="'.$width.'" height="'.$height.'" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
-		. '<param name="src" value="'.$this->fileURL.'" />'
-		. '<param name="href" value="'.$this->fileURL.'" />'
+		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $width . '" height="' . $height . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
+		. '<param name="src" value="' . $this->fileURL . '" />'
+		. '<param name="href" value="' . $this->fileURL . '" />'
 		. '<param name="scale" value="aspect" />'
 		. '<param name="controller" value="true" />'
 		. '<param name="autoplay" value="false" />'
 		. '<param name="bgcolor" value="000000" />'
 		. '<param name="pluginspage" value="http://www.apple.com/quicktime/download/" />'
-		. '<embed src="'.$this->fileURL.'" width="'.$width.'" height="'.$height.'" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="'.$this->fileURL.'" type="'.$this->fileTypes[$ext].'" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
+		. '<embed src="' . $this->fileURL . '" width="' . $width . '" height="' . $height . '" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="' . $this->fileURL . '" type="' . $this->fileTypes[$ext] . '" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
 		. '</object>';
 
 		return $player;

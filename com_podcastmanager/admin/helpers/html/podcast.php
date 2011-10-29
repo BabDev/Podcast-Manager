@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('JPATH_LIBRARIES') or die;
 
@@ -41,30 +41,30 @@ abstract class JHtmlPodcast
 	 *
 	 * @since   1.8
 	 */
-	public static function feeds($extension, $config = array('filter.published' => array(0,1)))
+	public static function feeds($extension, $config = array('filter.published' => array(0, 1)))
 	{
-		$hash = md5($extension.'.'.serialize($config));
+		$hash = md5($extension . '.' . serialize($config));
 
 		if (!isset(self::$items[$hash]))
 		{
-			$config	= (array) $config;
-			$db		= JFactory::getDbo();
-			$query	= $db->getQuery(true);
+			$config = (array) $config;
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
 
-			$query->select($db->quoteName('a.id').', '.$db->quoteName('a.name'));
-			$query->from($db->quoteName('#__podcastmanager_feeds').' AS a');
+			$query->select($db->quoteName('a.id') . ', ' . $db->quoteName('a.name'));
+			$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 
 			// Filter on the published state
 			if (isset($config['filter.published']))
 			{
 				if (is_numeric($config['filter.published']))
 				{
-					$query->where($db->quoteName('a.published').' = '.(int) $config['filter.published']);
+					$query->where($db->quoteName('a.published') . ' = ' . (int) $config['filter.published']);
 				}
 				elseif (is_array($config['filter.published']))
 				{
 					JArrayHelper::toInteger($config['filter.published']);
-					$query->where($db->quoteName('a.published').' IN ('.implode(',', $config['filter.published']).')');
+					$query->where($db->quoteName('a.published') . ' IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
 

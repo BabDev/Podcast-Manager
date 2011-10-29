@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -46,11 +46,11 @@ abstract class PodcastManagerHelperRoute
 	public static function getFeedEditRoute($id, $return = null)
 	{
 		// Create the link.
-		$link = 'index.php?option=com_podcastmanager&task=form.edit&layout=edit&feedname='.$id;
+		$link = 'index.php?option=com_podcastmanager&task=form.edit&layout=edit&feedname=' . $id;
 
 		if ($return)
 		{
-			$link .= '&return='.$return;
+			$link .= '&return=' . $return;
 		}
 
 		return $link;
@@ -68,19 +68,19 @@ abstract class PodcastManagerHelperRoute
 	public static function getPodcastRoute($id)
 	{
 		$needles = array(
-			'podcast'  => array((int) $id)
+			'podcast' => array((int) $id)
 		);
 
 		// Create the link
-		$link = 'index.php?option=com_podcastmanager&view=podcast&id='.$id;
+		$link = 'index.php?option=com_podcastmanager&view=podcast&id=' . $id;
 
 		if ($item = self::findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 		elseif ($item = self::findItem())
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -99,11 +99,11 @@ abstract class PodcastManagerHelperRoute
 	public static function getPodcastEditRoute($id, $return = null)
 	{
 		// Create the link.
-		$link = 'index.php?option=com_podcastmanager&task=podcast.edit&layout=edit&p_id='.$id;
+		$link = 'index.php?option=com_podcastmanager&task=podcast.edit&layout=edit&p_id=' . $id;
 
 		if ($return)
 		{
-			$link .= '&return='.$return;
+			$link .= '&return=' . $return;
 		}
 
 		return $link;
@@ -120,16 +120,16 @@ abstract class PodcastManagerHelperRoute
 	 */
 	protected static function findItem($needles = null)
 	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu('site');
+		$app = JFactory::getApplication();
+		$menus = $app->getMenu('site');
 
 		// Prepare the reverse lookup array.
 		if (self::$lookup === null)
 		{
 			self::$lookup = array();
 
-			$component	= JComponentHelper::getComponent('com_podcastmanager');
-			$items		= $menus->getItems('component_id', $component->id);
+			$component = JComponentHelper::getComponent('com_podcastmanager');
+			$items = $menus->getItems('component_id', $component->id);
 			foreach ($items as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
@@ -157,9 +157,9 @@ abstract class PodcastManagerHelperRoute
 				{
 					foreach ($ids as $id)
 					{
-						if (isset(self::$lookup[$view][(int)$id]))
+						if (isset(self::$lookup[$view][(int) $id]))
 						{
-							return self::$lookup[$view][(int)$id];
+							return self::$lookup[$view][(int) $id];
 						}
 					}
 				}

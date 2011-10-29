@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -37,14 +37,14 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$user		= JFactory::getUser();
-		$feedId		= JArrayHelper::getValue($data, 'feedname', JFactory::getApplication()->input->get('filter_feedname', '', 'int'), 'int');
-		$allow		= null;
+		$user = JFactory::getUser();
+		$feedId = JArrayHelper::getValue($data, 'feedname', JFactory::getApplication()->input->get('filter_feedname', '', 'int'), 'int');
+		$allow = null;
 
 		if ($feedId)
 		{
 			// If the feed has been passed in the data or URL check it.
-			$allow	= $user->authorise('core.create', 'com_podcastmanager.feed.'.$feedId);
+			$allow = $user->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
 		}
 
 		if ($allow === null)
@@ -71,26 +71,26 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Initialise variables.
-		$recordId	= (int) isset($data[$key]) ? $data[$key] : 0;
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
+		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$user = JFactory::getUser();
+		$userId = $user->get('id');
 
 		// Check feed edit permission.
-		if ($user->authorise('core.edit', 'com_podcastmanager.podcast.'.$recordId))
+		if ($user->authorise('core.edit', 'com_podcastmanager.podcast.' . $recordId))
 		{
 			return true;
 		}
 
 		// Fallback on edit.own.
 		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', 'com_podcastmanager.podcast.'.$recordId) || $user->authorise('core.edit.own', 'com_podcastmanager'))
+		if ($user->authorise('core.edit.own', 'com_podcastmanager.podcast.' . $recordId) || $user->authorise('core.edit.own', 'com_podcastmanager'))
 		{
 			// Now test the owner is the user.
-			$ownerId	= (int) isset($data['created_by']) ? $data['created_by'] : 0;
+			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
 			if (empty($ownerId) && $recordId)
 			{
 				// Need to do a lookup from the model.
-				$record		= $this->getModel()->getItem($recordId);
+				$record = $this->getModel()->getItem($recordId);
 
 				if (empty($record))
 				{
@@ -125,10 +125,10 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
-		$model	= $this->getModel('Podcast', 'PodcastManagerModel', array());
+		$model = $this->getModel('Podcast', 'PodcastManagerModel', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_podcastmanager&view=podcasts'.$this->getRedirectToListAppend(), false));
+		$this->setRedirect(JRoute::_('index.php?option=com_podcastmanager&view=podcasts' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}

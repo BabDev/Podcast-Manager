@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -185,7 +185,7 @@ class PodcastManagerModelForm extends JModelForm
 		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
-		$params	= $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		$this->setState('layout', $input->get('layout', '', 'cmd'));
@@ -204,10 +204,10 @@ class PodcastManagerModelForm extends JModelForm
 	{
 		// Initialise variables;
 		$dispatcher = JDispatcher::getInstance();
-		$table		= $this->getTable();
-		$key		= $table->getKeyName();
-		$pk			= (!empty($data[$key])) ? $data[$key] : (int)$this->getState($this->getName().'.id');
-		$isNew		= true;
+		$table = $this->getTable();
+		$key = $table->getKeyName();
+		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		$isNew = true;
 
 		// Include the content plugins for the on save events.
 		JPluginHelper::importPlugin('content');
@@ -215,7 +215,7 @@ class PodcastManagerModelForm extends JModelForm
 		// Allow an exception to be thrown.
 		try
 		{
-		// Load the row if saving an existing record.
+			// Load the row if saving an existing record.
 			if ($pk > 0)
 			{
 				$table->load($pk);
@@ -237,7 +237,7 @@ class PodcastManagerModelForm extends JModelForm
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$result = $dispatcher->trigger($this->event_before_save, array($this->option.'.'.$this->name, &$table, $isNew));
+			$result = $dispatcher->trigger('onContentBeforeSave', array($this->option . '.' . $this->name, &$table, $isNew));
 			if (in_array(false, $result, true))
 			{
 				$this->setError($table->getError());
@@ -255,7 +255,7 @@ class PodcastManagerModelForm extends JModelForm
 			$this->cleanCache();
 
 			// Trigger the onContentAfterSave event.
-			$dispatcher->trigger($this->event_after_save, array($this->option.'.'.$this->name, &$table, $isNew));
+			$dispatcher->trigger('onContentAfterSave', array($this->option . '.' . $this->name, &$table, $isNew));
 		}
 		catch (Exception $e)
 		{
@@ -267,9 +267,9 @@ class PodcastManagerModelForm extends JModelForm
 
 		if (isset($table->$pkName))
 		{
-			$this->setState($this->getName().'.id', $table->$pkName);
+			$this->setState($this->getName() . '.id', $table->$pkName);
 		}
-		$this->setState($this->getName().'.new', $isNew);
+		$this->setState($this->getName() . '.new', $isNew);
 
 		return true;
 	}
