@@ -6,22 +6,6 @@
 		label="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_LABEL"
 		description="COM_PODCASTMANAGER_FIELDSET_CONFIG_OPTIONS_DESCRIPTION">
 		<field
-			name="cache"
-			type="radio"
-			default="1"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_DESCRIPTION">
-			<option	value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-			name="cache_time"
-			type="text"
-			size="8"
-			default="3600"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_CACHE_TIME_DESCRIPTION" />
-		<field
 			name="linkhandling"
 			type="list"
 			default="link"

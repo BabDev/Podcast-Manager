@@ -56,15 +56,6 @@ class PodcastManagerViewFeed extends JView
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 
-		if ($params->get('cache', true))
-		{
-			$cache = JFactory::getCache('com_podcastmanager', 'output');
-			if ($cache->start('feed', 'com_podcastmanager'))
-			{
-				return;
-			}
-		}
-
 		$xw = new xmlWriter;
 		$xw->openMemory();
 		$xw->setIndent(true);
