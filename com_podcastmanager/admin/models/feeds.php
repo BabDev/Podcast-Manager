@@ -89,11 +89,11 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the published menu counts.
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName('p.feedname') . ', COUNT(DISTINCT p.id) AS count_published');
-		$query->from($db->quoteName('#__podcastmanager') . ' AS p');
-		$query->where($db->quoteName('p.published') . ' = 1');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
-		$query->group($db->quoteName('p.feedname'));
+		$query->select('p.feedname, COUNT(DISTINCT p.id) AS count_published');
+		$query->from('#__podcastmanager AS p');
+		$query->where('p.published = 1');
+		$query->where('p.feedname IN (' . $feedNames . ')');
+		$query->group('p.feedname');
 		$db->setQuery($query);
 		$countPublished = $db->loadAssocList('feedname', 'count_published');
 
@@ -105,8 +105,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the unpublished menu counts.
 		$query->clear('where');
-		$query->where($db->quoteName('p.published') . ' = 0');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
+		$query->where('p.published = 0');
+		$query->where('p.feedname IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
@@ -118,8 +118,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the trashed menu counts.
 		$query->clear('where');
-		$query->where($db->quoteName('p.published') . ' = -2');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
+		$query->where('p.published = -2');
+		$query->where('p.feedname IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
@@ -158,13 +158,13 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+		$query->from('#__podcastmanager_feeds AS a');
 
-		$query->group($db->quoteName('a.id'));
+		$query->group('a.id');
 
 		// Join over the language
-		$query->select($db->quoteName('l.title') . ' AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
 
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');

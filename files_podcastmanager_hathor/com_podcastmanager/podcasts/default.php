@@ -14,6 +14,9 @@
 
 defined('_JEXEC') or die;
 
+// Styles specific to the podcasts view
+JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/podcasts/podcasts.css', false, false, false);
+
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');

@@ -34,16 +34,15 @@ abstract class JHtmlPodcast
 	/**
 	 * Returns an array of categories for the given extension.
 	 *
-	 * @param   string  $extension  The extension option.
-	 * @param   array   $config     An array of configuration options. By default, only published and unpulbished categories are returned.
+	 * @param   array  $config  An array of configuration options. By default, only published and unpulbished categories are returned.
 	 *
 	 * @return  array  An array of items
 	 *
 	 * @since   1.8
 	 */
-	public static function feeds($extension, $config = array('filter.published' => array(0, 1)))
+	public static function feeds($config = array('filter.published' => array(0, 1)))
 	{
-		$hash = md5($extension . '.' . serialize($config));
+		$hash = md5('com_podcastmanager.' . serialize($config));
 
 		if (!isset(self::$items[$hash]))
 		{

@@ -75,14 +75,32 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		{
 			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
 
-			if ($cmd == 'c' && !$this->batchCopy($commands['feed_id'], $pks))
+			if ($cmd == 'c')
 			{
-				return false;
+				$result = $this->batchCopy($commands['feed_id'], $pks);
+				if (is_array($result))
+				{
+					$pks = $result;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			elseif ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
 			{
 				return false;
 			}
+			$done = true;
+		}
+
+		if (!empty($commands['language_id']))
+		{
+			if (!$this->batchLanguage($commands['language_id'], $pks))
+			{
+				return false;
+			}
+
 			$done = true;
 		}
 
@@ -104,7 +122,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @param   integer  $value  The new feed.
 	 * @param   array    $pks    An array of row IDs.
 	 *
-	 * @return  boolean  True if successful, false otherwise and internal error is set.
+	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
 	 * @since   1.8
 	 */
@@ -113,6 +131,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		$feedId = (int) $value;
 
 		$table = $this->getTable();
+		$i = 0;
 
 		// Check that the category exists
 		if ($feedId != '0')
@@ -195,12 +214,19 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				$this->setError($table->getError());
 				return false;
 			}
+
+			// Get the new item ID
+			$newId = $table->get('id');
+
+			// Add the new ID to the array
+			$newIds[$i]	= $newId;
+			$i++;
 		}
 
 		// Clean the cache
 		$this->cleanCache();
 
-		return true;
+		return $newIds;
 	}
 
 	/**

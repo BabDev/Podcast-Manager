@@ -18,3 +18,7 @@
 .icon-48-podcastmanager {
 	background-image: url(../images/icons/icon-48-podcastmanager.png) !important;
 }
+
+select#batch-feed-id {
+	margin-right: 30px;
+}
