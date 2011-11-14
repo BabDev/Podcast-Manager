@@ -48,9 +48,6 @@ class PlgPodcastMediaUser extends JPlugin
 	 */
 	function onPathFind()
 	{
-		$user = JFactory::getUser();
-		$username = $user->get('username');
-
-		return $username;
+		return JFactory::getUser()->get('username');
 	}
 }
