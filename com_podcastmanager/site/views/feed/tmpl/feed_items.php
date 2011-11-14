@@ -63,12 +63,17 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php if ($this->params->get('show_headings')) : ?>
 		<thead>
 			<tr>
-				<th class="title">
+				<th class="list-title">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th class="title">
+				<th class="list-date">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.publish_up', $listDirn, $listOrder); ?>
 				</th>
+				<?php if ($this->params->get('show_item_author')) : ?>
+				<th class="list-author">
+					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'a.itAuthor', $listDirn, $listOrder); ?>
+				</th>
+				<?php endif; ?>
 			</tr>
 		</thead>
 		<?php endif; ?>
@@ -82,7 +87,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		// Check permissions.
 		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
 		?>
-				<td class="title">
+				<td class="list-title">
 					<p>
 					<?php // Compute the correct link
 					if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $this->params->get('show_item_player')) {
@@ -105,9 +110,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<p><?php echo nl2br($item->itSummary); ?></p>
 					<?php endif; ?>
 				</td>
-				<td>
+				<td class="list-date">
 					<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
+				<?php if ($this->params->get('show_item_author')) : ?>
+				<td class="list-author">
+					<?php echo $item->itAuthor; ?>
+				</td>
+				<?php endif; ?>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

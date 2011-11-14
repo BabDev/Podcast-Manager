@@ -1,5 +1,7 @@
 14-November-2011 Michael Babker
 ! Security fixes for media component from J! 1.7.3
+# [#26] Fix front-end filter
++ [#27] Add Author to front-end grid
 
 26-October-2011 Michael Babker
 + Allow all feeds to be displayed in front end views

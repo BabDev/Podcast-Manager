@@ -62,6 +62,12 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_item_author" type="list" default="1"
+				label="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_DESCRIPTION" >
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
 		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
 			<field name="filter_field" type="list"
@@ -71,6 +77,7 @@
 				<option value="hide">JHIDE</option>
 				<option value="title">JGLOBAL_TITLE</option>
 				<option value="date">JDATE</option>
+				<option value="author">JAUTHOR</option>
 			</field>
 			<field name="show_pagination_limit" type="list"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
