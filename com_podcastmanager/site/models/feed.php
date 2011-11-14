@@ -143,6 +143,29 @@ class PodcastManagerModelFeed extends JModelList
 			$query->where($db->quoteName('a.language') . ' in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
+		// Process user-entered filters for the HTML view
+		$params = $this->getState('params');
+
+		if ((is_object($params)) && ($params->get('filter_field') != 'hide') && ($filter = $this->getState('list.filter')))
+		{
+			// clean filter variable
+			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
+
+			switch ($params->get('filter_field'))
+			{
+				case 'author':
+					$query->where(
+						'LOWER( a.itAuthor ) LIKE ' . $filter.' '
+					);
+					break;
+
+				case 'title':
+				default: // default to 'title' if parameter is not valid
+					$query->where('LOWER( a.title ) LIKE ' . $filter);
+					break;
+			}
+		}
+
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering', 'a.publish_up');
 		$direction = $this->getState('list.direction', 'DESC');
@@ -181,6 +204,7 @@ class PodcastManagerModelFeed extends JModelList
 		$limitstart = $input->get('limitstart', 0, 'int');
 		$this->setState('list.start', $limitstart);
 
+		// Item sort and order
 		$orderCol = $input->get('filter_order', 'a.publish_up', 'cmd');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -205,6 +229,10 @@ class PodcastManagerModelFeed extends JModelList
 			$this->setState('filter.publish_date', true);
 		}
 
+		// Optional filter text
+		$this->setState('list.filter', $input->get('filter-search', '', 'string'));
+
+		// Language
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the parameters.
