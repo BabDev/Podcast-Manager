@@ -32,11 +32,11 @@ abstract class JHtmlPodcast
 	protected static $items = array();
 
 	/**
-	 * Returns an array of categories for the given extension.
+	 * Returns a list of feeds.
 	 *
-	 * @param   array  $config  An array of configuration options. By default, only published and unpulbished categories are returned.
+	 * @param   array  $config  An array of configuration options. By default, only published and unpublished feeds are returned.
 	 *
-	 * @return  array  An array of items
+	 * @return  array  An array of items.
 	 *
 	 * @since   1.8
 	 */
@@ -50,24 +50,24 @@ abstract class JHtmlPodcast
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select($db->quoteName('a.id') . ', ' . $db->quoteName('a.name'));
-			$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+			$query->select('a.id, a.name');
+			$query->from('#__podcastmanager_feeds AS a');
 
 			// Filter on the published state
 			if (isset($config['filter.published']))
 			{
 				if (is_numeric($config['filter.published']))
 				{
-					$query->where($db->quoteName('a.published') . ' = ' . (int) $config['filter.published']);
+					$query->where('a.published = ' . (int) $config['filter.published']);
 				}
 				elseif (is_array($config['filter.published']))
 				{
 					JArrayHelper::toInteger($config['filter.published']);
-					$query->where($db->quoteName('a.published') . ' IN (' . implode(',', $config['filter.published']) . ')');
+					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
 
-			$query->order($db->quoteName('a.id'));
+			$query->order('a.id');
 
 			$db->setQuery($query);
 			$items = $db->loadObjectList();

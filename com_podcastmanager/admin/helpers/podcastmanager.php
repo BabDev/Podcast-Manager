@@ -71,9 +71,9 @@ class PodcastManagerHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('COUNT(extension_id)');
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'));
-		$query->where($db->quoteName('enabled') . ' = 1');
+		$query->from('#__extensions');
+		$query->where('folder = ' . $db->quote('podcastmedia'));
+		$query->where('enabled = 1');
 		$db->setQuery($query);
 		$count = $db->loadResult();
 

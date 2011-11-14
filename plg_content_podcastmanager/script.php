@@ -69,9 +69,9 @@ class PlgContentPodcastManagerInstallerScript
 	{
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__extensions'));
-		$query->set($db->quoteName('enabled') . ' = 1');
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_content_podcastmanager'));
+		$query->update('#__extensions');
+		$query->set('enabled = 1');
+		$query->where('name = ' . $db->quote('plg_content_podcastmanager'));
 		$db->setQuery($query);
 		if (!$db->query())
 		{

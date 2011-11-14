@@ -83,9 +83,9 @@ class PodcastManagerTableFeed extends JTable
 		{
 			// Build the query to get the asset id for the component.
 			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__assets'));
-			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
+			$query->select('id');
+			$query->from('#__assets');
+			$query->where('name = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);

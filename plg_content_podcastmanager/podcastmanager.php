@@ -154,9 +154,9 @@ class PlgContentPodcastManager extends JPlugin
 					// Query the DB for the title string, returning the filename
 					$db = JFactory::getDBO();
 					$query = $db->getQuery(true);
-					$query->select($db->quoteName('filename'));
-					$query->from($db->quoteName('#__podcastmanager'));
-					$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
+					$query->select('filename');
+					$query->from('#__podcastmanager');
+					$query->where('title = ' . $db->quote($podtitle));
 					$db->setQuery($query);
 					if (!$db->loadObject())
 					{

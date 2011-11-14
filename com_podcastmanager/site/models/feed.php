@@ -46,7 +46,9 @@ class PodcastManagerModelFeed extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'title', 'a.title', 'publish_up', 'a.publish_up',
+				'title', 'a.title',
+				'publish_up', 'a.publish_up',
+				'itAuthor', 'a.itAuthor'
 			);
 		}
 
@@ -68,10 +70,10 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+		$query->from('#__podcastmanager_feeds AS a');
 
 		$feedId = $this->getState('feed.id');
-		$query->where($db->quoteName('a.id') . ' = ' . (int) $feedId);
+		$query->where('a.id = ' . (int) $feedId);
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
@@ -80,22 +82,7 @@ class PodcastManagerModelFeed extends JModelList
 	}
 
 	/**
-	 * Method to get a list of items.
-	 *
-	 * @return  mixed  An array of objects on success, false on failure.
-	 *
-	 * @since   1.8
-	 */
-	public function getItems()
-	{
-		// Invoke the parent getItems method to get the main list
-		$items = parent::getItems();
-
-		return $items;
-	}
-
-	/**
-	 * Method to get a JDatabaseQuery object for retrieving the data set from a database.
+	 * Method to get a database object for retrieving the data set from a database.
 	 *
 	 * @return  JDatabaseQuery  A JDatabaseQuery object to retrieve the data set.
 	 *
@@ -109,23 +96,23 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
+		$query->from('#__podcastmanager AS a');
 
 		// Join over the users for the modified_by name.
-		$query->join('LEFT', $db->quoteName('#__users') . ' AS uam ON ' . $db->quoteName('uam.id') . ' = ' . $db->quoteName('a.modified_by'));
+		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
 		if (is_numeric($feed))
 		{
-			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feed);
+			$query->where('a.feedname = ' . (int) $feed);
 		}
 
 		// Filter by state
 		$state = $this->getState('filter.published');
 		if (is_numeric($state))
 		{
-			$query->where($db->quoteName('a.published') . ' = ' . (int) $state);
+			$query->where('a.published = ' . (int) $state);
 		}
 
 		// Filter by start date.
@@ -134,13 +121,13 @@ class PodcastManagerModelFeed extends JModelList
 
 		if ($this->getState('filter.publish_date'))
 		{
-			$query->where('(' . $db->quoteName('a.publish_up') . ' = ' . $nullDate . ' OR ' . $db->quoteName('a.publish_up') . ' <= ' . $nowDate . ')');
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where($db->quoteName('a.language') . ' in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->where('a.language IN (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
 		// Process user-entered filters for the HTML view
@@ -154,9 +141,7 @@ class PodcastManagerModelFeed extends JModelList
 			switch ($params->get('filter_field'))
 			{
 				case 'author':
-					$query->where(
-						'LOWER( a.itAuthor ) LIKE ' . $filter.' '
-					);
+					$query->where('LOWER( a.itAuthor ) LIKE ' . $filter);
 					break;
 
 				case 'title':
