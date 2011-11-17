@@ -1,44 +1,46 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmedia
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
+jimport('joomla.application.component.helper');
 
 /**
  * HTML View class for the Podcast Media component
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmedia
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ * @since       1.6
  */
 class PodcastMediaViewMedia extends JView
 {
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl	The name of the template file to parse
+	 * @param   string  $tpl  The name of the template file to parse
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  mixed  A string if successful, otherwise a JError object.
+	 *
+	 * @since   1.6
 	 */
 	function display($tpl = null)
 	{
-		$app			= JFactory::getApplication();
-		$medmanparams	= JComponentHelper::getParams('com_media');
+		$app = JFactory::getApplication();
+		$medmanparams = JComponentHelper::getParams('com_media');
 
-		$lang	= JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 
 		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
 
@@ -49,62 +51,73 @@ class PodcastMediaViewMedia extends JView
 
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 		JHtml::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
-		JHtml::_('stylesheet','media/mediamanager.css', array(), true);
-		if ($lang->isRTL()) :
-			JHtml::_('stylesheet','media/mediamanager_rtl.css', array(), true);
-		endif;
+		JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
+		if ($lang->isRTL())
+		{
+			JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
+		}
 
 		JHtml::_('behavior.modal');
-		$document->addScriptDeclaration("
-		window.addEvent('domready', function() {
-			document.preview = SqueezeBox;
-		});");
+		$document->addScriptDeclaration(
+			"window.addEvent('domready', function() {
+				document.preview = SqueezeBox;
+			});"
+		);
 
-		JHtml::_('script','system/mootree.js', true, true, false, false);
-		JHtml::_('stylesheet','system/mootree.css', array(), true);
-		if ($lang->isRTL()) :
-			JHtml::_('stylesheet','media/mootree_rtl.css', array(), true);
-		endif;
+		JHtml::_('script', 'system/mootree.js', true, true, false, false);
+		JHtml::_('stylesheet', 'system/mootree.css', array(), true);
+		if ($lang->isRTL())
+		{
+			JHtml::_('stylesheet', 'media/mootree_rtl.css', array(), true);
+		}
 
-		if ($medmanparams->get('enable_flash', 1)) {
+		if ($medmanparams->get('enable_flash', 1))
+		{
 			$fileTypes = 'mp3,m4a,mov,mp4,m4v';
 			$types = explode(',', $fileTypes);
-			$displayTypes = '';		// this is what the user sees
-			$filterTypes = '';		// this is what controls the logic
+			$displayTypes = ''; // this is what the user sees
+			$filterTypes = ''; // this is what controls the logic
 			$firstType = true;
-			foreach($types AS $type) {
-				if(!$firstType) {
+			foreach ($types AS $type)
+			{
+				if (!$firstType)
+				{
 					$displayTypes .= ', ';
 					$filterTypes .= '; ';
-				} else {
+				}
+				else
+				{
 					$firstType = false;
 				}
-				$displayTypes .= '*.'.$type;
-				$filterTypes .= '*.'.$type;
+				$displayTypes .= '*.' . $type;
+				$filterTypes .= '*.' . $type;
 			}
-			$typeString = '{ \''.JText::_('COM_PODCASTMEDIA_FILES','true').' ('.$displayTypes.')\': \''.$filterTypes.'\' }';
+			$typeString = '{ \'' . JText::_('COM_PODCASTMEDIA_FILES', 'true') . ' (' . $displayTypes . ')\': \'' . $filterTypes . '\' }';
 
-			JHtml::_('behavior.uploader', 'upload-flash',
-				array(
-					'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'mediamanager-form\').folder.value}); }',
-					'onComplete' 	=> 'function(){ PodcastMediaManager.refreshFrame(); }',
-					'targetURL' 	=> '\\document.id(\'uploadForm\').action',
-					'typeFilter' 	=> $typeString,
-					'fileSizeMax'	=> (int) ($medmanparams->get('upload_maxsize',0) * 1024 * 1024),
-				)
+			JHtml::_(
+				'behavior.uploader', 'upload-flash', array(
+															'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'mediamanager-form\').folder.value}); }',
+															'onComplete' => 'function(){ PodcastMediaManager.refreshFrame(); }',
+															'targetURL' => '\\document.id(\'uploadForm\').action',
+															'typeFilter' => $typeString,
+															'fileSizeMax' => (int) ($medmanparams->get('upload_maxsize', 0) * 1024 * 1024)
+														)
 			);
 		}
 
-		if (DS == '\\') {
-			$base = str_replace(DS,"\\\\",COM_PODCASTMEDIA_BASE);
-		} else {
+		if (DS == '\\')
+		{
+			$base = str_replace(DS, "\\\\", COM_PODCASTMEDIA_BASE);
+		}
+		else
+		{
 			$base = COM_PODCASTMEDIA_BASE;
 		}
 
 		$js = "
-			var basepath = '".$base."';
-			var viewstyle = '".$style."';
-		" ;
+			var basepath = '" . $base . "';
+			var viewstyle = '" . $style . "';
+		";
 		$document->addScriptDeclaration($js);
 
 		/*
@@ -114,8 +127,8 @@ class PodcastMediaViewMedia extends JView
 		jimport('joomla.client.helper');
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$session	= JFactory::getSession();
-		$state		= $this->get('state');
+		$session = JFactory::getSession();
+		$state = $this->get('state');
 		$this->assignRef('session', $session);
 		$this->assignRef('medmanparams', $medmanparams);
 		$this->assignRef('state', $state);
@@ -133,8 +146,9 @@ class PodcastMediaViewMedia extends JView
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function addToolbar()
 	{
@@ -146,15 +160,17 @@ class PodcastMediaViewMedia extends JView
 		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
 
 		// Add a delete button
-		if ($user->authorise('core.delete','com_podcastmanager')) {
+		if ($user->authorise('core.delete', 'com_podcastmanager'))
+		{
 			$title = JText::_('JTOOLBAR_DELETE');
 			$dhtml = '<a href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="toolbar">
-						<span class="icon-32-delete" title="'.$title.'"></span>
-						'.$title.'</a>';
+						<span class="icon-32-delete" title="' . $title . '"></span>
+						' . $title . '</a>';
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}
-		if ($user->authorise('core.admin', 'com_podcastmanager')) {
+		if ($user->authorise('core.admin', 'com_podcastmanager'))
+		{
 			JToolBarHelper::preferences('com_podcastmedia');
 			JToolBarHelper::divider();
 		}
@@ -164,16 +180,18 @@ class PodcastMediaViewMedia extends JView
 	/**
 	 * Function to determine the folder level
 	 *
-	 * @param	string	$folder	The current folder
+	 * @param   string  $folder  The current folder
 	 *
-	 * @return	string	$txt	The folder level
-	 * @since	1.6
+	 * @return  string  The folder level
+	 *
+	 * @since   1.6
 	 */
 	function getFolderLevel($folder)
 	{
 		$this->folders_id = null;
 		$txt = null;
-		if (isset($folder['children']) && count($folder['children'])) {
+		if (isset($folder['children']) && count($folder['children']))
+		{
 			$tmp = $this->folders;
 			$this->folders = $folder;
 			$txt = $this->loadTemplate('folders');

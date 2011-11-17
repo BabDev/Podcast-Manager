@@ -1,60 +1,68 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmedia
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 
 /**
- * Folder Media Controller
+ * Podcast Media Folder Controller
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmedia
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ * @since       1.6
  */
 class PodcastMediaControllerFolder extends JController
 {
 	/**
 	 * Deletes paths from the current path
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  boolean  True on success
+	 *
+	 * @since   1.6
 	 */
 	function delete()
 	{
 		JRequest::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		$user	= JFactory::getUser();
+		$input = JFactory::getApplication()->input;
+		$user = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl	= JRequest::getCmd('tmpl');
-		$paths	= JRequest::getVar('rm', array(), '', 'array');
-		$folder = JRequest::getVar('folder', '', '', 'path');
+		$tmpl = $input->get('tmpl', '', 'cmd');
+		$paths = $input->get('rm', array(), 'array');
+		$folder = $input->get('folder', '', 'path');
 
-		if ($tmpl == 'component') {
+		if ($tmpl == 'component')
+		{
 			// We are inside the iframe
-			$this->setRedirect('index.php?option=com_podcastmedia&view=mediaList&folder='.$folder.'&tmpl=component');
-		} else {
-			$this->setRedirect('index.php?option=com_podcastmedia&folder='.$folder);
+			$this->setRedirect('index.php?option=com_podcastmedia&view=mediaList&folder=' . $folder . '&tmpl=component');
+		}
+		else
+		{
+			$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $folder);
 		}
 
-		if (!$user->authorise('core.delete','com_podcastmanager')) {
+		if (!$user->authorise('core.delete', 'com_podcastmanager'))
+		{
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 			return false;
-		} else {
+		}
+		else
+		{
 			// Set FTP credentials, if given
 			jimport('joomla.client.helper');
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -62,22 +70,27 @@ class PodcastMediaControllerFolder extends JController
 			// Initialise variables.
 			$ret = true;
 
-			if (count($paths)) {
+			if (count($paths))
+			{
 				JPluginHelper::importPlugin('content');
-				$dispatcher	= JDispatcher::getInstance();
-				foreach ($paths as $path) {
-					if ($path !== JFile::makeSafe($path)) {
+				$dispatcher = JDispatcher::getInstance();
+				foreach ($paths as $path)
+				{
+					if ($path !== JFile::makeSafe($path))
+					{
 						$dirname = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
 						JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_PODCASTMEDIA_BASE))));
 						continue;
 					}
 
-					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$folder.DS.$path);
+					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE . DS . $folder . DS . $path);
 					$object_file = new JObject(array('filepath' => $fullPath));
-					if (is_file($fullPath)) {
+					if (is_file($fullPath))
+					{
 						// Trigger the onContentBeforeDelete event.
 						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
-						if (in_array(false, $result, true)) {
+						if (in_array(false, $result, true))
+						{
 							// There are some errors in the plugins
 							JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 							continue;
@@ -88,11 +101,15 @@ class PodcastMediaControllerFolder extends JController
 						// Trigger the onContentAfterDelete event.
 						$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
 						$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-					} else if (is_dir($fullPath)) {
-						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS','.DS_Store','__MACOSX'), array('index.html', '^\..*','.*~'))) == 0) {
+					}
+					elseif (is_dir($fullPath))
+					{
+						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX'), array('index.html', '^\..*', '.*~'))) == 0)
+						{
 							// Trigger the onContentBeforeDelete event.
 							$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
-							if (in_array(false, $result, true)) {
+							if (in_array(false, $result, true))
+							{
 								// There are some errors in the plugins
 								JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
 								continue;
@@ -103,9 +120,11 @@ class PodcastMediaControllerFolder extends JController
 							// Trigger the onContentAfterDelete event.
 							$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
 							$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-						} else {
+						}
+						else
+						{
 							//This makes no sense...
-							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
 					}
 				}
@@ -117,8 +136,9 @@ class PodcastMediaControllerFolder extends JController
 	/**
 	 * Create a folder
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  mixed  Boolean false on failure, void otherwise
+	 *
+	 * @since   1.6
 	 */
 	function create()
 	{
@@ -127,14 +147,17 @@ class PodcastMediaControllerFolder extends JController
 
 		$user = JFactory::getUser();
 
-		$folder			= JRequest::getCmd('foldername', '');
-		$folderCheck	= JRequest::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
-		$parent			= JRequest::getVar('folderbase', '', '', 'path');
+		$input = JFactory::getApplication()->input;
+		$folder = $input->get('foldername', '', 'cmd');
+		$folderCheck = JRequest::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
+		$parent = $input->get('folderbase', '', 'path');
 
-		$this->setRedirect('index.php?option=com_podcastmedia&folder='.$parent.'&tmpl='.JRequest::getCmd('tmpl', 'index'));
+		$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $parent . '&tmpl=' . $input->get('tmpl', 'index', 'cmd'));
 
-		if (strlen($folder) > 0) {
-			if (!$user->authorise('core.create','com_podcastmanager')) {
+		if (strlen($folder) > 0)
+		{
+			if (!$user->authorise('core.create', 'com_podcastmanager'))
+			{
 				// User is not authorised to delete
 				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
 				return false;
@@ -144,35 +167,39 @@ class PodcastMediaControllerFolder extends JController
 			jimport('joomla.client.helper');
 			JClientHelper::setCredentialsFromRequest('ftp');
 
-			JRequest::setVar('folder', $parent);
+			//JRequest::setVar('folder', $parent);
+			$input->set('folder', $parent);
 
-			if (($folderCheck !== null) && ($folder !== $folderCheck)) {
+			if (($folderCheck !== null) && ($folder !== $folderCheck))
+			{
 				$this->setMessage(JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
 				return false;
 			}
 
-			$path = JPath::clean(COM_PODCASTMEDIA_BASE.DS.$parent.DS.$folder);
-			if (!is_dir($path) && !is_file($path)) {
+			$path = JPath::clean(COM_PODCASTMEDIA_BASE . DS . $parent . DS . $folder);
+			if (!is_dir($path) && !is_file($path))
+			{
 				// Trigger the onContentBeforeSave event.
 				$object_file = new JObject(array('filepath' => $path));
 				JPluginHelper::importPlugin('content');
-				$dispatcher	= JDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.folder', &$object_file));
-				if (in_array(false, $result, true)) {
+				if (in_array(false, $result, true))
+				{
 					// There are some errors in the plugins
 					JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
-					continue;
 				}
 
 				JFolder::create($path);
-				$data = "<html>\n<body bgcolor=\"#FFFFFF\">\n</body>\n</html>";
-				JFile::write($path.DS."index.html", $data);
+				$data = "<!DOCTYPE html><title></title>";
+				JFile::write($path . DS . "index.html", $data);
 
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($path, strlen(COM_PODCASTMEDIA_BASE))));
 			}
-			JRequest::setVar('folder', ($parent) ? $parent.'/'.$folder : $folder);
+			//JRequest::setVar('folder', ($parent) ? $parent . '/' . $folder : $folder);
+			$input->set('folder', ($parent) ? $parent . '/' . $folder : $folder);
 		}
 	}
 }

@@ -1,28 +1,29 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmedia
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
-// Restricted access
 defined('_JEXEC') or die;
 
+$input = JFactory::getApplication()->input;
 $user = JFactory::getUser();
 ?>
 <script type='text/javascript'>
 var audio_base_path = '<?php $params = JComponentHelper::getParams('com_podcastmedia');
 echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 </script>
-<form action="index.php?option=com_podcastmedia&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>" id="imageForm" method="post" enctype="multipart/form-data">
+<form action="index.php?option=com_podcastmedia&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
-		<span id="message"></span><?php echo JHtml::_('image','media/dots.gif', '...', array('width' =>22, 'height' => 12), true)?>
+		<span id="message"></span><?php echo JHtml::_('image', 'media/dots.gif', '...', array('width' => 22, 'height' => 12), true)?>
 	</div>
 	<fieldset>
 		<div class="fltlft">
@@ -36,7 +37,7 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 		</div>
 	</fieldset>
 
-	<iframe id="audioframe" name="audioframe" src="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>"></iframe>
+	<iframe id="audioframe" name="audioframe" src="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>"></iframe>
 
 	<fieldset>
 		<table class="properties">
@@ -54,7 +55,7 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 </form>
 
 <?php if ($user->authorise('core.create', 'com_podcastmanager')): ?>
-	<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName().'='.$this->session->getId(); ?>&amp;<?php echo JUtility::getToken();?>=1&amp;asset=<?php echo JRequest::getCmd('asset');?>&amp;author=<?php echo JRequest::getCmd('author');?>&amp;format=<?php echo $this->medmanparams->get('enable_flash')=='1' ? 'json' : '' ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken();?>=1&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>&amp;format=<?php echo $this->medmanparams->get('enable_flash')=='1' ? 'json' : '' ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 		<fieldset id="uploadform">
 			<legend><?php echo $this->medmanparams->get('upload_maxsize')=='0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
 			<fieldset id="upload-noflash" class="actions">
@@ -71,16 +72,16 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 				</ul>
 				<div class="clr"> </div>
 				<p class="overall-title"></p>
-				<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
 				<div class="clr"> </div>
 				<p class="current-title"></p>
-				<?php echo JHtml::_('image','media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
 				<p class="current-text"></p>
 			</div>
 			<ul class="upload-queue" id="upload-queue">
 				<li style="display: none"></li>
 			</ul>
-			<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia&view=audio&tmpl=component&fieldid='.JRequest::getCmd('fieldid', '').'&e_name='.JRequest::getCmd('e_name').'&asset='.JRequest::getCmd('asset').'&author='.JRequest::getCmd('author')); ?>" />
+			<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia&view=audio&tmpl=component&fieldid=' . $input->get('fieldid', '', 'cmd') . '&e_name=' . $input->get('e_name', '', 'cmd') . '&asset=' . $input->get('asset', '', 'cmd') . '&author=' . $input->get('author', '', 'cmd')); ?>" />
 		</fieldset>
 	</form>
-<?php  endif; ?>
+<?php endif; ?>

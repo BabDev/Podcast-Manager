@@ -1,17 +1,17 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmedia
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ *
+ * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
-// Restricted access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
@@ -19,37 +19,39 @@ jimport('joomla.application.component.controller');
 /**
  * Podcast Media Manager Component Controller
  *
- * @package		PodcastManager
- * @subpackage	com_podcastmedia
- * @since		1.6
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ * @since       1.6
  */
 class PodcastMediaController extends JController
 {
 	/**
 	 * Method to display a view.
 	 *
-	 * @param	boolean	$cachable	If true, the view output will be cached
-	 * @param	array	$urlparams	An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return	JController		This object to support chaining.
-	 * @since	1.6
+	 * @return  JController  This object to support chaining.
+	 *
+	 * @since   1.6
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
+		$input = JFactory::getApplication()->input;
 		JPluginHelper::importPlugin('content');
 		$vName = JRequest::getCmd('view', 'audio');
 
 		switch ($vName)
 		{
 			case 'audioList':
+				$vLayout = $input->get('layout', 'default', 'cmd');
 				$mName = 'list';
-				$vLayout = JRequest::getCmd('layout', 'default');
 
 				break;
 
 			case 'audio':
 			default:
-				$vLayout = JRequest::getCmd('layout', 'default');
+				$vLayout = $input->get('layout', 'default', 'cmd');
 				$mName = 'manager';
 				$vName = 'audio';
 
@@ -57,14 +59,15 @@ class PodcastMediaController extends JController
 		}
 
 		$document = JFactory::getDocument();
-		$vType		= $document->getType();
+		$vType = $document->getType();
 
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);
-		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.strtolower($vName).'/tmpl');
+		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR . '/views/' . strtolower($vName) . '/tmpl');
 
 		// Get/Create the model
-		if ($model = $this->getModel($mName)) {
+		if ($model = $this->getModel($mName))
+		{
 			// Push the model into the view (as default)
 			$view->setModel($model, true);
 		}
@@ -81,8 +84,9 @@ class PodcastMediaController extends JController
 	/**
 	 * Function to validate FTP credentials
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	function ftpValidate()
 	{
