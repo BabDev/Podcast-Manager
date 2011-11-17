@@ -136,7 +136,7 @@ class PodcastManagerViewFeed extends JView
 			$xw->endElement();
 		}
 
-		$this->_setCategories($xw, $params, $feed);
+		$this->_setCategories($xw, $feed);
 
 		$this->_setItems($xw, $params, $items);
 
@@ -154,15 +154,14 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to set the feed categories
 	 *
-	 * @param   XMLWriter  &$xw     XMLWriter object containing generated feed output
-	 * @param   JRegistry  $params  The component parameters
-	 * @param   object     $feed    An object containing the feed record
+	 * @param   XMLWriter  &$xw   XMLWriter object containing generated feed output
+	 * @param   object     $feed  An object containing the feed record
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	private function _setCategories(&$xw, $params, $feed)
+	private function _setCategories(&$xw, $feed)
 	{
 		$cats = array('category1', 'category2', 'category3');
 		$i = 1;
@@ -259,6 +258,7 @@ class PodcastManagerViewFeed extends JView
 				$xw->startElement('enclosure');
 				$xw->writeAttribute('url', $filename);
 				$xw->writeAttribute('length', filesize($filepath));
+				//@TODO: Push file through getID3 to extract proper MIME type
 				$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
 				$xw->endElement();
 
