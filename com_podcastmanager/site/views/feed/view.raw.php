@@ -65,15 +65,7 @@ class PodcastManagerViewFeed extends JView
 
 		$xw->startElement('rss');
 		$xw->writeAttribute('xmlns:itunes', 'http://www.itunes.com/dtds/podcast-1.0.dtd');
-		$xw->writeAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');
 		$xw->writeAttribute('version', '2.0');
-		$xw->writeAttribute('type', 'application/rss+xml');
-
-		$xw->startElement('atom:link');
-		$xw->writeAttribute('href', JURI::root(false) . 'index.php?option=com_podcastmanager&view=feed&feedname=' . $feed->id . '&format=raw');
-		$xw->writeAttribute('rel', 'self');
-		$xw->writeAttribute('type', 'application/rss+xml');
-		$xw->endElement();
 
 		$xw->startElement('channel');
 
