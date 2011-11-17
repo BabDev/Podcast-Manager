@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-$params = &$this->item->params;
-
 // Add external behaviors
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
@@ -101,7 +99,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php if ($canEdit) : ?>
 					<ul class="actions">
 						<li class="edit-icon">
-							<?php echo JHtml::_('icon.podcastedit', $item, $params); ?>
+							<?php echo JHtml::_('icon.podcastedit', $item, $this->params); ?>
 						</li>
 					</ul>
 					<?php endif; ?>

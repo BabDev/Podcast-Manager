@@ -26,10 +26,6 @@ jimport('joomla.filesystem.file');
  */
 class PodcastManagerViewPodcast extends JView
 {
-	protected $form;
-	protected $item;
-	protected $state;
-
 	/**
 	 * Display the view
 	 *

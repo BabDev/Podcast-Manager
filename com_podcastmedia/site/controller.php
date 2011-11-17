@@ -39,7 +39,7 @@ class PodcastMediaController extends JController
 	{
 		$input = JFactory::getApplication()->input;
 		JPluginHelper::importPlugin('content');
-		$vName = JRequest::getCmd('view', 'audio');
+		$vName = $input->get('view', 'audio', 'cmd');
 
 		switch ($vName)
 		{

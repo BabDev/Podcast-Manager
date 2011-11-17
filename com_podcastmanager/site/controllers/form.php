@@ -151,7 +151,6 @@ class PodcastManagerControllerForm extends JControllerForm
 		$table = $model->getTable();
 		$cid		= $input->post->get('cid', array());
 		$context = "$this->option.edit.$this->context";
-		$append = '';
 
 		// Determine the name of the primary key for the data.
 		if (empty($key))

@@ -109,7 +109,7 @@ class PodcastManagerModelPodcasts extends JModelList
 			}
 			else
 			{
-				$search = $db->quote('%' . $db->escpae($search, true) . '%');
+				$search = $db->quote('%' . $db->escape($search, true) . '%');
 				$query->where('(a.title LIKE ' . $search . ')');
 			}
 		}

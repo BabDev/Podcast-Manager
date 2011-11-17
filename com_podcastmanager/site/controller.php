@@ -66,7 +66,6 @@ class PodcastManagerController extends JController
 
 		// Set the default view name and format from the Request.
 		$id = $input->get('p_id', '', 'int');
-		$feed = $input->get('feedname', '', 'int');
 		$vName = $input->get('view', 'feed', 'cmd');
 		$input->set('view', $vName);
 
@@ -76,7 +75,13 @@ class PodcastManagerController extends JController
 		}
 
 		$safeurlparams = array(
-			'id' => 'INT', 'feedname' => 'INT', 'limit' => 'INT', 'limitstart' => 'INT', 'filter_order' => 'CMD', 'filter_order_Dir' => 'CMD', 'lang' => 'CMD'
+			'id' => 'INT',
+			'feedname' => 'INT',
+			'limit' => 'INT',
+			'limitstart' => 'INT',
+			'filter_order' => 'CMD',
+			'filter_order_Dir' => 'CMD',
+			'lang' => 'CMD'
 		);
 
 		// Check for edit form.

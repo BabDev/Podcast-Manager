@@ -167,7 +167,6 @@ class PodcastMediaControllerFolder extends JController
 			jimport('joomla.client.helper');
 			JClientHelper::setCredentialsFromRequest('ftp');
 
-			//JRequest::setVar('folder', $parent);
 			$input->set('folder', $parent);
 
 			if (($folderCheck !== null) && ($folder !== $folderCheck))
@@ -198,7 +197,6 @@ class PodcastMediaControllerFolder extends JController
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($path, strlen(COM_PODCASTMEDIA_BASE))));
 			}
-			//JRequest::setVar('folder', ($parent) ? $parent . '/' . $folder : $folder);
 			$input->set('folder', ($parent) ? $parent . '/' . $folder : $folder);
 		}
 	}

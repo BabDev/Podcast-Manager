@@ -31,7 +31,7 @@ abstract class ModPodcastManagerFeedHelper
 	/**
 	 * Function to get the list of items
 	 *
-	 * @param   array  &$params  The module params
+	 * @param   JRegistry  &$params  The module params
 	 *
 	 * @return  array  An array of items
 	 *

@@ -67,7 +67,6 @@ class PodcastManagerViewFeeds extends JView
 	 */
 	protected function addToolbar()
 	{
-		$user = JFactory::getUser();
 		$canDo = PodcastManagerHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');

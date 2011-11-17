@@ -28,27 +28,26 @@ class JHtmlIcon
 	/**
 	 * Method to create an edit icon for a feed
 	 *
-	 * @param   object  $feed     The feed object
-	 * @param   object  $params   The item parameters
-	 * @param   array   $attribs  Optional attributes for the link
+	 * @param   object     $feed     The feed object
+	 * @param   JRegistry  $params   The item parameters
+	 * @param   array      $attribs  Optional attributes for the link
 	 *
-	 * @return  string  The formatted HTML for the edit icon
+	 * @return  mixed  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
 	static function feedEdit($feed, $params, $attribs = array())
 	{
-		$user = JFactory::getUser();
 		$uri = JFactory::getURI();
 
 		if ($params && $params->get('popup'))
 		{
-			return;
+			return true;
 		}
 
 		if ($feed->published < 0)
 		{
-			return;
+			return true;
 		}
 
 		JHtml::_('behavior.tooltip');
@@ -83,9 +82,9 @@ class JHtmlIcon
 	/**
 	 * Method to create an edit icon for a podcast
 	 *
-	 * @param   object  $podcast  The podcast object
-	 * @param   object  $params   The item parameters
-	 * @param   array   $attribs  Optional attributes for the link
+	 * @param   object     $podcast  The podcast object
+	 * @param   JRegistry  $params   The item parameters
+	 * @param   array      $attribs  Optional attributes for the link
 	 *
 	 * @return  string  The formatted HTML for the edit icon
 	 *
@@ -93,17 +92,16 @@ class JHtmlIcon
 	 */
 	static function podcastEdit($podcast, $params, $attribs = array())
 	{
-		$user = JFactory::getUser();
 		$uri = JFactory::getURI();
 
 		if ($params && $params->get('popup'))
 		{
-			return;
+			return true;
 		}
 
 		if ($podcast->published < 0)
 		{
-			return;
+			return true;
 		}
 
 		JHtml::_('behavior.tooltip');

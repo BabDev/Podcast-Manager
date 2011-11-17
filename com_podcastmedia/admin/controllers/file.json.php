@@ -49,7 +49,8 @@ class PodcastMediaControllerFile extends JController
 		if (!JRequest::checkToken('request'))
 		{
 			$response = array(
-				'status' => '0', 'error' => JText::_('JINVALID_TOKEN')
+				'status' => '0',
+				'error' => JText::_('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
 			return;
@@ -63,7 +64,6 @@ class PodcastMediaControllerFile extends JController
 		$file = $input->files->get('Filedata', '', 'array');
 		//$file = JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder = $input->get('folder', '', 'path');
-		$return = $input->post->get('return-url', null, 'base64');
 
 		// Set FTP credentials, if given
 		jimport('joomla.client.helper');

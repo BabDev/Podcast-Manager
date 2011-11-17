@@ -36,11 +36,9 @@ require_once JPATH_COMPONENT . '/helpers/podcastmedia.php';
 
 // Set the path definitions
 $popup_upload = $input->get('pop_up', null, 'cmd');
-//$popup_upload = JRequest::getCmd('pop_up', null);
 $path = "file_path";
 
 $view = $input->get('view', '', 'cmd');
-//$view = JRequest::getCmd('view');
 
 define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
 define('COM_PODCASTMEDIA_BASEURL', JURI::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
@@ -50,5 +48,4 @@ jimport('joomla.application.component.controller');
 
 $controller = JController::getInstance('PodcastMedia');
 $controller->execute($input->get('task', '', 'cmd'));
-//$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

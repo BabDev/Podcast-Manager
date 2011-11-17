@@ -12,8 +12,8 @@
 	<!-- Build a package for testing -->
 	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
 		<echo msg="Deleting old master builds" />
-		<delete quiet="yes" includeemptydirs="true">
-			<fileset dir="*">
+		<delete includeemptydirs="true">
+			<fileset dir=".">
 				<include name="files_podcastmanager_hathor_${version}.zip" />
 				<include name="files_podcastmanager_minima_${version}.zip" />
 				<include name="pkg_podcastmanager_${version}.zip" />
@@ -204,8 +204,8 @@
 	<!-- Rebuild the staging area -->
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packaging directory" />
-		<delete quiet="yes" includeemptydirs="true">
-			<fileset dir="*">
+		<delete includeemptydirs="true">
+			<fileset dir=".">
 				<include name="packaging" />
 			</fileset>
 		</delete>

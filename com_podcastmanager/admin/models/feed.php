@@ -54,13 +54,12 @@ class PodcastManagerModelFeed extends JModelAdmin
 	{
 		if (!empty($record->id))
 		{
-			if ($record->published != -2)
+			if ($record->published == -2)
 			{
-				return;
-			}
-			$user = JFactory::getUser();
+				$user = JFactory::getUser();
 
-			return $user->authorise('core.delete', 'com_podcastmanager.feed.' . (int) $record->id);
+				return $user->authorise('core.delete', 'com_podcastmanager.feed.' . (int) $record->id);
+			}
 		}
 	}
 
