@@ -14,8 +14,6 @@
 
 defined('JPATH_BASE') or die;
 
-jimport('joomla.form.formfield');
-
 /**
  * Class to create a media selection modal.
  *

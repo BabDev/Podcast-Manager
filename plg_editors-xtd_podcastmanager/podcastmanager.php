@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Podcast Manager button plugin.
  *

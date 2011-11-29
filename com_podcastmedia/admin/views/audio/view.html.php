@@ -43,7 +43,6 @@ class PodcastMediaViewAudio extends JView
 		 * Display form for FTP credentials?
 		 * Don't set them here, as there are other functions called before this one if there is any file write operation
 		 */
-		jimport('joomla.client.helper');
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
 		$this->session = JFactory::getSession();

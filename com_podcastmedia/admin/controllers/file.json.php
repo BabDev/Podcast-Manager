@@ -16,7 +16,6 @@ defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
-jimport('joomla.error.log');
 
 /**
  * Podcast Media File Controller for JSON response
@@ -66,7 +65,6 @@ class PodcastMediaControllerFile extends JController
 		$folder = $input->get('folder', '', 'path');
 
 		// Set FTP credentials, if given
-		jimport('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Make the filename safe

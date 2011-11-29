@@ -49,7 +49,6 @@ class PodcastMediaControllerFile extends JController
 		$return = $input->post->get('return-url', null, 'base64');
 
 		// Set FTP credentials, if given
-		jimport('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Set the redirect
@@ -163,7 +162,6 @@ class PodcastMediaControllerFile extends JController
 		else
 		{
 			// Set FTP credentials, if given
-			jimport('joomla.client.helper');
 			JClientHelper::setCredentialsFromRequest('ftp');
 
 			// Initialise variables.
