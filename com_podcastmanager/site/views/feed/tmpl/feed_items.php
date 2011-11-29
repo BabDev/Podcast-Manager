@@ -17,7 +17,6 @@ defined('_JEXEC') or die;
 // Add external behaviors
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
-JHtml::core();
 
 // Get the user object.
 $user = JFactory::getUser();
@@ -57,7 +56,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</fieldset>
 	<?php endif; ?>
 
-	<table class="category">
+	<table class="feed">
 		<?php if ($this->params->get('show_headings')) : ?>
 		<thead>
 			<tr>
@@ -78,9 +77,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 		if ($this->items[$i]->published == 0) : ?>
-			<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
+			<tr class="system-unpublished feed-list-row<?php echo $i % 2; ?>">
 		<?php else : ?>
-			<tr class="cat-list-row<?php echo $i % 2; ?>" >
+			<tr class="feed-list-row<?php echo $i % 2; ?>" >
 		<?php endif;
 		// Check permissions.
 		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
@@ -121,16 +120,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tbody>
 	</table>
 
-	<?php
-		if ($this->params->get('show_pagination')) : ?>
-		 <div class="pagination">
-			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-				<p class="counter">
-					<?php echo $this->pagination->getPagesCounter(); ?>
-				</p>
-			<?php endif;
-				echo $this->pagination->getPagesLinks(); ?>
-			</div>
-		<?php endif; ?>
-	</form>
+	<?php if ($this->params->get('show_pagination')) : ?>
+	 <div class="pagination">
+	<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+		<p class="counter">
+			<?php echo $this->pagination->getPagesCounter(); ?>
+		</p>
+	<?php endif;
+		echo $this->pagination->getPagesLinks(); ?>
+	</div>
+	<?php endif; ?>
+</form>
 <?php endif; ?>

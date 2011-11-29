@@ -32,7 +32,7 @@ if ($this->params->get('show_feed_title', 1)) : ?>
 	<h2><?php echo JHtml::_('content.prepare', $this->feed->name); ?></h2>
 <?php endif;
 if ($this->params->get('show_feed_description', 1) || $this->params->get('show_feed_image', 1)) : ?>
-	<div class="category-desc">
+	<div class="feed-desc">
 	<?php if ($this->params->get('show_feed_image') && $this->feed->image) : ?>
 		<img src="<?php echo $this->feed->image; ?>"/>
 	<?php endif;

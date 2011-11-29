@@ -1,6 +1,7 @@
 29-November-2011 Michael Babker
 - Remove jimport calls supported by autoloader
 ! Raise minimum version to Joomla! 1.7.3 + Platform 11.3 due to code removal
+~ Change feed view class names (breaks template BC)
 
 15-November-2011 Michael Babker
 - Remove cache option for RSS feed
