@@ -64,7 +64,7 @@
 		<field
 			name="enableLogging"
 			type="radio"
-			default="1"
+			default="0"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_DESCRIPTION">
 			<option
