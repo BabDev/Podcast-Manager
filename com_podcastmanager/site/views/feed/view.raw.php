@@ -39,15 +39,18 @@ class PodcastManagerViewFeed extends JView
 	{
 		static $log;
 
-		if ($log == null)
-		{
-			$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
-			$options['text_file'] = 'podcastmanager.php';
-			$log = JLog::addLogger($options);
-		}
-
 		// Get the component params
 		$params = JComponentHelper::getParams('com_podcastmanager');
+
+		if ($params->get('enableLogging', '0') == '1')
+		{
+			if ($log == null)
+			{
+				$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
+				$options['text_file'] = 'podcastmanager.php';
+				$log = JLog::addLogger($options);
+			}
+		}
 
 		// Get the data from the model
 		$items = $this->get('Items');

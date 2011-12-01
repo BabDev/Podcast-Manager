@@ -53,11 +53,16 @@ class PlgContentPodcastManager extends JPlugin
 	{
 		static $log;
 
-		if ($log == null)
+		$podmanparams = JComponentHelper::getParams('com_podcastmanager');
+
+		if ($podmanparams->get('enableLogging', '0') == '1')
 		{
-			$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
-			$options['text_file'] = 'podcastmanager.php';
-			$log = JLog::addLogger($options);
+			if ($log == null)
+			{
+				$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
+				$options['text_file'] = 'podcastmanager.php';
+				$log = JLog::addLogger($options);
+			}
 		}
 
 		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1)
@@ -77,8 +82,6 @@ class PlgContentPodcastManager extends JPlugin
 
 		// Find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches);
-
-		$podmanparams = JComponentHelper::getParams('com_podcastmanager');
 
 		foreach ($matches as $id => $podcast)
 		{

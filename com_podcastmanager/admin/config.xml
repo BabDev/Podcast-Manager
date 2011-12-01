@@ -61,6 +61,17 @@
 			<option value="rc">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_RC</option>
 			<option value="stable">COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_STABILITY_STABLE</option>
 		</field>
+		<field
+			name="enableLogging"
+			type="radio"
+			default="1"
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_DESCRIPTION">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
 	</fieldset>
 	<fieldset
 		name="permissions"
