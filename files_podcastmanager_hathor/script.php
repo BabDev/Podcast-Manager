@@ -31,7 +31,7 @@ class Files_PodcastManager_HathorInstallerScript
 	 *
 	 * @since   1.8
 	 */
-	function preflight($type, $parent)
+	public function preflight($type, $parent)
 	{
 		// Check if the Hathor template is installed
 		if (!JFolder::exists(JPATH_BASE . '/templates/hathor'))

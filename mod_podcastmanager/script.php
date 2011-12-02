@@ -31,7 +31,7 @@ class Mod_PodcastManagerInstallerScript
 	 *
 	 * @since   1.8
 	 */
-	function preflight($type, $parent)
+	public function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7.3 + Platform 11.3
 		//@TODO: Revert version check to CMS version on 2.5 Alpha/Beta release

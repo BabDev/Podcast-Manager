@@ -31,7 +31,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   1.7
 	 */
-	function preflight($type, $parent)
+	public function preflight($type, $parent)
 	{
 		// Requires Joomla! 1.7.3 + Platform 11.3
 		//@TODO: Revert version check to CMS version on 2.5 Alpha/Beta release
@@ -65,7 +65,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   1.8
 	 */
-	function uninstall($parent)
+	public function uninstall($parent)
 	{
 		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
 		// Get the component's ID from the database

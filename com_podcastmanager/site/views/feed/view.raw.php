@@ -35,7 +35,7 @@ class PodcastManagerViewFeed extends JView
 	 *
 	 * @since   1.6
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		static $log;
 

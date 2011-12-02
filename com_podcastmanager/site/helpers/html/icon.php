@@ -36,7 +36,7 @@ class JHtmlIcon
 	 *
 	 * @since   1.8
 	 */
-	static function feedEdit($feed, $params, $attribs = array())
+	public static function feedEdit($feed, $params, $attribs = array())
 	{
 		$uri = JFactory::getURI();
 
@@ -90,7 +90,7 @@ class JHtmlIcon
 	 *
 	 * @since   1.8
 	 */
-	static function podcastEdit($podcast, $params, $attribs = array())
+	public static function podcastEdit($podcast, $params, $attribs = array())
 	{
 		$uri = JFactory::getURI();
 

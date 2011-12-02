@@ -30,7 +30,7 @@ class PodcastManagerTableFeed extends JTable
 	 *
 	 * @since   1.7
 	 */
-	function __construct(&$db)
+	public function __construct(&$db)
 	{
 		parent::__construct('#__podcastmanager_feeds', 'id', $db);
 	}

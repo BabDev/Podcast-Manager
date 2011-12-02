@@ -25,10 +25,6 @@ jimport('joomla.application.component.view');
  */
 class PodcastManagerViewPodcasts extends JView
 {
-	protected $items;
-	protected $pagination;
-	protected $state;
-
 	/**
 	 * Display the view
 	 *

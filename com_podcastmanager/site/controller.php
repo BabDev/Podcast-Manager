@@ -33,7 +33,7 @@ class PodcastManagerController extends JController
 	 * @since   1.6
 	 * @see     JController
 	 */
-	function __construct($config = array())
+	public function __construct($config = array())
 	{
 		$input = JFactory::getApplication()->input;
 		// Frontpage Editor podcast proxying:

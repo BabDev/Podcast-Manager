@@ -30,7 +30,7 @@ class PodcastManagerTablePodcast extends JTable
 	 *
 	 * @since   1.6
 	 */
-	function __construct(&$db)
+	public function __construct(&$db)
 	{
 		parent::__construct('#__podcastmanager', 'id', $db);
 	}

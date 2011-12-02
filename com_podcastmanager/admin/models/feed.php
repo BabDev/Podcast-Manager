@@ -98,7 +98,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 *
 	 * @since   1.7
 	 */
-	function cleanCache($group = 'com_podcastmanager', $client_id = 1)
+	protected function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{
 		parent::cleanCache($group, $client_id);
 	}

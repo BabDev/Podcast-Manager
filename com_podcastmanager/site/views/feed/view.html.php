@@ -34,7 +34,7 @@ class PodcastManagerViewFeed extends JView
 	 *
 	 * @since   1.8
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
 		$params = $app->getParams();

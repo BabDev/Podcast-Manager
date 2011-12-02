@@ -91,7 +91,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						echo $item->text;
 					} else {
 						$menuclass = 'podcast' . $this->pageclass_sfx;
-						$link = JURI::base().$item->filename; ?>
+						$link = JURI::base() . $item->filename; ?>
 						<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
 						<?php echo $this->escape($item->title); ?></a>
 					<?php } ?></p>

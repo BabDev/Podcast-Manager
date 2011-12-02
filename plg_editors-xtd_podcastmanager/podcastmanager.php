@@ -46,7 +46,7 @@ class PlgButtonPodcastManager extends JPlugin
 	 *
 	 * @since   1.6
 	 */
-	function onDisplay($name)
+	public function onDisplay($name)
 	{
 		/*
 		 * Javascript to insert the link
