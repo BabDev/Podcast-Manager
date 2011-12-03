@@ -53,9 +53,13 @@ class PodcastManagerModelPodcast extends JModelForm
 	protected function fillMetaData($data)
 	{
 		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES . DS . 'getid3');
+		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES . '/getid3');
 
 		$filename = $_COOKIE['podManFile'];
+
+		// Set the filename field (fallback for if session data doesn't retain)
+		$data->filename = $_COOKIE['podManFile'];
+
 		if (!preg_match('/^http/', $filename))
 		{
 			$filename = JPATH_ROOT . '/' . $filename;
@@ -63,8 +67,16 @@ class PodcastManagerModelPodcast extends JModelForm
 		$getID3 = new getID3($filename);
 		$fileInfo = $getID3->analyze($filename);
 
-		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename = $_COOKIE['podManFile'];
+		// Check if there's an error from getID3
+		if (isset($fileInfo['error']))
+		{
+			foreach ($fileInfo['error'] as $error)
+			{
+				JError::raiseNotice('500', $error);
+			}
+
+			return $data;
+		}
 
 		if (isset($fileInfo['tags_html']))
 		{
