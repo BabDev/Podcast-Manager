@@ -414,7 +414,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		{
 			$filename = JPATH_ROOT . '/' . $filename;
 		}
-		$getID3 = new getID3($filename);
+		$getID3 = new getID3;
+		$getID3->encoding = 'UTF-8';
 		$fileInfo = $getID3->analyze($filename);
 
 		// Check if there's an error from getID3
