@@ -53,7 +53,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	protected function fillMetaData($data)
 	{
 		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_LIBRARIES . '/getid3');
+		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
 
 		$filename = $_COOKIE['podManFile'];
 
