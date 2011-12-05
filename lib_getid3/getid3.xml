@@ -11,14 +11,11 @@
 	<license>GNU/GPL Version 2</license>
 	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
 	<files folder="getid3">
-		<file>changelog.txt</file>
 		<file>extension.cache.dbm.php</file>
 		<file>extension.cache.mysql.php</file>
 		<file>getid3.lib.php</file>
 		<file>getid3.php</file>
 		<file>index.html</file>
-		<file>license.commercial.txt</file>
-		<file>license.txt</file>
 		<file>module.archive.gzip.php</file>
 		<file>module.archive.rar.php</file>
 		<file>module.archive.szip.php</file>
@@ -77,7 +74,6 @@
 		<file>module.tag.id3v2.php</file>
 		<file>module.tag.lyrics3.php</file>
 		<file>module.tag.xmp.php</file>
-		<file>readme.txt</file>
 		<file>write.apetag.php</file>
 		<file>write.id3v1.php</file>
 		<file>write.id3v2.php</file>
