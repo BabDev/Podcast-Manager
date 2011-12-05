@@ -415,7 +415,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$filename = JPATH_ROOT . '/' . $filename;
 		}
 		$getID3 = new getID3;
-		$getID3->encoding = 'UTF-8';
+		$getID3->setOption(array('encoding' => 'UTF-8'));
 		$fileInfo = $getID3->analyze($filename);
 
 		// Check if there's an error from getID3
@@ -424,6 +424,17 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			foreach ($fileInfo['error'] as $error)
 			{
 				JError::raiseNotice('500', $error);
+			}
+
+			return $data;
+		}
+
+		// Check if there's a warning from getID3
+		if (isset($fileInfo['warning']))
+		{
+			foreach ($fileInfo['warning'] as $warning)
+			{
+				JError::raiseWarning('500', $warning);
 			}
 
 			return $data;
