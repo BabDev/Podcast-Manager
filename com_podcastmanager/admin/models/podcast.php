@@ -46,12 +46,13 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 *
 	 * @param   array  $commands  An array of commands to perform.
 	 * @param   array  $pks       An array of item ids.
+	 * @param   array  $contexts  An array of item contexts.
 	 *
 	 * @return  boolean  Returns true on success, false on failure.
 	 *
 	 * @since   1.8
 	 */
-	public function batch($commands, $pks)
+	public function batch($commands, $pks, $contexts)
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
@@ -77,7 +78,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 			if ($cmd == 'c')
 			{
-				$result = $this->batchCopy($commands['feed_id'], $pks);
+				$result = $this->batchCopy($commands['feed_id'], $pks, $contexts);
 				if (is_array($result))
 				{
 					$pks = $result;
@@ -87,7 +88,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 					return false;
 				}
 			}
-			elseif ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks))
+			elseif ($cmd == 'm' && !$this->batchMove($commands['feed_id'], $pks, $contexts))
 			{
 				return false;
 			}
@@ -96,7 +97,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 		if (!empty($commands['language_id']))
 		{
-			if (!$this->batchLanguage($commands['language_id'], $pks))
+			if (!$this->batchLanguage($commands['language_id'], $pks, $contexts))
 			{
 				return false;
 			}
@@ -119,14 +120,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Batch copy podcasts to a new feed or current.
 	 *
-	 * @param   integer  $value  The new feed.
-	 * @param   array    $pks    An array of row IDs.
+	 * @param   integer  $value     The new feed.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
 	 *
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
 	 * @since   1.8
 	 */
-	protected function batchCopy($value, $pks)
+	protected function batchCopy($value, $pks, $contexts)
 	{
 		$feedId = (int) $value;
 
@@ -232,14 +234,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Batch move podcasts to a new feed
 	 *
-	 * @param   integer  $value  The new feed ID.
-	 * @param   array    $pks    An array of row IDs.
+	 * @param   integer  $value     The new feed ID.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
 	 *
 	 * @return  boolean  True if successful, false otherwise and internal error is set.
 	 *
 	 * @since   1.8
 	 */
-	protected function batchMove($value, $pks)
+	protected function batchMove($value, $pks, $contexts)
 	{
 		$feedId = (int) $value;
 
