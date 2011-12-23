@@ -1,6 +1,7 @@
 [main]
 host = https://www.transifex.net
 lang_map = en: en-GB, pt_br: pt-BR
+minimum_perc = 100
 
 [podcast-manager.podcast-manager-administrator-component]
 file_filter = com_podcastmanager/admin/language/<lang>/<lang>.com_podcastmanager.ini

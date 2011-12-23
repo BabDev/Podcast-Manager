@@ -33,13 +33,12 @@ class Com_PodcastMediaInstallerScript
 	 */
 	function preflight($type, $parent)
 	{
-		// Requires Joomla! 1.7.3 + Platform 11.3
-		//@TODO: Revert version check to CMS version on 2.5 Alpha/Beta release
+		// Requires Joomla! 2.5
 		$jversion = new JVersion;
 		$jplatform = new JPlatform;
-		if (version_compare($jplatform->getShortVersion(), '11.3', 'lt'))
+		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
 		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_J17'));
+			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_JVERSION'));
 			return false;
 		}
 
