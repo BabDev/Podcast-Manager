@@ -26,6 +26,7 @@
 		<file type="module" id="mod_podcastmanagerfeed" client="site">mod_podcastmanagerfeed.zip</file>
 		<file type="plugin" id="podcastmanager" group="content">plg_content_podcastmanager.zip</file>
 		<file type="plugin" id="podcastmanager" group="editors-xtd">plg_editors-xtd_podcastmanager.zip</file>
+		<file type="plugin" id="podcastmanager_feeds" group="finder">plg_finder_podcastmanager_feeds.zip</file>
 		<file type="plugin" id="user" group="podcastmedia">plg_podcastmedia_user.zip</file>
 	</files>
 	<languages folder="language">
