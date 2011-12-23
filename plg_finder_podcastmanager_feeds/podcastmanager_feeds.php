@@ -238,13 +238,32 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
 		$sql->select($this->db->quoteName('name') . ' AS title');
+		$sql->select($this->db->quoteName('description') . ' AS summary');
 		$sql->select($this->db->quoteName('published') . ' AS state');
 		$sql->select($this->db->quoteName('created') . ' AS start_date');
 		$sql->select('0 AS publish_start_date');
 		$sql->select('0 AS publish_end_date');
+		$sql->select('1 AS access');
 		$sql->from($this->db->quoteName('#__podcastmanager_feeds'));
 
 		return $sql;
+	}
+
+	/**
+	 * Method to get the URL for the item. The URL is how we look up the link
+	 * in the Finder index.
+	 *
+	 * @param   integer  $id         The id of the item.
+	 * @param   string   $extension  The extension the category is in.
+	 * @param   string   $view       The view for the URL.
+	 *
+	 * @return  string  The URL of the item.
+	 *
+	 * @since   2.5
+	 */
+	protected function getURL($id, $extension, $view)
+	{
+		return 'index.php?option=' . $extension . '&view=' . $view . '&layout=feed&feedname=' . $id;
 	}
 
 	/**
