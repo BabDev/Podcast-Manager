@@ -34,6 +34,36 @@ abstract class PodcastManagerHelperRoute
 	protected static $lookup;
 
 	/**
+	 * Method to get the route to the selected podcast
+	 *
+	 * @param   integer  $id  The id of the podcast.
+	 *
+	 * @return  string  The link to the item
+	 *
+	 * @since   2.0
+	 */
+	public static function getFeedRoute($id)
+	{
+		$needles = array(
+			'feed' => array((int) $id)
+		);
+
+		// Create the link
+		$link = 'index.php?option=com_podcastmanager&view=feed&id=' . $id;
+
+		if ($item = self::findItem($needles))
+		{
+			$link .= '&Itemid=' . $item;
+		}
+		elseif ($item = self::findItem())
+		{
+			$link .= '&Itemid=' . $item;
+		}
+
+		return $link;
+	}
+
+	/**
 	 * Method to get the route to the feed edit view
 	 *
 	 * @param   integer  $id      The id of the feed.
