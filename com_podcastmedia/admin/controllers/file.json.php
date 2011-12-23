@@ -60,8 +60,8 @@ class PodcastMediaControllerFile extends JController
 
 		// Get some data from the request
 		$input = JFactory::getApplication()->input;
-		$file = $input->files->get('Filedata', '', 'array');
-		//$file = JRequest::getVar('Filedata', '', 'files', 'array');
+		//$file = $input->files->get('Filedata', '', 'array');
+		$file = JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder = $input->get('folder', '', 'path');
 
 		// Set FTP credentials, if given
