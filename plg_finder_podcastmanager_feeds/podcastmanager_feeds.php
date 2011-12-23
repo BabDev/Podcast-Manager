@@ -197,8 +197,17 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		// Set the language.
 		$item->language = FinderIndexerHelper::getDefaultLanguage();
 
-		// Add the type taxonomy data.
-		$item->addTaxonomy('Type', 'Podcast Feed');
+		// Set the metadata based on the feed's data
+		$item->metaauthor = $item->author;
+
+		// Add the metadata.
+		$item->addInstruction(FinderIndexer::META_CONTEXT, 'link');
+		$item->addInstruction(FinderIndexer::META_CONTEXT, 'metaauthor');
+		$item->addInstruction(FinderIndexer::META_CONTEXT, 'author');
+
+		// Add the taxonomy data.
+		$item->addTaxonomy('Type', $this->type_title);
+		$item->addTaxonomy('Language', $item->language);
 
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
@@ -241,6 +250,8 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		$sql->select($this->db->quoteName('description') . ' AS summary');
 		$sql->select($this->db->quoteName('published') . ' AS state');
 		$sql->select($this->db->quoteName('created') . ' AS start_date');
+		$sql->select($this->db->quoteName('author'));
+		$sql->select($this->db->quoteName('language'));
 		$sql->select('0 AS publish_start_date');
 		$sql->select('0 AS publish_end_date');
 		$sql->select('1 AS access');
