@@ -3,7 +3,7 @@
  * Podcast Manager for Joomla!
  *
  * @package     PodcastManager
- * @subpackage  plg_finder_podcastmanager_feeds
+ * @subpackage  plg_finder_podcastmanager_podcasts
  *
  * @copyright   Copyright (C) 2011 Michael Babker. All rights reserved.
  * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -20,13 +20,13 @@ jimport('joomla.application.component.helper');
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
 /**
- * Finder adapter for Podcast Manager Feeds.
+ * Finder adapter for Podcast Manager Podcasts.
  *
  * @package     PodcastManager
- * @subpackage  plg_finder_podcastmanager_feeds
+ * @subpackage  plg_finder_podcastmanager_podcasts
  * @since       2.0
  */
-class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
+class plgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.
@@ -34,7 +34,7 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * @var    string
 	 * @since  2.0
 	 */
-	protected $context = 'PodcastManager_Feeds';
+	protected $context = 'PodcastManager_Podcasts';
 
 	/**
 	 * The extension name.
@@ -50,7 +50,7 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * @var    string
 	 * @since  2.0
 	 */
-	protected $layout = 'feed';
+	protected $layout = 'podcast';
 
 	/**
 	 * The type of content that the adapter indexes.
@@ -58,7 +58,7 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * @var    string
 	 * @since  2.0
 	 */
-	protected $type_title = 'Podcast Feed';
+	protected $type_title = 'Podcast';
 
 	/**
 	 * Constructor
@@ -87,7 +87,7 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 */
 	public function onFinderAfterDelete($context, $table)
 	{
-		if ($context == 'com_podcastmanager.feed')
+		if ($context == 'com_podcastmanager.podcast')
 		{
 			$id = $table->id;
 		}
@@ -118,8 +118,8 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 */
 	public function onFinderChangeState($context, $pks, $value)
 	{
-		// We only want to handle podcast feeds here
-		if ($context != 'com_podcastmanager.feed')
+		// We only want to handle podcasts here
+		if ($context != 'com_podcastmanager.podcast')
 		{
 			foreach ($pks as $pk)
 			{
@@ -145,12 +145,12 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		if ($context == 'com_plugins.plugin' && $value === 0)
 		{
 			// Since multiple plugins may be disabled at a time, we need to check first
-			// that we're handling podcast feeds
+			// that we're handling podcasts
 			foreach ($pks as $pk)
 			{
-				if ($this->getPluginType($pk) == 'podcastmanager_feeds')
+				if ($this->getPluginType($pk) == 'podcastmanager_podcasts')
 				{
-					// Get all of the podcast feeds to unindex them
+					// Get all of the podcasts to unindex them
 					$sql = clone($this->_getStateQuery());
 					$this->db->setQuery($sql);
 					$items = $this->db->loadColumn();
@@ -185,7 +185,9 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 
 		// Build the necessary route and path information.
 		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = PodcastManagerHelperRoute::getFeedHtmlRoute($item->id);
+
+		// Set the route to the Feed HTML view since there is not a single podcast view
+		$item->route = PodcastManagerHelperRoute::getFeedHtmlRoute($item->feedname);
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 
 		// Handle the link to the meta-data.
@@ -243,16 +245,17 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		// Check if we can use the supplied SQL query.
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName('name') . ' AS title');
-		$sql->select($this->db->quoteName('description') . ' AS summary');
+		$sql->select($this->db->quoteName('feedname'));
+		$sql->select($this->db->quoteName('title'));
+		$sql->select($this->db->quoteName('itSummary') . ' AS summary');
 		$sql->select($this->db->quoteName('published') . ' AS state');
 		$sql->select($this->db->quoteName('created') . ' AS start_date');
-		$sql->select($this->db->quoteName('author'));
+		$sql->select($this->db->quoteName('itAuthor') . ' AS author');
 		$sql->select($this->db->quoteName('language'));
-		$sql->select('0 AS publish_start_date');
+		$sql->select($this->db->quoteName('publish_up') . ' AS publish_start_date');
 		$sql->select('0 AS publish_end_date');
 		$sql->select('1 AS access');
-		$sql->from($this->db->quoteName('#__podcastmanager_feeds'));
+		$sql->from($this->db->quoteName('#__podcastmanager'));
 
 		return $sql;
 	}
@@ -287,7 +290,7 @@ class plgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		$sql = $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
 		$sql->select($this->db->quoteName('published') . ' AS state');
-		$sql->from($this->db->quoteName('#__podcastmanager_feeds'));
+		$sql->from($this->db->quoteName('#__podcastmanager'));
 
 		return $sql;
 	}

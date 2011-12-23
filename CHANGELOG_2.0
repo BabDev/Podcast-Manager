@@ -1,6 +1,7 @@
 23-December-2011 Michael Babker
 ! Raise minimum version to Joomla! 2.5
 + Add Finder plugin for feeds
++ Add Finder plugin for podcasts
 
 1-December-2011 Michael Babker
 + Add option to enable/disable logging

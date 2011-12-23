@@ -149,6 +149,18 @@
 				</filterchain>
             </copy>
 
+		<echo msg="Create plg_finder_podcastmanager_podcasts package" />
+            <mkdir dir="packaging/staging" />
+            <copy todir="packaging/staging/plg_finder_podcastmanager_podcasts">
+                <fileset dir="plg_finder_podcastmanager_podcasts" />
+				<filterchain>
+					<replacetokens begintoken="##" endtoken="##">
+						<token key="DATE" value="${build.date}" />
+						<token key="VERSION" value="${version}" />
+					</replacetokens>
+				</filterchain>
+            </copy>
+
 		<echo msg="Create plg_podcastmedia_user package" />
             <mkdir dir="packaging/staging" />
             <copy todir="packaging/staging/plg_podcastmedia_user">
@@ -211,6 +223,7 @@
 		<zip destfile="packaging/packages/plg_content_podcastmanager.zip" basedir="packaging/staging/plg_content_podcastmanager" />
 		<zip destfile="packaging/packages/plg_editors-xtd_podcastmanager.zip" basedir="packaging/staging/plg_editors-xtd_podcastmanager" />
 		<zip destfile="packaging/packages/plg_finder_podcastmanager_feeds.zip" basedir="packaging/staging/plg_finder_podcastmanager_feeds" />
+		<zip destfile="packaging/packages/plg_finder_podcastmanager_podcasts.zip" basedir="packaging/staging/plg_finder_podcastmanager_podcasts" />
 		<zip destfile="packaging/packages/plg_podcastmedia_user.zip" basedir="packaging/staging/plg_podcastmedia_user" />
 	</target>
 
