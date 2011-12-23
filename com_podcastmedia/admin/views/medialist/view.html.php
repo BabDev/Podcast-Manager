@@ -66,9 +66,9 @@ class PodcastMediaViewMediaList extends JView
 		);
 
 		$this->assign('baseURL', JURI::root());
-		$this->assignRef('audio', $this->get('Audio'));
-		$this->assignRef('folders', $this->get('Folders'));
-		$this->assignRef('state', $this->get('State'));
+		$this->assign('audio', $this->get('Audio'));
+		$this->assign('folders', $this->get('Folders'));
+		$this->assign('state', $this->get('State'));
 
 		parent::display($tpl);
 	}

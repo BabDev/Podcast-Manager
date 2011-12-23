@@ -51,9 +51,9 @@ class PodcastMediaViewAudioList extends JView
 		$document->addScriptDeclaration("var AudioManager = window.parent.AudioManager;");
 
 		$this->assign('baseURL', COM_PODCASTMEDIA_BASEURL);
-		$this->assignRef('audio', $this->get('Audio'));
-		$this->assignRef('folders', $this->get('Folders'));
-		$this->assignRef('state', $this->get('State'));
+		$this->assign('audio', $this->get('Audio'));
+		$this->assign('folders', $this->get('Folders'));
+		$this->assign('state', $this->get('State'));
 
 		parent::display($tpl);
 	}
