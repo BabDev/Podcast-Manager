@@ -75,8 +75,6 @@ class PodcastManagerModelPodcast extends JModelForm
 			{
 				JError::raiseNotice('500', $error);
 			}
-
-			return $data;
 		}
 
 		// Check if there's a warning from getID3
@@ -86,8 +84,6 @@ class PodcastManagerModelPodcast extends JModelForm
 			{
 				JError::raiseWarning('500', $warning);
 			}
-
-			return $data;
 		}
 
 		if (isset($fileInfo['tags_html']))
