@@ -26,7 +26,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  plg_finder_podcastmanager_podcasts
  * @since       2.0
  */
-class plgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
+class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.

@@ -105,7 +105,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language=='*') {
+					<?php if ($item->language == '*') {
 						echo JText::alt('JALL', 'language');
 					} else {
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');

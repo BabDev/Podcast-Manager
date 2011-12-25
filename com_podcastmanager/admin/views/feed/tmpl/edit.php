@@ -137,7 +137,7 @@ JHtml::_('behavior.keepalive');
 
 	<?php if ($this->canDo->get('core.admin')): ?>
 		<div class="width-100 fltlft">
-			<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie'=>1)); ?>
+			<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">

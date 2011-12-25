@@ -56,7 +56,7 @@ abstract class PodcastManagerHelperRoute
 		{
 			if ($item = self::findItem($needles))
 			{
-				$link = 'index.php?Itemid='.$item;
+				$link = 'index.php?Itemid=' . $item;
 			}
 			else
 			{
@@ -100,7 +100,7 @@ abstract class PodcastManagerHelperRoute
 		{
 			if ($item = self::findItem($needles))
 			{
-				$link = 'index.php?Itemid='.$item;
+				$link = 'index.php?Itemid=' . $item;
 			}
 			else
 			{
