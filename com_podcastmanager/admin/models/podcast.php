@@ -560,7 +560,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		// Set the publish date to now
 		if ($table->published == 1 && intval($table->publish_up) == 0)
 		{
-			$table->publish_up = JFactory::getDate()->toMySQL();
+			$table->publish_up = JFactory::getDate()->toSQL();
 		}
 	}
 }

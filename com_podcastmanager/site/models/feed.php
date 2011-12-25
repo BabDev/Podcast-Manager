@@ -117,7 +117,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Filter by start date.
 		$nullDate = $db->Quote($db->getNullDate());
-		$nowDate = $db->Quote(JFactory::getDate()->toMySQL());
+		$nowDate = $db->Quote(JFactory::getDate()->toSQL());
 
 		if ($this->getState('filter.publish_date'))
 		{

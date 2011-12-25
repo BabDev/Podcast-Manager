@@ -140,7 +140,7 @@ class PodcastManagerTablePodcast extends JTable
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified = $date->toMySQL();
+			$this->modified = $date->toSQL();
 			$this->modified_by = $user->get('id');
 		}
 		else
@@ -149,7 +149,7 @@ class PodcastManagerTablePodcast extends JTable
 			// so we don't touch it if it is set.
 			if (!intval($this->created))
 			{
-				$this->created = $date->toMySQL();
+				$this->created = $date->toSQL();
 			}
 			if (empty($this->created_by))
 			{
