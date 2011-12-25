@@ -83,7 +83,7 @@ JHtml::_('behavior.framework');
 				<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_4')?></p>
 				<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_5')?></p>
 			</div>
-			<?php JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'), 'translations'); ?>
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'), 'translations'); ?>
 			<div>
 				<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
 				<ul>
