@@ -98,11 +98,11 @@ class PodcastManagerViewForm extends JView
 
 		if (empty($this->item->id))
 		{
-			$authorised = $user->authorise('core.create', 'com_podcastmanager');
+			$authorised = $this->user->authorise('core.create', 'com_podcastmanager');
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->item->id);
+			$authorised = $this->user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->item->id);
 		}
 
 		if ($authorised !== true)
@@ -127,7 +127,7 @@ class PodcastManagerViewForm extends JView
 		$this->params = &$this->state->params;
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		$this->prepareDocument();
 		parent::display($tpl);

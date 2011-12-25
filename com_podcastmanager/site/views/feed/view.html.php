@@ -93,7 +93,7 @@ class PodcastManagerViewFeed extends JView
 		}
 
 		// Prepare the content (runs content plugins).
-		for ($i = 0, $n = count($items); $i < $n; $i++)
+		for ($i = 0, $n = count($this->items); $i < $n; $i++)
 		{
 			$item = &$items[$i];
 			$item->player = '{podcast ' . $item->title . '}';
@@ -107,7 +107,7 @@ class PodcastManagerViewFeed extends JView
 		}
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
@@ -118,7 +118,7 @@ class PodcastManagerViewFeed extends JView
 			$this->setLayout($active->query['layout']);
 		}
 
-		$this->prepareDocument($feed);
+		$this->prepareDocument($this->feed);
 
 		parent::display($tpl);
 	}
