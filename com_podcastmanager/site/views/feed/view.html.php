@@ -26,6 +26,46 @@ jimport('joomla.application.component.view');
 class PodcastManagerViewFeed extends JView
 {
 	/**
+	 * The params object
+	 *
+	 * @var    JObject
+	 * @since  1.8
+	 */
+	protected $params;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.8
+	 */
+	protected $state;
+
+	/**
+	 * The items to display
+	 *
+	 * @var    array
+	 * @since  1.8
+	 */
+	protected $items;
+
+	/**
+	 * The feed record
+	 *
+	 * @var    object
+	 * @since  1.8
+	 */
+	protected $feed;
+
+	/**
+	 * The pagination object
+	 *
+	 * @var    JPagination
+	 * @since  1.8
+	 */
+	protected $pagination;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -37,13 +77,13 @@ class PodcastManagerViewFeed extends JView
 	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
-		$params = $app->getParams();
+		$this->params = $app->getParams();
 
 		// Get some data from the models
-		$state = $this->get('State');
-		$items = $this->get('Items');
-		$feed = $this->get('Feed');
-		$pagination = $this->get('Pagination');
+		$this->state = $this->get('State');
+		$this->items = $this->get('Items');
+		$this->feed = $this->get('Feed');
+		$this->pagination = $this->get('Pagination');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -51,12 +91,6 @@ class PodcastManagerViewFeed extends JView
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-
-		$this->assignRef('state', $state);
-		$this->assignRef('items', $items);
-		$this->assignRef('feed', $feed);
-		$this->assignRef('params', $params);
-		$this->assignRef('pagination', $pagination);
 
 		// Prepare the content (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)

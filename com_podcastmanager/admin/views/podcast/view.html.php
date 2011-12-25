@@ -26,6 +26,30 @@ jimport('joomla.application.component.view');
 class PodcastManagerViewPodcast extends JView
 {
 	/**
+	 * The form object
+	 *
+	 * @var    JForm
+	 * @since  1.6
+	 */
+	protected $form;
+
+	/**
+	 * The item record
+	 *
+	 * @var    JObject
+	 * @since  1.6
+	 */
+	protected $item;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.6
+	 */
+	protected $state;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse

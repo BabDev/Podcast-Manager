@@ -26,6 +26,54 @@ jimport('joomla.application.component.view');
 class PodcastManagerViewForm extends JView
 {
 	/**
+	 * The user object
+	 *
+	 * @var    JUser
+	 * @since  1.8
+	 */
+	protected $user;
+
+	/**
+	 * The form object
+	 *
+	 * @var    JForm
+	 * @since  1.8
+	 */
+	protected $form;
+
+	/**
+	 * The item record
+	 *
+	 * @var    JObject
+	 * @since  1.8
+	 */
+	protected $item;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.8
+	 */
+	protected $state;
+
+	/**
+	 * The params object
+	 *
+	 * @var    JObject
+	 * @since  1.8
+	 */
+	protected $params;
+
+	/**
+	 * The page to return to after edit
+	 *
+	 * @var    string
+	 * @since  1.8
+	 */
+	protected $return_page;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -37,7 +85,7 @@ class PodcastManagerViewForm extends JView
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
+		$this->user = JFactory::getUser();
 
 		// Get model data.
 		$this->state = $this->get('State');
@@ -76,13 +124,10 @@ class PodcastManagerViewForm extends JView
 		}
 
 		// Create a shortcut to the parameters.
-		$params = &$this->state->params;
+		$this->params = &$this->state->params;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-
-		$this->params = $params;
-		$this->user = $user;
 
 		$this->prepareDocument();
 		parent::display($tpl);

@@ -26,6 +26,30 @@ jimport('joomla.application.component.view');
 class PodcastManagerViewPodcasts extends JView
 {
 	/**
+	 * The items to display
+	 *
+	 * @var    array
+	 * @since  1.6
+	 */
+	protected $items;
+
+	/**
+	 * The pagination object
+	 *
+	 * @var    JPagination
+	 * @since  1.6
+	 */
+	protected $pagination;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.6
+	 */
+	protected $state;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
