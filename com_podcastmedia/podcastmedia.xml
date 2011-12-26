@@ -15,7 +15,6 @@
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>podcastmedia.php</filename>
-		<folder>helpers</folder>
 		<folder>language</folder>
 	</files>
 	<administration>
