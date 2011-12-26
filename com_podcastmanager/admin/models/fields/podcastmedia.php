@@ -14,6 +14,8 @@
 
 defined('JPATH_BASE') or die;
 
+require_once JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php';
+
 /**
  * Class to create a media selection modal.
  *
