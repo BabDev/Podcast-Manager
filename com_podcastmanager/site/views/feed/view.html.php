@@ -85,6 +85,9 @@ class PodcastManagerViewFeed extends JView
 		$this->feed = $this->get('Feed');
 		$this->pagination = $this->get('Pagination');
 
+		// Items shortcut
+		$items = $this->items;
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
@@ -93,7 +96,7 @@ class PodcastManagerViewFeed extends JView
 		}
 
 		// Prepare the content (runs content plugins).
-		for ($i = 0, $n = count($this->items); $i < $n; $i++)
+		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
 			$item = &$items[$i];
 			$item->player = '{podcast ' . $item->title . '}';
