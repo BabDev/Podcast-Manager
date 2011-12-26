@@ -175,7 +175,7 @@ class PodcastManagerModelForm extends JModelForm
 		$this->setState('feed.id', $pk);
 
 		//$return = JRequest::getVar('return', null, 'default', 'base64');
-		$return = base64_encode($input->get('return', null));
+		$return = $input->get('return', null, 'base64');
 
 		if (!JUri::isInternal(base64_decode($return)))
 		{

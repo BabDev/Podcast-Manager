@@ -257,7 +257,6 @@ class PodcastManagerControllerForm extends JControllerForm
 	protected function getReturnPage()
 	{
 		$input = JFactory::getApplication()->input;
-		//$return = JRequest::getVar('return', null, 'default', 'base64');
 		$return = $input->get('return', null, 'base64');
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
