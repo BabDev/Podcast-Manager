@@ -136,8 +136,18 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 				// Update the item.
 				$this->change($pk, 'state', $temp);
 
-				// Queue the item to be reindexed.
-				FinderIndexerQueue::add($context, $pk, JFactory::getDate()->toSQL());
+				// Manually reindex the item since someone removed the auto updater...
+				// Run the setup method.
+				$this->setup();
+
+				// Get the item.
+				$item = $this->getItem($row->id);
+
+				// Index the item.
+				$this->index($item);
+
+				// The right way to queue the item to be reindexed...
+				//FinderIndexerQueue::add($context, $pk, JFactory::getDate()->toSQL());
 			}
 		}
 
