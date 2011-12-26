@@ -31,7 +31,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 * @var    string
 	 * @since  1.8
 	 */
-	protected $view_item = 'form';
+	protected $view_item = 'podcast';
 
 	/**
 	 * The default list view
