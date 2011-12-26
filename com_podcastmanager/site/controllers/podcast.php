@@ -287,7 +287,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	{
 		$input = JFactory::getApplication()->input;
 		//$return = JRequest::getVar('return', null, 'default', 'base64');
-		$return = base64_encode($input->get('return', null));
+		$return = $input->get('return', null, 'base64');
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
 		{
