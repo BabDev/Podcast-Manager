@@ -17,9 +17,9 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 
 $input = JFactory::getApplication('administrator')->input;
-$function	= $input->get('function', 'PodcastManagerSelectPodcast', 'cmd');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$function = $input->get('function', 'PodcastManagerSelectPodcast', 'cmd');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&layout=modal&tmpl=component&function=' . $function);?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">

@@ -26,6 +26,14 @@ jimport('joomla.application.component.view');
 class PodcastManagerViewFeed extends JView
 {
 	/**
+	 * The user object
+	 *
+	 * @var    JUser
+	 * @since  1.8
+	 */
+	protected $user;
+
+	/**
 	 * The params object
 	 *
 	 * @var    JObject
@@ -77,7 +85,10 @@ class PodcastManagerViewFeed extends JView
 	public function display($tpl = null)
 	{
 		$app = JFactory::getApplication();
+
+		// Initialise the params and user objects
 		$this->params = $app->getParams();
+		$this->user = JFactory::getUser();
 
 		// Get some data from the models
 		$this->state = $this->get('State');
@@ -122,6 +133,10 @@ class PodcastManagerViewFeed extends JView
 		}
 
 		$this->prepareDocument($this->feed);
+
+		// Add external behaviors
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 		parent::display($tpl);
 	}

@@ -92,6 +92,7 @@ class PodcastManagerViewForm extends JView
 		$this->item = $this->get('Item');
 		$this->form = $this->get('Form');
 		$this->return_page = $this->get('ReturnPage');
+		$this->params = $this->state->params;
 
 		// Add the component media
 		JHtml::script('components/com_podcastmanager/media/js/podcast.js', false, false);
@@ -122,9 +123,6 @@ class PodcastManagerViewForm extends JView
 			JError::raiseWarning(500, implode("\n", $errors));
 			return false;
 		}
-
-		// Create a shortcut to the parameters.
-		$this->params = &$this->state->params;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));

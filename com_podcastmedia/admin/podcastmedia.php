@@ -36,7 +36,7 @@ require_once JPATH_COMPONENT . '/helpers/podcastmedia.php';
 
 // Set the path definitions
 $popup_upload = $input->get('pop_up', null, 'cmd');
-$path = "file_path";
+$path = 'file_path';
 
 $view = $input->get('view', '', 'cmd');
 

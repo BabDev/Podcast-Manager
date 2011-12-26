@@ -15,11 +15,7 @@
 defined('_JEXEC') or die;
 
 // Add external behaviors
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
-
-// Get the user object.
-$user = JFactory::getUser();
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
@@ -82,7 +78,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<tr class="feed-list-row<?php echo $i % 2; ?>" >
 		<?php endif;
 		// Check permissions.
-		$canEdit = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
+		$canEdit = $this->user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
 		?>
 				<td class="list-title">
 					<p>

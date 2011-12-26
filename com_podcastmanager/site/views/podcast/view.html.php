@@ -85,24 +85,25 @@ class PodcastManagerViewPodcast extends JView
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
+		$this->user = JFactory::getUser();
 
 		// Get model data.
 		$this->state = $this->get('State');
 		$this->item = $this->get('Item');
 		$this->form = $this->get('Form');
 		$this->return_page = $this->get('ReturnPage');
+		$this->params = $this->state->params;
 
 		// Add the component media
 		JHtml::script('components/com_podcastmanager/media/js/podcast.js', false, false);
 
 		if (empty($this->item->id))
 		{
-			$authorised = $user->authorise('core.create', 'com_podcastmanager');
+			$authorised = $this->user->authorise('core.create', 'com_podcastmanager');
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_podcastmanager.podcast.' . $this->item->id);
+			$authorised = $this->user->authorise('core.edit', 'com_podcastmanager.podcast.' . $this->item->id);
 		}
 
 		if ($authorised !== true)
@@ -123,14 +124,8 @@ class PodcastManagerViewPodcast extends JView
 			return false;
 		}
 
-		// Create a shortcut to the parameters.
-		$params = $this->state->params;
-
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-
-		$this->params = $params;
-		$this->user = $user;
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		$this->prepareDocument();
 		parent::display($tpl);

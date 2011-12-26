@@ -31,7 +31,7 @@ $published	= $this->state->get('filter.published');
 	</label>
 	<select name="batch[feed_id]" class="inputbox" id="batch-feed-id">
 		<option value=""><?php echo JText::_('JSELECT') ?></option>
-		<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds', array('published' => $published)));?>
+		<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'));?>
 	</select>
 	<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
 	<?php endif; ?>

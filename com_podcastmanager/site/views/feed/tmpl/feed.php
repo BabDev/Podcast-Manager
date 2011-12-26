@@ -14,15 +14,8 @@
 
 defined('_JEXEC') or die;
 
-// Add external behaviors
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
-// Get the user object.
-$user = JFactory::getUser();
-
 // Check if user is allowed to add/edit based on component permissions.
-$canEdit = $user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->feed->id);
+$canEdit = $this->user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->feed->id);
 ?>
 <div class="podcastmanager-feed<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->def('show_page_heading', 1)) : ?>
