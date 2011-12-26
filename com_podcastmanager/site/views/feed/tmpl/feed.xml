@@ -36,6 +36,7 @@
 				<option value="desc">COM_PODCASTMANAGER_DIRECTION_DESC_LABEL</option>
 			</field>
 			<field name="format" type="hidden" default="html" />
+			<field name="view" type="hidden" default="feed" />
 		</fieldset>
 	</fields>
 	<!-- Add fields to the parameters object for the layout. -->

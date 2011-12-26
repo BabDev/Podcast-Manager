@@ -21,13 +21,20 @@
  *
  * @since   1.6
  */
-function PodcastManagerBuildRoute(&$query)
+function podcastManagerBuildRoute(&$query)
 {
 	$segments = array();
 
 	if (isset($query['view']))
 	{
+		$segments[] = $query['view'];
 		unset($query['view']);
+	}
+
+	if (isset($query['feedname']))
+	{
+		$segments[] = $query['feedname'];
+		unset($query['feedname']);
 	}
 
 	return $segments;
@@ -42,7 +49,7 @@ function PodcastManagerBuildRoute(&$query)
  *
  * @since   1.6
  */
-function PodcastManagerParseRoute($segments)
+function podcastManagerParseRoute($segments)
 {
 	$input = JFactory::getApplication()->input;
 	$vars = array();

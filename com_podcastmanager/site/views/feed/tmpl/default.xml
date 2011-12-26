@@ -20,6 +20,7 @@
 				label="COM_PODCASTMANAGER_LIMIT_LABEL"
 				size="3" filter="integer" />
 			<field name="format" type="hidden" default="raw" />
+			<field name="view" type="hidden" default="feed" />
 		</fieldset>
 	</fields>
 </metadata>
