@@ -119,7 +119,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	public function onFinderChangeState($context, $pks, $value)
 	{
 		// We only want to handle podcast feeds here
-		if ($context != 'com_podcastmanager.feed')
+		if ($context == 'com_podcastmanager.feed')
 		{
 			foreach ($pks as $pk)
 			{
