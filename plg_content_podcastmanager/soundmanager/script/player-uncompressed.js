@@ -1,7 +1,7 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @copyright	Copyright (C) 2011-2012 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * @package		PodcastManager
 * @subpackage	plg_content_podcastmanager
@@ -230,7 +230,7 @@ function InlinePlayer() {
       }
       pl.removeClass(this._data.oLI, this._data.className);
       this._data.className = pl.css.sPlaying;
-      pl.addClass(this._data.oLI, this._data.className);      
+      pl.addClass(this._data.oLI, this._data.className);
     },
 
     whileloading: function () {
@@ -433,7 +433,7 @@ function InlinePlayer() {
     self.addClass(self.lastSound._data.oControls, 'dragging');
     return self.stopEvent(e);
   };
-	  
+
   this.handleMouseMove = function (e) {
     if (isTouchDevice && e.touches) {
       e = e.touches[0];
