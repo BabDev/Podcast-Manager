@@ -1,5 +1,4 @@
-SET QUOTED_IDENTIFIER ON
-GO
+SET QUOTED_IDENTIFIER ON;
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__podcastmanager]') AND type in (N'U'))
 BEGIN
@@ -90,8 +89,7 @@ GO
 
 END;
 
-SET QUOTED_IDENTIFIER ON
-GO
+SET QUOTED_IDENTIFIER ON;
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__podcastmanager_feeds]') AND type in (N'U'))
 BEGIN
