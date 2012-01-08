@@ -27,7 +27,7 @@ class Com_PodcastManagerInstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $dbSupport = array('mysql', 'mysqli', 'postgresql');
+	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv');
 
 	/**
 	 * Function to act prior to installation process begins
