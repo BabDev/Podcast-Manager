@@ -52,7 +52,7 @@ class JFormFieldFeedName extends JFormFieldList
 		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 		$query->where($db->quoteName('a.name') . ' != ' . $db->quote(''));
 		$query->where($db->quoteName('a.published') . ' != -2');
-		$query->group($db->quoteName('a.id'));
+		$query->group('a.id, a.name, a.published');
 		$query->order('a.id ASC');
 
 		// Get the options.
