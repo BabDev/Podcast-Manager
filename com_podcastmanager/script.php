@@ -22,6 +22,14 @@
 class Com_PodcastManagerInstallerScript
 {
 	/**
+	 * An array of supported database types
+	 *
+	 * @var    array
+	 * @since  2.0
+	 */
+	protected $dbSupport = array('mysql', 'mysqli', 'postgresql');
+
+	/**
 	 * Function to act prior to installation process begins
 	 *
 	 * @param   string  $type    The action being performed
@@ -39,6 +47,14 @@ class Com_PodcastManagerInstallerScript
 		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
+			return false;
+		}
+
+		// Check to see if the database type is supported
+		$db = JFactory::getDbo();
+		if (!in_array($db->name, $this->dbSupport))
+		{
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_DB_SUPPORT'));
 			return false;
 		}
 
