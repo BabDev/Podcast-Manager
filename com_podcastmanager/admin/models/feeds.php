@@ -156,11 +156,9 @@ class PodcastManagerModelFeeds extends JModelList
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		// Select all fields from the table.
-		$query->select($this->getState('list.select', 'a.*'));
+		// Select the needed fields from the table.
+		$query->select($this->getState('list.select', 'a.id', 'a.name', 'a.published', 'a.language'));
 		$query->from('#__podcastmanager_feeds AS a');
-
-		$query->group('a.id');
 
 		// Join over the language
 		$query->select('l.title AS language_title');
@@ -173,6 +171,8 @@ class PodcastManagerModelFeeds extends JModelList
 		{
 			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
 		}
+
+		$query->group('a.id, a.name, a.published, a.language, l.title');
 
 		return $query;
 	}

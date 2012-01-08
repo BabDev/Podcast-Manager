@@ -3,7 +3,7 @@ SET QUOTED_IDENTIFIER ON;
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__podcastmanager]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [#__podcastmanager](
-	[id] [bigint] NOT NULL,
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[asset_id] [bigint] NOT NULL,
 	[filename] [nvarchar](255) NULL,
 	[feedname] [bigint] NULL,
@@ -74,7 +74,7 @@ SET QUOTED_IDENTIFIER ON;
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__podcastmanager_feeds]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [#__podcastmanager_feeds](
-	[id] [bigint] NOT NULL,
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[asset_id] [bigint] NOT NULL,
 	[name] [nvarchar](255) NULL,
 	[subtitle] [nvarchar](255) NOT NULL,
