@@ -61,6 +61,22 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	protected $type_title = 'Podcast';
 
 	/**
+	 * The table name.
+	 *
+	 * @var    string
+	 * @since  2.5
+	 */
+	protected $table = '#__podcastmanager';
+
+	/**
+	 * The field the published state is stored in.
+	 *
+	 * @var    string
+	 * @since  2.5
+	 */
+	protected $state_field = 'published';
+
+	/**
 	 * Constructor
 	 *
 	 * @param   object  &$subject  The object to observe
@@ -121,57 +137,13 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 		// We only want to handle podcasts here
 		if ($context == 'com_podcastmanager.podcast')
 		{
-			foreach ($pks as $pk)
-			{
-				$sql = clone($this->_getStateQuery());
-				$sql->where('a.id = ' . (int) $pk);
-
-				// Get the published states.
-				$this->db->setQuery($sql);
-				$item = $this->db->loadObject();
-
-				// Translate the state.
-				$temp = $this->translateState($value);
-
-				// Update the item.
-				$this->change($pk, 'state', $temp);
-
-				// Manually reindex the item since someone removed the auto updater...
-				// Run the setup method.
-				$this->setup();
-
-				// Get the item.
-				$item = $this->getItem($row->id);
-
-				// Index the item.
-				$this->index($item);
-
-				// The right way to queue the item to be reindexed...
-				//FinderIndexerQueue::add($context, $pk, JFactory::getDate()->toSQL());
-			}
+			$this->itemStateChange($pks, $value);
 		}
 
 		// Handle when the plugin is disabled
 		if ($context == 'com_plugins.plugin' && $value === 0)
 		{
-			// Since multiple plugins may be disabled at a time, we need to check first
-			// that we're handling podcasts
-			foreach ($pks as $pk)
-			{
-				if ($this->getPluginType($pk) == 'podcastmanager_podcasts')
-				{
-					// Get all of the podcasts to unindex them
-					$sql = clone($this->_getStateQuery());
-					$this->db->setQuery($sql);
-					$items = $this->db->loadColumn();
-
-					// Remove each item
-					foreach ($items as $item)
-					{
-						$this->remove($item);
-					}
-				}
-			}
+			$this->pluginDisable($pks);
 		}
 	}
 
@@ -295,12 +267,13 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	 *
 	 * @since   2.0
 	 */
-	private function _getStateQuery()
+	protected  function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName('published') . ' AS state');
-		$sql->from($this->db->quoteName('#__podcastmanager'));
+		$sql->select($this->db->quoteName($this->state_field) . ' AS state');
+		$sql->select('NULL AS cat_state');
+		$sql->from($this->db->quoteName($this->table));
 
 		return $sql;
 	}
