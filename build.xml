@@ -184,10 +184,10 @@
 				</filterchain>
             </copy>
 
-		<echo msg="Copy package language" />
+		<echo msg="Copy package scriptfile" />
 		<copy file="script.php" tofile="packaging/script.php" overwrite="true" />
 
-		<echo msg="Copy package scriptfile" />
+		<echo msg="Copy package language" />
             <copy todir="packaging/language">
                 <fileset dir="language" />
             </copy>
