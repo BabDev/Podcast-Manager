@@ -24,8 +24,8 @@ class Mod_PodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
+	 * @param   string            $type    The action being performed
+	 * @param   JInstallerModule  $parent  The class calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
@@ -33,15 +33,6 @@ class Mod_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires Joomla! 2.5
-		$jversion = new JVersion;
-		$jplatform = new JPlatform;
-		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
-		{
-			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
-			return false;
-		}
-
 		// Check if Podcast Manager is installed
 		if (!JFolder::exists(JPATH_BASE . '/components/com_podcastmanager'))
 		{

@@ -22,18 +22,10 @@
 class Com_PodcastManagerInstallerScript
 {
 	/**
-	 * An array of supported database types
-	 *
-	 * @var    array
-	 * @since  2.0
-	 */
-	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv');
-
-	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
+	 * @param   string               $type    The action being performed
+	 * @param   JInstallerComponent  $parent  The class calling this method
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -41,23 +33,6 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires Joomla! 2.5
-		$jversion = new JVersion;
-		$jplatform = new JPlatform;
-		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
-			return false;
-		}
-
-		// Check to see if the database type is supported
-		$db = JFactory::getDbo();
-		if (!in_array($db->name, $this->dbSupport))
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_DB_SUPPORT'));
-			return false;
-		}
-
 		// Bugfix for "Can not build admin menus"
 		if (in_array($type, array('install', 'discover_install')))
 		{
@@ -74,7 +49,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during uninstall
 	 *
-	 * @param   string  $parent  The function calling this method
+	 * @param   JInstallerComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *

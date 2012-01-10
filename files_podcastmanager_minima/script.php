@@ -24,8 +24,8 @@ class Files_PodcastManager_MinimaInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
+	 * @param   string          $type    The action being performed
+	 * @param   JInstallerFile  $parent  The class calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *

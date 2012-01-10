@@ -24,8 +24,8 @@ class PlgFinderPodcastManager_PodcastsInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
+	 * @param   string            $type    The action being performed
+	 * @param   JInstallerPlugin  $parent  The function calling this method
 	 *
 	 * @return  boolean  True on success, false on error
 	 *
@@ -33,13 +33,15 @@ class PlgFinderPodcastManager_PodcastsInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires Joomla! 2.5
-		$jversion = new JVersion;
-		$jplatform = new JPlatform;
-		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
+		// Make sure we aren't uninstalling first
+		if ($type != 'uninstall')
 		{
-			JError::raiseNotice(null, JText::_('PLG_FINDER_PODCASTMANAGER_PODCASTS_ERROR_INSTALL_JVERSION'));
-			return false;
+			// Check if Podcast Manager is installed
+			if (!JFolder::exists(JPATH_BASE . '/components/com_podcastmanager'))
+			{
+				JError::raiseNotice(null, JText::_('PLG_FINDER_PODCASTMANAGER_PODCASTS_ERROR_COMPONENT'));
+				return false;
+			}
 		}
 
 		return true;

@@ -22,34 +22,10 @@
 class Com_PodcastMediaInstallerScript
 {
 	/**
-	 * Function to act prior to installation process begins
-	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
-	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
-	 *
-	 * @since   1.7
-	 */
-	function preflight($type, $parent)
-	{
-		// Requires Joomla! 2.5
-		$jversion = new JVersion;
-		$jplatform = new JPlatform;
-		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_JVERSION'));
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Function to perform changes when component is initially installed
 	 *
-	 * @param   string  $type    The action being performed
-	 * @param   string  $parent  The function calling this method
+	 * @param   string               $type    The action being performed
+	 * @param   JInstallerComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *

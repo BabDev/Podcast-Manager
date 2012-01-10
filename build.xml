@@ -25,6 +25,7 @@
 				<include name="language/**" />
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
+				<include name="script.php" />
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
@@ -184,6 +185,9 @@
             </copy>
 
 		<echo msg="Copy package language" />
+		<copy file="script.php" tofile="packaging/script.php" overwrite="true" />
+
+		<echo msg="Copy package scriptfile" />
             <copy todir="packaging/language">
                 <fileset dir="language" />
             </copy>

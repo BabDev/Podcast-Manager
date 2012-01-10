@@ -13,6 +13,7 @@
 	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PKG_PODCASTMANAGER_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<update>http://www.babdev.com/updates/podman.xml</update>
 	<updateservers>
 		<server type="extension" name="Podcast Manager Updates" priority="2">http://www.babdev.com/updates/podman.xml</server>
