@@ -121,12 +121,12 @@ class PodcastManagerViewFeeds extends JView
 			JToolBarHelper::checkin('feeds.checkin');
 			JToolBarHelper::divider();
 		}
-		if ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0))
+		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
-			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_DELETE');
+			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();
 		}
-		elseif ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0) && !$canDo->get('core.delete'))
+		elseif ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();

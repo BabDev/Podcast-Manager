@@ -164,6 +164,23 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->select('l.title AS language_title');
 		$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
 
+		// Filter by published state
+		$published = $this->getState('filter.published');
+		if (is_numeric($published))
+		{
+			$query->where('a.published = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.published IN (0, 1))');
+		}
+
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
@@ -189,6 +206,17 @@ class PodcastManagerModelFeeds extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+		// Load the filter state.
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		// Load the parameters.
+		$params = JComponentHelper::getParams('com_podcastmanager');
+		$this->setState('params', $params);
+
 		// List state information.
 		parent::populateState('a.id', 'asc');
 	}
