@@ -155,6 +155,33 @@ class PodcastManagerTablePodcast extends JTable
 			{
 				$this->created_by = $user->get('id');
 			}
+
+			// Get the boilerplate info
+			if ($this->feedname !== 0)
+			{
+				$db = $this->getDbo();
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('bp_position') . ', ' . $db->quoteName('boilerplate'));
+				$query->from($db->quoteName('#__podcastmanager_feeds'));
+				$query->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
+				$db->setQuery($query);
+				$BP = $db->loadObjectList();
+
+				// Append the boilerplate if enabled
+				if ($BP->bp_position !== 0)
+				{
+					// Boilerplate at top of summary
+					if ($BP->bp_position === 1)
+					{
+						$this->itSummary = $BP->boilerplate . PHP_EOL . $this->itSummary;
+					}
+					// Boilerplate at bottom of summary
+					elseif ($BP->bp_position === 2)
+					{
+						$this->itSummary = $this->itSummary . PHP_EOL . $BP->boilerplate;
+					}
+				}
+			}
 		}
 		return parent::store($updateNulls);
 	}

@@ -11,8 +11,8 @@
 		<field name="title" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
 			size="30" required="true" />
-		<field name="published" type="list" class="inputbox"
-			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
+		<field name="published" type="list" class="inputbox" filter="intval"
+               label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
 			<option
 				value="1">JPUBLISHED</option>
@@ -22,8 +22,8 @@
 				value="-2">JTRASH</option>
 		</field>
 		<field
-			name="feedname" type="feedname" class="inputbox"
-			label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
+			name="feedname" type="feedname" class="inputbox" filter="intval"
+            label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION"
 			size="1" required="true">
 			<option
 				value="0">JNONE</option>
@@ -51,8 +51,8 @@
 		<field name="itAuthor" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION"
 			size="30" required="true" />
-		<field name="itBlock" type="list"
-			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION"
+		<field name="itBlock" type="list" filter="intval"
+               label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION"
 			default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
@@ -60,8 +60,8 @@
 		<field name="itDuration" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_ITDURATION_LABEL" description="COM_PODCASTMANAGER_FIELD_ITDURATION_DESCRIPTION"
 			size="30" />
-		<field name="itExplicit" type="list"
-			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION"
+		<field name="itExplicit" type="list" filter="intval"
+               label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION"
 			default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

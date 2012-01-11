@@ -55,6 +55,14 @@ JHtml::_('behavior.formvalidation');
 			<?php echo $this->form->getInput('description'); ?>
 		</div>
 		<div class="formelm">
+			<?php echo $this->form->getLabel('bp_position'); ?>
+			<?php echo $this->form->getInput('bp_position'); ?>
+		</div>
+		<div class="formelm">
+			<?php echo $this->form->getLabel('boilerplate'); ?>
+			<?php echo $this->form->getInput('boilerplate'); ?>
+		</div>
+		<div class="formelm">
 			<?php echo $this->form->getLabel('copyright'); ?>
 			<?php echo $this->form->getInput('copyright'); ?>
 		</div>

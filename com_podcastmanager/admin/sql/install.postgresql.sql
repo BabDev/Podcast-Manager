@@ -30,6 +30,8 @@ CREATE TABLE "#__podcastmanager_feeds" (
   "name" character varying(255) DEFAULT '' NULL,
   "subtitle" character varying(255) DEFAULT '' NOT NULL,
   "description" character varying(5120) DEFAULT '' NOT NULL,
+  "boilerplate" character varying(5120) DEFAULT '' NOT NULL,
+  "bp_position" bigint DEFAULT 0 NOT NULL,
   "copyright" character varying(255) DEFAULT '' NOT NULL,
   "explicit" smallint DEFAULT 0 NOT NULL,
   "block" smallint DEFAULT 0 NOT NULL,

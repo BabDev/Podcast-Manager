@@ -54,6 +54,12 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('published'); ?>
 					<?php echo $this->form->getInput('published'); ?></li>
 
+					<li><?php echo $this->form->getLabel('bp_position'); ?>
+					<?php echo $this->form->getInput('bp_position'); ?></li>
+
+					<li><?php echo $this->form->getLabel('boilerplate'); ?>
+					<?php echo $this->form->getInput('boilerplate'); ?></li>
+
 					<li><?php echo $this->form->getLabel('copyright'); ?>
 					<?php echo $this->form->getInput('copyright'); ?></li>
 

@@ -14,6 +14,19 @@
 		<field name="description" type="textarea" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_DESCRIPTION"
 			rows="3" cols="40" />
+        <field name="bp_position" type="list" class="inputbox" filter="intval"
+               label="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_DESCRIPTION"
+               size="1" default="0">
+            <option
+                    value="0">JNONE</option>
+            <option
+                    value="1">COM_PODCASTMANAGER_OPTION_TOP</option>
+            <option
+                    value="2">COM_PODCASTMANAGER_OPTION_BOTTOM</option>
+        </field>
+        <field name="boilerplate" type="textarea" filter="safehtml"
+               label="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_DESCRIPTION"
+               rows="3" cols="40" />
 		<field name="copyright" type="text" class="inputbox" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION"
 			size="30" />
@@ -39,8 +52,8 @@
 		<field name="category3" type="itunescategory" default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_DESCRIPTION"
 			size="1" />
-		<field name="published" type="list" class="inputbox"
-			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
+		<field name="published" type="list" class="inputbox" filter="intval"
+               label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
 			<option
 				value="1">JPUBLISHED</option>
@@ -49,15 +62,15 @@
 			<option
 				value="-2">JTRASH</option>
 		</field>
-		<field name="block" type="radio" default="0"
-			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION" >
+		<field name="block" type="radio" default="0" filter="intval"
+               label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION" >
 			<option
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
 		</field>
-		<field name="explicit" type="radio" default="0"
-			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" >
+		<field name="explicit" type="radio" default="0" filter="intval"
+               label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" >
 			<option
 				value="0">JNO</option>
 			<option

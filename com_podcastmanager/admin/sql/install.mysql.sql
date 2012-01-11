@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `name` varchar(255) default NULL,
   `subtitle` varchar(255) NOT NULL default '',
   `description` varchar(5120) NOT NULL default '',
+  `boilerplate` varchar(5120) NOT NULL default '',
+  `bp_position` integer unsigned NOT NULL default '0',
   `copyright` varchar(255) NOT NULL default '',
   `explicit` tinyint(1) NOT NULL default '0',
   `block` tinyint(1) NOT NULL default '0',

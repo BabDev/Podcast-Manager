@@ -79,6 +79,8 @@ CREATE TABLE [#__podcastmanager_feeds](
 	[name] [nvarchar](255) NULL,
 	[subtitle] [nvarchar](255) NOT NULL,
 	[description] [nvarchar](max) NOT NULL,
+	[boilerplate] [nvarchar](max) NOT NULL,
+	[bp_position] [int] NOT NULL,
 	[copyright] [nvarchar](255) NOT NULL,
 	[explicit] [smallint] NOT NULL,
 	[block] [smallint] NOT NULL,
@@ -113,6 +115,10 @@ ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feed
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_subtitle]  DEFAULT ((N'')) FOR [subtitle]
 
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_description]  DEFAULT ((N'')) FOR [description]
+
+ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_boilerplate]  DEFAULT ((N'')) FOR [boilerplate]
+
+ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_bp_position]  DEFAULT ((0)) FOR [bp_position]
 
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_copyright]  DEFAULT ((N'')) FOR [copyright]
 
