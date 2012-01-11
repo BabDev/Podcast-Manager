@@ -82,6 +82,9 @@ class PodcastManagerViewFeeds extends JView
 		// Add the component media
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
+		// Make text JS available
+		JText::script('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE');
+
 		$this->addToolbar();
 		parent::display($tpl);
 	}

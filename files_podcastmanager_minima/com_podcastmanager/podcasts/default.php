@@ -21,6 +21,19 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
+<script type="text/javascript">
+	Joomla.submitbutton = function(pressbutton) {
+		if (pressbutton == 'podcasts.unpublish') {
+			if (confirm(Joomla.JText._('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH'))) {
+				Joomla.submitform(pressbutton);
+			} else {
+				return false;
+			}
+		}
+
+		Joomla.submitform(pressbutton);
+	}
+</script>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">

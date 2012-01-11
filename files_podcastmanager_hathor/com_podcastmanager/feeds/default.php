@@ -24,10 +24,16 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 <script type="text/javascript">
-	Joomla.submitbutton = function(task) {
-		if (task != 'feeds.delete' || confirm('<?php echo JText::_('COM_PODCASTMANAGER_CONFIRM_DELETE', true);?>')) {
-			Joomla.submitform(task);
+	Joomla.submitbutton = function(pressbutton) {
+		if (pressbutton == 'feeds.delete') {
+			if (confirm(Joomla.JText._('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE'))) {
+				Joomla.submitform(pressbutton);
+			} else {
+				return false;
+			}
 		}
+
+		Joomla.submitform(pressbutton);
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feeds');?>" method="post" name="adminForm" id="adminForm">

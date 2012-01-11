@@ -85,7 +85,9 @@ class PodcastManagerViewPodcasts extends JView
 		{
 			// Add the component media
 			JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-			JHtml::script('administrator/components/com_podcastmanager/media/js/podcasts.js', false, false);
+
+			// Make text JS available
+			JText::script('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH');
 
 			$this->addToolbar();
 		}
