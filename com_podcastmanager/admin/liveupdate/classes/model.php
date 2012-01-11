@@ -1,7 +1,7 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
@@ -26,11 +26,11 @@ class LiveUpdateModel extends JModel
 		if(realpath($tmpdir) == '/tmp') {
 			// Someone inform the user that what he's doing is insecure and stupid, please. In the
 			// meantime, I will fix what is broken.
-			$tmpdir = JPATH_SITE.DS.'tmp';
+			$tmpdir = JPATH_SITE.'/tmp';
 		} // Make sure that folder exists (users do stupid things too often; you'd be surprised)
 		elseif(!JFolder::exists($tmpdir)) {
 			// Darn it, user! WTF where you thinking? OK, let's use a directory I know it's there...
-			$tmpdir = JPATH_SITE.DS.'tmp';
+			$tmpdir = JPATH_SITE.'/tmp';
 		}
 
 		// Oki. Let's get the URL of the package
@@ -57,8 +57,8 @@ class LiveUpdateModel extends JModel
 		}
 		
 		// Cache the path to the package file and the temp installation directory in the session
-		$target = $tmpdir.DS.$updateInfo->extInfo->name.'.update.'.$type;
-		$tempdir = $tmpdir.DS.$updateInfo->extInfo->name.'_update';
+		$target = $tmpdir.'/'.$updateInfo->extInfo->name.'.update.'.$type;
+		$tempdir = $tmpdir.'/'.$updateInfo->extInfo->name.'_update';
 		
 		$session = JFactory::getSession();
 		$session->set('target', $target, 'liveupdate');

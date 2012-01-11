@@ -28,6 +28,9 @@ require_once dirname(__FILE__).'/config.php';
 
 class LiveUpdate
 {
+	/** @var string The current version of Akeeba Live Update */
+	public static $version = '1.1';
+	
 	/**
 	 * Loads the translation strings -- this is an internal function, called automatically
 	 */

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
@@ -166,12 +166,14 @@ class LiveUpdateFetch extends JObject
 			'version'		=> '',
 			'date'			=> '',
 			'stability'		=> '',
-			'downloadURL'	=> ''
+			'downloadURL'	=> '',
+			'infoURL'		=> '',
+			'releasenotes'	=> ''
 		);
 		
 		// If the process is marked as "stuck", we won't bother fetching data again; well,
 		// unless you really force me to, by setting $force = true.
-		if($this->storage->get('stuck',0) && !$force) return (object)$ret;
+		if( ($this->storage->get('stuck',0) != 0) && !$force) return (object)$ret;
 		
 		$ret['stuck'] = false;
 
@@ -257,7 +259,9 @@ class LiveUpdateFetch extends JObject
 			'version'		=> '',
 			'date'			=> '',
 			'stability'		=> '',
-			'downloadURL'	=> ''
+			'downloadURL'	=> '',
+			'infoURL'		=> '',
+			'releasenotes'	=> ''
 		);
 		
 		// Get the magic string
@@ -299,6 +303,14 @@ class LiveUpdateFetch extends JObject
 			}
 		}
 		$ret['stability'] = $stability;
+		
+		if(array_key_exists('releasenotes', $iniData)) {
+			$ret['releasenotes'] = $iniData['releasenotes'];
+		}
+		
+		if(array_key_exists('infourl', $iniData)) {
+			$ret['infoURL'] = $iniData['infourl'];
+		}
 
 		return $ret;
 	}
