@@ -50,6 +50,14 @@ class PodcastManagerViewFeeds extends JView
 	protected $state;
 
 	/**
+	 * The allowed item states for list filtering
+	 *
+	 * @var    array
+	 * @since  2.0
+	 */
+	protected $states = array('published' => true, 'unpublished' => true, 'archived' => false, 'trashed' => true, 'all' => true);
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
