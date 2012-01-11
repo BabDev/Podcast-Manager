@@ -1,15 +1,26 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
 defined('_JEXEC') or die();
+
 ?>
 
 <div class="liveupdate">
 
+	<?php if($this->updateInfo->releasenotes): ?>
+	<div style="display:none;">
+		<div id="liveupdate-releasenotes">
+			<div class="liveupdate-releasenotes-text">
+			<?php echo $this->updateInfo->releasenotes ?>
+			</div>
+		</div>
+	</div>
+	<?php endif; ?>	
+	
 	<?php if(!$this->updateInfo->supported): ?>
 	<div class="liveupdate-notsupported">
 		<h3><?php echo JText::_('LIVEUPDATE_NOTSUPPORTED_HEAD') ?></h3>
@@ -66,6 +77,47 @@ defined('_JEXEC') or die();
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_DOWNLOADURL') ?></span>
 				<span class="liveupdate-data"><a href="<?php echo $this->updateInfo->downloadURL.$auth?>"><?php echo $this->escape($this->updateInfo->downloadURL)?></a></span>
 			</div>
+			<?php if(!empty($this->updateInfo->releasenotes) || !empty($this->updateInfo->infoURL)): ?>
+			<div class="liveupdate-row row1">
+				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_RELEASEINFO') ?></span>
+				<span class="liveupdate-data">
+					<?php if($this->updateInfo->releasenotes): ?>
+					<a href="#" id="btnLiveUpdateReleaseNotes"><?php echo JText::_('LIVEUPDATE_RELEASENOTES') ?></a>
+					<?php
+					JHTML::_('behavior.mootools');
+					JHTML::_('behavior.modal');
+
+					$script = <<<ENDSCRIPT
+					window.addEvent( 'domready' ,  function() {
+						$('btnLiveUpdateReleaseNotes').addEvent('click', showLiveUpdateReleaseNotes);
+					});
+
+					function showLiveUpdateReleaseNotes()
+					{
+						SqueezeBox.fromElement(
+							$('liveupdate-releasenotes'), {
+								handler: 'adopt',
+								size: {
+									x: 450,
+									y: 350
+								}
+							}
+						);
+					}
+ENDSCRIPT;
+					$document = JFactory::getDocument();
+					$document->addScriptDeclaration($script,'text/javascript');
+					?>
+					<?php endif; ?>
+					<?php if($this->updateInfo->releasenotes && $this->updateInfo->infoURL): ?>
+					&nbsp;&bull;&nbsp;
+					<?php endif; ?>
+					<?php if($this->updateInfo->infoURL): ?>
+					<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank"><?php echo JText::_('LIVEUPDATE_READMOREINFO') ?></a>
+					<?php endif; ?>
+				</span>
+			</div>
+			<?php endif; ?>
 		</div>
 		
 		<p class="liveupdate-buttons">

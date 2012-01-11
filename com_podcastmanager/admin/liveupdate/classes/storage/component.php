@@ -1,7 +1,7 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
@@ -35,11 +35,26 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
-		$component =& JComponentHelper::getComponent(self::$component);
-		if(!($component->params instanceof JRegistry)) {
-			$params = new JParameter($component->params);
+		// Not using JComponentHelper to avoid conflicts ;)
+		$db = JFactory::getDbo();
+		if( version_compare(JVERSION,'1.6.0','ge') ) {
+			$sql = $db->getQuery(true)
+				->select($db->nq('params'))
+				->from($db->nq('#__extensions'))
+				->where($db->nq('type').' = '.$db->q('component'))
+				->where($db->nq('element').' = '.$db->q(self::$component));
 		} else {
-			$params = $component->params;
+			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__components').
+				' WHERE '.$db->nameQuote('option').' = '.$db->Quote(self::$component).
+				" AND `parent` = 0 AND `menuid` = 0";
+		}
+		$db->setQuery($sql);
+		$rawparams = $db->loadResult();
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$params = new JRegistry();
+			$params->loadJSON($rawparams);
+		} else {
+			$params = new JParameter($rawparams);
 		}
 		$data = $params->getValue(self::$key, '');
 				
@@ -70,26 +85,36 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		*/
 
 		if( version_compare(JVERSION,'1.6.0','ge') ) {
-			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__extensions').
-				' WHERE '.$db->nameQuote('type').' = '.$db->Quote('component').' AND '.
-				$db->nameQuote('element').' = '.$db->Quote(self::$component);
-			$db->setQuery($sql);
+			$sql = $db->getQuery(true)
+				->select($db->nq('params'))
+				->from($db->nq('#__extensions'))
+				->where($db->nq('type').' = '.$db->q('component'))
+				->where($db->nq('element').' = '.$db->q(self::$component));
 		} else {
 			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__components').
 				' WHERE '.$db->nameQuote('option').' = '.$db->Quote(self::$component).
 				" AND `parent` = 0 AND `menuid` = 0";
-			$db->setQuery($sql);
 		}
+		$db->setQuery($sql);
 		$rawparams = $db->loadResult();
-		$params = new JParameter($rawparams);
+		$params = new JRegistry();
+		if( version_compare(JVERSION,'1.6.0','ge') ) {
+			$params->loadJSON($rawparams);
+		} else {
+			$params->loadINI($rawparams);
+		}
+		
 		$params->setValue(self::$key, $data);
 		
 		if( version_compare(JVERSION,'1.6.0','ge') )
 		{
 			// Joomla! 1.6
 			$data = $params->toString('JSON');
-			$sql = 'UPDATE `#__extensions` SET `params` = '.$db->Quote($data).' WHERE '.
-				"`element` = ".$db->Quote(self::$component)." AND `type` = 'component'";
+			$sql = $db->getQuery(true)
+				->update($db->nq('#__extensions'))
+				->set($db->nq('params').' = '.$db->q($data))
+				->where($db->nq('type').' = '.$db->q('component'))
+				->where($db->nq('element').' = '.$db->q(self::$component));
 		}
 		else
 		{

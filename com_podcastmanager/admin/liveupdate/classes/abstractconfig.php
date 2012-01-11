@@ -1,7 +1,7 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
@@ -191,8 +191,28 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
-		$component =& JComponentHelper::getComponent($this->_extensionName);
-		$params = new JParameter($component->params);		
+		
+		// Not using JComponentHelper to avoid conflicts ;)
+		$db = JFactory::getDbo();
+		if( version_compare(JVERSION,'1.6.0','ge') ) {
+			$sql = $db->getQuery(true)
+				->select($db->nq('params'))
+				->from($db->nq('#__extensions'))
+				->where($db->nq('type').' = '.$db->q('component'))
+				->where($db->nq('element').' = '.$db->q($this->_extensionName));
+		} else {
+			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__components').
+				' WHERE '.$db->nameQuote('option').' = '.$db->Quote($this->_extensionName).
+				" AND `parent` = 0 AND `menuid` = 0";
+		}
+		$db->setQuery($sql);
+		$rawparams = $db->loadResult();
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$params = new JRegistry();
+			$params->loadJSON($rawparams);
+		} else {
+			$params = new JParameter($rawparams);
+		}
 		
 		$this->_username	= $params->getValue('username','');
 		$this->_password	= $params->getValue('password','');
