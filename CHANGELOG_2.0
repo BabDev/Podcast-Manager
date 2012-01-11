@@ -2,6 +2,7 @@
 ~ Update Live Update to 1.1
 ~ Set filterable states for admin list views
 + [#40] Add filters to Feeds list view
++ [#39] Add a boilerplate text option to feeds
 
 8-January-2012 Michael Babker
 + Add SQLServer support
