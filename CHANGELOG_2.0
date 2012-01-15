@@ -3,6 +3,7 @@
 ~ [#35] Update getID3 library to 1.9.3
 ~ [#10] Improvements to component router
 ~ [#11] Route feed link module through component router
+~ Only run the content plugin in the site application
 
 11-January-2012 Michael Babker
 ~ Update Live Update to 1.1

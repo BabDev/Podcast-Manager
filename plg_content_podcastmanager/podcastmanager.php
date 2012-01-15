@@ -53,6 +53,12 @@ class PlgContentPodcastManager extends JPlugin
 	{
 		static $log;
 
+		// Check if we're in the site app, otherwise, do nothing
+		if (!JFactory::getApplication()->isSite())
+		{
+			return true;
+		}
+
 		$podmanparams = JComponentHelper::getParams('com_podcastmanager');
 
 		if ($podmanparams->get('enableLogging', '0') == '1')
