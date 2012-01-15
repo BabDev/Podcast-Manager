@@ -86,7 +86,7 @@ class PlgContentPodcastManager extends JPlugin
 		// Expression to search for
 		$regex = '/\{(podcast)\s+(.*?)}/i';
 
-		// Find all instances of the podcast marker and put in $matches
+		// Find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches);
 
 		foreach ($matches as $id => $podcast)
@@ -168,17 +168,20 @@ class PlgContentPodcastManager extends JPlugin
 					// Query the DB for the title string, returning the filename
 					$db = JFactory::getDBO();
 					$query = $db->getQuery(true);
+
+					// Common query fields regardless of method
+					$query->select($db->quoteName('filename'));
+					$query->from($db->quoteName('#__podcastmanager'));
+
 					// If the title is a string, use the "classic" lookup method
 					if (is_string($podtitle))
 					{
-						$query->select($db->quoteName('filename'));
-						$query->from($db->quoteName('#__podcastmanager'));
 						$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
 					}
+					// If an integer, we need to also get the title of the podcast, as well as search on the ID
 					elseif (is_int($podtitle))
 					{
-						$query->select($db->quoteName('filename') . ', ' . $db->quoteName('title'));
-						$query->from($db->quoteName('#__podcastmanager'));
+						$query->select($db->quoteName('title'));
 						$query->where($db->quoteName('id') . ' = ' . (int) $podtitle);
 					}
 					$db->setQuery($query);
