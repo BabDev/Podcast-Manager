@@ -2,12 +2,12 @@
 <extension type="library" version="1.7" method="upgrade">
 	<name>getID3</name>
 	<libraryname>getid3</libraryname>
-	<creationDate>4 May 2001</creationDate>
+	<creationDate>13 December 2011</creationDate>
 	<author>James Heinrich</author>
 	<copyright>(C) James Heinrich</copyright>
 	<authorEmail>info@getid3.org</authorEmail>
 	<authorUrl>http://www.getid3.org</authorUrl>
-	<version>1.8.5</version>
+	<version>1.9.3</version>
 	<license>GNU/GPL Version 2</license>
 	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
 	<files folder="getid3">
@@ -56,6 +56,7 @@
 		<file>module.audio.vqf.php</file>
 		<file>module.audio.wavpack.php</file>
 		<file>module.graphic.bmp.php</file>
+        <file>module.graphic.efax.php</file>
 		<file>module.graphic.gif.php</file>
 		<file>module.graphic.jpg.php</file>
 		<file>module.graphic.pcd.php</file>
@@ -63,7 +64,6 @@
 		<file>module.graphic.svg.php</file>
 		<file>module.graphic.tiff.php</file>
 		<file>module.misc.cue.php</file>
-		<file>module.misc.doc.php</file>
 		<file>module.misc.exe.php</file>
 		<file>module.misc.iso.php</file>
 		<file>module.misc.msoffice.php</file>

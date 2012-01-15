@@ -1,5 +1,6 @@
 15-January-2012 Michael Babker
 ~ [#28] Make front end filtering field generic search
+~ [#35] Update getID3 library to 1.9.3
 
 11-January-2012 Michael Babker
 ~ Update Live Update to 1.1
