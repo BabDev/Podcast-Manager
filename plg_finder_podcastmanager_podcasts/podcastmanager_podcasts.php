@@ -229,12 +229,12 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 		$sql->select($this->db->quoteName('id'));
 		$sql->select($this->db->quoteName('feedname'));
 		$sql->select($this->db->quoteName('title'));
-		$sql->select($this->db->quoteName('itSummary') . ' AS summary');
-		$sql->select($this->db->quoteName('published') . ' AS state');
-		$sql->select($this->db->quoteName('created') . ' AS start_date');
-		$sql->select($this->db->quoteName('itAuthor') . ' AS author');
+		$sql->select($this->db->quoteName('itSummary', 'summary'));
+		$sql->select($this->db->quoteName('published', 'state'));
+		$sql->select($this->db->quoteName('created', 'start_date'));
+		$sql->select($this->db->quoteName('itAuthor', 'author'));
 		$sql->select($this->db->quoteName('language'));
-		$sql->select($this->db->quoteName('publish_up') . ' AS publish_start_date');
+		$sql->select($this->db->quoteName('publish_up', 'publish_start_date'));
 		$sql->select('0 AS publish_end_date');
 		$sql->select('1 AS access');
 		$sql->from($this->db->quoteName('#__podcastmanager'));
@@ -271,7 +271,7 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	{
 		$sql = $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName($this->state_field) . ' AS state');
+		$sql->select($this->db->quoteName($this->state_field, 'state'));
 		$sql->select('NULL AS cat_state');
 		$sql->from($this->db->quoteName($this->table));
 

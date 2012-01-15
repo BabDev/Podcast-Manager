@@ -48,8 +48,8 @@ class JFormFieldFeedName extends JFormFieldList
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select($db->quoteName('a.id') . ' AS value, ' . $db->quoteName('a.name') . ' AS text');
-		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+		$query->select($db->quoteName(array('a.id', 'a.name'), array('value', 'text')));
+		$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 		$query->where($db->quoteName('a.name') . ' != ' . $db->quote(''));
 		$query->where($db->quoteName('a.published') . ' != -2');
 		$query->group('a.id, a.name, a.published');

@@ -90,7 +90,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// Get the published menu counts.
 		$query = $db->getQuery(true);
 		$query->select('p.feedname, COUNT(DISTINCT p.id) AS count_published');
-		$query->from($db->quoteName('#__podcastmanager') . ' AS p');
+		$query->from($db->quoteName('#__podcastmanager', 'p'));
 		$query->where($db->quoteName('p.published') . ' = 1');
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$query->group('p.feedname');
@@ -158,11 +158,11 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Select the needed fields from the table.
 		$query->select($this->getState('list.select', 'a.id, a.name, a.published, a.language, a.checked_out, a.created_by'));
-		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 
 		// Join over the language
-		$query->select($db->quoteName('l.title') . ' AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title', 'language_title'));
+		$query->join('LEFT', $db->quoteName('#__languages', 'l') . ' ON l.lang_code = a.language');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');

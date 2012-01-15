@@ -161,7 +161,7 @@ class PodcastManagerTablePodcast extends JTable
 			{
 				$db = $this->getDbo();
 				$query = $db->getQuery(true);
-				$query->select($db->quoteName('bp_position') . ', ' . $db->quoteName('boilerplate'));
+				$query->select($db->quoteName(array('bp_position', 'boilerplate')));
 				$query->from($db->quoteName('#__podcastmanager_feeds'));
 				$query->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
 				$db->setQuery($query);

@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmanager
-*
-* @copyright   Copyright (C) 2011-2012 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmanager
+ *
+ * @copyright   Copyright (C) 2011-2012 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 defined('_JEXEC') or die;
 
@@ -45,17 +45,17 @@ class PodcastManagerHelper
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS'),
 			'index.php?option=com_podcastmanager&view=feeds',
-			$vName == 'feeds'
+		$vName == 'feeds'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
 			'index.php?option=com_podcastmanager&view=podcasts',
-			$vName == 'podcasts'
+		$vName == 'podcasts'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
 			'index.php?option=com_podcastmedia&view=media',
-			$vName == 'media'
+		$vName == 'media'
 		);
 	}
 
@@ -134,9 +134,9 @@ class PodcastManagerHelper
 		$user = JFactory::getUser();
 		$db = JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		$query->select($db->quoteName('f.id') . ' AS id, ' . $db->quoteName('a.name') . ' AS asset_name');
-		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS f');
-		$query->innerJoin($db->quoteName('#__assets') . ' AS a ON f.asset_id = a.id');
+		$query->select($db->quoteName(array('f.id', 'a.name'), array('id', 'asset_name')));
+		$query->from($db->quoteName('#__podcastmanager_feeds', 'f'));
+		$query->innerJoin($db->quoteName('#__assets', 'a') . ' ON f.asset_id = a.id');
 		$query->where($db->quoteName('f.published') . ' = 1');
 		$db->setQuery($query);
 		$allFeeds = $db->loadObjectList('id');

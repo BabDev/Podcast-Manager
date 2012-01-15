@@ -225,10 +225,10 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		// Check if we can use the supplied SQL query.
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName('name') . ' AS title');
-		$sql->select($this->db->quoteName('description') . ' AS summary');
-		$sql->select($this->db->quoteName('published') . ' AS state');
-		$sql->select($this->db->quoteName('created') . ' AS start_date');
+		$sql->select($this->db->quoteName('name', 'title'));
+		$sql->select($this->db->quoteName('description', 'summary'));
+		$sql->select($this->db->quoteName('published', 'state'));
+		$sql->select($this->db->quoteName('created', 'start_date'));
 		$sql->select($this->db->quoteName('author'));
 		$sql->select($this->db->quoteName('language'));
 		$sql->select('0 AS publish_start_date');
@@ -268,7 +268,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	{
 		$sql = $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName($this->state_field) . ' AS state');
+		$sql->select($this->db->quoteName($this->state_field, 'state'));
 		$sql->select('NULL AS cat_state');
 		$sql->from($this->db->quoteName($this->table));
 

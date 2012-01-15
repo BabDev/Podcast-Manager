@@ -67,19 +67,19 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Select the required fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
+		$query->from($db->quoteName('#__podcastmanager', 'a'));
 
 		// Join over the language
-		$query->select($db->quoteName('l.title') . ' AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title', 'language_title'));
+		$query->join('LEFT', $db->quoteName('#__languages', 'l') . ' ON l.lang_code = a.language');
 
 		// Join over the feed name
-		$query->select($db->quoteName('f.name') . ' AS feed_name');
-		$query->join('LEFT', $db->quoteName('#__podcastmanager_feeds') . ' AS f ON f.id = a.feedname');
+		$query->select($db->quoteName('f.name', 'feed_name'));
+		$query->join('LEFT', $db->quoteName('#__podcastmanager_feeds', 'f') . ' ON f.id = a.feedname');
 
 		// Join over the users for the checked out user.
-		$query->select($db->quoteName('uc.name') . ' AS editor');
-		$query->join('LEFT', $db->quoteName('#__users') . ' AS uc ON uc.id=a.checked_out');
+		$query->select($db->quoteName('uc.name', 'editor'));
+		$query->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON uc.id=a.checked_out');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');

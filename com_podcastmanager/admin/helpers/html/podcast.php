@@ -50,8 +50,8 @@ abstract class JHtmlPodcast
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select($db->quoteName('a.id') . ', ' . $db->quoteName('a.name'));
-			$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
+			$query->select($db->quoteName(array('a.id', 'a.name')));
+			$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 
 			// Filter on the published state
 			if (isset($config['filter.published']))

@@ -96,10 +96,10 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
+		$query->from($db->quoteName('#__podcastmanager', 'a'));
 
 		// Join over the users for the modified_by name.
-		$query->join('LEFT', $db->quoteName('#__users') . ' AS uam ON uam.id = a.modified_by');
+		$query->join('LEFT', $db->quoteName('#__users', 'uam') . ' ON uam.id = a.modified_by');
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
@@ -121,7 +121,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		if ($this->getState('filter.publish_date'))
 		{
-			$query->where('(' . $db->quoteName('a.publish_up') . ' = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+			$query->where('(' . $db->quoteName('a.publish_up') . ' = ' . $nullDate . ' OR ' . $db->quoteName('a.publish_up') . ' <= ' . $nowDate . ')');
 		}
 
 		// Filter by language
