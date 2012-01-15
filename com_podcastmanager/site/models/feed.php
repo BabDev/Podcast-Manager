@@ -146,6 +146,19 @@ class PodcastManagerModelFeed extends JModelList
 			$query->where($db->quoteName('a.language').' in ('.$db->quote(JFactory::getLanguage()->getTag()).','.$db->quote('*').')');
 		}
 
+		// Process user-entered filters for the HTML view
+		$params = $this->getState('params');
+		$filter = $this->getState('list.filter');
+
+		if ((is_object($params)) && ($params->get('filter_field') != 'hide'))
+		{
+			// clean filter variable
+			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
+
+			// Check the author, title, and publish_up fields
+			$query->where('(a.itAuthor LIKE ' . $filter . ' OR a.title LIKE ' . $filter . ' OR a.publish_up LIKE ' . $filter . ')');
+		}
+
 		// Handle the list ordering.
 		$ordering	= $this->getState('list.ordering', 'a.publish_up');
 		$direction	= $this->getState('list.direction', 'DESC');
