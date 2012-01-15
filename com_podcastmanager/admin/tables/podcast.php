@@ -83,9 +83,9 @@ class PodcastManagerTablePodcast extends JTable
 		{
 			// Build the query to get the asset id for the parent category.
 			$query = $db->getQuery(true);
-			$query->select('asset_id');
-			$query->from('#__podcastmanager_feeds');
-			$query->where('id = ' . (int) $this->feedname);
+			$query->select($db->quoteName('asset_id'));
+			$query->from($db->quoteName('#__podcastmanager_feeds'));
+			$query->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -100,9 +100,9 @@ class PodcastManagerTablePodcast extends JTable
 		{
 			// Build the query to get the asset id for the component.
 			$query = $db->getQuery(true);
-			$query->select('id');
-			$query->from('#__assets');
-			$query->where('name = ' . $db->quote('com_podcastmanager'));
+			$query->select($db->quoteName('id'));
+			$query->from($db->quoteName('#__assets'));
+			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);

@@ -90,9 +90,9 @@ class PodcastManagerModelFeeds extends JModelList
 		// Get the published menu counts.
 		$query = $db->getQuery(true);
 		$query->select('p.feedname, COUNT(DISTINCT p.id) AS count_published');
-		$query->from('#__podcastmanager AS p');
-		$query->where('p.published = 1');
-		$query->where('p.feedname IN (' . $feedNames . ')');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS p');
+		$query->where($db->quoteName('p.published') . ' = 1');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$query->group('p.feedname');
 		$db->setQuery($query);
 		$countPublished = $db->loadAssocList('feedname', 'count_published');
@@ -105,8 +105,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the unpublished menu counts.
 		$query->clear('where');
-		$query->where('p.published = 0');
-		$query->where('p.feedname IN (' . $feedNames . ')');
+		$query->where($db->quoteName('p.published') . ' = 0');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
@@ -118,8 +118,8 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Get the trashed menu counts.
 		$query->clear('where');
-		$query->where('p.published = -2');
-		$query->where('p.feedname IN (' . $feedNames . ')');
+		$query->where($db->quoteName('p.published') . ' = -2');
+		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
 		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
@@ -158,27 +158,27 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Select the needed fields from the table.
 		$query->select($this->getState('list.select', 'a.id, a.name, a.published, a.language, a.checked_out, a.created_by'));
-		$query->from('#__podcastmanager_feeds AS a');
+		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title') . ' AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published IN (0, 1))');
+			$query->where('(' . $db->quoteName('a.published') . ' IN (0, 1))');
 		}
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where('a.language = ' . $db->quote($language));
+			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
 		// Handle the list ordering.

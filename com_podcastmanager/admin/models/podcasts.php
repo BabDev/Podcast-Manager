@@ -67,36 +67,36 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Select the required fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('#__podcastmanager AS a');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', '#__languages AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title') . ' AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
 		// Join over the feed name
-		$query->select('f.name AS feed_name');
-		$query->join('LEFT', '#__podcastmanager_feeds AS f ON f.id = a.feedname');
+		$query->select($db->quoteName('f.name') . ' AS feed_name');
+		$query->join('LEFT', $db->quoteName('#__podcastmanager_feeds') . ' AS f ON f.id = a.feedname');
 
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->select($db->quoteName('uc.name') . ' AS editor');
+		$query->join('LEFT', $db->quoteName('#__users') . ' AS uc ON uc.id=a.checked_out');
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published IN (0, 1))');
+			$query->where('(' . $db->quoteName('a.published') . ' IN (0, 1))');
 		}
 
 		// Filter by feed ID
 		$feedname = $this->getState('filter.feedname');
 		if (is_numeric($feedname))
 		{
-			$query->where('a.feedname = ' . (int) $feedname);
+			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feedname);
 		}
 
 		// Filter by search in title
@@ -105,19 +105,19 @@ class PodcastManagerModelPodcasts extends JModelList
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where('a.id = ' . (int) substr($search, 3));
+				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
 			}
 			else
 			{
 				$search = $db->quote('%' . $db->escape($search, true) . '%');
-				$query->where('(a.title LIKE ' . $search . ')');
+				$query->where('(' . $db->quoteName('a.title') . ' LIKE ' . $search . ')');
 			}
 		}
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where('a.language = ' . $db->quote($language));
+			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
 		// Handle the list ordering.

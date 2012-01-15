@@ -69,11 +69,11 @@ class PodcastManagerModelFeed extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select required fields
-		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('#__podcastmanager_feeds AS a');
+		$query->select('*');
+		$query->from($db->quoteName('#__podcastmanager_feeds'));
 
 		$feedId = $this->getState('feed.id');
-		$query->where('a.id = ' . (int) $feedId);
+		$query->where($db->quoteName('id') . ' = ' . (int) $feedId);
 
 		$db->setQuery($query);
 		$feed = $db->loadObject();
@@ -96,23 +96,23 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Select required fields
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from('#__podcastmanager AS a');
+		$query->from($db->quoteName('#__podcastmanager') . ' AS a');
 
 		// Join over the users for the modified_by name.
-		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+		$query->join('LEFT', $db->quoteName('#__users') . ' AS uam ON uam.id = a.modified_by');
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
 		if (is_numeric($feed))
 		{
-			$query->where('a.feedname = ' . (int) $feed);
+			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feed);
 		}
 
 		// Filter by state
 		$state = $this->getState('filter.published');
 		if (is_numeric($state))
 		{
-			$query->where('a.published = ' . (int) $state);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $state);
 		}
 
 		// Filter by start date.
@@ -121,13 +121,13 @@ class PodcastManagerModelFeed extends JModelList
 
 		if ($this->getState('filter.publish_date'))
 		{
-			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+			$query->where('(' . $db->quoteName('a.publish_up') . ' = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language IN (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->where($db->quoteName('a.language') . ' IN (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		}
 
 		// Process user-entered filters for the HTML view
@@ -140,7 +140,7 @@ class PodcastManagerModelFeed extends JModelList
 			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
 
 			// Check the author, title, and publish_up fields
-			$query->where('(a.itAuthor LIKE ' . $filter . ' OR a.title LIKE ' . $filter . ' OR a.publish_up LIKE ' . $filter . ')');
+			$query->where('(' . $db->quoteName('a.itAuthor') . ' LIKE ' . $filter . ' OR ' . $db->quoteName('a.title') . ' LIKE ' . $filter . ' OR ' . $db->quoteName('a.publish_up') . ' LIKE ' . $filter . ')');
 		}
 
 		// Handle the list ordering.

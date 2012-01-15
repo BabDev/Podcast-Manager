@@ -50,20 +50,20 @@ abstract class JHtmlPodcast
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
-			$query->select('a.id, a.name');
-			$query->from('#__podcastmanager_feeds AS a');
+			$query->select($db->quoteName('a.id') . ', ' . $db->quoteName('a.name'));
+			$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS a');
 
 			// Filter on the published state
 			if (isset($config['filter.published']))
 			{
 				if (is_numeric($config['filter.published']))
 				{
-					$query->where('a.published = ' . (int) $config['filter.published']);
+					$query->where($db->quoteName('a.published') . ' = ' . (int) $config['filter.published']);
 				}
 				elseif (is_array($config['filter.published']))
 				{
 					JArrayHelper::toInteger($config['filter.published']);
-					$query->where('a.published IN (' . implode(',', $config['filter.published']) . ')');
+					$query->where($db->quoteName('a.published') . ' IN (' . implode(',', $config['filter.published']) . ')');
 				}
 			}
 

@@ -71,9 +71,9 @@ class PodcastManagerHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('COUNT(extension_id)');
-		$query->from('#__extensions');
-		$query->where('folder = ' . $db->quote('podcastmedia'));
-		$query->where('enabled = 1');
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'));
+		$query->where($db->quoteName('enabled') . ' = 1');
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -134,10 +134,10 @@ class PodcastManagerHelper
 		$user = JFactory::getUser();
 		$db = JFactory::getDbo();
 		$query	= $db->getQuery(true);
-		$query->select('f.id AS id, a.name as asset_name');
-		$query->from('#__podcastmanager_feeds AS f');
-		$query->innerJoin('#__assets AS a ON f.asset_id = a.id');
-		$query->where('f.published = 1');
+		$query->select($db->quoteName('f.id') . ' AS id, ' . $db->quoteName('a.name') . ' AS asset_name');
+		$query->from($db->quoteName('#__podcastmanager_feeds') . ' AS f');
+		$query->innerJoin($db->quoteName('#__assets') . ' AS a ON f.asset_id = a.id');
+		$query->where($db->quoteName('f.published') . ' = 1');
 		$db->setQuery($query);
 		$allFeeds = $db->loadObjectList('id');
 		$allowedFeeds = array();
