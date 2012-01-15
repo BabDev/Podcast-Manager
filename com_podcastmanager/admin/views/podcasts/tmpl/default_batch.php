@@ -26,14 +26,16 @@ $published	= $this->state->get('filter.published');
 	<?php echo JHtml::_('batch.language'); ?>
 
 	<?php if ($published >= 0) : ?>
-	<label id="batch-choose-action-lbl" for="batch-feed-id">
+	<label id="batch-choose-action-lbl" for="batch-choose-action">
 		<?php echo JText::_('COM_PODCASTMANAGER_BATCH_FEED_LABEL'); ?>
 	</label>
-	<select name="batch[feed_id]" class="inputbox" id="batch-feed-id">
-		<option value=""><?php echo JText::_('JSELECT') ?></option>
-		<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'));?>
-	</select>
-	<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+	<fieldset id="batch-choose-action" class="combo">
+		<select name="batch[feed_id]" class="inputbox" id="batch-feed-id">
+			<option value=""><?php echo JText::_('JSELECT') ?></option>
+			<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'));?>
+		</select>
+		<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+	</fieldset>
 	<?php endif; ?>
 
 	<button type="submit" onclick="submitbutton('podcast.batch');">
