@@ -92,3 +92,33 @@ source_lang = en
 file_filter = com_podcastmanager/site/language/<lang>/<lang>.com_podcastmanager.ini
 source_file = com_podcastmanager/site/language/en-GB/en-GB.com_podcastmanager.ini
 source_lang = en
+
+[podcast-manager.podcast-manager-smart-search-feed-plugin]
+file_filter = plg_finder_podcastmanager_feeds/language/<lang>/<lang>.plg_finder_podcastmanager_feeds.ini
+source_file = plg_finder_podcastmanager_feeds/language/en-GB/en-GB.plg_finder_podcastmanager_feeds.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-smart-search-feed-plugin-system]
+file_filter = plg_finder_podcastmanager_feeds/language/<lang>/<lang>.plg_finder_podcastmanager_feeds.sys.ini
+source_file = plg_finder_podcastmanager_feeds/language/en-GB/en-GB.plg_finder_podcastmanager_feeds.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-smart-search-podcast-plugin]
+file_filter = plg_finder_podcastmanager_feeds/language/<lang>/<lang>.plg_finder_podcastmanager_feeds.ini
+source_file = plg_finder_podcastmanager_feeds/language/en-GB/en-GB.plg_finder_podcastmanager_feeds.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-smart-search-podcast-plugin-system]
+file_filter = plg_finder_podcastmanager_podcasts/language/<lang>/<lang>.plg_finder_podcastmanager_podcasts.sys.ini
+source_file = plg_finder_podcastmanager_podcasts/language/en-GB/en-GB.plg_finder_podcastmanager_podcasts.sys.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-podcastmedia-user-plugin]
+file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.ini
+source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-podcastmedia-user-plugin-system]
+file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.sys.ini
+source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.sys.ini
+source_lang = en
