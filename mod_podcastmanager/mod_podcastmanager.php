@@ -14,6 +14,9 @@
 
 defined('_JEXEC') or die;
 
+// Include the routing helper
+JLoader::register('PodcastManagerHelperRoute', JPATH_SITE . '/components/com_podcastmanager/helpers/route.php');
+
 $params->def('text', '');
 $params->def('urischeme', 'http');
 $params->def('plainlink', 1);
@@ -24,7 +27,7 @@ $feed = $params->get('feedname', '');
 
 if (!$plainlink)
 {
-	$plainlink = JRoute::_(JURI::root() . 'index.php?option=com_podcastmanager&view=feed&feedname=' . $feed . '&format=raw');
+	$plainlink = JRoute::_(PodcastManagerHelperRoute::getFeedRssRoute($feed));
 }
 
 if ($img)

@@ -25,17 +25,68 @@ function podcastManagerBuildRoute(&$query)
 {
 	$segments = array();
 
+	// get a menu item based on Itemid or currently active
+	$app	= JFactory::getApplication();
+	$menu	= $app->getMenu();
+
+	if (empty($query['Itemid']))
+	{
+		$menuItem = $menu->getActive();
+	}
+	else
+	{
+		$menuItem = $menu->getItem($query['Itemid']);
+	}
+	$mView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+	$mId	= (empty($menuItem->query['feedname'])) ? null : $menuItem->query['feedname'];
+
 	if (isset($query['view']))
 	{
-		$segments[] = $query['view'];
+		$view = $query['view'];
+		if (empty($query['Itemid']))
+		{
+			$segments[] = $query['view'];
+		}
 		unset($query['view']);
+	};
+
+	// Are we dealing with a podcast feed that is attached to a menu item?
+	if (isset($query['view']) && ($mView == $query['view']) && (isset($query['feedname'])) && ($mId == intval($query['feedname'])))
+	{
+		unset($query['view']);
+		unset($query['feedname']);
+		return $segments;
 	}
 
-	if (isset($query['feedname']))
+	if (isset($view) and ($view == 'feed'))
 	{
-		$segments[] = $query['feedname'];
+		if ($mId != intval($query['feedname']) || $mView != $view)
+		{
+			if($view == 'feed')
+			{
+				$segments[] = $query['feedname'];
+			}
+		}
 		unset($query['feedname']);
 	}
+
+	if (isset($query['layout']))
+	{
+		if (!empty($query['Itemid']) && isset($menuItem->query['layout']))
+		{
+			if ($query['layout'] == $menuItem->query['layout'])
+			{
+				unset($query['layout']);
+			}
+		}
+		else
+		{
+			if ($query['layout'] == 'feed')
+			{
+				unset($query['layout']);
+			}
+		}
+	};
 
 	return $segments;
 }
@@ -53,6 +104,22 @@ function podcastManagerParseRoute($segments)
 {
 	$input = JFactory::getApplication()->input;
 	$vars = array();
+
+	//Get the active menu item.
+	$app	= JFactory::getApplication();
+	$menu	= $app->getMenu();
+	$item	= $menu->getActive();
+
+	// Count route segments
+	$count = count($segments);
+
+	// Standard routing for the feed views.
+	if (!isset($item))
+	{
+		$vars['view'] = $segments[0];
+		$vars['feedname'] = $segments[$count - 1];
+		return $vars;
+	}
 
 	$vars['view'] = $input->get('view', '', 'cmd');
 	$vars['feedname'] = $input->get('feedname', '', 'int');
