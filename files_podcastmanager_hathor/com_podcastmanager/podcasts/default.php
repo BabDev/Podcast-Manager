@@ -63,7 +63,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</label>
 			<select name="filter_feedname" id="filter_feedname" class="inputbox">
 				<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds', 'com_podcastmanager'), 'value', 'text', $this->state->get('filter.feedname'), true);?>
+				<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'), true);?>
 			</select>
 
 			<label class="selectlabel" for="filter_language">
