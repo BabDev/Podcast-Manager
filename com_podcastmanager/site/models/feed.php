@@ -139,14 +139,8 @@ class PodcastManagerModelFeed extends JModelList
 			// clean filter variable
 			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
 
-			// Check the author field
-			$query->where('a.itAuthor LIKE ' . $filter, 'OR');
-
-			// Check the podcast's title
-			$query->where('a.title LIKE ' . $filter, 'OR');
-
-			// Check the podcast's date
-			$query->where('a.publish_up LIKE ' . $filter, 'OR');
+			// Check the author, title, and publish_up fields
+			$query->where('(a.itAuthor LIKE ' . $filter . ' OR a.title LIKE ' . $filter . ' OR a.publish_up LIKE ' . $filter . ')');
 		}
 
 		// Handle the list ordering.
