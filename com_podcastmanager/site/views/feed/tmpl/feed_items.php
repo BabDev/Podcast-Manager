@@ -33,10 +33,6 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
-<?php if (empty($this->items)) : ?>
-	<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
-<?php else : ?>
-
 <form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
 	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
  	<fieldset class="filters">
@@ -63,6 +59,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
 	<?php endif; ?>
+
+	<?php if (empty($this->items)) : ?>
+	<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
+	<?php else : ?>
 
 	<table class="category">
 		<?php if ($this->params->get('show_headings')) : ?>
