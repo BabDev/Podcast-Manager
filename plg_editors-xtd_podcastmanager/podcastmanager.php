@@ -55,8 +55,8 @@ class PlgButtonPodcastManager extends JPlugin
 		 * and closes the modal.
 		 */
 		$js = "
-		function PodcastManagerSelectPodcast(title, object) {
-			var tag = '{podcast '+title+'}';
+		function PodcastManagerSelectPodcast(id, object) {
+			var tag = '{podcast id='+id+'}';
 			jInsertEditorText(tag, '" . $name . "');
 			SqueezeBox.close();
 		}";

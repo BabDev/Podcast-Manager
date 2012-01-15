@@ -84,9 +84,9 @@ class PlgContentPodcastManager extends JPlugin
 		}
 
 		// Expression to search for
-		$regex = '/\{(podcast) (.*)\}/i';
+		$regex = '/\{(podcast)\s+(.*?)}/i';
 
-		// Find all instances of plugin and put in $matches
+		// Find all instances of the podcast marker and put in $matches
 		preg_match_all($regex, $article->text, $matches);
 
 		foreach ($matches as $id => $podcast)
@@ -158,12 +158,29 @@ class PlgContentPodcastManager extends JPlugin
 						$podtitle = substr($episode, 9, -17);
 					}
 
+					// Check if we've received an ID
+					if (strpos($podtitle, 'id') === 0)
+					{
+						// Remove the id= portion and cast as an integer
+						$podtitle = (int) substr($podtitle, 3);
+					}
+
 					// Query the DB for the title string, returning the filename
 					$db = JFactory::getDBO();
 					$query = $db->getQuery(true);
-					$query->select('filename');
-					$query->from('#__podcastmanager');
-					$query->where('title = ' . $db->quote($podtitle));
+					// If the title is a string, use the "classic" lookup method
+					if (is_string($podtitle))
+					{
+						$query->select($db->quoteName('filename'));
+						$query->from($db->quoteName('#__podcastmanager'));
+						$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
+					}
+					elseif (is_int($podtitle))
+					{
+						$query->select($db->quoteName('filename') . ', ' . $db->quoteName('title'));
+						$query->from($db->quoteName('#__podcastmanager'));
+						$query->where($db->quoteName('id') . ' = ' . (int) $podtitle);
+					}
 					$db->setQuery($query);
 					if (!$db->loadObject())
 					{
@@ -174,7 +191,14 @@ class PlgContentPodcastManager extends JPlugin
 					}
 					else
 					{
-						$podfilepath = $db->loadObject();
+						$dbResult = $db->loadObject();
+						$podfilepath = $dbResult->filename;
+
+						// Set the title if we searched by ID
+						if (isset($dbResult->title))
+						{
+							$podtitle = $dbResult->title;
+						}
 					}
 				}
 
@@ -385,10 +409,10 @@ class PodcastManagerPlayer
 	protected function html5()
 	{
 		$player = '<div id="sm2-container">'
-				. '<div class="sm2-player">'
-				. '<a class="sm2_link" href="' . $this->fileURL . '">' . htmlspecialchars($this->podtitle) . '</a>'
-				. '</div>'
-				. '</div>';
+		. '<div class="sm2-player">'
+		. '<a class="sm2_link" href="' . $this->fileURL . '">' . htmlspecialchars($this->podtitle) . '</a>'
+		. '</div>'
+		. '</div>';
 		return $player;
 	}
 
@@ -419,8 +443,8 @@ class PodcastManagerPlayer
 		$playerURL = JURI::base() . 'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
 
 		$player	= '<object type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" data="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '">'
-				. '<param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '" />'
-				. '</object>';
+		. '<param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '" />'
+		. '</object>';
 
 		return $player;
 	}
