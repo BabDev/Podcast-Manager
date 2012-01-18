@@ -24,7 +24,7 @@ CREATE TABLE [#__podcastmanager](
 	[itKeywords] [nvarchar](255) NOT NULL,
 	[itSubtitle] [nvarchar](255) NOT NULL,
 	[itSummary] [nvarchar](max) NOT NULL,
-	[language] [nchar](7) NOT NULL,
+	[language] [nvarchar](7) NOT NULL,
  CONSTRAINT [PK_#__podcastmanager] PRIMARY KEY CLUSTERED
 (
 	[id] ASC
@@ -100,7 +100,7 @@ CREATE TABLE [#__podcastmanager_feeds](
 	[modified_by] [bigint] NOT NULL,
 	[checked_out] [int] NOT NULL,
 	[checked_out_time] [datetime] NOT NULL,
-	[language] [nchar](7) NOT NULL,
+	[language] [nvarchar](7) NOT NULL,
  CONSTRAINT [PK_#__podcastmanager_feeds] PRIMARY KEY CLUSTERED
 (
 	[id] ASC

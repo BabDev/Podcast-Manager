@@ -20,7 +20,7 @@ CREATE TABLE "#__podcastmanager" (
   "itKeywords" character varying(255) DEFAULT '' NOT NULL,
   "itSubtitle" character varying(255) DEFAULT '' NOT NULL,
   "itSummary" character varying(5120) DEFAULT '' NOT NULL,
-  "language" character(7) NOT NULL,
+  "language" character varying(7) NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -51,6 +51,6 @@ CREATE TABLE "#__podcastmanager_feeds" (
   "modified_by" bigint DEFAULT 0 NOT NULL,
   "checked_out" bigint DEFAULT 0 NOT NULL,
   "checked_out_time" timestamp without time zone DEFAULT '1970-01-01 00:00:00' NOT NULL,
-  "language" character(7) NOT NULL,
+  "language" character varying(7) NOT NULL,
   PRIMARY KEY ("id")
 );
