@@ -147,11 +147,6 @@ class PodcastManagerViewFeed extends JView
 		$xw->endElement(); // rss
 
 		echo $xw->outputMemory(true);
-
-		if (isset($cache))
-		{
-			$cache->end(); // cache output
-		}
 	}
 
 	/**
