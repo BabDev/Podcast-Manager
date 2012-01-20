@@ -1,10 +1,16 @@
+20-January-2012 Michael Babker
+~ Update pt-BR translation
+
+19-January-2012 Michael Babker
+~ Restore J! Version check to component scriptfile for BC
+
 15-January-2012 Michael Babker
 ~ [#28] Make front end filtering field generic search
 ~ [#35] Update getID3 library to 1.9.3
 ~ [#10] Improvements to component router
 ~ [#11] Route feed link module through component router
 ~ Only run the content plugin in the site application
-+ [#37] Button plugin now sets content syntax as {podcast id=XX} (B/C change)
++ [#37] Button plugin now sets content syntax as {podcast id=XX} (BC change)
 
 11-January-2012 Michael Babker
 ~ Update Live Update to 1.1
