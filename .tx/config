@@ -1,6 +1,6 @@
 [main]
 host = https://www.transifex.net
-lang_map = en: en-GB, pt_br: pt-BR
+lang_map = en: en-GB, pt_BR: pt-BR
 minimum_perc = 100
 type = INI
 
@@ -89,6 +89,16 @@ file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastma
 source_file = files_podcastmanager_minima/language/en-GB/en-GB.files_podcastmanager_minima.sys.ini
 source_lang = en
 
+[podcast-manager.podcast-manager-podcastmedia-user-plugin]
+file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.ini
+source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.ini
+source_lang = en
+
+[podcast-manager.podcast-manager-podcastmedia-user-plugin-system]
+file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.sys.ini
+source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.sys.ini
+source_lang = en
+
 [podcast-manager.podcast-manager-site-component]
 file_filter = com_podcastmanager/site/language/<lang>/<lang>.com_podcastmanager.ini
 source_file = com_podcastmanager/site/language/en-GB/en-GB.com_podcastmanager.ini
@@ -112,14 +122,4 @@ source_lang = en
 [podcast-manager.podcast-manager-smart-search-podcast-plugin-system]
 file_filter = plg_finder_podcastmanager_podcasts/language/<lang>/<lang>.plg_finder_podcastmanager_podcasts.sys.ini
 source_file = plg_finder_podcastmanager_podcasts/language/en-GB/en-GB.plg_finder_podcastmanager_podcasts.sys.ini
-source_lang = en
-
-[podcast-manager.podcast-manager-podcastmedia-user-plugin]
-file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.ini
-source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.ini
-source_lang = en
-
-[podcast-manager.podcast-manager-podcastmedia-user-plugin-system]
-file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.sys.ini
-source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.sys.ini
 source_lang = en
