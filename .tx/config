@@ -1,7 +1,6 @@
 [main]
 host = https://www.transifex.net
 lang_map = en: en-GB, pt_BR: pt-BR
-minimum_perc = 100
 type = INI
 
 [podcast-manager.podcast-manager-administrator-component]
