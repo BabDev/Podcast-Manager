@@ -176,7 +176,6 @@ class PodcastManagerViewFeed extends JView
 		{
 			$this->params->set('page_subheading', $this->feed->name);
 			$path = array(array('title' => $this->feed->name, 'link' => ''));
-			$feed = $this->feed;
 
 			$path = array_reverse($path);
 
@@ -218,7 +217,7 @@ class PodcastManagerViewFeed extends JView
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
-		if ($feed->author)
+		if ($this->feed->author)
 		{
 			$this->document->setMetaData('author', $feed->author);
 		}
@@ -226,7 +225,7 @@ class PodcastManagerViewFeed extends JView
 		// Add alternative feed link
 		if ($this->params->get('show_feed_link', 1) == 1)
 		{
-			$link = '&format=raw&layout=default&feedname=' . $feed->id;
+			$link	= '&format=raw&layout=default&feedname=' . $this->feed->id;
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 			$this->document->addHeadLink(JRoute::_($link), 'alternate', 'rel', $attribs);
 		}
