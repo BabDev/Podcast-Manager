@@ -1,7 +1,7 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011 Michael Babker. All rights reserved.
+* @copyright	Copyright (C) 2011-2012 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * @package		PodcastManager
 * @subpackage	plg_content_podcastmanager
@@ -34,7 +34,7 @@ _overflow: hidden; /* screw IE 6, just make it display nice */
 position: absolute;
 left: auto;
 top: auto;
- /* 
+ /*
   * at first, stay <= 8px to fly under the radar of some flash blockers as an "invisible" SWF.
   * dimensions will change with blocked state.
  */
@@ -43,7 +43,7 @@ top: auto;
 }
 
 #sm2-container.swf_timedout, #sm2-container.swf_timedout object, #sm2-container.swf_timedout embed {
- /* 
+ /*
   * when SM2 didn't start normally, time-out case. flash blocked, missing SWF, no flash?
   * 48px square flash placeholder is typically used by blockers.
  */
