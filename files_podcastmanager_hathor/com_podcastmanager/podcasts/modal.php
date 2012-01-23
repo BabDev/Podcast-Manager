@@ -14,13 +14,19 @@
 
 defined('_JEXEC') or die;
 
+// Check for a token if accessing from front end
+if (JFactory::getApplication()->isSite())
+{
+	JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+}
+
 JHtml::_('behavior.tooltip');
 
 $function	= JRequest::getCmd('function', 'PodcastManagerSelectPodcast');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&layout=modal&tmpl=component&function='.$function);?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 	<legend class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></legend>
 		<div class="filter-search">

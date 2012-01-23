@@ -74,7 +74,7 @@ class PlgButtonPodcastManager extends JPlugin
 		 * Use the modal view to select the podcast.
 		 * Currently uses blank class.
 		 */
-		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component';
+		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
 		$button = new JObject;
 		$button->set('modal', true);
