@@ -143,8 +143,11 @@ class PodcastManagerViewFeed extends JView
 
 		$this->_setItems($xw, $params, $items);
 
-		$xw->endElement(); // channel
-		$xw->endElement(); // rss
+		// End channel element
+		$xw->endElement();
+
+		// End RSS element
+		$xw->endElement();
 
 		echo $xw->outputMemory(true);
 	}

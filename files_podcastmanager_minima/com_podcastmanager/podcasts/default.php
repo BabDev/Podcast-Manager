@@ -171,7 +171,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	</div>
 	<?php endif; ?>
 	<div>
-	<?php //Load the batch processing form. ?>
+	<?php // Load the batch processing form. ?>
 	<?php echo $this->loadTemplate('batch'); ?>
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

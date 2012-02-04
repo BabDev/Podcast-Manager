@@ -111,6 +111,7 @@ class PodcastManagerViewFeed extends JView
 		{
 			$item = &$items[$i];
 			$item->player = '{podcast ' . $item->title . '}';
+
 			// Set the text object to prevent errors with other plugins
 			$item->text = '';
 			$dispatcher = JDispatcher::getInstance();

@@ -231,7 +231,9 @@ class Com_PodcastManagerInstallerScript
 		if (count($ids) > 1)
 		{
 			asort($ids);
-			$extension_id = array_shift($ids); // Keep the oldest id
+
+			// Keep the oldest id
+			$extension_id = array_shift($ids);
 
 			foreach ($ids as $id)
 			{
@@ -243,8 +245,6 @@ class Com_PodcastManagerInstallerScript
 			}
 		}
 
-		// @todo
-
 		// If there are multiple assets records, delete all except the oldest one
 		$query->clear();
 		$query->select($db->quoteName('id'));
@@ -255,7 +255,9 @@ class Com_PodcastManagerInstallerScript
 		if (count($ids) > 1)
 		{
 			asort($ids);
-			$asset_id = array_shift($ids); // Keep the oldest id
+
+			// Keep the oldest id
+			$asset_id = array_shift($ids);
 
 			foreach ($ids as $id)
 			{

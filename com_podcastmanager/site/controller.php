@@ -36,6 +36,7 @@ class PodcastManagerController extends JController
 	public function __construct($config = array())
 	{
 		$input = JFactory::getApplication()->input;
+
 		// Frontpage Editor podcast proxying:
 		if ($input->get('view', '', 'cmd') === 'podcasts' && $input->get('layout', '', 'cmd') === 'modal')
 		{

@@ -537,6 +537,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (empty($data))
 		{
 			$data = $this->getItem();
+
 			// If changing the selected file, process the new data through getID3
 			if (isset($_COOKIE['podManFile']))
 			{

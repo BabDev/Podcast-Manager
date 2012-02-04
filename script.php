@@ -89,62 +89,66 @@ class Pkg_PodcastManagerInstallerScript
 		<?php $rows = 0; ?>
 		<table class="adminlist">
 			<thead>
-			<tr>
-				<th class="title"><?php echo JText::_('PKG_PODCASTMANAGER_EXTENSION'); ?></th>
-				<th class="title" width="20%"><?php echo JText::_('PKG_PODCASTMANAGER_TYPE'); ?></th>
-				<th class="title" width="20%"><?php echo JText::_('JSTATUS'); ?></th>
-				<th class="title" width="15%"><?php echo JText::_('JENABLED'); ?></th>
-			</tr>
+				<tr>
+					<th class="title"><?php echo JText::_('PKG_PODCASTMANAGER_EXTENSION'); ?></th>
+					<th class="title" width="20%"><?php echo JText::_('PKG_PODCASTMANAGER_TYPE'); ?></th>
+					<th class="title" width="20%"><?php echo JText::_('JSTATUS'); ?></th>
+					<th class="title" width="15%"><?php echo JText::_('JENABLED'); ?></th>
+				</tr>
 			</thead>
 			<tfoot>
-			<tr>
-				<td colspan="4"></td>
-			</tr>
+				<tr>
+					<td colspan="4"></td>
+				</tr>
 			</tfoot>
 			<tbody>
-			<?php foreach ($results as $result)
-			{
-				$extension = (string) $result['name'];
-				$e_type = substr($extension, 0, 3); ?>
-			<tr class="row<?php echo (++$rows % 2); ?>">
-				<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
-				<td><strong>
-				<?php if ($e_type == 'com')
+				<?php foreach ($results as $result)
 				{
-					echo JText::_('COM_INSTALLER_TYPE_COMPONENT');
-				}
-				elseif ($e_type == 'mod')
-				{
-					echo JText::_('COM_INSTALLER_TYPE_MODULE');
-				}
-				elseif ($e_type == 'plg')
-				{
-					echo JText::_('COM_INSTALLER_TYPE_PLUGIN');
-				}
-				elseif ($e_type == 'get')
-				{
-					echo JText::_('COM_INSTALLER_TYPE_LIBRARY');
-				} ?></strong></td>
-				<td><strong>
-					<?php if ($result['result'] == true)
-				{
-					echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-				}
-				else
-				{
-					echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-				} ?></strong></td>
-				<td><strong>
-					<?php if ($enabled[$extension] == 1)
-				{
-					echo JText::_('JYES');
-				}
-				else
-				{
-					echo JText::_('JNO');
-				} ?></strong></td>
-			</tr>
-			<?php } ?>
+					$extension = (string) $result['name'];
+					$e_type = substr($extension, 0, 3); ?>
+				<tr class="row<?php echo (++$rows % 2); ?>">
+					<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
+					<td><strong>
+						<?php if ($e_type == 'com')
+						{
+							echo JText::_('COM_INSTALLER_TYPE_COMPONENT');
+						}
+						elseif ($e_type == 'mod')
+						{
+							echo JText::_('COM_INSTALLER_TYPE_MODULE');
+						}
+						elseif ($e_type == 'plg')
+						{
+							echo JText::_('COM_INSTALLER_TYPE_PLUGIN');
+						}
+						elseif ($e_type == 'get')
+						{
+							echo JText::_('COM_INSTALLER_TYPE_LIBRARY');
+						} ?></strong>
+					</td>
+					<td><strong>
+						<?php if ($result['result'] == true)
+						{
+							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
+						}
+						else
+						{
+							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
+						} ?></strong>
+					</td>
+					<td><strong>
+						<?php if ($enabled[$extension] == 1)
+						{
+							echo JText::_('JYES');
+						}
+						else
+						{
+							echo JText::_('JNO');
+						} ?></strong>
+					</td>
+				</tr>
+				<?php
+				} ?>
 			</tbody>
 		</table>
 		<?php

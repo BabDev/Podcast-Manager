@@ -3,7 +3,7 @@
 	<!-- Project properties -->
 	<property file="./build.properties" />
 	<property name="repo.dir" value="." />
-	<property name="version" value="2.0.alpha" />
+	<property name="version" value="2.0.alpha+dev" />
 	<resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
 	<tstamp>
 		<format property="build.date" pattern="%Y-%m-%d" />

@@ -25,7 +25,7 @@ function podcastManagerBuildRoute(&$query)
 {
 	$segments = array();
 
-	// get a menu item based on Itemid or currently active
+	// Get a menu item based on Itemid or currently active
 	$app	= JFactory::getApplication();
 	$menu	= $app->getMenu();
 
@@ -48,7 +48,7 @@ function podcastManagerBuildRoute(&$query)
 			$segments[] = $query['view'];
 		}
 		unset($query['view']);
-	};
+	}
 
 	// Are we dealing with a podcast feed that is attached to a menu item?
 	if (isset($query['view']) && ($mView == $query['view']) && (isset($query['feedname'])) && ($mId == intval($query['feedname'])))
@@ -62,7 +62,7 @@ function podcastManagerBuildRoute(&$query)
 	{
 		if ($mId != intval($query['feedname']) || $mView != $view)
 		{
-			if($view == 'feed')
+			if ($view == 'feed')
 			{
 				$segments[] = $query['feedname'];
 			}
@@ -105,7 +105,7 @@ function podcastManagerParseRoute($segments)
 	$input = JFactory::getApplication()->input;
 	$vars = array();
 
-	//Get the active menu item.
+	// Get the active menu item.
 	$app	= JFactory::getApplication();
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();

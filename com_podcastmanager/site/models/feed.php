@@ -136,7 +136,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		if ((is_object($params)) && ($params->get('filter_field') != 'hide'))
 		{
-			// clean filter variable
+			// Clean filter variable
 			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
 
 			// Check the author, title, and publish_up fields

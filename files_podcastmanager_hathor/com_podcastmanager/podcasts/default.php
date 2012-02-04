@@ -155,7 +155,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-	<?php //Load the batch processing form. ?>
+	<?php // Load the batch processing form. ?>
 	<?php echo $this->loadTemplate('batch'); ?>
 
 <?php echo $this->pagination->getListFooter(); ?>
