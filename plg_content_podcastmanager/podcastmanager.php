@@ -102,42 +102,8 @@ class PlgContentPodcastManager extends JPlugin
 				return true;
 			}
 
-			// If using SM2 player, define the scripts only on the first iteration
-			if (($podmanparams->get('linkhandling') == 'html5') && ($i == 0))
-			{
-				// Initialize variables
-				$document = JFactory::getDocument();
-
-				// Define non debug settings
-				$file = 'soundmanager2-nodebug-jsmin.js';
-				$debugMode = 'false';
-				$player = 'player.js';
-
-				// If site debug enabled, enable SoundManager debug
-				if (JDEBUG)
-				{
-					$file = 'soundmanager2.js';
-					$debugMode = 'true';
-					$player = 'player-uncompressed.js';
-				}
-
-				// Declare the stylesheets
-				JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/player.css', false, false, false);
-				JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
-
-				// Declare the scripts
-				JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $file, false, false);
-				// Check if the custom tags are already defined first; if not, add them
-				if (!in_array('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>', $document->_custom))
-				{
-					$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>');
-				}
-				if (!in_array('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom))
-				{
-					$document->addCustomTag('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>');
-				}
-				JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $player, false, false);
-			}
+			// Get the JDocument object
+			$document = JFactory::getDocument();
 
 			foreach ($podcast as $episode)
 			{
@@ -146,12 +112,16 @@ class PlgContentPodcastManager extends JPlugin
 				{
 					$podtitle = $article->title;
 					$podfilepath = $article->filename;
+					$playerType = $podmanparams->get('linkhandling', 'player');
 				}
 				else
 				{
 					// Retrieve the title from the object and prepare it for a DB query
 					// 9 offset for {podcast marker, -1 offset for closing }
 					$podtitle = substr($episode, 9, -1);
+
+					// Set the player type from the component params
+					$playerType = $podmanparams->get('linkhandling', 'player');
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
@@ -163,8 +133,18 @@ class PlgContentPodcastManager extends JPlugin
 					// Check if we've received an ID
 					if (strpos($podtitle, 'id') === 0)
 					{
+						// Explode the tag into separate elements to process overrides
+						$articleTag = explode(';', $podtitle);
+
 						// Remove the id= portion and cast as an integer
-						$podtitle = (int) substr($podtitle, 3);
+						$podtitle = (int) substr($articleTag[0], 3);
+
+						// Check if we have element 1, the player override, and if the string has anything
+						if (isset($articleTag[1]) && strlen($articleTag[1]) >= 1)
+						{
+							// Remove the player= portion and set the player type
+							$playerType = substr($articleTag[1], 7);
+						}
 					}
 
 					// Query the DB for the title string, returning the filename
@@ -209,8 +189,42 @@ class PlgContentPodcastManager extends JPlugin
 
 				if (isset($podfilepath))
 				{
+					// If using SM2 player, get the scripts if needed
+					if (($playerType == 'html5'))
+					{
+						// Define non debug settings
+						$file = 'soundmanager2-nodebug-jsmin.js';
+						$debugMode = 'false';
+						$player = 'player.js';
+
+						// If site debug enabled, enable SoundManager debug
+						if (JDEBUG)
+						{
+							$file = 'soundmanager2.js';
+							$debugMode = 'true';
+							$player = 'player-uncompressed.js';
+						}
+
+						// Declare the stylesheets
+						JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/player.css', false, false, false);
+						JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
+
+						// Declare the scripts
+						JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $file, false, false);
+						// Check if the custom tags are already defined first; if not, add them
+						if (!in_array('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>', $document->_custom))
+						{
+							$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>');
+						}
+						if (!in_array('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom))
+						{
+							$document->addCustomTag('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>');
+						}
+						JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $player, false, false);
+					}
+
 					// Get the player
-					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle);
+					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType);
 
 					// Fix for K2 Item
 					if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))

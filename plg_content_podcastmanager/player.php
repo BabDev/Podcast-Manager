@@ -91,14 +91,14 @@ class PodcastManagerPlayer
 	 * @param   JRegistry  &$podmanparams  The Podcast Manager parameters
 	 * @param   string     $podfilepath    The path to the file being processed
 	 * @param   string     $podtitle       The title of the podcast being processed
+	 * @param   string     $playerType     The type of player to use
 	 *
 	 * @since   1.6
 	 */
-	public function __construct(&$podmanparams, $podfilepath, $podtitle)
+	public function __construct(&$podmanparams, $podfilepath, $podtitle, $playerType)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath = $podfilepath;
-		$playerType = $this->podmanparams->get('linkhandling', 'player');
 
 		if (in_array($playerType, $this->validTypes))
 		{
