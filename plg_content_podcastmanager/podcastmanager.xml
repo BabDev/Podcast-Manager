@@ -12,6 +12,7 @@
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<filename plugin="podcastmanager">podcastmanager.php</filename>
+		<filename>player.php</filename>
 		<filename>index.html</filename>
 		<folder>language</folder>
 		<folder>podcast</folder>
