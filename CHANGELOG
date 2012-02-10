@@ -1,3 +1,10 @@
+--------------------------------------------------
+Podcast Manager 1.8.3 - Released 10-February-2012
+--------------------------------------------------
+7-February-2012 Michael Babker
+~ Front end filtering improvements
+~ Modify front end layout to always include filter
+
 24-January-2012 Michael Babker
 ~ Add update query to ensure #__update_sites table points to babdev.com
 
