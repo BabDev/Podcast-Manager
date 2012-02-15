@@ -78,7 +78,7 @@ class PodcastMediaControllerFile extends JController
 			// Remove spaces from the file name for RSS validation
 			$filename = str_replace(' ', '_', $file['name']);
 
-			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE . DS . $folder . DS . strtolower($filename));
+			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE . '/' . $folder . '/' . strtolower($filename));
 
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{

@@ -119,7 +119,7 @@ class PodcastMediaModelList extends JModel
 			$basePath = COM_PODCASTMEDIA_BASE;
 		}
 
-		$mediaBase = str_replace(DS, '/', COM_PODCASTMEDIA_BASE . '/');
+		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_PODCASTMEDIA_BASE . '/');
 
 		$folders = array();
 		$audio = array();
@@ -138,7 +138,7 @@ class PodcastMediaModelList extends JModel
 					$tmp = new JObject;
 					$tmp->name = $file;
 					$tmp->title = $file;
-					$tmp->path = str_replace(DS, '/', JPath::clean($basePath . DS . $file));
+					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $file));
 					$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 					$tmp->size = filesize($tmp->path);
 
@@ -167,7 +167,7 @@ class PodcastMediaModelList extends JModel
 			{
 				$tmp = new JObject;
 				$tmp->name = basename($folder);
-				$tmp->path = str_replace(DS, '/', JPath::clean($basePath . DS . $folder));
+				$tmp->path = JPath::clean($basePath . '/' . $folder);
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 				$count = PodcastMediaHelper::countFiles($tmp->path);
 				$tmp->files = $count[0];

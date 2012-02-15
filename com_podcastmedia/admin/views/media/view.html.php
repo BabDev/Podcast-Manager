@@ -105,9 +105,9 @@ class PodcastMediaViewMedia extends JView
 			);
 		}
 
-		if (DS == '\\')
+		if (DIRECTORY_SEPARATOR == '\\')
 		{
-			$base = str_replace(DS, "\\\\", COM_PODCASTMEDIA_BASE);
+			$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_PODCASTMEDIA_BASE);
 		}
 		else
 		{

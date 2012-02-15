@@ -82,7 +82,7 @@ class PodcastMediaControllerFolder extends JController
 						continue;
 					}
 
-					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE . DS . $folder . DS . $path);
+					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE . '/' . $folder . '/' . $path);
 					$object_file = new JObject(array('filepath' => $fullPath));
 					if (is_file($fullPath))
 					{
@@ -173,7 +173,7 @@ class PodcastMediaControllerFolder extends JController
 				return false;
 			}
 
-			$path = JPath::clean(COM_PODCASTMEDIA_BASE . DS . $parent . DS . $folder);
+			$path = JPath::clean(COM_PODCASTMEDIA_BASE . '/' . $parent . '/' . $folder);
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.
@@ -188,8 +188,8 @@ class PodcastMediaControllerFolder extends JController
 				}
 
 				JFolder::create($path);
-				$data = "<!DOCTYPE html><title></title>";
-				JFile::write($path . DS . "index.html", $data);
+				$data = '<!DOCTYPE html><title></title>';
+				JFile::write($path . '/' . 'index.html', $data);
 
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
