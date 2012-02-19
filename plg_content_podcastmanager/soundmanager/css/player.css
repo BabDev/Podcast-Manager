@@ -204,11 +204,11 @@ background-image:none;
 */
 
 body div.sm2-player object, body div.sm2-player embed {
- /*
-  flashblock handling: hide SWF off-screen by default (until blocked timeout case.)
-  include body prefix to ensure override of flashblock.css.
+/*
+ * flashblock handling: hide SWF off-screen by default (until blocked timeout case.)
+ * include body prefix to ensure override of flashblock.css.
  */
 
- left:-9999em;
- top:-9999em;
+left: -9999em;
+top: -9999em;
 }

@@ -211,6 +211,7 @@ class PlgContentPodcastManager extends JPlugin
 
 						// Declare the scripts
 						JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $file, false, false);
+
 						// Check if the custom tags are already defined first; if not, add them
 						if (!in_array('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>', $document->_custom))
 						{

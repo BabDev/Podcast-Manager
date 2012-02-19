@@ -260,7 +260,7 @@ class PodcastManagerViewFeed extends JView
 				$xw->writeAttribute('url', $filename);
 				$xw->writeAttribute('length', filesize($filepath));
 
-				//@TODO: Push file through getID3 to extract proper MIME type
+				// TODO: Push file through getID3 to extract proper MIME type
 				$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
 				$xw->endElement();
 

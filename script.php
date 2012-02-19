@@ -86,7 +86,6 @@ class Pkg_PodcastManagerInstallerScript
 			$enabled[$extension] = $db->loadResult();
 		}
 		?>
-		<?php $rows = 0; ?>
 		<table class="adminlist">
 			<thead>
 				<tr>
@@ -106,7 +105,7 @@ class Pkg_PodcastManagerInstallerScript
 				{
 					$extension = (string) $result['name'];
 					$e_type = substr($extension, 0, 3); ?>
-				<tr class="row<?php echo (++$rows % 2); ?>">
+				<tr class="row<?php echo ($result % 2); ?>">
 					<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
 					<td><strong>
 						<?php if ($e_type == 'com')
