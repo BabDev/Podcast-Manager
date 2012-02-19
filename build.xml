@@ -10,7 +10,7 @@
 	</tstamp>
 
 	<!-- Build a package for testing -->
-	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
+	<target name="dev_head" description="Builds test packages based on the development head" depends="phpcs,rebuild-packages,copy-files,zip-packages">
 		<echo msg="Deleting old master builds" />
 		<delete includeemptydirs="true">
 			<fileset dir=".">
@@ -241,5 +241,18 @@
 		</delete>
 		<echo msg="Creating packaging directory" />
 		<mkdir dir="packaging" />
+	</target>
+
+	<!-- Check code style based on Joomla Platform -->
+	<target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+		<echo msg="Running phpcs with Joomla! Platform standards" />
+		<exec executable="phpcs">
+			<arg value="--report=checkstyle" />
+			<arg value="--report-file=${repo.dir}/build/checkstyle.xml" />
+			<arg value="--standard=${platform.dir}/build/phpcs/Joomla" />
+			<!-- Ignore staging directories, JavaScript only directories, and third party code -->
+			<arg value="--ignore=${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/script,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/swf,${repo.dir}/packaging,${repo.dir}/releases" />
+			<arg path="${repo.dir}" />
+		</exec>
 	</target>
 </project>
