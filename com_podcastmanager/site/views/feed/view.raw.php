@@ -239,6 +239,7 @@ class PodcastManagerViewFeed extends JView
 				$xw->writeElement('itunes:author', $item->itAuthor);
 				$xw->writeElement('itunes:subtitle', $item->itSubtitle);
 				$xw->writeElement('itunes:summary', $item->itSummary);
+				$xw->writeElement('description', $item->itSummary);
 
 				$imageURL = $item->itImage;
 
@@ -258,6 +259,7 @@ class PodcastManagerViewFeed extends JView
 				$xw->startElement('enclosure');
 				$xw->writeAttribute('url', $filename);
 				$xw->writeAttribute('length', filesize($filepath));
+
 				//@TODO: Push file through getID3 to extract proper MIME type
 				$xw->writeAttribute('type', $params->get('mimetype', 'audio/mpeg'));
 				$xw->endElement();
