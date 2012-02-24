@@ -244,15 +244,23 @@
 	</target>
 
 	<!-- Check code style based on Joomla Platform -->
-	<target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+	<target name="phpcs" description="Generate codestyle report using PHP_CodeSniffer">
+		<echo msg="Remove previous codestyle report" />
+		<delete quiet="yes" includeemptydirs="true">
+			<fileset dir=".">
+				<include name="build/codesniff.txt" />
+				<include name="build/checkstyle.xml" />
+			</fileset>
+		</delete>
 		<echo msg="Running phpcs with Joomla! Platform standards" />
-		<exec executable="phpcs">
-			<arg value="--report=checkstyle" />
-			<arg value="--report-file=${repo.dir}/build/checkstyle.xml" />
-			<arg value="--standard=${platform.dir}/build/phpcs/Joomla" />
-			<!-- Ignore staging directories, JavaScript only directories, and third party code -->
-			<arg value="--ignore=${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/script,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/swf,${repo.dir}/packaging,${repo.dir}/releases" />
-			<arg path="${repo.dir}" />
-		</exec>
+		<phpcodesniffer
+			standard="${platform.dir}/build/phpcs/Joomla"
+			format="full"
+			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/script,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/swf,${repo.dir}/packaging,${repo.dir}/releases"
+			file="${repo.dir}"
+			allowedFileExtensions="php,css">
+			<formatter type="full" outfile="${repo.dir}/build/codesniff.txt" />
+			<formatter type="checkstyle" outfile="${repo.dir}/build/checkstyle.xml" />
+		</phpcodesniffer>
 	</target>
 </project>
