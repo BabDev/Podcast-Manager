@@ -172,9 +172,6 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 		$item->route = PodcastManagerHelperRoute::getFeedHtmlRoute($item->feedname);
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 
-		// Handle the link to the meta-data.
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'link');
-
 		// Set the language.
 		$item->language = FinderIndexerHelper::getDefaultLanguage();
 
@@ -223,10 +220,8 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	 */
 	protected function getListQuery($sql = null)
 	{
-		$db = JFactory::getDbo();
-
 		// Check if we can use the supplied SQL query.
-		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
+		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('id'));
 		$sql->select($this->db->quoteName('feedname'));
 		$sql->select($this->db->quoteName('title'));
