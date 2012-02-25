@@ -176,7 +176,8 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Filter on the language.
-		if ($language = $this->getState('filter.language'))
+		$language = $this->getState('filter.language');
+		if (!empty($language))
 		{
 			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
