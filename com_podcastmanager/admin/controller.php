@@ -52,8 +52,8 @@ class PodcastManagerController extends JController
 		// Load the submenu.
 		PodcastManagerHelper::addSubmenu($input->get('view', 'feeds', 'word'));
 
-		$view = $input->get('view', 'feeds', 'word');
-		$layout = $input->get('layout', 'feeds', 'word');
+		$view = $input->get('view', $this->default_view, 'word');
+		$layout = $input->get('layout', $this->default_view, 'word');
 		$id = $input->get('id', null, 'int');
 
 		// Check for edit form.
