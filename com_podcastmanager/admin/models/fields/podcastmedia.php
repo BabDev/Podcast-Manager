@@ -99,7 +99,8 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '</div>';
 
 		// Check if only one podcastmedia plugin is enabled
-		if (PodcastManagerHelper::countMediaPlugins() == '1')
+		$count = PodcastManagerHelper::countMediaPlugins();
+		if ($count == '1')
 		{
 			JPluginHelper::importPlugin('podcastmedia');
 			$dispatcher = JDispatcher::getInstance();
@@ -107,7 +108,7 @@ class JFormFieldPodcastMedia extends JFormField
 			$directory = $results['0'];
 		}
 		// Can only handle one at a time, throw a warning and default
-		elseif (PodcastManagerHelper::countMediaPlugins() > '1')
+		elseif ($count > '1')
 		{
 			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_TOO_MANY_MEDIA_PLUGINS'));
 			$directory = '';
