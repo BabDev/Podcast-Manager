@@ -26,7 +26,7 @@ class PodcastManagerTableFeed extends JTable
 	/**
 	 * The class constructor.
 	 *
-	 * @param   object  &$db  JDatabase connector object.
+	 * @param   JDatabase  &$db  JDatabase connector object.
 	 *
 	 * @since   1.7
 	 */
