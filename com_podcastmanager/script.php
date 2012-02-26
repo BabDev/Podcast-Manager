@@ -55,6 +55,34 @@ class Com_PodcastManagerInstallerScript
 	}
 
 	/**
+	 * Function to perform changes during update
+	 *
+	 * @param   JInstallerComponent  $parent  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0
+	 */
+	public function update($parent)
+	{
+		// Get the pre-update version
+		$version = $this->_getVersion();
+
+		// If in error, throw a message about the language files
+		if ($version == 'Error')
+		{
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+			return;
+		}
+
+		// If coming from 1.x, remove language files in administrator/language and language
+		if (version_compare($version, '2.0', 'lt'))
+		{
+			$this->_removeLanguageFiles();
+		}
+	}
+
+	/**
 	 * Function to perform changes during uninstall
 	 *
 	 * @param   JInstallerComponent  $parent  The class calling this method
@@ -97,42 +125,6 @@ class Com_PodcastManagerInstallerScript
 		{
 			// Do nothing ;-)
 		}
-	}
-
-	/**
-	 * Function to get the currently installed version from the manifest cache
-	 *
-	 * @return  string  The version that is installed
-	 *
-	 * @since   1.7
-	 */
-	protected function getVersion()
-	{
-		// Get the record from the database
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
-		if (!$db->loadObject())
-		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
-			$version = 'Error';
-			return $version;
-		}
-		else
-		{
-			$manifest = $db->loadObject();
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		$version = $record->version;
-
-		return $version;
 	}
 
 	/**
@@ -287,6 +279,87 @@ class Com_PodcastManagerInstallerScript
 				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
 				$db->query();
+			}
+		}
+	}
+
+	/**
+	 * Function to get the currently installed version from the manifest cache
+	 *
+	 * @return  string  The version that is installed
+	 *
+	 * @since   1.7
+	 */
+	private function _getVersion()
+	{
+		// Get the record from the database
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
+		$db->setQuery($query);
+		if (!$db->loadObject())
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$version = 'Error';
+			return $version;
+		}
+		else
+		{
+			$manifest = $db->loadObject();
+		}
+
+		// Decode the JSON
+		$record = json_decode($manifest->manifest_cache);
+
+		// Get the version
+		$version = $record->version;
+
+		return $version;
+	}
+
+	/**
+	 * Function to remove language files from the system language folders due to changing to
+	 * component language files for 2.0
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0
+	 */
+	private function _removeLanguageFiles()
+	{
+		jimport('joomla.filesystem.file');
+
+		$adminBase = JPATH_ADMINISTRATOR . '/language/en-GB/';
+		$siteBase = JPATH_SITE . '/language/en-GB/';
+
+		// The language files for pre-2.0
+		$adminFiles = array(
+			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.com_podcastmedia.sys.ini',
+			'en-GB.plg_content_podcastmanager.ini', 'en-GB.plg_content_podcastmanager.sys.ini', 'en-GB.plg_editors-xtd_podcastmanager.ini',
+			'en-GB.plg_editors-xtd_podcastmanager.sys.ini'
+		);
+		$siteFiles = array(
+			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.mod_podcastmanager.ini', 'en-GB.mod_podcastmanager.sys.ini',
+			'en-GB.mod_podcastmanagerfeed.ini', 'en-GB.mod_podcastmanagerfeed.sys.ini'
+		);
+
+		// Remove the admin files
+		foreach ($adminFiles as $adminFile)
+		{
+			if (JFile::exists($adminBase . $adminFile))
+			{
+				JFile::delete($adminBase . $adminFile);
+			}
+		}
+
+		// Remove the site files
+		foreach ($siteFiles as $siteFile)
+		{
+			if (JFile::exists($siteBase . $siteFile))
+			{
+				JFile::delete($siteBase . $siteFile);
 			}
 		}
 	}
