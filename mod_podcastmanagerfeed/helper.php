@@ -76,6 +76,28 @@ abstract class ModPodcastManagerFeedHelper
 			}
 		}
 
+		// If we're displaying the media player, and the plugin is enabled, then render it here
+		if ($params->get('show_item_player', '0') == 1 && JPluginHelper::isEnabled('content', 'podcastmanager'))
+		{
+			$dispatcher = JDispatcher::getInstance();
+
+			// Get the Podcast Manager Content plugin
+			JPluginHelper::importPlugin('content', 'podcastmanager');
+
+			// Handle each item separately
+			foreach ($items as &$item)
+			{
+				// Set the text object to prevent errors
+				$item->text = '';
+
+				// Preload the player syntax
+				$item->player = '{podcast ' . $item->title . '}';
+
+				// Trigger the plugin
+				$dispatcher->trigger('onContentPrepare', array('mod_podcastmanagerfeed.module', &$item, &$params));
+			}
+		}
+
 		return $items;
 	}
 }

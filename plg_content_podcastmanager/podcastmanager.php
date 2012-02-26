@@ -73,10 +73,12 @@ class PlgContentPodcastManager extends JPlugin
 			}
 		}
 
-		if ($context == 'com_podcastmanager.feed' && $params->get('show_item_player') == 1)
+		// Handle instances coming from Podcast Manager extensions
+		$podManContexts = array('com_podcastmanager.feed', 'mod_podcastmanagerfeed.module');
+		if (in_array($context, $podManContexts))
 		{
 			$article->text = $article->player;
-			$feedView = 'com_podcastmanager.feed';
+			$feedView = $context;
 		}
 
 		// Simple performance check to determine whether plugin should process further
@@ -107,7 +109,7 @@ class PlgContentPodcastManager extends JPlugin
 
 			foreach ($podcast as $episode)
 			{
-				// Check if we're in the Podcast Manager Feed view; if so, extract data from the object
+				// Check if we're in a Podcast Manager instance; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
 				{
 					$podtitle = $article->title;
