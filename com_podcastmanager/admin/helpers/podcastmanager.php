@@ -62,7 +62,7 @@ class PodcastManagerHelper
 	/**
 	 * Counts the number of active podcastmedia plugins
 	 *
-	 * @return  string  The number of active plugins
+	 * @return  integer  The number of active plugins
 	 *
 	 * @since   2.0
 	 */
@@ -77,7 +77,7 @@ class PodcastManagerHelper
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
-		return $count;
+		return (int) $count;
 	}
 
 	/**
