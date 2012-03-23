@@ -1,3 +1,6 @@
+23-March-2012 Michael Babker
+- Remove Minima template overrides due to frozen development on the template :-(
+
 26-February-2012 Michael Babker
 + [#23] Allow the media player in the feed listing module
 

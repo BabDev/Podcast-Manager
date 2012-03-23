@@ -15,7 +15,6 @@
 		<delete includeemptydirs="true">
 			<fileset dir=".">
 				<include name="files_podcastmanager_hathor_${version}.zip" />
-				<include name="files_podcastmanager_minima_${version}.zip" />
 				<include name="pkg_podcastmanager_${version}.zip" />
 			</fileset>
 		</delete>
@@ -30,8 +29,6 @@
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
 		<zip destfile="files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
-		<echo msg="Building Minima Overrides package" />
-		<zip destfile="files_podcastmanager_minima_${version}.zip" basedir="packaging/files_podcastmanager_minima" />
 	</target>
 
 	<!-- Build a package for release -->
@@ -47,8 +44,6 @@
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
 		<zip destfile="releases/files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
-		<echo msg="Building Minima Overrides package" />
-		<zip destfile="releases/files_podcastmanager_minima_${version}.zip" basedir="packaging/files_podcastmanager_minima" />
 		<echo msg="Creating Git tag" />
 		<gittag repository="${repo.dir.resolved}" name="${version}" gitPath="${localgit}" />
 		<echo msg="Pushing Version commit and tag to GitHub" />
@@ -195,17 +190,6 @@
 		<echo msg="Create files_podcastmanager_hathor package" />
             <copy todir="packaging/files_podcastmanager_hathor">
                 <fileset dir="files_podcastmanager_hathor" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
-            </copy>
-
-		<echo msg="Create files_podcastmanager_minima package" />
-            <copy todir="packaging/files_podcastmanager_minima">
-                <fileset dir="files_podcastmanager_minima" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />

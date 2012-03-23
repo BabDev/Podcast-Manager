@@ -78,16 +78,6 @@ file_filter = language/<lang>/<lang>.pkg_podcastmanager.sys.ini
 source_file = language/en-GB/en-GB.pkg_podcastmanager.sys.ini
 source_lang = en
 
-[podcast-manager.podcast-manager-minima-overrides]
-file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
-source_file = files_podcastmanager_minima/language/en-GB/en-GB.files_podcastmanager_minima.sys.ini
-source_lang = en
-
-[podcast-manager.podcast-manager-minima-overrides-system]
-file_filter = files_podcastmanager_minima/language/<lang>/<lang>.files_podcastmanager_minima.sys.ini
-source_file = files_podcastmanager_minima/language/en-GB/en-GB.files_podcastmanager_minima.sys.ini
-source_lang = en
-
 [podcast-manager.podcast-manager-podcastmedia-user-plugin]
 file_filter = plg_podcastmedia_user/language/<lang>/<lang>.plg_podcastmedia_user.ini
 source_file = plg_podcastmedia_user/language/en-GB/en-GB.plg_podcastmedia_user.ini
