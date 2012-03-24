@@ -104,9 +104,6 @@ class PlgContentPodcastManager extends JPlugin
 				return true;
 			}
 
-			// Get the JDocument object
-			$document = JFactory::getDocument();
-
 			foreach ($podcast as $episode)
 			{
 				// Check if we're in a Podcast Manager instance; if so, extract data from the object
@@ -191,41 +188,6 @@ class PlgContentPodcastManager extends JPlugin
 
 				if (isset($podfilepath))
 				{
-					// If using SM2 player, get the scripts if needed
-					if (($playerType == 'html5'))
-					{
-						// Define non debug settings
-						$file = 'soundmanager2-nodebug-jsmin.js';
-						$debugMode = 'false';
-						$player = 'player.js';
-
-						// If site debug enabled, enable SoundManager debug
-						if (JDEBUG)
-						{
-							$file = 'soundmanager2.js';
-							$debugMode = 'true';
-							$player = 'player-uncompressed.js';
-						}
-
-						// Declare the stylesheets
-						JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/player.css', false, false, false);
-						JHtml::stylesheet('plugins/content/podcastmanager/soundmanager/css/flashblock.css', false, false, false);
-
-						// Declare the scripts
-						JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $file, false, false);
-
-						// Check if the custom tags are already defined first; if not, add them
-						if (!in_array('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>', $document->_custom))
-						{
-							$document->addCustomTag('<script type="text/javascript">soundManager.debugMode = ' . $debugMode . ';</script>');
-						}
-						if (!in_array('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>', $document->_custom))
-						{
-							$document->addCustomTag('<script type="text/javascript">soundManager.url = "' . JURI::base() . 'plugins/content/podcastmanager/soundmanager/swf/"</script>');
-						}
-						JHtml::script('plugins/content/podcastmanager/soundmanager/script/' . $player, false, false);
-					}
-
 					// Get the player
 					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType);
 

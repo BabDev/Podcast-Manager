@@ -18,9 +18,7 @@ defined('_JEXEC') or die;
 $babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
 $liveupdate	= '<b><a href=https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
-$sm2		= '<b><a href="http://www.schillmania.com/projects/soundmanager2/" target="_blank">SoundManager2</a></b>';
 $transifex	= '<a href="https://www.transifex.net/projects/p/podcast-manager" target="_blank">https://www.transifex.net/projects/p/podcast-manager</a>';
-$xspf		= '<b><a href="http://musicplayer.sourceforge.net" target="_blank">XSPF Player Lite</a></b>';
 
 // Icons folder
 $icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
@@ -97,8 +95,6 @@ JHtml::_('behavior.framework');
 				<ul>
 					<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_LIVEUPDATE', $liveupdate);?></li>
 					<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_GETID3', $getid3);?></li>
-					<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_SM2', $sm2);?></li>
-					<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_XSPF', $xspf);?></li>
 				</ul>
 			</div>
 		<?php echo JHtml::_('sliders.end'); ?>

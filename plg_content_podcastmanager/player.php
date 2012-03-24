@@ -69,7 +69,7 @@ class PodcastManagerPlayer
 	 * @var    array
 	 * @since  1.6
 	 */
-	protected $validTypes = array('custom', 'html5', 'link', 'player', 'QTplayer');
+	protected $validTypes = array('custom', 'link', 'player');
 
 	/**
 	 * An array of valid file types
@@ -178,23 +178,6 @@ class PodcastManagerPlayer
 	}
 
 	/**
-	 * Function to generate a HTML5 player that will fall back to Flash if necessary
-	 *
-	 * @return  object  A HTML5 or Flash player for the podcast
-	 *
-	 * @since   1.8
-	 */
-	protected function html5()
-	{
-		$player = '<div id="sm2-container">'
-		. '<div class="sm2-player">'
-		. '<a class="sm2_link" href="' . $this->fileURL . '">' . htmlspecialchars($this->podtitle) . '</a>'
-		. '</div>'
-		. '</div>';
-		return $player;
-	}
-
-	/**
 	 * Function to generate a link player
 	 *
 	 * @return  object  A HTML link to the podcast
@@ -207,9 +190,9 @@ class PodcastManagerPlayer
 	}
 
 	/**
-	 * Function to generate a flash player
+	 * Function to generate a media player
 	 *
-	 * @return  object  A flash player containing the podcast episode
+	 * @return  object  A media player containing the podcast episode
 	 *
 	 * @since   1.6
 	 */
@@ -218,41 +201,7 @@ class PodcastManagerPlayer
 		$width = $this->podmanparams->get('playerwidth', 400);
 		$height = $this->podmanparams->get('playerheight', 15);
 
-		$playerURL = JURI::base() . 'plugins/content/podcastmanager/podcast/xspf_player_slim.swf';
-
-		$player	= '<object type="application/x-shockwave-flash" width="' . $width . '" height="' . $height . '" data="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '">'
-		. '<param name="movie" value="' . $playerURL . '?song_url=' . $this->fileURL . '&song_title=' . $this->podtitle . '&player_title=' . $this->podtitle . '" />'
-		. '</object>';
-
-		return $player;
-	}
-
-	/**
-	 * Function to generate a QuickTime player
-	 *
-	 * @return  object  A QuickTime player containing the podcast episode
-	 *
-	 * @since   1.6
-	 */
-	protected function QTplayer()
-	{
-		$tempfile = get_object_vars($this->podfilepath);
-		$filepath = substr(implode('', $tempfile), 0);
-		$ext = substr($filepath, strlen($filepath) - 3);
-
-		$width = $this->podmanparams->get('playerwidth', 320);
-		$height = $this->podmanparams->get('playerheight', 240);
-
-		$player = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" width="' . $width . '" height="' . $height . '" codebase="http://www.apple.com/qtactivex/qtplugin.cab">'
-		. '<param name="src" value="' . $this->fileURL . '" />'
-		. '<param name="href" value="' . $this->fileURL . '" />'
-		. '<param name="scale" value="aspect" />'
-		. '<param name="controller" value="true" />'
-		. '<param name="autoplay" value="false" />'
-		. '<param name="bgcolor" value="000000" />'
-		. '<param name="pluginspage" value="http://www.apple.com/quicktime/download/" />'
-		. '<embed src="' . $this->fileURL . '" width="' . $width . '" height="' . $height . '" scale="aspect" cache="true" bgcolor="000000" autoplay="false" controller="true" src="' . $this->fileURL . '" type="' . $this->fileTypes[$ext] . '" pluginspage="http://www.apple.com/quicktime/download/"></embed>'
-		. '</object>';
+		$player	= '';
 
 		return $player;
 	}
