@@ -78,7 +78,6 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Getting the following metric by joins is WAY TOO SLOW.
-		// Faster to do three queries for very large menu trees.
 
 		// Get the feeds in the list.
 		$db = $this->getDbo();
@@ -87,7 +86,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// Quote the strings.
 		$feedNames = implode(',', array_map(array($db, 'quote'), $feedNames));
 
-		// Get the published menu counts.
+		// Get the published feed counts.
 		$query = $db->getQuery(true);
 		$query->select('p.feedname, COUNT(DISTINCT p.id) AS count_published');
 		$query->from($db->quoteName('#__podcastmanager', 'p'));
@@ -103,7 +102,7 @@ class PodcastManagerModelFeeds extends JModelList
 			return false;
 		}
 
-		// Get the unpublished menu counts.
+		// Get the unpublished feed counts.
 		$query->clear('where');
 		$query->where($db->quoteName('p.published') . ' = 0');
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
@@ -116,7 +115,7 @@ class PodcastManagerModelFeeds extends JModelList
 			return false;
 		}
 
-		// Get the trashed menu counts.
+		// Get the trashed feed counts.
 		$query->clear('where');
 		$query->where($db->quoteName('p.published') . ' = -2');
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');

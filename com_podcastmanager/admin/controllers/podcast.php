@@ -120,7 +120,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 *
 	 * @since   1.8
 	 */
-	public function batch($model)
+	public function batch($model = null)
 	{
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 

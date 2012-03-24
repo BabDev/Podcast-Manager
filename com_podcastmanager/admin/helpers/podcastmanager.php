@@ -45,17 +45,17 @@ class PodcastManagerHelper
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS'),
 			'index.php?option=com_podcastmanager&view=feeds',
-		$vName == 'feeds'
+			$vName == 'feeds'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
 			'index.php?option=com_podcastmanager&view=podcasts',
-		$vName == 'podcasts'
+			$vName == 'podcasts'
 		);
 		JSubMenuHelper::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
 			'index.php?option=com_podcastmedia&view=media',
-		$vName == 'media'
+			$vName == 'media'
 		);
 	}
 

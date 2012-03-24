@@ -135,7 +135,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		$table = $this->getTable();
 		$i = 0;
 
-		// Check that the category exists
+		// Check that the feed exists
 		if ($feedId != '0')
 		{
 			$feedTable = $this->getTable();
