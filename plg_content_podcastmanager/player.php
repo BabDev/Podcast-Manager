@@ -203,7 +203,7 @@ class PodcastManagerPlayer
 	 */
 	protected function link()
 	{
-		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podmanparams->get('linktitle', JText::_('Listen Now!'))) . '</a>';
+		return '<a href="' . $this->fileURL . '">' . htmlspecialchars($this->podmanparams->get('linktitle', 'Listen Now!')) . '</a>';
 	}
 
 	/**
