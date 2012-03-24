@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 $babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
 $liveupdate	= '<b><a href=https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
-$transifex	= '<a href="https://www.transifex.net/projects/p/podcast-manager" target="_blank">https://www.transifex.net/projects/p/podcast-manager</a>';
+$transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-manager" target="_blank">https://opentranslators.transifex.net/projects/p/podcast-manager</a>';
 
 // Icons folder
 $icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
@@ -63,6 +63,9 @@ JHtml::_('behavior.framework');
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_LINK')?></li>
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_CONTENT')?></li>
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_EDITOR')?></li>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_PODCASTMEDIA')?></li>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_FEEDS')?></li>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_PODCASTS')?></li>
 				</ul>
 			</div>
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'), 'filetypes'); ?>
