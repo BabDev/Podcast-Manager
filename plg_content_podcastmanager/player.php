@@ -88,14 +88,15 @@ class PodcastManagerPlayer
 	/**
 	 * The class constructor
 	 *
-	 * @param   JRegistry  &$podmanparams  The Podcast Manager parameters
-	 * @param   string     $podfilepath    The path to the file being processed
-	 * @param   string     $podtitle       The title of the podcast being processed
-	 * @param   string     $playerType     The type of player to use
+	 * @param   JRegistry  $podmanparams  The Podcast Manager parameters
+	 * @param   string     $podfilepath   The path to the file being processed
+	 * @param   string     $podtitle      The title of the podcast being processed
+	 * @param   string     $playerType    The type of player to use
 	 *
 	 * @since   1.6
+	 * @throws  RuntimeException
 	 */
-	public function __construct(&$podmanparams, $podfilepath, $podtitle, $playerType)
+	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath = $podfilepath;
@@ -103,6 +104,10 @@ class PodcastManagerPlayer
 		if (in_array($playerType, $this->validTypes))
 		{
 			$this->playerType = $playerType;
+		}
+		else
+		{
+			throw new RuntimeException('Invalid Player', 500);
 		}
 
 		$this->fileURL = $this->determineURL($podfilepath);

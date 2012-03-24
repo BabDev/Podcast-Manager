@@ -188,21 +188,32 @@ class PlgContentPodcastManager extends JPlugin
 
 				if (isset($podfilepath))
 				{
-					// Get the player
-					$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType);
-
-					// Fix for K2 Item
-					if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
+					try
 					{
-						$string = JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
-					}
-					else
-					{
-						$string = $matches[0][$i];
-					}
+						// Get the player
+						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType);
 
-					// Replace the {podcast marker with the player
-					$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
+						// Fix for K2 Item
+						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
+						{
+							$string = JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+						}
+						else
+						{
+							$string = $matches[0][$i];
+						}
+
+						// Replace the {podcast marker with the player
+						$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
+					}
+					catch (RuntimeException $e)
+					{
+						// Write the error to the log
+						JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_PLAYER', $playerType), JLog::INFO);
+
+						// Remove the {podcast marker
+						$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+					}
 				}
 				else
 				{
