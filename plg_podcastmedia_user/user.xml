@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="podcastmedia">
+<extension version="2.5" type="plugin" group="podcastmedia">
 	<name>plg_podcastmedia_user</name>
 	<creationDate>##DATE##</creationDate>
 	<author>Michael Babker</author>
