@@ -170,8 +170,6 @@ class PlgContentPodcastManager extends JPlugin
 					{
 						// Write the DB error to the log
 						JLog::add((JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle) . '  ' . $db->stderr(true)), JLog::ERROR);
-
-						JError::raiseNotice(null, JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle));
 					}
 					else
 					{
@@ -217,6 +215,7 @@ class PlgContentPodcastManager extends JPlugin
 				}
 				else
 				{
+					// Write the error to the log
 					JLog::add(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_NO_FILEPATH'), JLog::INFO);
 
 					// Remove the {podcast marker
