@@ -62,6 +62,34 @@ class PlgContentPodcastManagerInstallerScript
 	}
 
 	/**
+	 * Function to perform changes during update
+	 *
+	 * @param   JInstallerPlugin  $parent  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0
+	 */
+	public function update($parent)
+	{
+		// Get the pre-update version
+		$version = $this->_getVersion();
+
+		// If in error, throw a message about the language files
+		if ($version == 'Error')
+		{
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+			return;
+		}
+
+		// If coming from 1.x, remove old media folders
+		if (version_compare($version, '2.0', 'lt'))
+		{
+			$this->_removeMediaFolders();
+		}
+	}
+
+	/**
 	 * Function to activate the button at installation
 	 *
 	 * @return  void
@@ -79,6 +107,69 @@ class PlgContentPodcastManagerInstallerScript
 		if (!$db->query())
 		{
 			JError::raiseNotice(1, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+		}
+	}
+
+	/**
+	 * Function to get the currently installed version from the manifest cache
+	 *
+	 * @return  string  The version that is installed
+	 *
+	 * @since   2.0
+	 */
+	private function _getVersion()
+	{
+		// Get the record from the database
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('manifest_cache'));
+		$query->from($db->quoteName('#__extensions'));
+		$query->where($db->quoteName('element') . ' = ' . $db->quote('podcastmanager'), 'AND');
+		$query->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
+		$db->setQuery($query);
+		if (!$db->loadObject())
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$version = 'Error';
+			return $version;
+		}
+		else
+		{
+			$manifest = $db->loadObject();
+		}
+
+		// Decode the JSON
+		$record = json_decode($manifest->manifest_cache);
+
+		// Get the version
+		$version = $record->version;
+
+		return $version;
+	}
+
+	/**
+	 * Function to remove old media folders for players removed in 2.0
+	 *
+	 * @return  void
+	 *
+	 * @since   2.0
+	 */
+	private function _removeMediaFolders()
+	{
+		jimport('joomla.filesystem.folder');
+
+		$base = JPATH_SITE . '/plugins/content/podcastmanager/';
+
+		// The folders to remove
+		$folders = array('podcast', 'soundmanager');
+
+		// Remove the folders
+		foreach ($folders as $folder)
+		{
+			if (JFolder::exists($base . $folder))
+			{
+				JFolder::delete($base . $folder);
+			}
 		}
 	}
 }
