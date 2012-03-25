@@ -244,52 +244,12 @@ class PodcastManagerPlayer
 		}
 
 		// Add the media
-		$document = JFactory::getDocument();
-		JHtml::script('mediaelements/mediaelement-and-player.min.js', false, true);
-		JHtml::stylesheet('mediaelements/mediaelementplayer.min.css', false, true, false);
-		$document->addCustomTag(
-			"<script type=\"text/javascript\">
-				var player = new MediaElementPlayer('" . $ID . "', {
-				    // shows debug errors on screen
-				    enablePluginDebug: false,
-				    // remove or reorder to change plugin priority
-				    plugins: ['flash','silverlight'],
-				    // specify to force MediaElement to use a particular video or audio type
-				    type: '',
-				    // path to Flash and Silverlight plugins
-				    pluginPath: '/media/mediaelements/',
-				    // name of flash file
-					flashName: 'flashmediaelement.swf',
-					// name of silverlight file
-					silverlightName: 'silverlightmediaelement.xap',
-					// default if the <video width> is not specified
-					defaultVideoWidth: 480,
-					// default if the <video height> is not specified
-					defaultVideoHeight: 270,
-					// overrides <video width>
-					pluginWidth: -1,
-					// overrides <video height>
-					pluginHeight: -1,
-					// rate in milliseconds for Flash and Silverlight to fire the timeupdate event
-					// larger number is less accurate, but less strain on plugin->JavaScript bridge
-					timerRate: 250,
-					// method that fires when the Flash or Silverlight object is ready
-					success: function (mediaElement, domObject) {
-						// add event listener
-						mediaElement.addEventListener('timeupdate', function(e) {
-							document.getElementById('current-time').innerHTML = mediaElement.currentTime;
-						}, false);
-						// call the play method
-						mediaElement.play();
-					},
-					// fires when a problem is detected
-					error: function () {
-					}
-				}););
-				player.pause();
-				player.setSrc('" . $this->fileURL . "');
-				player.play();
-			</script>");
+		JHtml::script('mediaelements/jquery.js', false, true);
+		JHtml::script('mediaelements/mediaelement-and-player.js', false, true);
+		JHtml::stylesheet('mediaelements/mediaelementplayer.css', false, true, false);
+		$player .= "<br /><script>
+				var player = new MediaElementPlayer('#" . $ID . "');
+			</script>";
 
 		return $player;
 	}

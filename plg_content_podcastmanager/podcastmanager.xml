@@ -18,7 +18,6 @@
 	</files>
 	<media destination="mediaelements" folder="mediaelements">
 		<folder>css</folder>
-		<folder>images</folder>
 		<folder>js</folder>
 		<filename>flashmediaelement.swf</filename>
 		<filename>index.html</filename>
