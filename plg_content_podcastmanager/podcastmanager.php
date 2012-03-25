@@ -151,7 +151,7 @@ class PlgContentPodcastManager extends JPlugin
 					$query = $db->getQuery(true);
 
 					// Common query fields regardless of method
-					$query->select($db->quoteName('filename'));
+					$query->select($db->quoteName(array('filename', 'id')));
 					$query->from($db->quoteName('#__podcastmanager'));
 
 					// If the title is a string, use the "classic" lookup method
@@ -175,6 +175,7 @@ class PlgContentPodcastManager extends JPlugin
 					{
 						$dbResult = $db->loadObject();
 						$podfilepath = $dbResult->filename;
+						$podcastID = (int) $dbResult->id;
 
 						// Set the title if we searched by ID
 						if (isset($dbResult->title))
@@ -189,7 +190,7 @@ class PlgContentPodcastManager extends JPlugin
 					try
 					{
 						// Get the player
-						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType);
+						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID);
 
 						// Fix for K2 Item
 						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
@@ -201,8 +202,19 @@ class PlgContentPodcastManager extends JPlugin
 							$string = $matches[0][$i];
 						}
 
-						// Replace the {podcast marker with the player
-						$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
+						try
+						{
+							// Replace the {podcast marker with the player
+							$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
+						}
+						catch (RuntimeException $e)
+						{
+							// Write the error to the log
+							JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_FILETYPE', $podfilepath), JLog::INFO);
+
+							// Remove the {podcast marker
+							$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+						}
 					}
 					catch (RuntimeException $e)
 					{

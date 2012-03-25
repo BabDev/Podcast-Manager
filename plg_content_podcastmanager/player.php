@@ -64,6 +64,14 @@ class PodcastManagerPlayer
 	protected $podfilepath = null;
 
 	/**
+	 * The podcast's ID
+	 *
+	 * @var    integer
+	 * @since  2.0
+	 */
+	protected $podcastID = null;
+
+	/**
 	 * An array of valid player types
 	 *
 	 * @var    array
@@ -92,14 +100,16 @@ class PodcastManagerPlayer
 	 * @param   string     $podfilepath   The path to the file being processed
 	 * @param   string     $podtitle      The title of the podcast being processed
 	 * @param   string     $playerType    The type of player to use
+	 * @param   integer    $podcastID     The type of player to use
 	 *
 	 * @since   1.6
 	 * @throws  RuntimeException
 	 */
-	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType)
+	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath = $podfilepath;
+		$this->podcastID = $podcastID;
 
 		if (in_array($playerType, $this->validTypes))
 		{
@@ -203,10 +213,83 @@ class PodcastManagerPlayer
 	 */
 	protected function player()
 	{
+		// Player height and width
 		$width = $this->podmanparams->get('playerwidth', 400);
 		$height = $this->podmanparams->get('playerheight', 15);
 
-		$player	= '';
+		// Valid extensions to determine correct player
+		$validAudio = array('m4a', 'mp3');
+		$validVideo = array('m4v', 'mov', 'mp4');
+
+		// Get the file's extension
+		$extension = substr($this->fileURL, -3, 3);
+
+		// Set the element's ID
+		$ID = 'player-' . $this->podcastID;
+
+		// Process audio file
+		if (in_array($extension, $validAudio))
+		{
+			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '">';
+		}
+		// Process video file
+		elseif (in_array($extension, $validVideo))
+		{
+			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '">';
+		}
+		// Invalid file type
+		else
+		{
+			throw new RuntimeException('Invalid File Type', 500);
+		}
+
+		// Add the media
+		$document = JFactory::getDocument();
+		JHtml::script('mediaelements/mediaelement-and-player.min.js', false, true);
+		JHtml::stylesheet('mediaelements/mediaelementplayer.min.css', false, true, false);
+		$document->addCustomTag(
+			"<script type=\"text/javascript\">
+				var player = new MediaElementPlayer('" . $ID . "', {
+				    // shows debug errors on screen
+				    enablePluginDebug: false,
+				    // remove or reorder to change plugin priority
+				    plugins: ['flash','silverlight'],
+				    // specify to force MediaElement to use a particular video or audio type
+				    type: '',
+				    // path to Flash and Silverlight plugins
+				    pluginPath: '/media/mediaelements/',
+				    // name of flash file
+					flashName: 'flashmediaelement.swf',
+					// name of silverlight file
+					silverlightName: 'silverlightmediaelement.xap',
+					// default if the <video width> is not specified
+					defaultVideoWidth: 480,
+					// default if the <video height> is not specified
+					defaultVideoHeight: 270,
+					// overrides <video width>
+					pluginWidth: -1,
+					// overrides <video height>
+					pluginHeight: -1,
+					// rate in milliseconds for Flash and Silverlight to fire the timeupdate event
+					// larger number is less accurate, but less strain on plugin->JavaScript bridge
+					timerRate: 250,
+					// method that fires when the Flash or Silverlight object is ready
+					success: function (mediaElement, domObject) {
+						// add event listener
+						mediaElement.addEventListener('timeupdate', function(e) {
+							document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+						}, false);
+						// call the play method
+						mediaElement.play();
+					},
+					// fires when a problem is detected
+					error: function () {
+					}
+				}););
+				player.pause();
+				player.setSrc('" . $this->fileURL . "');
+				player.play();
+			</script>");
 
 		return $player;
 	}
