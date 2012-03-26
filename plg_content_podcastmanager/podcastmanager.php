@@ -106,12 +106,15 @@ class PlgContentPodcastManager extends JPlugin
 
 			foreach ($podcast as $episode)
 			{
+				// Initialize the options array
+				$options = array();
+
 				// Check if we're in a Podcast Manager instance; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
 				{
 					$podtitle = $article->title;
 					$podfilepath = $article->filename;
-					$playerType = $podmanparams->get('linkhandling', 'player');
+					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
 				}
 				else
 				{
@@ -120,7 +123,7 @@ class PlgContentPodcastManager extends JPlugin
 					$podtitle = substr($episode, 9, -1);
 
 					// Set the player type from the component params
-					$playerType = $podmanparams->get('linkhandling', 'player');
+					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
@@ -142,7 +145,7 @@ class PlgContentPodcastManager extends JPlugin
 						if (isset($articleTag[1]) && strlen($articleTag[1]) >= 1)
 						{
 							// Remove the player= portion and set the player type
-							$playerType = substr($articleTag[1], 7);
+							$options['playerType'] = substr($articleTag[1], 7);
 						}
 					}
 
@@ -175,7 +178,7 @@ class PlgContentPodcastManager extends JPlugin
 					{
 						$dbResult = $db->loadObject();
 						$podfilepath = $dbResult->filename;
-						$podcastID = (int) $dbResult->id;
+						$options['podcastID'] = (int) $dbResult->id;
 
 						// Set the title if we searched by ID
 						if (isset($dbResult->title))
@@ -190,7 +193,7 @@ class PlgContentPodcastManager extends JPlugin
 					try
 					{
 						// Get the player
-						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID, $this->params);
+						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $options, $this->params);
 
 						// Fix for K2 Item
 						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
@@ -219,7 +222,7 @@ class PlgContentPodcastManager extends JPlugin
 					catch (RuntimeException $e)
 					{
 						// Write the error to the log
-						JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_PLAYER', $playerType), JLog::INFO);
+						JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_PLAYER', $options['playerType']), JLog::INFO);
 
 						// Remove the {podcast marker
 						$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);

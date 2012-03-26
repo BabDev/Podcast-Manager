@@ -72,12 +72,12 @@ class PodcastManagerPlayer
 	protected $podfilepath = null;
 
 	/**
-	 * The podcast's ID
+	 * The options for the podcast based on the plugin
 	 *
-	 * @var    integer
+	 * @var    array
 	 * @since  2.0
 	 */
-	protected $podcastID = null;
+	protected $options = array();
 
 	/**
 	 * An array of valid player types
@@ -107,23 +107,22 @@ class PodcastManagerPlayer
 	 * @param   JRegistry  $podmanparams  The Podcast Manager parameters
 	 * @param   string     $podfilepath   The path to the file being processed
 	 * @param   string     $podtitle      The title of the podcast being processed
-	 * @param   string     $playerType    The type of player to use
-	 * @param   integer    $podcastID     The type of player to use
+	 * @param   array      $options       An array of options
 	 * @param   JRegistry  $pluginParams  The Podcast Manager Content Plugin parameters
 	 *
 	 * @since   1.6
 	 * @throws  RuntimeException
 	 */
-	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID, $pluginParams)
+	public function __construct($podmanparams, $podfilepath, $podtitle, $options, $pluginParams)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath = $podfilepath;
-		$this->podcastID = $podcastID;
+		$this->options = $options;
 		$this->pluginParams = $pluginParams;
 
-		if (in_array($playerType, $this->validTypes))
+		if (in_array($this->options['playerType'], $this->validTypes))
 		{
-			$this->playerType = $playerType;
+			$this->playerType = $this->options['playerType'];
 		}
 		else
 		{
@@ -236,7 +235,7 @@ class PodcastManagerPlayer
 		$extension = strtolower(substr($this->fileURL, -3, 3));
 
 		// Set the element's ID
-		$ID = 'player-' . $this->podcastID;
+		$ID = 'player-' . $this->options['podcastID'];
 
 		// Process audio file
 		if (in_array($extension, $validAudio))
