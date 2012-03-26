@@ -225,7 +225,7 @@ class PodcastManagerPlayer
 	{
 		// Player height and width
 		$width = $this->podmanparams->get('playerwidth', 400);
-		$audioheight = $this->podmanparams->get('playerheight', 15);
+		$audioheight = $this->podmanparams->get('playerheight', 30);
 		$videoheight = $this->podmanparams->get('videoheight', 400);
 
 		// Valid extensions to determine correct player
