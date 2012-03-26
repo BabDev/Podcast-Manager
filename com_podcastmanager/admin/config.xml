@@ -35,6 +35,12 @@
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_DESCRIPTION" />
 		<field
+			name="videoheight"
+			type="text"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_VIDEOHEIGHT_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_VIDEOHEIGHT_DESCRIPTION" />
+		<field
 			name="linktitle"
 			type="text"
 			default="Listen Now!"

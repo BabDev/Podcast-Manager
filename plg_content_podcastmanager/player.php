@@ -225,7 +225,8 @@ class PodcastManagerPlayer
 	{
 		// Player height and width
 		$width = $this->podmanparams->get('playerwidth', 400);
-		$height = $this->podmanparams->get('playerheight', 15);
+		$audioheight = $this->podmanparams->get('playerheight', 15);
+		$videoheight = $this->podmanparams->get('videoheight', 400);
 
 		// Valid extensions to determine correct player
 		$validAudio = array('m4a', 'mp3');
@@ -240,12 +241,12 @@ class PodcastManagerPlayer
 		// Process audio file
 		if (in_array($extension, $validAudio))
 		{
-			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '">';
+			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" controls="controls" preload="none">';
 		}
 		// Process video file
 		elseif (in_array($extension, $validVideo))
 		{
-			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '">';
+			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" controls="controls" preload="none">';
 		}
 		// Invalid file type
 		else
