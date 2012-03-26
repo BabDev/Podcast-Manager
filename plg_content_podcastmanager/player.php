@@ -233,7 +233,7 @@ class PodcastManagerPlayer
 		$validVideo = array('m4v', 'mov', 'mp4');
 
 		// Get the file's extension
-		$extension = substr($this->fileURL, -3, 3);
+		$extension = strtolower(substr($this->fileURL, -3, 3));
 
 		// Set the element's ID
 		$ID = 'player-' . $this->podcastID;
