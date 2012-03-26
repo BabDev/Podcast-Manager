@@ -93,6 +93,13 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</tr>
 		</tfoot>
 		<tbody>
+		<?php if (count($this->items) == 0): ?>
+			<tr class="row0">
+				<td align="center" colspan="7">
+					<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
+				</td>
+			</tr>
+		<?php else: ?>
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->feedname);
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.' . $item->id);
@@ -136,6 +143,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 			</tr>
 			<?php endforeach; ?>
+			<?php endif; ?>
 		</tbody>
 	</table>
 	<?php // Load the batch processing form. ?>
