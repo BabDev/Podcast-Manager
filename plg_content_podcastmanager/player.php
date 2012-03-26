@@ -244,7 +244,9 @@ class PodcastManagerPlayer
 		}
 
 		// Add the media
-		JHtml::script('mediaelements/jquery.js', false, true);
+		$document = JFactory::getDocument();
+		$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+		JHtml::script('mediaelements/jquery-noconflict.js', false, true);
 		JHtml::script('mediaelements/mediaelement-and-player.js', false, true);
 		JHtml::stylesheet('mediaelements/mediaelementplayer.css', false, true, false);
 		$player .= "<br /><script>
