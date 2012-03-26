@@ -190,7 +190,7 @@ class PlgContentPodcastManager extends JPlugin
 					try
 					{
 						// Get the player
-						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID);
+						$player = new PodcastManagerPlayer($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID, $this->params);
 
 						// Fix for K2 Item
 						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))

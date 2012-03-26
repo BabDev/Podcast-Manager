@@ -56,6 +56,14 @@ class PodcastManagerPlayer
 	protected $podmanparams = null;
 
 	/**
+	 * Podcast Manager Content Plugin parameters
+	 *
+	 * @var    JRegistry
+	 * @since  2.0
+	 */
+	protected $pluginParams = null;
+
+	/**
 	 * The server file path to the file being processed
 	 *
 	 * @var    string
@@ -101,15 +109,17 @@ class PodcastManagerPlayer
 	 * @param   string     $podtitle      The title of the podcast being processed
 	 * @param   string     $playerType    The type of player to use
 	 * @param   integer    $podcastID     The type of player to use
+	 * @param   JRegistry  $pluginParams  The Podcast Manager Content Plugin parameters
 	 *
 	 * @since   1.6
 	 * @throws  RuntimeException
 	 */
-	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID)
+	public function __construct($podmanparams, $podfilepath, $podtitle, $playerType, $podcastID, $pluginParams)
 	{
 		$this->podmanparams = $podmanparams;
 		$this->podfilepath = $podfilepath;
 		$this->podcastID = $podcastID;
+		$this->pluginParams = $pluginParams;
 
 		if (in_array($playerType, $this->validTypes))
 		{
@@ -245,8 +255,17 @@ class PodcastManagerPlayer
 
 		// Add the media
 		$document = JFactory::getDocument();
-		$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+
+		// Check if we should load jQuery
+		if ($this->pluginParams->get('loadJQuery', '1') == '1')
+		{
+			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+		}
+
+		// Ensure jQuery.noConflict() is set, just in case ;-)
 		JHtml::script('mediaelements/jquery-noconflict.js', false, true);
+
+		// And finally, load in MediaElements.JS
 		JHtml::script('mediaelements/mediaelement-and-player.js', false, true);
 		JHtml::stylesheet('mediaelements/mediaelementplayer.css', false, true, false);
 		$player .= "<br /><script>
