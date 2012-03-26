@@ -136,7 +136,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to generate the player
 	 *
-	 * @return  object  The player for the article
+	 * @return  string  The player for the article
 	 *
 	 * @since   1.6
 	 */
@@ -191,7 +191,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to generate a custom player
 	 *
-	 * @return  object  A link to the podcast as defined by the user
+	 * @return  string  A link to the podcast as defined by the user
 	 *
 	 * @since   1.7
 	 */
@@ -204,7 +204,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to generate a link player
 	 *
-	 * @return  object  A HTML link to the podcast
+	 * @return  string  A HTML link to the podcast
 	 *
 	 * @since   1.6
 	 */
@@ -216,16 +216,16 @@ class PodcastManagerPlayer
 	/**
 	 * Function to generate a media player
 	 *
-	 * @return  object  A media player containing the podcast episode
+	 * @return  string  A media player containing the podcast episode
 	 *
 	 * @since   1.6
 	 */
 	protected function player()
 	{
 		// Player height and width
-		$width = $this->podmanparams->get('playerwidth', 400);
-		$audioheight = $this->podmanparams->get('playerheight', 30);
-		$videoheight = $this->podmanparams->get('videoheight', 400);
+		$width = $this->options['width'];
+		$audioheight = $this->options['audioHeight'];
+		$videoheight = $this->options['videoHeight'];
 
 		// Valid extensions to determine correct player
 		$validAudio = array('m4a', 'mp3');
