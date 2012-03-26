@@ -240,7 +240,7 @@
 		<phpcodesniffer
 			standard="${platform.dir}/build/phpcs/Joomla"
 			format="full"
-			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/script,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/soundmanager/swf,${repo.dir}/packaging,${repo.dir}/releases"
+			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/com_podcastmedia,${repo.dir}/packaging,${repo.dir}/releases"
 			file="${repo.dir}"
 			allowedFileExtensions="php,css">
 			<formatter type="full" outfile="${repo.dir}/build/codesniff.txt" />
