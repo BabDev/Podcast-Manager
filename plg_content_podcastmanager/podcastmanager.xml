@@ -19,9 +19,7 @@
 	<media destination="mediaelements" folder="mediaelements">
 		<folder>css</folder>
 		<folder>js</folder>
-		<filename>flashmediaelement.swf</filename>
 		<filename>index.html</filename>
-		<filename>silverlightmediaelement.xap</filename>
 	</media>
 	<config>
 		<fields name="params">
