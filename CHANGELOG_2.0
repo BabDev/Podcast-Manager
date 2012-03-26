@@ -1,14 +1,21 @@
+26-March-2012 Michael Babker
++ [#37] Add ability to override player height and width in content plugin
++ Option to handle loading of jQuery with media player if need be
+
 25-March-2012 Michael Babker
 + Add MediaElements.JS (2.7.0)
+~ Upgrade script removes old media
 
 24-March-2012 Michael Babker
 - Remove support for QuickTime, XSPF Flash, and SoundManager2 players
+~ Content plugin errors are logged versus displayed to users
 
 23-March-2012 Michael Babker
 - Remove Minima template overrides due to frozen development on the template :-(
 
 26-February-2012 Michael Babker
 + [#23] Allow the media player in the feed listing module
+~ Upgrade script removes old language files
 
 4-February-2012 Michael Babker
 + [#37] Add ability to override player in content plugin

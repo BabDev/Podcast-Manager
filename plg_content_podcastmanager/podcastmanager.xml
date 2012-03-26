@@ -29,8 +29,7 @@
 					type="radio"
 					default="1"
 					label="PLG_CONTENT_PODCASTMANAGER_FIELDSET_ADVANCED_LOADJQUERY_LABEL"
-					description="
-					PLG_CONTENT_PODCASTMANAGER_FIELDSET_ADVANCED_LOADJQUERY_DESCRIPTION" >
+					description="PLG_CONTENT_PODCASTMANAGER_FIELDSET_ADVANCED_LOADJQUERY_DESCRIPTION" >
 					<option
 						value="0">JNO</option>
 					<option
