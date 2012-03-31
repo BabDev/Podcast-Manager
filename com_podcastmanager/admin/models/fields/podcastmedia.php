@@ -120,7 +120,13 @@ class JFormFieldPodcastMedia extends JFormField
 		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
 		{
 			$folder = explode('/', $this->value);
-			array_diff_assoc($folder, explode('/', JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager')));
+
+			// For some reason, using the fix from the platform for multi-level default paths isn't working (figure this out at some point)
+			// array_diff_assoc($folder, explode('/', JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager')));
+
+			// So, we instead just pop off the first two levels of $folder and this should do the trick
+			array_shift($folder);
+			array_shift($folder);
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
@@ -136,8 +142,8 @@ class JFormFieldPodcastMedia extends JFormField
 		$html[] = '<div class="button2-left">';
 		$html[] = '	<div class="blank">';
 		$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="' . ($this->element['readonly'] ? ''
-					: ($link ? $link
-					: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+		: ($link ? $link
+		: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
 		$html[] = '			' . JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
