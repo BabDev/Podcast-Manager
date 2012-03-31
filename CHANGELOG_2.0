@@ -1,3 +1,6 @@
+31-March-2012 Michael Babker
+# Fix folder processing in File Manager views
+
 26-March-2012 Michael Babker
 + [#37] Add ability to override player height and width in content plugin
 + Option to handle loading of jQuery with media player if need be

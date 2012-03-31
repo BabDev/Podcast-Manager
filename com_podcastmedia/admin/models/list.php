@@ -109,6 +109,12 @@ class PodcastMediaModelList extends JModel
 			$current = '';
 		}
 
+		// Check if current is the same as the configured default path
+		if ($current == JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'))
+		{
+			$current = '';
+		}
+
 		// Initialise variables.
 		if (strlen($current) > 0)
 		{
