@@ -173,8 +173,8 @@ class PodcastMediaModelList extends JModel
 			{
 				$tmp = new JObject;
 				$tmp->name = basename($folder);
-				$tmp->path = JPath::clean($basePath . '/' . $folder);
-				$tmp->path_relative = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
+				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
+				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
 				$count = PodcastMediaHelper::countFiles($tmp->path);
 				$tmp->files = $count[0];
 				$tmp->folders = $count[1];
