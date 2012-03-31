@@ -120,7 +120,7 @@ class JFormFieldPodcastMedia extends JFormField
 		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
 		{
 			$folder = explode('/', $this->value);
-			array_shift($folder);
+			array_diff_assoc($folder, explode('/', JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager')));
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
