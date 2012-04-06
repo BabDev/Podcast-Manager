@@ -49,7 +49,7 @@ class PodcastMediaViewAudio extends JView
 		$this->medmanparams = $medmanparams;
 		$this->state = $this->get('state');
 		$this->folderList = $this->get('folderList');
-		$this->assign('require_ftp', $ftp);
+		$this->require_ftp = $ftp;
 
 		JHtml::_('behavior.framework', true);
 		JHtml::script('administrator/components/com_podcastmedia/media/js/popup-audiomanager.js', false, false);

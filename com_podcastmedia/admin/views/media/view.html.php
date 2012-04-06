@@ -126,14 +126,12 @@ class PodcastMediaViewMedia extends JView
 		 */
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$session = JFactory::getSession();
-		$state = $this->get('state');
-		$this->assignRef('session', $session);
-		$this->assignRef('medmanparams', $medmanparams);
-		$this->assignRef('state', $state);
-		$this->assign('require_ftp', $ftp);
-		$this->assign('folders_id', ' id="media-tree"');
-		$this->assign('folders', $this->get('folderTree'));
+		$this->session = JFactory::getSession();
+		$this->medmanparams = $medmanparams;
+		$this->state = $this->get('state');
+		$this->require_ftp = $ftp;
+		$this->folders_id = ' id="media-tree"';
+		$this->folders = $this->get('folderTree');
 
 		// Set the toolbar
 		$this->addToolbar();
