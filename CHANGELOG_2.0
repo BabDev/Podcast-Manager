@@ -2,6 +2,7 @@
 ~ Set MIME type with getID3 instead of params
 ~ Use JSession::checkToken()
 ! Raise minimum version to Joomla! 2.5.4
+# [#42] Change default ordering on feedname field
 
 31-March-2012 Michael Babker
 # Fix folder processing in File Manager views
