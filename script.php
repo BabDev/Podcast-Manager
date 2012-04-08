@@ -39,9 +39,9 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires Joomla! 2.5
+		// Requires Joomla! 2.5.4
 		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '2.5', 'lt'))
+		if (version_compare($jversion->getShortVersion(), '2.5.4', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
 			return false;

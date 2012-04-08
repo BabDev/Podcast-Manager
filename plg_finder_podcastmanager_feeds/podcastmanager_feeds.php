@@ -64,7 +64,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * The table name.
 	 *
 	 * @var    string
-	 * @since  2.5
+	 * @since  2.0
 	 */
 	protected $table = '#__podcastmanager_feeds';
 
@@ -72,7 +72,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * The field the published state is stored in.
 	 *
 	 * @var    string
-	 * @since  2.5
+	 * @since  2.0
 	 */
 	protected $state_field = 'published';
 
