@@ -115,9 +115,9 @@ class PlgContentPodcastManager extends JPlugin
 					$podtitle = $article->title;
 					$podfilepath = $article->filename;
 					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
-					$options['width'] = $podmanparams->get('playerwidth', 400);
-					$options['audioHeight'] = $podmanparams->get('playerheight', 30);
-					$options['videoHeight'] = $podmanparams->get('videoheight', 400);
+					$options['width'] = (int) $podmanparams->get('playerwidth', 400);
+					$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
+					$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
 				}
 				else
 				{
@@ -127,9 +127,9 @@ class PlgContentPodcastManager extends JPlugin
 
 					// Set the player type and size from the component params
 					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
-					$options['width'] = $podmanparams->get('playerwidth', 400);
-					$options['audioHeight'] = $podmanparams->get('playerheight', 30);
-					$options['videoHeight'] = $podmanparams->get('videoheight', 400);
+					$options['width'] = (int) $podmanparams->get('playerwidth', 400);
+					$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
+					$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
@@ -148,25 +148,25 @@ class PlgContentPodcastManager extends JPlugin
 						$podtitle = (int) substr($articleTag[0], 3);
 
 						// Check if we have element 1, the player override, and if the string has anything
-						if (isset($articleTag[1]) && strpos($articleTag[1], 'player') === 0 && strlen($articleTag[1]) >= 1)
+						if (isset($articleTag[1]) && strpos($articleTag[1], 'player') === 0 && strlen($articleTag[1]) >= 8)
 						{
 							// Remove the player= portion and set the player type
 							$options['playerType'] = substr($articleTag[1], 7);
 						}
 
 						// Check if we have element 2, the width override, and if the string has anything
-						if (isset($articleTag[2]) && strpos($articleTag[2], 'width') === 0 && strlen($articleTag[2]) >= 1)
+						if (isset($articleTag[2]) && strpos($articleTag[2], 'width') === 0 && strlen($articleTag[2]) >= 7)
 						{
 							// Remove the width= portion and set the player width
-							$options['width'] = substr($articleTag[2], 6);
+							$options['width'] = (int) substr($articleTag[2], 6);
 						}
 
 						// Check if we have element 3, the height override, and if the string has anything
-						if (isset($articleTag[3]) && strpos($articleTag[3], 'height') === 0 && strlen($articleTag[3]) >= 1)
+						if (isset($articleTag[3]) && strpos($articleTag[3], 'height') === 0 && strlen($articleTag[3]) >= 8)
 						{
 							// Remove the height= portion and set the player height for both audio and video for this instance
-							$options['audioHeight'] = substr($articleTag[3], 7);
-							$options['videoHeight'] = substr($articleTag[3], 7);
+							$options['audioHeight'] = (int) substr($articleTag[3], 7);
+							$options['videoHeight'] = (int) substr($articleTag[3], 7);
 						}
 					}
 
