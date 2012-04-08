@@ -35,7 +35,7 @@ class PodcastMediaControllerFolder extends JController
 	 */
 	function delete()
 	{
-		JRequest::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		$input = JFactory::getApplication()->input;
 		$user = JFactory::getUser();
@@ -142,7 +142,7 @@ class PodcastMediaControllerFolder extends JController
 	function create()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$user = JFactory::getUser();
 

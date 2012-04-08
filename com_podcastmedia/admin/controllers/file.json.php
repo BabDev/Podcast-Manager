@@ -45,7 +45,7 @@ class PodcastMediaControllerFile extends JController
 		}
 
 		// Check for request forgeries
-		if (!JRequest::checkToken('request'))
+		if (!JSession::checkToken('request'))
 		{
 			$response = array(
 				'status' => '0',
