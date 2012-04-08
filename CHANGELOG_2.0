@@ -1,3 +1,6 @@
+8-April-2012 Michael Babker
+~ Set MIME type with getID3 instead of params
+
 31-March-2012 Michael Babker
 # Fix folder processing in File Manager views
 

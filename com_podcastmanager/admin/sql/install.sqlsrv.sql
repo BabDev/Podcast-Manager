@@ -24,6 +24,7 @@ CREATE TABLE [#__podcastmanager](
 	[itKeywords] [nvarchar](255) NOT NULL,
 	[itSubtitle] [nvarchar](255) NOT NULL,
 	[itSummary] [nvarchar](max) NOT NULL,
+	[mime] [nvarchar](20) NOT NULL,
 	[language] [nvarchar](7) NOT NULL,
  CONSTRAINT [PK_#__podcastmanager] PRIMARY KEY CLUSTERED
 (
@@ -66,6 +67,8 @@ ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_itKeywords
 ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_itSubtitle]  DEFAULT ((N'')) FOR [itSubtitle]
 
 ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_itSummary]  DEFAULT ((N'')) FOR [itSummary]
+
+ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_mime]  DEFAULT ((N'')) FOR [mime]
 
 END;
 

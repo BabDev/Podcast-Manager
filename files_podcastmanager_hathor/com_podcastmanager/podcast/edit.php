@@ -46,6 +46,9 @@ JHtml::_('behavior.formvalidation');
 			<li><?php echo $this->form->getLabel('published'); ?>
 			<?php echo $this->form->getInput('published'); ?></li>
 
+			<li><?php echo $this->form->getLabel('mime'); ?>
+			<?php echo $this->form->getInput('mime'); ?></li>
+
 			<li><?php echo $this->form->getLabel('itSummary'); ?>
 			<?php echo $this->form->getInput('itSummary'); ?></li>
 

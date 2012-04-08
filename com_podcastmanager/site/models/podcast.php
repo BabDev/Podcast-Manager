@@ -115,6 +115,13 @@ class PodcastManagerModelPodcast extends JModelForm
 		{
 			$data->itDuration = $fileInfo['playtime_string'];
 		}
+
+		// Set the MIME type
+		if (isset($fileInfo['mime_type']))
+		{
+			$data->mime = $fileInfo['mime_type'];
+		}
+
 		return $data;
 	}
 

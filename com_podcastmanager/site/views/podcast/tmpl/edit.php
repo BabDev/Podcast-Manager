@@ -51,6 +51,10 @@ JHtml::_('behavior.formvalidation');
 			<?php echo $this->form->getInput('feedname'); ?>
 		</div>
 		<div class="formelm">
+			<?php echo $this->form->getLabel('mime'); ?>
+			<?php echo $this->form->getInput('mime'); ?>
+		</div>
+		<div class="formelm">
 			<?php echo $this->form->getLabel('itSummary'); ?>
 			<?php echo $this->form->getInput('itSummary'); ?>
 		</div>

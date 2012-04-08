@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itKeywords` varchar(255) NOT NULL default '',
   `itSubtitle` varchar(255) NOT NULL default '',
   `itSummary` varchar(5120) NOT NULL default '',
+  `mime` varchar(20) NOT NULL default '',
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;

@@ -52,6 +52,9 @@ ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_itSubtitle
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_#__podcastmanager_itSummary]') AND type = 'D')
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_itSummary];
 
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_#__podcastmanager_mime]') AND type = 'D')
+ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_mime];
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__podcastmanager]') AND type in (N'U'))
 DROP TABLE [#__podcastmanager];
 

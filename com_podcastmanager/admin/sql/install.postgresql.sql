@@ -20,6 +20,7 @@ CREATE TABLE "#__podcastmanager" (
   "itKeywords" character varying(255) DEFAULT '' NOT NULL,
   "itSubtitle" character varying(255) DEFAULT '' NOT NULL,
   "itSummary" character varying(5120) DEFAULT '' NOT NULL,
+  "mime" character varying(20) DEFAULT '' NOT NULL,
   "language" character varying(7) NOT NULL,
   PRIMARY KEY ("id")
 );

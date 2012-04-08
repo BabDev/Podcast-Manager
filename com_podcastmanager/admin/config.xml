@@ -47,13 +47,6 @@
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
 		<field
-			name="mimetype"
-			type="text"
-			size="30"
-			default="audio/mpeg"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_LABEL"
-			description="COM_PODCASTMANAGER_CONFIG_FIELD_MIMETYPE_DESCRIPTION" />
-		<field
 			name="minstability"
 			type="radio"
 			default="alpha"
