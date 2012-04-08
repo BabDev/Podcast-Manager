@@ -265,9 +265,20 @@ class PodcastManagerPlayer
 		// Ensure jQuery.noConflict() is set, just in case ;-)
 		JHtml::script('mediaelements/jquery-noconflict.js', false, true);
 
-		// And finally, load in MediaElements.JS
-		JHtml::script('mediaelements/mediaelement-and-player.js', false, true);
-		JHtml::stylesheet('mediaelements/mediaelementplayer.css', false, true, false);
+		// Set the default file names
+		$jsFile = 'mediaelement-and-player.min.js';
+		$cssFile = 'mediaelementplayer.min.css';
+
+		// Use the non-minimized files if JDEBUG is set
+		if (JDEBUG)
+		{
+			$jsFile = 'mediaelement-and-player.js';
+			$cssFile = 'mediaelementplayer.css';
+		}
+
+		// And finally, load in MediaElement.JS
+		JHtml::script('mediaelements/' . $jsFile, false, true);
+		JHtml::stylesheet('mediaelements/' . $cssFile, false, true, false);
 		$player .= "<br /><script>
 				var player = new MediaElementPlayer('#" . $ID . "');
 			</script>";
