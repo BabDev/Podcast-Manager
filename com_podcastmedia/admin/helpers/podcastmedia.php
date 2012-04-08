@@ -150,31 +150,6 @@ abstract class PodcastMediaHelper
 	}
 
 	/**
-	 * Function to parse a file size to the correct measurement
-	 *
-	 * @param   string  $size  The file size in bytes
-	 *
-	 * @return  JText  A translated string with the converted file size
-	 *
-	 * @since   1.6
-	 */
-	public static function parseSize($size)
-	{
-		if ($size < 1024)
-		{
-			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_BYTES', $size);
-		}
-		elseif ($size < 1024 * 1024)
-		{
-			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
-		}
-		else
-		{
-			return JText::sprintf('COM_PODCASTMEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
-		}
-	}
-
-	/**
 	 * Count the number of files in a directory
 	 *
 	 * @param   string  $dir  Path to the directory to be counted
