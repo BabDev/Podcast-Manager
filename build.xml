@@ -56,147 +56,147 @@
 		<echo msg="Staging files for packaging" />
 
 		<echo msg="Create com_podcastmanager package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/com_podcastmanager">
-                <fileset dir="com_podcastmanager" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/com_podcastmanager">
+				<fileset dir="com_podcastmanager" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create com_podcastmedia package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/com_podcastmedia">
-                <fileset dir="com_podcastmedia" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/com_podcastmedia">
+				<fileset dir="com_podcastmedia" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create lib_getid3 package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/lib_getid3">
-                <fileset dir="lib_getid3" />
-            </copy>
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/lib_getid3">
+				<fileset dir="lib_getid3" />
+			</copy>
 
 		<echo msg="Create mod_podcastmanager package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/mod_podcastmanager">
-                <fileset dir="mod_podcastmanager" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/mod_podcastmanager">
+				<fileset dir="mod_podcastmanager" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create mod_podcastmanagerfeed package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/mod_podcastmanagerfeed">
-                <fileset dir="mod_podcastmanagerfeed" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/mod_podcastmanagerfeed">
+				<fileset dir="mod_podcastmanagerfeed" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create plg_content_podcastmanager package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/plg_content_podcastmanager">
-                <fileset dir="plg_content_podcastmanager" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/plg_content_podcastmanager">
+				<fileset dir="plg_content_podcastmanager" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create plg_editors-xtd_podcastmanager package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/plg_editors-xtd_podcastmanager">
-                <fileset dir="plg_editors-xtd_podcastmanager" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/plg_editors-xtd_podcastmanager">
+				<fileset dir="plg_editors-xtd_podcastmanager" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create plg_finder_podcastmanager_feeds package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/plg_finder_podcastmanager_feeds">
-                <fileset dir="plg_finder_podcastmanager_feeds" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/plg_finder_podcastmanager_feeds">
+				<fileset dir="plg_finder_podcastmanager_feeds" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create plg_finder_podcastmanager_podcasts package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/plg_finder_podcastmanager_podcasts">
-                <fileset dir="plg_finder_podcastmanager_podcasts" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/plg_finder_podcastmanager_podcasts">
+				<fileset dir="plg_finder_podcastmanager_podcasts" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Create plg_podcastmedia_user package" />
-            <mkdir dir="packaging/staging" />
-            <copy todir="packaging/staging/plg_podcastmedia_user">
-                <fileset dir="plg_podcastmedia_user" />
+			<mkdir dir="packaging/staging" />
+			<copy todir="packaging/staging/plg_podcastmedia_user">
+				<fileset dir="plg_podcastmedia_user" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Copy package manifest" />
-            <copy file="pkg_podcastmanager.xml" tofile="packaging/pkg_podcastmanager.xml" overwrite="true">
+			<copy file="pkg_podcastmanager.xml" tofile="packaging/pkg_podcastmanager.xml" overwrite="true">
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 
 		<echo msg="Copy package scriptfile" />
 		<copy file="script.php" tofile="packaging/script.php" overwrite="true" />
 
 		<echo msg="Copy package language" />
-            <copy todir="packaging/language">
-                <fileset dir="language" />
-            </copy>
+			<copy todir="packaging/language">
+				<fileset dir="language" />
+			</copy>
 
 		<echo msg="Create files_podcastmanager_hathor package" />
-            <copy todir="packaging/files_podcastmanager_hathor">
-                <fileset dir="files_podcastmanager_hathor" />
+			<copy todir="packaging/files_podcastmanager_hathor">
+				<fileset dir="files_podcastmanager_hathor" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
 						<token key="VERSION" value="${version}" />
 					</replacetokens>
 				</filterchain>
-            </copy>
+			</copy>
 	</target>
 
 	<!-- ZIP the separate extension packages -->
@@ -240,7 +240,7 @@
 		<phpcodesniffer
 			standard="${platform.dir}/build/phpcs/Joomla"
 			format="full"
-			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/com_podcastmedia,${repo.dir}/packaging,${repo.dir}/releases"
+			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/com_podcastmedia,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/packaging,${repo.dir}/releases"
 			file="${repo.dir}"
 			allowedFileExtensions="php,css">
 			<formatter type="full" outfile="${repo.dir}/build/codesniff.txt" />
