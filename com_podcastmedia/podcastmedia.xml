@@ -12,7 +12,6 @@
 	<description>COM_PODCASTMEDIA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<files folder="site">
-		<filename>controller.php</filename>
 		<filename>index.html</filename>
 		<filename>podcastmedia.php</filename>
 		<folder>language</folder>

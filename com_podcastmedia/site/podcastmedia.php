@@ -45,7 +45,7 @@ $lang->load($option, JPATH_ADMINISTRATOR, null, false, false)
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php';
 
 // Require the base controller
-require_once JPATH_COMPONENT . '/controller.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/controller.php';
 
 // Make sure the user is authorized to view this page
 $cmd = $input->get('task', null, 'cmd');

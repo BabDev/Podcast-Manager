@@ -76,6 +76,9 @@ class PodcastMediaController extends JController
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);
 
+		// Add the template path for requests coming from the site app
+		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR . '/views/' . strtolower($vName) . '/tmpl');
+
 		// Get/Create the model
 		if ($model = $this->getModel($mName))
 		{
@@ -99,7 +102,7 @@ class PodcastMediaController extends JController
 	 *
 	 * @since   1.6
 	 */
-	function ftpValidate()
+	public function ftpValidate()
 	{
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
