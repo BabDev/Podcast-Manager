@@ -11,5 +11,14 @@
 			default="media/com_podcastmanager"
 			label="COM_PODCASTMEDIA_FIELD_PATH_FILE_FOLDER_LABEL"
 			description="COM_PODCASTMEDIA_FIELD_PATH_FILE_FOLDER_DESC" />
+		<field
+			name="layout"
+			type="list"
+			default="thumbs"
+			label="COM_PODCASTMEDIA_FIELD_LAYOUT_LABEL"
+			description="COM_PODCASTMEDIA_FIELD_LAYOUT_DESCRIPTION">
+			<option value="thumbs">COM_PODCASTMEDIA_FIELD_LAYOUT_OPTION_THUMBS</option>
+			<option value="details">COM_PODCASTMEDIA_FIELD_LAYOUT_OPTION_DETAILS</option>
+		</field>
 	</fieldset>
 </config>

@@ -39,10 +39,11 @@ class PodcastMediaViewMedia extends JView
 	{
 		$app = JFactory::getApplication();
 		$medmanparams = JComponentHelper::getParams('com_media');
+		$params = JComponentHelper::getParams('com_podcastmedia');
 
 		$lang = JFactory::getLanguage();
 
-		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
+		$style = $params->get('layout', 'thumbs');
 
 		$document = JFactory::getDocument();
 		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');

@@ -39,6 +39,7 @@ class PodcastMediaController extends JController
 	{
 		$input = JFactory::getApplication()->input;
 		JPluginHelper::importPlugin('content');
+		$params = JComponentHelper::getParams('com_podcastmedia');
 		$vName = $input->get('view', 'media', 'cmd');
 
 		switch ($vName)
@@ -57,7 +58,7 @@ class PodcastMediaController extends JController
 
 			case 'mediaList':
 				$app = JFactory::getApplication();
-				$vLayout = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
+				$vLayout = $params->get('layout', 'thumbs');
 				$mName = 'list';
 
 				break;

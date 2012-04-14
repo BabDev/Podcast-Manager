@@ -40,7 +40,8 @@ class PodcastMediaViewMediaList extends JView
 		JResponse::allowCache(false);
 
 		$app = JFactory::getApplication();
-		$style = $app->getUserStateFromRequest('podcastmedia.list.layout', 'layout', 'thumbs', 'word');
+		$params = JComponentHelper::getParams('com_podcastmedia');
+		$style = $params->get('layout', 'thumbs');
 
 		$lang = JFactory::getLanguage();
 
