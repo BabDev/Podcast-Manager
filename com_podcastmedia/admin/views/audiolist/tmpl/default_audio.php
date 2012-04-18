@@ -18,10 +18,20 @@ $params = new JRegistry;
 $dispatcher	= JDispatcher::getInstance();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
 ?>
-		<div class="item">
-			<a href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>" >
-				<?php echo JHtml::_('image', $this->_tmp_audio->icon_32, $this->_tmp_audio->name, null, true, true) ? JHtml::_('image', $this->_tmp_audio->icon_32, $this->_tmp_audio->title, null, true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_audio->name, null, true); ?>
-				<span title="<?php echo $this->_tmp_audio->name; ?>"><?php echo $this->_tmp_audio->title; ?></span></a>
-		</div>
+<tr>
+	<td>
+		<a class="img-preview" href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>">
+			<?php echo JHtml::_('image', $this->_tmp_audio->icon_16, $this->_tmp_audio->name, null, true, true) ? JHtml::_('image', $this->_tmp_audio->icon_16, $this->_tmp_audio->title, null, true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_audio->name, null, true); ?>
+		</a>
+	</td>
+	<td class="description">
+		<a href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>">
+			<?php echo $this->escape($this->_tmp_audio->title); ?>
+		</a>
+	</td>
+	<td class="filesize">
+		<?php echo JHtml::_('number.bytes', $this->_tmp_audio->size); ?>
+	</td>
+</tr>
 <?php
 $dispatcher->trigger('onContentAfterDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));

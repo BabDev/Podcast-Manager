@@ -48,6 +48,7 @@ class PodcastMediaViewAudioList extends JView
 		}
 
 		$document = JFactory::getDocument();
+		$document->addStyleSheet('../media/media/css/medialist-details.css');
 		$document->addScriptDeclaration("var AudioManager = window.parent.AudioManager;");
 
 		$this->baseURL = COM_PODCASTMEDIA_BASEURL;

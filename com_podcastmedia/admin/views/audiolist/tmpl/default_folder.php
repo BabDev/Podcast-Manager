@@ -16,8 +16,16 @@ defined('_JEXEC') or die;
 
 $input = JFactory::getApplication()->input;
 ?>
-<div class="item">
-	<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->get('asset', '', 'cmd'); ?>&amp;author=<?php echo $input->get('author', '', 'cmd'); ?>">
-		<?php echo JHtml::_('image', 'media/folder.gif', $this->_tmp_folder->name, array('height' => 80, 'width' => 80), true); ?>
-		<span><?php echo $this->_tmp_folder->name; ?></span></a>
-</div>
+<tr>
+	<td class="imgTotal">
+		<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->get('asset', '', 'cmd'); ?>&amp;author=<?php echo $input->get('author', '', 'cmd'); ?>">
+			<?php echo JHtml::_('image', 'media/folder_sm.png', $this->_tmp_folder->name, array('width' => 16, 'height' => 16), true); ?>
+		</a>
+	</td>
+	<td class="description">
+		<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->get('asset', '', 'cmd'); ?>&amp;author=<?php echo $input->get('author', '', 'cmd'); ?>">
+			<?php echo $this->_tmp_folder->name; ?>
+		</a>
+	</td>
+	<td>&#160;</td>
+</tr>

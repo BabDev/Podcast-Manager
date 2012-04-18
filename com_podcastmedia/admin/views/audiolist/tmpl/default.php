@@ -14,8 +14,17 @@
 
 defined('_JEXEC') or die;
 ?>
-<?php if (count($this->audio) > 0 || count($this->folders) > 0) { ?>
 <div class="manager">
+	<table width="100%" cellspacing="0">
+		<thead>
+		<tr>
+			<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
+			<th><?php echo JText::_('COM_PODCASTMEDIA_NAME'); ?></th>
+			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_FILESIZE'); ?></th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php echo $this->loadTemplate('up'); ?>
 
 		<?php for ($i=0, $n=count($this->folders); $i<$n; $i++) :
 			$this->setFolder($i);
@@ -27,9 +36,6 @@ defined('_JEXEC') or die;
 			echo $this->loadTemplate('audio');
 		endfor; ?>
 
+		</tbody>
+	</table>
 </div>
-<?php } else { ?>
-	<div id="media-noimages">
-		<p><?php echo JText::_('COM_PODCASTMEDIA_NO_AUDIO_FOUND'); ?></p>
-	</div>
-<?php } ?>
