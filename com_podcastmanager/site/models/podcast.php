@@ -15,6 +15,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
+JLoader::register('PodcastManagerHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmanager.php');
 
 /**
  * Podcast edit model class.
@@ -40,90 +41,6 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * @since  1.8
 	 */
 	protected $item = null;
-
-	/**
-	 * Method to process the file through the getID3 library to extract key data
-	 *
-	 * @param   mixed  $data  The data object for the form
-	 *
-	 * @return  mixed  The processed data for the form.
-	 *
-	 * @since  1.8
-	 */
-	protected function fillMetaData($data)
-	{
-		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
-
-		$filename = $_COOKIE['podManFile'];
-
-		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename = $_COOKIE['podManFile'];
-
-		if (!preg_match('/^http/', $filename))
-		{
-			$filename = JPATH_ROOT . '/' . $filename;
-		}
-		$getID3 = new getID3;
-		$getID3->setOption(array('encoding' => 'UTF-8'));
-		$fileInfo = $getID3->analyze($filename);
-
-		// Check if there's an error from getID3
-		if (isset($fileInfo['error']))
-		{
-			foreach ($fileInfo['error'] as $error)
-			{
-				JError::raiseNotice('500', $error);
-			}
-		}
-
-		// Check if there's a warning from getID3
-		if (isset($fileInfo['warning']))
-		{
-			foreach ($fileInfo['warning'] as $warning)
-			{
-				JError::raiseWarning('500', $warning);
-			}
-		}
-
-		if (isset($fileInfo['tags_html']))
-		{
-			$t = $fileInfo['tags_html'];
-			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
-			if ($tags)
-			{
-				// Set the title field
-				if (isset($tags['title']))
-				{
-					$data->title = $tags['title'][0];
-				}
-				// Set the album field
-				if (isset($tags['album']))
-				{
-					$data->itSubtitle = $tags['album'][0];
-				}
-				// Set the artist field
-				if (isset($tags['artist']))
-				{
-					$data->itAuthor = $tags['artist'][0];
-				}
-			}
-		}
-
-		// Set the duration field
-		if (isset($fileInfo['playtime_string']))
-		{
-			$data->itDuration = $fileInfo['playtime_string'];
-		}
-
-		// Set the MIME type
-		if (isset($fileInfo['mime_type']))
-		{
-			$data->mime = $fileInfo['mime_type'];
-		}
-
-		return $data;
-	}
 
 	/**
 	 * Abstract method for getting the form from the model.
@@ -242,7 +159,7 @@ class PodcastManagerModelPodcast extends JModelForm
 			// If changing the selected file, process the new data through getID3
 			if (isset($_COOKIE['podManFile']))
 			{
-				$data = $this->fillMetaData($data);
+				$data = PodcastManagerHelper::fillMetaData($data);
 			}
 		}
 		return $data;
