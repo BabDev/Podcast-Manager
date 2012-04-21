@@ -14,7 +14,6 @@
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>podcastmedia.php</filename>
-		<folder>language</folder>
 	</files>
 	<administration>
 		<files folder="admin">
