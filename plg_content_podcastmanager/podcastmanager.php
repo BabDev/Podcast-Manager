@@ -109,27 +109,23 @@ class PlgContentPodcastManager extends JPlugin
 				// Initialize the options array
 				$options = array();
 
+				// Set the default player type and size from the component params
+				$options['playerType'] = $podmanparams->get('linkhandling', 'player');
+				$options['width'] = (int) $podmanparams->get('playerwidth', 400);
+				$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
+				$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
+
 				// Check if we're in a Podcast Manager instance; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
 				{
 					$podtitle = $article->title;
 					$podfilepath = $article->filename;
-					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
-					$options['width'] = (int) $podmanparams->get('playerwidth', 400);
-					$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
-					$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
 				}
 				else
 				{
 					// Retrieve the title from the object and prepare it for a DB query
 					// 9 offset for {podcast marker, -1 offset for closing }
 					$podtitle = substr($episode, 9, -1);
-
-					// Set the player type and size from the component params
-					$options['playerType'] = $podmanparams->get('linkhandling', 'player');
-					$options['width'] = (int) $podmanparams->get('playerwidth', 400);
-					$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
-					$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
 
 					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
 					// -17 offset removes '}</p>{K2Splitter'
