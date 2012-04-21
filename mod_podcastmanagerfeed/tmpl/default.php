@@ -15,22 +15,29 @@
 defined('_JEXEC') or die;
 ?>
 <ul class="podmanfeed<?php echo $moduleclass_sfx; ?>">
-<?php foreach ($list as $item) : ?>
+<?php foreach ($list as $item)
+{ ?>
 	<li>
-		<?php if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $params->get('show_item_player') == 1) : ?>
-		<?php echo $item->text; ?>
-		<?php else : ?>
-		<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
-		<?php if ($params->get('author') == 1 && strlen($item->itAuthor) >= 1) : ?>
-		<?php echo 'by ' . $item->itAuthor; ?>
-		<?php endif; ?>
-		<?php endif; ?>
-		<?php if ($params->get('description') == 1 && strlen($item->itSummary) >= 1) : ?>
-		<br /><?php echo $item->itSummary; ?>
-		<?php endif; ?>
-		<?php if ($params->get('created') == 1) : ?>
-		<br /><?php echo JText::sprintf('JGLOBAL_CREATED_DATE_ON', $item->created); ?>
-		<?php endif; ?>
+		<?php if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $params->get('show_item_player') == 1)
+		{
+			echo $item->text;
+		}
+		else
+		{ ?>
+			<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
+			<?php if ($params->get('author') == 1 && strlen($item->itAuthor) >= 1)
+			{
+				echo 'by ' . $item->itAuthor;
+			}
+		}
+		if ($params->get('description') == 1 && strlen($item->itSummary) >= 1)
+		{
+			echo '<br />' . $item->itSummary;
+		}
+		if ($params->get('created') == 1)
+		{
+			echo '<br />' . JText::sprintf('JGLOBAL_CREATED_DATE_ON', $item->created);
+		} ?>
 	</li>
-<?php endforeach; ?>
+<?php } ?>
 </ul>
