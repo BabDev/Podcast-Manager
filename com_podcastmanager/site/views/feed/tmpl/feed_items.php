@@ -22,9 +22,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
 <form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
-	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
+	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))
+	{ ?>
 	<fieldset class="filters">
-		<?php if ($this->params->get('filter_field') != 'hide') :?>
+		<?php if ($this->params->get('filter_field') != 'hide')
+		{ ?>
 		<legend class="hidelabeltxt">
 			<?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
 		</legend>
@@ -33,98 +35,118 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_LABEL') . '&#160;'; ?></label>
 			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
 		</div>
-		<?php endif; ?>
+		<?php }
 
-		<?php if ($this->params->get('show_pagination_limit')) : ?>
+		if ($this->params->get('show_pagination_limit'))
+		{ ?>
 		<div class="display-limit">
 			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
 		</div>
-		<?php endif; ?>
+		<?php } ?>
 
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
-	<?php endif; ?>
+	<?php }
 
-	<?php if (empty($this->items)) : ?>
+	if (empty($this->items))
+	{ ?>
 	<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
-	<?php else : ?>
+	<?php }
+	else
+	{ ?>
 
 	<table class="feed">
-		<?php if ($this->params->get('show_headings')) : ?>
+		<?php if ($this->params->get('show_headings'))
+		{ ?>
 		<thead>
-		<tr>
-			<th class="list-title">
-				<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
-			</th>
-			<th class="list-date">
-				<?php echo JHtml::_('grid.sort', 'JDATE', 'a.publish_up', $listDirn, $listOrder); ?>
-			</th>
-			<?php if ($this->params->get('show_item_author')) : ?>
-			<th class="list-author">
-				<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'a.itAuthor', $listDirn, $listOrder); ?>
-			</th>
-			<?php endif; ?>
-		</tr>
+			<tr>
+				<th class="list-title">
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				</th>
+				<th class="list-date">
+					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.publish_up', $listDirn, $listOrder); ?>
+				</th>
+				<?php if ($this->params->get('show_item_author'))
+				{ ?>
+				<th class="list-author">
+					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'a.itAuthor', $listDirn, $listOrder); ?>
+				</th>
+				<?php } ?>
+			</tr>
 		</thead>
-		<?php endif; ?>
+		<?php } ?>
 		<tbody>
-			<?php foreach ($this->items as $i => $item) :
-			if ($this->items[$i]->published == 0) : ?>
+		<?php foreach ($this->items as $i => $item)
+		{
+			if ($this->items[$i]->published == 0)
+			{ ?>
 			<tr class="system-unpublished feed-list-row<?php echo $i % 2; ?>">
-		<?php else : ?>
+		<?php }
+			else
+			{ ?>
 			<tr class="feed-list-row<?php echo $i % 2; ?>" >
-		<?php endif;
+		<?php }
 			// Check permissions.
 			$canEdit = $this->user->authorise('core.edit', 'com_podcastmanager.podcast.' . $item->id);
 			?>
-			<td class="list-title">
-				<p>
-					<?php // Compute the correct link
-					if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $this->params->get('show_item_player')) {
-						echo $item->text;
-					} else {
-						$menuclass = 'podcast' . $this->pageclass_sfx;
-						$link = JURI::base() . $item->filename; ?>
-						<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
-							<?php echo $this->escape($item->title); ?></a>
-						<?php } ?></p>
-				<?php if ($canEdit) : ?>
-				<ul class="actions">
-					<li class="edit-icon">
-						<?php echo JHtml::_('icon.podcastedit', $item, $this->params); ?>
-					</li>
-				</ul>
-				<?php endif; ?>
+				<td class="list-title">
+					<p>
+						<?php // Compute the correct link
+						if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $this->params->get('show_item_player'))
+						{
+							echo $item->text;
+						}
+						else
+						{
+							$menuclass = 'podcast' . $this->pageclass_sfx;
+							$link = JURI::base() . $item->filename; ?>
+							<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
+								<?php echo $this->escape($item->title); ?>
+							</a>
+						<?php } ?>
+					</p>
+					<?php if ($canEdit)
+					{ ?>
+					<ul class="actions">
+						<li class="edit-icon">
+							<?php echo JHtml::_('icon.podcastedit', $item, $this->params); ?>
+						</li>
+					</ul>
+					<?php }
 
-				<?php if (($this->params->get('show_item_description')) AND ($item->itSummary)): ?>
-				<p><?php echo nl2br($item->itSummary); ?></p>
-				<?php endif; ?>
-			</td>
-			<td class="list-date">
-				<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
-			</td>
-			<?php if ($this->params->get('show_item_author')) : ?>
-			<td class="list-author">
-				<?php echo $item->itAuthor; ?>
-			</td>
-			<?php endif; ?>
+					if (($this->params->get('show_item_description')) AND ($item->itSummary))
+					{ ?>
+					<p><?php echo nl2br($item->itSummary); ?></p>
+					<?php } ?>
+				</td>
+				<td class="list-date">
+					<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
+				</td>
+				<?php if ($this->params->get('show_item_author'))
+				{ ?>
+				<td class="list-author">
+					<?php echo $item->itAuthor; ?>
+				</td>
+				<?php } ?>
 			</tr>
-		<?php endforeach; ?>
+		<?php } ?>
 		</tbody>
 	</table>
 
-	<?php if ($this->params->get('show_pagination')) : ?>
+	<?php if ($this->params->get('show_pagination'))
+	{ ?>
 		<div class="pagination">
-			<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+			<?php if ($this->params->def('show_pagination_results', 1))
+			{ ?>
 			<p class="counter">
 				<?php echo $this->pagination->getPagesCounter(); ?>
 			</p>
-			<?php endif;
+			<?php }
 			echo $this->pagination->getPagesLinks(); ?>
 		</div>
-		<?php endif; ?>
-	<?php endif; ?>
+		<?php }
+	} ?>
 </form>
