@@ -17,25 +17,28 @@ defined('_JEXEC') or die;
 <div class="manager">
 	<table width="100%" cellspacing="0">
 		<thead>
-		<tr>
-			<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
-			<th><?php echo JText::_('COM_PODCASTMEDIA_NAME'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_FILESIZE'); ?></th>
-		</tr>
+			<tr>
+				<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
+				<th><?php echo JText::_('COM_PODCASTMEDIA_NAME'); ?></th>
+				<th width="8%"><?php echo JText::_('COM_PODCASTMEDIA_FILESIZE'); ?></th>
+			</tr>
 		</thead>
 		<tbody>
-		<?php echo $this->loadTemplate('up'); ?>
+			<?php echo $this->loadTemplate('up');
 
-		<?php for ($i=0, $n=count($this->folders); $i<$n; $i++) :
-			$this->setFolder($i);
-			echo $this->loadTemplate('folder');
-		endfor; ?>
+			// Load the folders
+			for ($i = 0, $n = count($this->folders); $i < $n; $i++)
+			{
+				$this->setFolder($i);
+				echo $this->loadTemplate('folder');
+			}
 
-		<?php for ($i=0, $n=count($this->audio); $i<$n; $i++) :
-			$this->setAudio($i);
-			echo $this->loadTemplate('audio');
-		endfor; ?>
-
+			// Load the files
+			for ($i = 0, $n = count($this->audio); $i < $n; $i++)
+			{
+				$this->setAudio($i);
+				echo $this->loadTemplate('audio');
+			} ?>
 		</tbody>
 	</table>
 </div>

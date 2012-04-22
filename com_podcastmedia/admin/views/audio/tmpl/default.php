@@ -16,10 +16,10 @@ defined('_JEXEC') or die;
 
 $input = JFactory::getApplication()->input;
 $user = JFactory::getUser();
+$params = JComponentHelper::getParams('com_podcastmedia');
 ?>
 <script type='text/javascript'>
-var audio_base_path = '<?php $params = JComponentHelper::getParams('com_podcastmedia');
-echo $params->get('file_path', 'media/com_podcastmanager');?>/';
+var audio_base_path = '<?php echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 </script>
 <form action="index.php?option=com_podcastmedia&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>" id="imageForm" method="post" enctype="multipart/form-data">
 	<div id="messages" style="display: none;">
@@ -54,34 +54,35 @@ echo $params->get('file_path', 'media/com_podcastmanager');?>/';
 	</fieldset>
 </form>
 
-<?php if ($user->authorise('core.create', 'com_podcastmanager')): ?>
-	<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken();?>=1&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>&amp;format=<?php echo $this->medmanparams->get('enable_flash')=='1' ? 'json' : '' ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
-		<fieldset id="uploadform">
-			<legend><?php echo $this->medmanparams->get('upload_maxsize')=='0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
-			<fieldset id="upload-noflash" class="actions">
-				<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_UPLOAD_FILE'); ?></label>
-				<input type="file" id="upload-file" name="Filedata" />
-				<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></label>
-				<input type="submit" id="upload-submit" value="<?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?>"/>
-			</fieldset>
-			<div id="upload-flash" class="hide">
-				<ul>
-					<li><a href="#" id="upload-browse"><?php echo JText::_('COM_PODCASTMEDIA_BROWSE_FILES'); ?></a></li>
-					<li><a href="#" id="upload-clear"><?php echo JText::_('COM_PODCASTMEDIA_CLEAR_LIST'); ?></a></li>
-					<li><a href="#" id="upload-start"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></a></li>
-				</ul>
-				<div class="clr"> </div>
-				<p class="overall-title"></p>
-				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
-				<div class="clr"> </div>
-				<p class="current-title"></p>
-				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
-				<p class="current-text"></p>
-			</div>
-			<ul class="upload-queue" id="upload-queue">
-				<li style="display: none"></li>
-			</ul>
-			<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia&view=audio&tmpl=component&fieldid=' . $input->get('fieldid', '', 'cmd') . '&e_name=' . $input->get('e_name', '', 'cmd') . '&asset=' . $input->get('asset', '', 'cmd') . '&author=' . $input->get('author', '', 'cmd')); ?>" />
+<?php if ($user->authorise('core.create', 'com_podcastmanager'))
+{ ?>
+<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken();?>=1&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>&amp;format=<?php echo $this->medmanparams->get('enable_flash')=='1' ? 'json' : '' ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+	<fieldset id="uploadform">
+		<legend><?php echo $this->medmanparams->get('upload_maxsize')=='0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
+		<fieldset id="upload-noflash" class="actions">
+			<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_UPLOAD_FILE'); ?></label>
+			<input type="file" id="upload-file" name="Filedata" />
+			<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></label>
+			<input type="submit" id="upload-submit" value="<?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?>"/>
 		</fieldset>
-	</form>
-<?php endif; ?>
+		<div id="upload-flash" class="hide">
+			<ul>
+				<li><a href="#" id="upload-browse"><?php echo JText::_('COM_PODCASTMEDIA_BROWSE_FILES'); ?></a></li>
+				<li><a href="#" id="upload-clear"><?php echo JText::_('COM_PODCASTMEDIA_CLEAR_LIST'); ?></a></li>
+				<li><a href="#" id="upload-start"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></a></li>
+			</ul>
+			<div class="clr"></div>
+			<p class="overall-title"></p>
+			<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+			<div class="clr"></div>
+			<p class="current-title"></p>
+			<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+			<p class="current-text"></p>
+		</div>
+		<ul class="upload-queue" id="upload-queue">
+			<li style="display: none"></li>
+		</ul>
+		<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia&view=audio&tmpl=component&fieldid=' . $input->get('fieldid', '', 'cmd') . '&e_name=' . $input->get('e_name', '', 'cmd') . '&asset=' . $input->get('asset', '', 'cmd') . '&author=' . $input->get('author', '', 'cmd')); ?>" />
+	</fieldset>
+</form>
+<?php }

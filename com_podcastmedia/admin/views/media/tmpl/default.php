@@ -26,19 +26,20 @@ $user = JFactory::getUser();
 			</fieldset>
 		</td>
 		<td>
-			<?php if (($user->authorise('core.create', 'com_podcastmanager')) and $this->require_ftp): ?>
-				<form action="index.php?option=com_podcastmedia&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
-					<fieldset title="<?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?>">
-						<legend><?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?></legend>
-						<?php echo JText::_('COM_PODCASTMEDIA_DESCFTP'); ?>
-						<label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?></label>
-						<input type="text" id="username" name="username" class="inputbox" size="70" value="" />
+			<?php if (($user->authorise('core.create', 'com_podcastmanager')) and $this->require_ftp)
+			{ ?>
+			<form action="index.php?option=com_podcastmedia&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
+				<fieldset title="<?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?>">
+					<legend><?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?></legend>
+					<?php echo JText::_('COM_PODCASTMEDIA_DESCFTP'); ?>
+					<label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?></label>
+					<input type="text" id="username" name="username" class="inputbox" size="70" value="" />
 
-						<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
-						<input type="password" id="password" name="password" class="inputbox" size="70" value="" />
-					</fieldset>
-				</form>
-			<?php endif; ?>
+					<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
+					<input type="password" id="password" name="password" class="inputbox" size="70" value="" />
+				</fieldset>
+			</form>
+			<?php } ?>
 
 			<form action="index.php?option=com_podcastmedia" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data" >
 				<input type="hidden" name="task" value="" />
@@ -53,18 +54,20 @@ $user = JFactory::getUser();
 					</div>
 					<legend><?php echo JText::_('COM_PODCASTMEDIA_FILES'); ?></legend>
 					<div class="path">
-					<?php if ($user->authorise('core.create', 'com_podcastmanager')): ?>
+					<?php if ($user->authorise('core.create', 'com_podcastmanager'))
+					{ ?>
 						<input class="inputbox" type="text" id="folderpath" readonly="readonly" />
 						<input class="inputbox" type="text" id="foldername" name="foldername"  />
 						<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="<?php echo $this->state->folder; ?>" />
 						<button type="submit"><?php echo JText::_('COM_PODCASTMEDIA_CREATE_FOLDER'); ?></button>
-					<?php endif; ?>
+					<?php } ?>
 					</div>
 					<?php echo JHtml::_('form.token'); ?>
 				</fieldset>
 			</form>
 
-			<?php if ($user->authorise('core.create', 'com_podcastmanager')):?>
+			<?php if ($user->authorise('core.create', 'com_podcastmanager'))
+			{ ?>
 			<!-- File Upload Form -->
 			<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken(); ?>=1&amp;format=json" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform">
@@ -81,10 +84,10 @@ $user = JFactory::getUser();
 							<li><a href="#" id="upload-clear"><?php echo JText::_('COM_PODCASTMEDIA_CLEAR_LIST'); ?></a></li>
 							<li><a href="#" id="upload-start"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></a></li>
 						</ul>
-						<div class="clr"> </div>
+						<div class="clr"></div>
 						<p class="overall-title"></p>
 						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
-						<div class="clr"> </div>
+						<div class="clr"></div>
 						<p class="current-title"></p>
 						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
 						<p class="current-text"></p>
@@ -96,7 +99,7 @@ $user = JFactory::getUser();
 					<input type="hidden" name="format" value="html" />
 				</fieldset>
 			</form>
-			<?php endif;?>
+			<?php } ?>
 		</td>
 	</tr>
 </table>
