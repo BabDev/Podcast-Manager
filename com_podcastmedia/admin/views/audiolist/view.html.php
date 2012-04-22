@@ -26,6 +26,38 @@ jimport('joomla.application.component.view');
 class PodcastMediaViewAudioList extends JView
 {
 	/**
+	 * An array of audio files
+	 *
+	 * @var    array
+	 * @since  1.6
+	 */
+	protected $audio;
+
+	/**
+	 * The base URL
+	 *
+	 * @var    string
+	 * @since  1.6
+	 */
+	protected $baseURL;
+
+	/**
+	 * An array of folders
+	 *
+	 * @var    array
+	 * @since  1.6
+	 */
+	protected $folders;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.6
+	 */
+	protected $state;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -34,7 +66,7 @@ class PodcastMediaViewAudioList extends JView
 	 *
 	 * @since   1.6
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Do not allow cache
 		JResponse::allowCache(false);
@@ -62,13 +94,13 @@ class PodcastMediaViewAudioList extends JView
 	/**
 	 * Function to set the current folder
 	 *
-	 * @param   integer  $index
+	 * @param   integer  $index  The current index value
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	function setFolder($index = 0)
+	protected function setFolder($index = 0)
 	{
 		if (isset($this->folders[$index]))
 		{
@@ -83,13 +115,13 @@ class PodcastMediaViewAudioList extends JView
 	/**
 	 * Function to set the current audio
 	 *
-	 * @param   integer  $index
+	 * @param   integer  $index  The current index value
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	function setAudio($index = 0)
+	protected function setAudio($index = 0)
 	{
 		if (isset($this->audio[$index]))
 		{

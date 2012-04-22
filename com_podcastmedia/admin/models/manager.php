@@ -35,7 +35,7 @@ class PodcastMediaModelManager extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getState($property = null, $default = null)
+	public function getState($property = null, $default = null)
 	{
 		static $set;
 
@@ -66,7 +66,7 @@ class PodcastMediaModelManager extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getFolderList($base = null)
+	public function getFolderList($base = null)
 	{
 		// Get some paths from the request
 		if (empty($base))
@@ -122,7 +122,7 @@ class PodcastMediaModelManager extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getFolderTree($base = null)
+	public function getFolderTree($base = null)
 	{
 		// Get some paths from the request
 		if (empty($base))

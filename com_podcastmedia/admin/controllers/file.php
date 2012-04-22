@@ -33,7 +33,7 @@ class PodcastMediaControllerFile extends JController
 	 *
 	 * @since   1.6
 	 */
-	function upload()
+	public function upload()
 	{
 		// Check for request forgeries
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
@@ -43,7 +43,7 @@ class PodcastMediaControllerFile extends JController
 
 		// Get some data from the request
 		$input = JFactory::getApplication()->input;
-		//$file = $input->files->get('Filedata', '', 'array');
+		//  $file = $input->files->get('Filedata', '', 'array');
 		$file = JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder = $input->get('folder', '', 'path');
 		$return = $input->post->get('return-url', null, 'base64');
@@ -131,7 +131,7 @@ class PodcastMediaControllerFile extends JController
 	 *
 	 * @since   1.6
 	 */
-	function delete()
+	public function delete()
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 		$app = JFactory::getApplication();
@@ -175,7 +175,7 @@ class PodcastMediaControllerFile extends JController
 				{
 					if ($path !== JFile::makeSafe($path))
 					{
-						// filename is not safe
+						// Filename is not safe
 						$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
 						JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_PODCASTMEDIA_BASE))));
 						continue;
@@ -221,7 +221,7 @@ class PodcastMediaControllerFile extends JController
 						}
 						else
 						{
-							//This makes no sense...
+							// This makes no sense...
 							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
 					}

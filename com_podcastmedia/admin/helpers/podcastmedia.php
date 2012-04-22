@@ -88,7 +88,7 @@ abstract class PodcastMediaHelper
 		{
 			if (!in_array($format, $ignored))
 			{
-				// if its not an image...and we're not ignoring it
+				// If it's not an allowed file and we're not ignoring it
 				$allowed_mime = explode(',', 'audio/mpeg,audio/x-m4a,video/mp4,video/x-m4v,video/quicktime');
 				$illegal_mime = explode(',', $medmanparams->get('upload_mime_illegal'));
 				if (function_exists('finfo_open') && $medmanparams->get('check_mime', 1))
@@ -107,7 +107,7 @@ abstract class PodcastMediaHelper
 				{
 					if (function_exists('mime_content_type') && $medmanparams->get('check_mime', 1))
 					{
-						// we have mime magic
+						// We have mime magic
 						$type = mime_content_type($file['tmp_name']);
 						if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime))
 						{

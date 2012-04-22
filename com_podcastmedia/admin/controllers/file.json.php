@@ -33,7 +33,7 @@ class PodcastMediaControllerFile extends JController
 	 *
 	 * @since   1.6
 	 */
-	function upload()
+	public function upload()
 	{
 		static $log;
 
@@ -60,7 +60,7 @@ class PodcastMediaControllerFile extends JController
 
 		// Get some data from the request
 		$input = JFactory::getApplication()->input;
-		//$file = $input->files->get('Filedata', '', 'array');
+		// $file = $input->files->get('Filedata', '', 'array');
 		$file = JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder = $input->get('folder', '', 'path');
 

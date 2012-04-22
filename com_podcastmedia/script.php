@@ -117,7 +117,7 @@ class Com_PodcastMediaInstallerScript
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__menu'));
-		$query->where($db->quoteName('title') . ' = '.$db->quote('com_podcastmedia'));
+		$query->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));
 		$db->setQuery($query);
 		if (!$db->query())
 		{

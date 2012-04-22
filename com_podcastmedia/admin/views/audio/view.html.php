@@ -26,6 +26,46 @@ jimport('joomla.application.component.view');
 class PodcastMediaViewAudio extends JView
 {
 	/**
+	 * The folder list
+	 *
+	 * @var    object
+	 * @since  1.6
+	 */
+	protected $folderList;
+
+	/**
+	 * The component params
+	 *
+	 * @var    JRegistry
+	 * @since  1.6
+	 */
+	protected $medmanparams;
+
+	/**
+	 * Whether FTP credentials are required or not
+	 *
+	 * @var    boolean
+	 * @since  1.6
+	 */
+	protected $require_ftp;
+
+	/**
+	 * The session object
+	 *
+	 * @var    JSession
+	 * @since  1.6
+	 */
+	protected $session;
+
+	/**
+	 * The state information
+	 *
+	 * @var    JObject
+	 * @since  1.6
+	 */
+	protected $state;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -34,7 +74,7 @@ class PodcastMediaViewAudio extends JView
 	 *
 	 * @since   1.6
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$medmanparams = JComponentHelper::getParams('com_media');
 		$lang = JFactory::getLanguage();
@@ -64,8 +104,12 @@ class PodcastMediaViewAudio extends JView
 		{
 			$fileTypes = 'mp3,m4a,mov,mp4,m4v';
 			$types = explode(',', $fileTypes);
-			$displayTypes = ''; // this is what the user sees
-			$filterTypes = ''; // this is what controls the logic
+
+			// These types are what the user sees
+			$displayTypes = '';
+
+			// This is what controls the logic
+			$filterTypes = '';
 			$firstType = true;
 
 			foreach ($types AS $type)

@@ -33,7 +33,7 @@ class PodcastMediaControllerFolder extends JController
 	 *
 	 * @since   1.6
 	 */
-	function delete()
+	public function delete()
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
@@ -122,7 +122,7 @@ class PodcastMediaControllerFolder extends JController
 						}
 						else
 						{
-							//This makes no sense...
+							// This makes no sense...
 							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
 						}
 					}
@@ -139,7 +139,7 @@ class PodcastMediaControllerFolder extends JController
 	 *
 	 * @since   1.6
 	 */
-	function create()
+	public function create()
 	{
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));

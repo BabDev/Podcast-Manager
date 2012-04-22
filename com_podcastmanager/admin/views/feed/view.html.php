@@ -56,6 +56,7 @@ class PodcastManagerViewFeed extends JView
 	 * @since  2.0
 	 */
 	protected $canDo;
+
 	/**
 	 * Display the view
 	 *

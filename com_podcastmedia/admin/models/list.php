@@ -37,7 +37,7 @@ class PodcastMediaModelList extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getState($property = null, $default = null)
+	public function getState($property = null, $default = null)
 	{
 		static $set;
 
@@ -62,7 +62,7 @@ class PodcastMediaModelList extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getFolders()
+	public function getFolders()
 	{
 		$list = $this->getList();
 
@@ -76,7 +76,7 @@ class PodcastMediaModelList extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getAudio()
+	public function getAudio()
 	{
 		$list = $this->getList();
 
@@ -90,7 +90,7 @@ class PodcastMediaModelList extends JModel
 	 *
 	 * @since   1.6
 	 */
-	function getList()
+	public function getList()
 	{
 		static $list;
 
