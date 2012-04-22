@@ -24,7 +24,9 @@ defined('_JEXEC') or die;
 		}
 		else
 		{ ?>
-			<a href="<?php echo $item->link; ?>"><?php echo $item->title; ?></a>
+			<a href="<?php echo $item->link; ?>">
+				<?php echo $item->title; ?>
+			</a>
 			<?php if ($params->get('author') == 1 && strlen($item->itAuthor) >= 1)
 			{
 				echo 'by ' . $item->itAuthor;
