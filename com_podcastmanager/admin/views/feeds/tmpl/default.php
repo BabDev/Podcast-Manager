@@ -93,14 +93,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php if (count($this->items) == 0): ?>
+		<?php if (count($this->items) == 0)
+		{ ?>
 			<tr class="row0">
 				<td align="center" colspan="8">
 					<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 				</td>
 			</tr>
-		<?php else: ?>
-		<?php foreach ($this->items as $i => $item) :
+		<?php }
+		else
+		{ ?>
+		<?php foreach ($this->items as $i => $item)
+		{
 			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->id);
 			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.feed.' . $item->id);
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
@@ -112,35 +116,46 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php if ($item->checked_out) {
+					<?php if ($item->checked_out)
+					{
 						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
-					} ?>
-					<?php if ($canEdit || $canEditOwn) { ?>
+					}
+					if ($canEdit || $canEditOwn)
+					{ ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id=' . $item->id); ?>">
-							<?php echo $this->escape($item->name); ?></a>
-					<?php } else {
-							echo $this->escape($item->name);
+							<?php echo $this->escape($item->name); ?>
+						</a>
+					<?php }
+					else
+					{
+						echo $this->escape($item->name);
 					} ?>
 				</td>
 				<td class="center btns">
 					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=1');?>">
-						<?php echo $item->count_published; ?></a>
+						<?php echo $item->count_published; ?>
+					</a>
 				</td>
 				<td class="center btns">
 					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=0');?>">
-						<?php echo $item->count_unpublished; ?></a>
+						<?php echo $item->count_unpublished; ?>
+					</a>
 				</td>
 				<td class="center btns">
 					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=-2');?>">
-						<?php echo $item->count_trashed; ?></a>
+						<?php echo $item->count_trashed; ?>
+					</a>
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language == '*') {
+					<?php if ($item->language == '*')
+					{
 						echo JText::alt('JALL', 'language');
-					} else {
+					}
+					else
+					{
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
 					} ?>
 				</td>
@@ -148,8 +163,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					<?php echo $item->id; ?>
 				</td>
 			</tr>
-			<?php endforeach; ?>
-			<?php endif; ?>
+			<?php }
+		} ?>
 		</tbody>
 	</table>
 

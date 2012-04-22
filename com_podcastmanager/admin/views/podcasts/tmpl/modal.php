@@ -77,7 +77,8 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach ($this->items as $i => $item) : ?>
+		<?php foreach ($this->items as $i => $item)
+		{ ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo (int) $item->id; ?>');">
@@ -87,9 +88,12 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 					<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
 				</td>
 				<td class="center">
-					<?php if ($item->language == '*') {
+					<?php if ($item->language == '*')
+					{
 						echo JText::alt('JALL', 'language');
-					} else {
+					}
+					else
+					{
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
 					} ?>
 				</td>
@@ -97,7 +101,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
-			<?php endforeach; ?>
+		<?php } ?>
 		</tbody>
 	</table>
 

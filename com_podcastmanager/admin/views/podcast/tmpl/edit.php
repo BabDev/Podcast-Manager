@@ -96,13 +96,14 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('publish_up'); ?>
 					<?php echo $this->form->getInput('publish_up'); ?></li>
 
-					<?php if ($this->item->modified_by) : ?>
+					<?php if ($this->item->modified_by)
+					{ ?>
 					<li><?php echo $this->form->getLabel('modified_by'); ?>
 					<?php echo $this->form->getInput('modified_by'); ?></li>
 
 					<li><?php echo $this->form->getLabel('modified'); ?>
 					<?php echo $this->form->getInput('modified'); ?></li>
-					<?php endif; ?>
+					<?php } ?>
 				</ul>
 			</fieldset>
 		<?php echo JHtml::_('sliders.end'); ?>

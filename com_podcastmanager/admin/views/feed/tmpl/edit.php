@@ -61,7 +61,8 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('image'); ?>
 					<?php echo $this->form->getInput('image'); ?></li>
 
-					<?php if ($this->canDo->get('core.admin')): ?>
+					<?php if ($this->canDo->get('core.admin'))
+					{ ?>
 					<li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
 					<div class="button2-left">
 						<div class="blank">
@@ -71,7 +72,7 @@ JHtml::_('behavior.keepalive');
 		      			</div>
 		      		</div>
 		    		</li>
-					<?php endif; ?>
+					<?php } ?>
 
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
@@ -96,13 +97,14 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('publish_up'); ?>
 					<?php echo $this->form->getInput('publish_up'); ?></li>
 
-					<?php if ($this->item->modified_by) : ?>
+					<?php if ($this->item->modified_by)
+					{ ?>
 					<li><?php echo $this->form->getLabel('modified_by'); ?>
 					<?php echo $this->form->getInput('modified_by'); ?></li>
 
 					<li><?php echo $this->form->getLabel('modified'); ?>
 					<?php echo $this->form->getInput('modified'); ?></li>
-					<?php endif; ?>
+					<?php } ?>
 				</ul>
 			</fieldset>
 
@@ -141,19 +143,20 @@ JHtml::_('behavior.keepalive');
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 
-	<?php if ($this->canDo->get('core.admin')): ?>
-		<div class="width-100 fltlft">
-			<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
+	<?php if ($this->canDo->get('core.admin'))
+	{ ?>
+	<div class="width-100 fltlft">
+		<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_RULES'), 'access-rules'); ?>
-			<fieldset class="panelform">
-				<?php echo $this->form->getLabel('rules'); ?>
-				<?php echo $this->form->getInput('rules'); ?>
-			</fieldset>
+		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_RULES'), 'access-rules'); ?>
+		<fieldset class="panelform">
+			<?php echo $this->form->getLabel('rules'); ?>
+			<?php echo $this->form->getInput('rules'); ?>
+		</fieldset>
 
-			<?php echo JHtml::_('sliders.end'); ?>
-		</div>
-	<?php endif; ?>
+		<?php echo JHtml::_('sliders.end'); ?>
+	</div>
+	<?php } ?>
 	<div>
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
