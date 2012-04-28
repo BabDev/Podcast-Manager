@@ -219,6 +219,7 @@ class PodcastManagerPlayer
 	 * @return  string  A media player containing the podcast episode
 	 *
 	 * @since   1.6
+	 * @throws  RuntimeException
 	 */
 	protected function player()
 	{
@@ -259,7 +260,7 @@ class PodcastManagerPlayer
 		// Check if we should load jQuery
 		if ($this->pluginParams->get('loadJQuery', '1') == '1')
 		{
-			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
 		}
 
 		// Ensure jQuery.noConflict() is set, just in case ;-)
