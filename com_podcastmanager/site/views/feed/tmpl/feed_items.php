@@ -102,7 +102,18 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						else
 						{
 							$menuclass = 'podcast' . $this->pageclass_sfx;
-							$link = JURI::base() . $item->filename; ?>
+
+							// Check if the file is from off site
+							if (preg_match('/^http/', $item->filename))
+							{
+								// The file is off site
+								$link = $item->filename;
+							}
+							else
+							{
+								// The file is stored on site
+								$link = JURI::base() . $item->filename;
+							} ?>
 							<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
 								<?php echo $this->escape($item->title); ?>
 							</a>
