@@ -28,15 +28,14 @@ class JHtmlIcon
 	/**
 	 * Method to create an edit icon for a feed
 	 *
-	 * @param   object     $feed     The feed object
-	 * @param   JRegistry  $params   The item parameters
-	 * @param   array      $attribs  Optional attributes for the link
+	 * @param   object     $feed    The feed object
+	 * @param   JRegistry  $params  The item parameters
 	 *
 	 * @return  mixed  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function feedEdit($feed, $params, $attribs = array())
+	public static function feedEdit($feed, $params)
 	{
 		$uri = JFactory::getURI();
 
@@ -84,13 +83,12 @@ class JHtmlIcon
 	 *
 	 * @param   object     $podcast  The podcast object
 	 * @param   JRegistry  $params   The item parameters
-	 * @param   array      $attribs  Optional attributes for the link
 	 *
 	 * @return  string  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function podcastEdit($podcast, $params, $attribs = array())
+	public static function podcastEdit($podcast, $params)
 	{
 		$uri = JFactory::getURI();
 

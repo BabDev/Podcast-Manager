@@ -57,7 +57,6 @@ class PodcastMediaController extends JController
 				break;
 
 			case 'mediaList':
-				$app = JFactory::getApplication();
 				$vLayout = $params->get('layout', 'thumbs');
 				$mName = 'list';
 
