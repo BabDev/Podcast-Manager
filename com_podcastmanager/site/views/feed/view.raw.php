@@ -141,7 +141,7 @@ class PodcastManagerViewFeed extends JView
 
 		$this->_setCategories($xw, $feed);
 
-		$this->_setItems($xw, $params, $items);
+		$this->_setItems($xw, $items);
 
 		// End channel element
 		$xw->endElement();
@@ -192,15 +192,14 @@ class PodcastManagerViewFeed extends JView
 	/**
 	 * Function to generate the feed items
 	 *
-	 * @param   XMLWriter  &$xw     XMLWriter object containing generated feed output
-	 * @param   JRegistry  $params  The component parameters
-	 * @param   object     $items   An object containing the feed record
+	 * @param   XMLWriter  &$xw    XMLWriter object containing generated feed output
+	 * @param   object     $items  An object containing the feed record
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	private function _setItems(&$xw, $params, $items)
+	private function _setItems(&$xw, $items)
 	{
 		foreach ($items as $item)
 		{
