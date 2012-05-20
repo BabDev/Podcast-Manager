@@ -24,14 +24,6 @@ defined('_JEXEC') or die;
 class PodcastManagerHelper
 {
 	/**
-	 * The extension name
-	 *
-	 * @var    string
-	 * @since  1.6
-	 */
-	public static $extension = 'com_podcastmanager';
-
-	/**
 	 * Configure the Linkbar.
 	 *
 	 * @param   string  $vName  The name of the active view.
@@ -188,23 +180,24 @@ class PodcastManagerHelper
 		if (empty($podcastId) && empty($feedId))
 		{
 			$assetName = 'com_podcastmanager';
+			$level = 'component';
 		}
 		elseif (empty($podcastId))
 		{
 			$assetName = 'com_podcastmanager.feed.' . (int) $feedId;
+			$level = 'feed';
 		}
 		else
 		{
 			$assetName = 'com_podcastmanager.podcast.' . (int) $podcastId;
+			$level = 'feed';
 		}
 
-		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.edit.own', 'core.delete'
-		);
+		$actions = JAccess::getActions('com_podcastmanager', $level);
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action->name, $user->authorise($action->name, $assetName));
 		}
 
 		return $result;
