@@ -1,4 +1,10 @@
 23-May-2012 Michael Babker
+# All of the plugins were missing method="upgrade"
+
+--------------------------------------------------
+Podcast Manager 2.0.0 - Released 23-May-2012
+--------------------------------------------------
+23-May-2012 Michael Babker
 ~ Update MediaElement.JS to 2.8.2
 
 20-May-2012 Michael Babker
