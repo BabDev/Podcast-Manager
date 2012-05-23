@@ -1,3 +1,6 @@
+23-May-2012 Michael Babker
+~ Update MediaElement.JS to 2.8.2
+
 20-May-2012 Michael Babker
 ~ Only push through getID3 if the file actually exists and is local
 ~ Embrace the API - Use JAccess to get the component permissions
