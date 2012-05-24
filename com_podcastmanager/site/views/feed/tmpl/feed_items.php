@@ -58,7 +58,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	else
 	{ ?>
 
-	<table class="feed">
+	<table class="table table-striped table-bordered">
 		<?php if ($this->params->get('show_headings'))
 		{ ?>
 		<thead>

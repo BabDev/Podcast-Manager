@@ -74,6 +74,14 @@ class PodcastManagerViewFeed extends JView
 	protected $pagination;
 
 	/**
+	 * The CSS class suffix for the page
+	 *
+	 * @var    string
+	 * @since  1.8
+	 */
+	protected $pageclass_sfx;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -139,7 +147,10 @@ class PodcastManagerViewFeed extends JView
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-		parent::display($tpl);
+		// Add the Bootstrap table css
+		JHtml::stylesheet('components/com_podcastmanager/media/css/bootstrap.min.css', false, false, false);
+
+		return parent::display($tpl);
 	}
 
 	/**

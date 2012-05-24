@@ -1,6 +1,7 @@
 24-May-2012 Michael Babker
 + Add the RSS Feed URL to the manager
 # If the media player isn't enabled, don't process it
++ Use Bootstrap CSS for (currently) unstyled front end table
 
 23-May-2012 Michael Babker
 # All of the plugins were missing method="upgrade"
