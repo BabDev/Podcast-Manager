@@ -1,6 +1,10 @@
+--------------------------------------------------
+Podcast Manager 2.0.1 - Released 24-May-2012
+--------------------------------------------------
 24-May-2012 Michael Babker
 + Add the RSS Feed URL to the manager
 # If the media player isn't enabled, don't process it
+# Fix PHP notice about missing podcast ID
 + Use Bootstrap CSS for (currently) unstyled front end table
 
 23-May-2012 Michael Babker
