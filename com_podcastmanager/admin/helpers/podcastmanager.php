@@ -233,4 +233,48 @@ class PodcastManagerHelper
 		}
 		return $allowedFeeds;
 	}
+
+	/**
+	 * Method to get the route for a feed
+	 *
+	 * @param   string  $url  The URL to process
+	 *
+	 * @return  string  The routed URL
+	 *
+	 * @since   2.0
+	 */
+	public static function getFeedRoute($url)
+	{
+		// Get the router.
+		$app = JApplication::getInstance('site');
+		$router = $app->getRouter();
+
+		// Make sure that we have our router
+		if (!$router)
+		{
+			return null;
+		}
+
+		if ((strpos($url, '&') !== 0) && (strpos($url, 'index.php') !== 0))
+		{
+			return $url;
+		}
+
+		// Build route.
+		$uri = $router->build($url);
+		$url = $uri->toString(array('path', 'query', 'fragment'));
+
+		// Replace spaces.
+		$url = preg_replace('/\s/u', '%20', $url);
+
+		// Replace '/administrator'
+		$url = str_replace('/administrator', '', $url);
+
+		// Strip .html, just in case
+		$url = str_replace('.html', '', $url);
+
+		$url = htmlspecialchars($url);
+
+		return $url;
+	}
 }

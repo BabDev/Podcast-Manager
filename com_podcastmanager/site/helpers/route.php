@@ -89,7 +89,7 @@ abstract class PodcastManagerHelperRoute
 	public static function getFeedRssRoute($id)
 	{
 		$needles = array(
-			'feedname' => array((int) $id)
+			'feed' => array((int) $id)
 		);
 
 		if ($id < 1)
@@ -105,7 +105,7 @@ abstract class PodcastManagerHelperRoute
 			else
 			{
 				// Create the link
-				$link = 'index.php?option=com_podcastmanager&view=feed&format=raw&feedname=' . $id;
+				$link = 'index.php?option=com_podcastmanager&format=raw&feedname=' . $id;
 
 				if ($item = self::findItem($needles))
 				{

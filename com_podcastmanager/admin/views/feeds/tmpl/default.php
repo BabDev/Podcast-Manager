@@ -22,6 +22,12 @@ $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+
+// Get info about the URL to build a proper one to display for the RSS links
+$uri = JURI::getInstance();
+$protocol = $uri->getScheme();
+$domain = $uri->getHost();
+$base = $protocol . '://' . $domain;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {
@@ -110,6 +116,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
 			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.feed.' . $item->id) && $item->created_by == $userId;
 			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.feed.' . $item->id) && $canCheckin;
+			$rssRoute = PodcastManagerHelperRoute::getFeedRssRoute($item->id);
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -130,6 +137,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					{
 						echo $this->escape($item->name);
 					} ?>
+					<p class="smallsub">
+						<span><?php echo JText::_('COM_PODCASTMANAGER_RSS_FEED_URL') ?></span>
+						<a href="<?php echo $base . PodcastManagerHelper::getFeedRoute($rssRoute); ?>" target="_blank">
+							<?php echo $base . PodcastManagerHelper::getFeedRoute($rssRoute); ?>
+						</a>
+					</p>
 				</td>
 				<td class="center btns">
 					<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=1');?>">

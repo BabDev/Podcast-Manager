@@ -79,6 +79,9 @@ class PodcastManagerViewFeeds extends JView
 			return false;
 		}
 
+		// Require the front end routing helper
+		require_once JPATH_COMPONENT_SITE . '/helpers/route.php';
+
 		// Add the component media
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 
