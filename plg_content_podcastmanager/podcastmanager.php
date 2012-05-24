@@ -77,6 +77,12 @@ class PlgContentPodcastManager extends JPlugin
 		$podManContexts = array('com_podcastmanager.feed', 'mod_podcastmanagerfeed.module');
 		if (in_array($context, $podManContexts))
 		{
+			// If the player isn't enabled, return
+			if ($params->get('show_item_player', '1') == '0')
+			{
+				return true;
+			}
+
 			$article->text = $article->player;
 			$feedView = $context;
 		}
