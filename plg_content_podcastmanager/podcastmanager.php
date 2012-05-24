@@ -126,6 +126,7 @@ class PlgContentPodcastManager extends JPlugin
 				{
 					$podtitle = $article->title;
 					$podfilepath = $article->filename;
+					$options['podcastID'] = (int) $article->id;
 				}
 				else
 				{
