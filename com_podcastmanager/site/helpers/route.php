@@ -26,12 +26,28 @@ jimport('joomla.application.component.helper');
 abstract class PodcastManagerHelperRoute
 {
 	/**
+	 * The format for the feed to route
+	 *
+	 * @var    string
+	 * @since  2.0
+	 */
+	protected static $format;
+
+	/**
 	 * An array of data to reference
 	 *
 	 * @var    array
 	 * @since  1.8
 	 */
 	protected static $lookup;
+
+	/**
+	 * The type of link to lookup (feed/podcast)
+	 *
+	 * @var    string
+	 * @since  2.0
+	 */
+	protected static $type;
 
 	/**
 	 * Method to get the route to the selected feed's HTML view
@@ -47,6 +63,10 @@ abstract class PodcastManagerHelperRoute
 		$needles = array(
 			'feed' => array((int) $id)
 		);
+
+		// Set some vars for further processing
+		self::$format = 'html';
+		self::$type = 'feed';
 
 		if ($id < 1)
 		{
@@ -91,6 +111,10 @@ abstract class PodcastManagerHelperRoute
 		$needles = array(
 			'feed' => array((int) $id)
 		);
+
+		// Set some vars for further processing
+		self::$format = 'raw';
+		self::$type = 'feed';
 
 		if ($id < 1)
 		{
@@ -229,9 +253,16 @@ abstract class PodcastManagerHelperRoute
 						self::$lookup[$view] = array();
 					}
 
-					if (isset($item->query['feedname']))
+					// Some trickery to get the right link for the feeds
+					if (isset(self::$type) && self::$type == 'feed')
 					{
-						self::$lookup[$view][$item->query['feedname']] = $item->id;
+						if ($item->query['format'] == self::$format)
+						{
+							if (isset($item->query['feedname']))
+							{
+								self::$lookup[$view][$item->query['feedname']] = $item->id;
+							}
+						}
 					}
 				}
 			}
