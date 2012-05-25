@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__) . '/helper.php';
+JLoader::register('ModPodcastManagerFeedHelper', JPATH_SITE . '/modules/mod_podcastmanagerfeed/helper.php');
 
 $list = ModPodcastManagerFeedHelper::getList($params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));

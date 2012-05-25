@@ -15,7 +15,7 @@
 defined('_JEXEC') or die;
 
 // Import the external requirements
-require_once JPATH_SITE . '/components/com_podcastmanager/helpers/route.php';
+JLoader::register('PodcastManagerHelperRoute', JPATH_SITE . '/components/com_podcastmanager/helpers/route.php');
 jimport('joomla.application.component.model');
 JModel::addIncludePath(JPATH_SITE . '/components/com_podcastmanager/models', 'PodcastManagerModel');
 

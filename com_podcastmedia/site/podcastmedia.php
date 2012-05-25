@@ -42,7 +42,7 @@ $lang->load($option, JPATH_ADMINISTRATOR, null, false, false)
 || $lang->load($option, JPATH_COMPONENT_ADMINISTRATOR, $lang->getDefault(), false, false);
 
 // Load the admin helpers
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php';
+JLoader::register('PodcastMediaHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php');
 
 // Require the base controller
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/controller.php';

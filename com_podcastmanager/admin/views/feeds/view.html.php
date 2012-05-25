@@ -80,7 +80,7 @@ class PodcastManagerViewFeeds extends JView
 		}
 
 		// Require the front end routing helper
-		require_once JPATH_COMPONENT_SITE . '/helpers/route.php';
+		JLoader::register('PodcastManagerHelperRoute', JPATH_COMPONENT_SITE . '/helpers/route.php');
 
 		// Add the component media
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);

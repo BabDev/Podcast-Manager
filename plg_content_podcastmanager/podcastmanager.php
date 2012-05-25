@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-require_once dirname(__FILE__) . '/player.php';
+JLoader::register('PodcastManagerPlayer', JPATH_SITE . '/plugins/content/podcastmanager/player.php');
 
 /**
  * Podcast Manager content plugin.

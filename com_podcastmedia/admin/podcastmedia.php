@@ -31,8 +31,8 @@ if (!$user->authorise('core.manage', 'com_podcastmanager')
 
 $podmedparams = JComponentHelper::getParams('com_podcastmedia');
 
-// Load the admin HTML view
-require_once JPATH_COMPONENT . '/helpers/podcastmedia.php';
+// Load the admin HTML helper
+JLoader::register('PodcastMediaHelper', JPATH_COMPONENT . '/helpers/podcastmedia.php');
 
 // Set the path definitions
 $popup_upload = $input->get('pop_up', null, 'cmd');
