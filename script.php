@@ -25,7 +25,7 @@ class Pkg_PodcastManagerInstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv');
+	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv', 'sqlazure');
 
 	/**
 	 * Function to act prior to installation process begins
@@ -59,6 +59,26 @@ class Pkg_PodcastManagerInstallerScript
 	}
 
 	/**
+	 * Function to perform changes during uninstall
+	 *
+	 * @param   JInstallerPackage  $parent  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   2.1
+	 */
+	public function uninstall($parent)
+	{
+		// If in CMS 3, uninstall the Strapped layouts
+		$jversion = new JVersion;
+		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		{
+			$installer = new JInstaller;
+			$installer->uninstall('file', 'files_podcastmanager_strapped');
+		}
+	}
+
+	/**
 	 * Function to act after the installation process runs
 	 *
 	 * @param   string             $type     The action being performed
@@ -71,6 +91,14 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function postflight($type, $parent, $results)
 	{
+		// If in CMS 3, install the Strapped layouts
+		$jversion = new JVersion;
+		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		{
+			$installer = new JInstaller;
+			$strapped = $installer->install(__DIR__ . '/files_podcastmanager_strapped');
+		}
+
 		// Determine whether each plugin is enabled or not
 		$enabled = array();
 		$db = JFactory::getDbo();
@@ -86,7 +114,7 @@ class Pkg_PodcastManagerInstallerScript
 			$enabled[$extension] = $db->loadResult();
 		}
 		?>
-		<table class="adminlist">
+		<table class="adminlist table table-striped">
 			<thead>
 				<tr>
 					<th class="title"><?php echo JText::_('PKG_PODCASTMANAGER_EXTENSION'); ?></th>
@@ -147,7 +175,25 @@ class Pkg_PodcastManagerInstallerScript
 					</td>
 				</tr>
 				<?php
-				} ?>
+				}
+				if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+				{ ?>
+				<tr class="row0">
+					<td class="key"><?php echo JText::_('PKG_PODCASTMANAGER_STRAPPED'); ?></td>
+					<td><strong><?php echo JText::_('COM_INSTALLER_TYPE_FILE'); ?></strong></td>
+					<td><strong>
+						<?php if ($strapped == true)
+						{
+							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
+						}
+						else
+						{
+							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
+						} ?></strong>
+					</td>
+					<td><strong><?php echo JText::_('PKG_PODCASTMANAGER_NA'); ?></strong></td>
+				</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 		<?php

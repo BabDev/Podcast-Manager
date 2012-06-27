@@ -21,6 +21,7 @@
 		<echo msg="Build Podcast Manager package" />
 		<zip destfile="pkg_podcastmanager_${version}.zip">
 			<fileset dir="packaging">
+				<include name="files_podcastmanager_strapped/**" />
 				<include name="language/**" />
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
@@ -71,18 +72,6 @@
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/com_podcastmedia">
 				<fileset dir="com_podcastmedia" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
-			</copy>
-
-		<echo msg="Create files_podcastmanager_strapped package" />
-			<mkdir dir="packaging/staging" />
-			<copy todir="packaging/staging/files_podcastmanager_strapped">
-				<fileset dir="files_podcastmanager_strapped" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">
 						<token key="DATE" value="${build.date}" />
@@ -199,6 +188,17 @@
 				<fileset dir="language" />
 			</copy>
 
+		<echo msg="Create files_podcastmanager_strapped package" />
+			<copy todir="packaging/files_podcastmanager_strapped">
+				<fileset dir="files_podcastmanager_strapped" />
+				<filterchain>
+					<replacetokens begintoken="##" endtoken="##">
+						<token key="DATE" value="${build.date}" />
+						<token key="VERSION" value="${version}" />
+					</replacetokens>
+				</filterchain>
+			</copy>
+
 		<echo msg="Create files_podcastmanager_hathor package" />
 			<copy todir="packaging/files_podcastmanager_hathor">
 				<fileset dir="files_podcastmanager_hathor" />
@@ -217,7 +217,6 @@
 		<mkdir dir="packaging/packages" />
 		<zip destfile="packaging/packages/com_podcastmanager.zip" basedir="packaging/staging/com_podcastmanager" />
 		<zip destfile="packaging/packages/com_podcastmedia.zip" basedir="packaging/staging/com_podcastmedia" />
-		<zip destfile="packaging/packages/files_podcastmanager_strapped.zip" basedir="packaging/staging/files_podcastmanager_strapped" />
 		<zip destfile="packaging/packages/lib_getid3.zip" basedir="packaging/staging/lib_getid3" />
 		<zip destfile="packaging/packages/mod_podcastmanager.zip" basedir="packaging/staging/mod_podcastmanager" />
 		<zip destfile="packaging/packages/mod_podcastmanagerfeed.zip" basedir="packaging/staging/mod_podcastmanagerfeed" />
