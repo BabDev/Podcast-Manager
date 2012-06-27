@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="file" version="3.0" method="upgrade">
+	<name>files_podcastmanager_strapped</name>
+	<creationDate>##DATE##</creationDate>
+	<author>Michael Babker</author>
+	<copyright>(C) 2011-2012 Michael Babker</copyright>
+	<authorEmail>mbabker@flbab.com</authorEmail>
+	<authorUrl>http://www.babdev.com</authorUrl>
+	<version>##VERSION##</version>
+	<license>GNU/GPL Version 2 or later</license>
+	<description>FILES_PODCASTMANAGER_STRAPPED_XML_DESCRIPTION</description>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_strapped.ini</language>
+		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_strapped.sys.ini</language>
+	</languages>
+</extension>
