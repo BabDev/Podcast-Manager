@@ -21,11 +21,11 @@
 		<echo msg="Build Podcast Manager package" />
 		<zip destfile="pkg_podcastmanager_${version}.zip">
 			<fileset dir="packaging">
-				<include name="files_podcastmanager_strapped/**" />
 				<include name="language/**" />
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 				<include name="script.php" />
+				<include name="strapped/**" />
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
@@ -41,6 +41,8 @@
 				<include name="language/**" />
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
+				<include name="script.php" />
+				<include name="strapped/**" />
 			</fileset>
 		</zip>
 		<echo msg="Building Hathor Overrides package" />
@@ -188,8 +190,8 @@
 				<fileset dir="language" />
 			</copy>
 
-		<echo msg="Create files_podcastmanager_strapped package" />
-			<copy todir="packaging/files_podcastmanager_strapped">
+		<echo msg="Copy Strapped layout files" />
+			<copy todir="packaging/strapped">
 				<fileset dir="files_podcastmanager_strapped" />
 				<filterchain>
 					<replacetokens begintoken="##" endtoken="##">

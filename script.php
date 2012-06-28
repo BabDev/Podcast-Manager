@@ -96,10 +96,10 @@ class Pkg_PodcastManagerInstallerScript
 		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
 		{
 			$installer = new JInstaller;
-			$strapped = $installer->install(__DIR__ . '/files_podcastmanager_strapped');
+			$strapped = $installer->install(__DIR__ . '/strapped');
 		}
 
-		// Determine whether each plugin is enabled or not
+		// Determine whether each extension is enabled or not
 		$enabled = array();
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
