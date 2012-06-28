@@ -113,7 +113,7 @@ $base = $protocol . '://' . $domain;
 				<?php if (count($this->items) == 0)
 				{ ?>
 					<tr class="row0">
-						<td align="center" colspan="7">
+						<td class="center" colspan="7">
 							<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 						</td>
 					</tr>
@@ -149,7 +149,7 @@ $base = $protocol . '://' . $domain;
 							{
 								echo $this->escape($item->name);
 							} ?>
-							<p class="smallsub">
+							<p class="small">
 								<span><?php echo JText::_('COM_PODCASTMANAGER_RSS_FEED_URL') ?></span>
 								<a href="<?php echo $base . PodcastManagerHelper::getFeedRoute($rssRoute); ?>" target="_blank">
 									<?php echo $base . PodcastManagerHelper::getFeedRoute($rssRoute); ?>
@@ -171,7 +171,7 @@ $base = $protocol . '://' . $domain;
 								<?php echo $item->count_trashed; ?>
 							</a>
 						</td>
-						<td class="small">
+						<td class="center">
 							<?php if ($item->language == '*')
 							{
 								echo JText::alt('JALL', 'language');
