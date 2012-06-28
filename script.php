@@ -73,8 +73,18 @@ class Pkg_PodcastManagerInstallerScript
 		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
 		{
+			// We need to get the extension ID for our Strapped layouts first
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('extension_id'));
+			$query->from($db->quoteName('#__extensions'));
+			$query->where($db->quoteName('name') . ' = ' . $db->quote('files_podcastmanager_strapped'));
+			$db->setQuery($query);
+			$id = $db->loadResult();
+
+			// Instantiate a new installer instance and uninstall the layouts
 			$installer = new JInstaller;
-			$installer->uninstall('file', 'files_podcastmanager_strapped');
+			$installer->uninstall('file', $id);
 		}
 	}
 
