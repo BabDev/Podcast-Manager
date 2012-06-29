@@ -21,7 +21,7 @@ class LiveUpdateStorage
 	public static $registry = null;
 
 	/**
-	 * 
+	 *
 	 * @param string $type
 	 * @param array $config
 	 * @return LiveUpdateStorage
@@ -29,7 +29,7 @@ class LiveUpdateStorage
 	public static function getInstance($type, $config)
 	{
 		static $instances = array();
-		
+
 		$sig = md5($type, serialize($config));
 		if(!array_key_exists($sig, $instances)) {
 			require_once dirname(__FILE__).'/'.strtolower($type).'.php';
@@ -42,18 +42,28 @@ class LiveUpdateStorage
 		}
 		return $instances[$sig];
 	}
-	
+
+	/**
+	 * Returns the internally used registry
+	 *
+	 * @return JRegistry
+	 */
 	public function &getRegistry()
 	{
 		return self::$registry;
 	}
-	
+
+	/**
+	 * Replaces the internally used registry with the one supplied
+	 *
+	 * @param JRegistry $registry
+	 */
 	public function setRegistry($registry)
 	{
 		self::$registry = $registry;
 	}
 
-	
+
 	public final function set($key, $value)
 	{
 		if($key == 'updatedata') {
@@ -65,12 +75,12 @@ class LiveUpdateStorage
 				$value = serialize($value);
 			}
 		}
-		self::$registry->setValue("update.$key", $value);
+		self::$registry->set("update.$key", $value);
 	}
-	
+
 	public final function get($key, $default)
 	{
-		$value = self::$registry->getValue("update.$key", $default);
+		$value = self::$registry->get("update.$key", $default);
 		if($key == 'updatedata') {
 			if(function_exists('json_encode') && function_exists('json_decode')) {
 				$value = json_decode($value);
@@ -82,8 +92,8 @@ class LiveUpdateStorage
 		}
 		return $value;
 	}
-	
+
 	public function save() {}
-	
+
 	public function load($config) {}
 }
