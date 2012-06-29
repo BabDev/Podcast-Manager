@@ -3,7 +3,7 @@
  * Podcast Manager for Joomla!
  *
  * @package     PodcastManager
- * @subpackage  files_podcastmanager_hathor
+ * @subpackage  files_podcastmanager_strapped
  *
  * @copyright   Copyright (C) 2011-2012 Michael Babker. All rights reserved.
  * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -13,9 +13,6 @@
  */
 
 defined('_JEXEC') or die;
-
-// Styles specific to the cpanel
-JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/cpanel/cpanel.css', false, false, false);
 
 // Site addresses to be processed outside JText
 $babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
@@ -29,42 +26,47 @@ $icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
 
 JHtml::_('behavior.framework');
 ?>
-
-<p class="intro"><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></p>
-<div class="cpanel-icons">
-	<div id="cpanel">
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmanager&amp;view=feeds">
-					<img src="<?php echo $icons; ?>/feeds.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS')?></span>
-				</a>
+<div class="row-fluid">
+	<!-- Begin Sidebar -->
+	<div id="sidebar" class="span3">
+		<div class="sidebar-nav">
+			<div class="well">
+				<div class="row-striped">
+					<div class="row-fluid">
+						<div class="span12">
+							<a href="index.php?option=com_podcastmanager&amp;view=feeds">
+								<i class="icon-tags"></i>&nbsp;
+								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS')?></span>
+							</a>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<a href="index.php?option=com_podcastmanager&amp;view=podcasts">
+								<i class="icon-headphones"></i>&nbsp;
+								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS')?></span>
+							</a>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span12">
+							<a href="index.php?option=com_podcastmedia&view=media">
+								<i class="icon-folder-open"></i>&nbsp;
+								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FILES')?></span>
+							</a>
+						</div>
+					</div>
+					<?php echo LiveUpdate::getIcon(); ?>
+				</div>
 			</div>
 		</div>
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmanager&amp;view=podcasts">
-					<img src="<?php echo $icons; ?>/podcasts.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS')?></span>
-				</a>
-			</div>
-		</div>
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmedia&view=media">
-					<img src="<?php echo $icons; ?>/files.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FILES')?></span>
-				</a>
-			</div>
-		</div>
-		<?php echo LiveUpdate::getIcon(); ?>
 	</div>
-</div>
-
-<div class="cpanel-component">
-	<?php echo JHtml::_('sliders.start', 'podmancpanel'); ?>
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'), 'howitworks'); ?>
-		<div>
+	<!-- End Sidebar -->
+	<!-- Begin Content -->
+	<div class="span9">
+		<h5><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></h5>
+		<div class="well">
+			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'); ?></h6>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_INTRO')?></p>
 			<ul>
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_COMPONENT_MANAGER')?></li>
@@ -80,32 +82,32 @@ JHtml::_('behavior.framework');
 			</ul>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_LAYOUTS')?></p>
 		</div>
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'), 'filetypes'); ?>
-		<div>
+		<div class="well">
+			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'); ?></h6>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_INTRO')?></p>
 			<ul>
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_AUDIO')?></li>
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_VIDEO')?></li>
 			</ul>
 		</div>
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'), 'whattoexpect'); ?>
-		<div>
+		<div class="well">
+			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'); ?></h6>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_1')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_2')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_3')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_4')?></p>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_5')?></p>
 		</div>
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'), 'translations'); ?>
-		<div>
+		<div class="well">
+			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'); ?></h6>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
 			<ul>
 				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_PTBR')?></li>
 			</ul>
 			<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_TRANSLATIONS_CONTRIBUTE', $transifex);?></p>
 		</div>
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_CREDITS'), 'credits'); ?>
-		<div>
+		<div class="well">
+			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS'); ?></h6>
 			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS_INTRO')?></p>
 			<ul>
 				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_LIVEUPDATE', $liveupdate);?></li>
@@ -113,5 +115,6 @@ JHtml::_('behavior.framework');
 				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_MEDIAELEMENT', $mejs);?></li>
 			</ul>
 		</div>
-	<?php echo JHtml::_('sliders.end'); ?>
+	</div>
+	<!-- End Content -->
 </div>

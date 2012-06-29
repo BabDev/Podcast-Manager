@@ -68,6 +68,7 @@ JHtml::_('behavior.framework');
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_FEEDS')?></li>
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_PODCASTS')?></li>
 				</ul>
+				<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_LAYOUTS')?></p>
 			</div>
 			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'), 'filetypes'); ?>
 			<div>
