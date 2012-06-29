@@ -12,6 +12,7 @@
 	<fileset>
 		<files folder="com_podcastmanager" target="administrator/templates/strapped/html/com_podcastmanager">
 			<folder>feeds</folder>
+			<folder>podcasts</folder>
 		</files>
 	</fileset>
 	<languages folder="language">
