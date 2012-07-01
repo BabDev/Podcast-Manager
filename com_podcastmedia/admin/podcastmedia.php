@@ -43,9 +43,6 @@ $view = $input->get('view', '', 'cmd');
 define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
 define('COM_PODCASTMEDIA_BASEURL', JURI::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
 
-// Include dependancies
-jimport('joomla.application.component.controller');
-
-$controller = JController::getInstance('PodcastMedia');
+$controller = JControllerLegacy::getInstance('PodcastMedia');
 $controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

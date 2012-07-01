@@ -14,7 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
 
 /**
@@ -24,7 +23,7 @@ jimport('joomla.filesystem.file');
  * @subpackage  com_podcastmanager
  * @since       1.6
  */
-class PodcastManagerViewFeed extends JView
+class PodcastManagerViewFeed extends JViewLegacy
 {
 	/**
 	 * Display the view

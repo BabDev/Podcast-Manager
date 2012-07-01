@@ -14,9 +14,6 @@
 
 defined('_JEXEC') or die;
 
-// Load framework base classes
-jimport('joomla.application.component.view');
-
 /**
  * Cpanel view class.
  *
@@ -24,7 +21,7 @@ jimport('joomla.application.component.view');
  * @subpackage  com_podcastmanager
  * @since       1.8
  */
-class PodcastManagerViewCpanel extends JView
+class PodcastManagerViewCpanel extends JViewLegacy
 {
 	/**
 	 * Display the view

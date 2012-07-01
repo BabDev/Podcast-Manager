@@ -14,7 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
 jimport('joomla.application.component.helper');
 
 /**
@@ -24,7 +23,7 @@ jimport('joomla.application.component.helper');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaViewMedia extends JView
+class PodcastMediaViewMedia extends JViewLegacy
 {
 	/**
 	 * The folder list

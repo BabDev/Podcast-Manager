@@ -24,7 +24,7 @@ jimport('joomla.filesystem.folder');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaControllerFile extends JController
+class PodcastMediaControllerFile extends JControllerLegacy
 {
 	/**
 	 * Upload a file

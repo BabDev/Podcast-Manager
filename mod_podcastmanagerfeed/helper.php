@@ -16,8 +16,7 @@ defined('_JEXEC') or die;
 
 // Import the external requirements
 JLoader::register('PodcastManagerHelperRoute', JPATH_SITE . '/components/com_podcastmanager/helpers/route.php');
-jimport('joomla.application.component.model');
-JModel::addIncludePath(JPATH_SITE . '/components/com_podcastmanager/models', 'PodcastManagerModel');
+JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_podcastmanager/models', 'PodcastManagerModel');
 
 /**
  * Podcast Manager feed listing module.
@@ -40,7 +39,7 @@ abstract class ModPodcastManagerFeedHelper
 	public static function getList(&$params)
 	{
 		// Get an instance of the generic feed model
-		$model = JModel::getInstance('Feed', 'PodcastManagerModel', array('ignore_request' => true));
+		$model = JModelLegacy::getInstance('Feed', 'PodcastManagerModel', array('ignore_request' => true));
 
 		// Set application parameters in model
 		$app = JFactory::getApplication('site');

@@ -14,9 +14,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
-// Get the application and input
+// Get the JInput object
 $input = JFactory::getApplication()->input;
 
 // Access check.
@@ -33,6 +31,6 @@ if ($input->get('view', '', 'cmd') == 'liveupdate')
 	return;
 }
 
-$controller = JController::getInstance('PodcastManager');
+$controller = JControllerLegacy::getInstance('PodcastManager');
 $controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

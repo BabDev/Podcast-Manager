@@ -24,7 +24,7 @@ jimport('joomla.filesystem.folder');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaControllerFile extends JController
+class PodcastMediaControllerFile extends JControllerLegacy
 {
 	/**
 	 * Upload a file
@@ -43,8 +43,7 @@ class PodcastMediaControllerFile extends JController
 
 		// Get some data from the request
 		$input = JFactory::getApplication()->input;
-		//  $file = $input->files->get('Filedata', '', 'array');
-		$file = JRequest::getVar('Filedata', '', 'files', 'array');
+		$file = $input->files->get('Filedata', '', 'array');
 		$folder = $input->get('folder', '', 'path');
 		$return = $input->post->get('return-url', null, 'base64');
 

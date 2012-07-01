@@ -1,3 +1,10 @@
+1-July-2012 Michael Babker
+~ Extend MVC classes from legacy alias as necessary
+! Raise minimum version to Joomla! 2.5.6
+
+27-June-2012 Michael Babker
++ Begin layout package for Strapped Joomla! 3 admin template
+
 --------------------------------------------------
 Podcast Manager 2.0.1 - Released 24-May-2012
 --------------------------------------------------

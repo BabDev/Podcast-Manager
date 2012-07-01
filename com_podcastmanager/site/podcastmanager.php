@@ -14,11 +14,10 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
 JLoader::register('PodcastManagerHelperRoute', JPATH_COMPONENT . '/helpers/route.php');
 
 $input = JFactory::getApplication()->input;
 
-$controller	= JController::getInstance('PodcastManager');
+$controller	= JControllerLegacy::getInstance('PodcastManager');
 $controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

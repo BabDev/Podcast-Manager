@@ -24,7 +24,7 @@ jimport('joomla.filesystem.folder');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaControllerFolder extends JController
+class PodcastMediaControllerFolder extends JControllerLegacy
 {
 	/**
 	 * Deletes paths from the current path

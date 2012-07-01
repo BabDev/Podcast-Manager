@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
 /**
  * Podcast Manager base class.
  *
@@ -23,7 +21,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  com_podcastmanager
  * @since       1.6
  */
-class PodcastManagerController extends JController
+class PodcastManagerController extends JControllerLegacy
 {
 	/**
 	 * Constructor.
@@ -31,7 +29,7 @@ class PodcastManagerController extends JController
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @since   1.6
-	 * @see     JController
+	 * @see     JControllerLegacy
 	 */
 	public function __construct($config = array())
 	{
@@ -54,7 +52,7 @@ class PodcastManagerController extends JController
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
 	 *                               for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController  This object is to support chaining.
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 *
 	 * @since   1.6
 	 */

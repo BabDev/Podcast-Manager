@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
 /**
  * Podcast Media Manager Component Controller
  *
@@ -23,7 +21,7 @@ jimport('joomla.application.component.controller');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaController extends JController
+class PodcastMediaController extends JControllerLegacy
 {
 	/**
 	 * Method to display a view.
@@ -31,7 +29,7 @@ class PodcastMediaController extends JController
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JController  This object to support chaining.
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 *
 	 * @since   1.6
 	 */

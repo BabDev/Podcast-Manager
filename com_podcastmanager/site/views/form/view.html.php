@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
-
 /**
  * Feed edit view class.
  *
@@ -23,7 +21,7 @@ jimport('joomla.application.component.view');
  * @subpackage  com_podcastmanager
  * @since       1.8
  */
-class PodcastManagerViewForm extends JView
+class PodcastManagerViewForm extends JViewLegacy
 {
 	/**
 	 * The user object
