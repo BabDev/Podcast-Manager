@@ -210,6 +210,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 			{
 				// The file is off site, no verification necessary
 				$filename = $filepath;
+
+				// Since PHP's filesize can't parse off-site media, use a fake value
+				$filesize = '8427391';
 			}
 			else
 			{
@@ -221,6 +224,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 				{
 					$filename = JURI::base() . $item->filename;
 				}
+
+				// Process the filesize now
+				$filesize = filesize($filepath);
 			}
 
 			if (!isset($filename))
@@ -256,7 +262,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 				// Write the enclosure element
 				$xw->startElement('enclosure');
 				$xw->writeAttribute('url', $filename);
-				$xw->writeAttribute('length', filesize($filepath));
+				$xw->writeAttribute('length', $filesize);
 
 				// Set the MIME type
 				if (strlen($item->mime) >= 3)

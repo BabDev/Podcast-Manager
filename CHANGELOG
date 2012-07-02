@@ -1,3 +1,6 @@
+2-July-2012 Michael Babker
+# [#69] PHP filesize cannot parse off-server media
+
 1-July-2012 Michael Babker
 ~ Extend MVC classes from legacy alias as necessary
 ! Raise minimum version to Joomla! 2.5.6
