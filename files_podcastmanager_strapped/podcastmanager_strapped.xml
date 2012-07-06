@@ -15,6 +15,7 @@
 			<folder>feed</folder>
 			<folder>feeds</folder>
 			<folder>podcasts</folder>
+			<file>index.html</file>
 		</files>
 	</fileset>
 	<languages folder="language">

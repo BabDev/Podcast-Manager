@@ -80,6 +80,50 @@ class Pkg_PodcastManagerInstallerScript
 		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
 		{
+			/*
+			 * Since the adapter doesn't remove folders with content, we have to remove the content here
+			 * And, lucky us, the file scriptfile isn't copied!
+			 */
+
+			// Import dependencies
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+
+			// First, the array of folders we need to get the children for
+			$folders = array('com_podcastmanager');
+
+			// Set up our base path
+			$base = JPATH_ADMINISTRATOR . '/templates/strapped/html/';
+
+			// Process our parent folders
+			foreach ($folders as $folder)
+			{
+				// Set up our full path to the folder
+				$path = $base . $folder;
+
+				// Get the list of child folders
+				$children = JFolder::folders($path);
+
+				// Process the child folders and remove their files
+				foreach ($children as $child)
+				{
+					// Set the path for the child
+					$cPath = $path . '/' . $child;
+
+					// Get the list of files
+					$files = JFolder::files($cPath);
+
+					// Now, remove the files
+					foreach ($files as $file)
+					{
+						JFile::delete($cPath . '/' . $file);
+					}
+				}
+
+				// Remove the parent folder now
+				JFolder::delete($path);
+			}
+
 			// We need to get the extension ID for our Strapped layouts first
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -89,9 +133,12 @@ class Pkg_PodcastManagerInstallerScript
 			$db->setQuery($query);
 			$id = $db->loadResult();
 
-			// Instantiate a new installer instance and uninstall the layouts
-			$installer = new JInstaller;
-			$installer->uninstall('file', $id);
+			// Instantiate a new installer instance and uninstall the layouts if present
+			if ($id)
+			{
+				$installer = new JInstaller;
+				$installer->uninstall('file', $id);
+			}
 		}
 	}
 
