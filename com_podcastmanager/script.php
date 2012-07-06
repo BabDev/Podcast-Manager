@@ -33,6 +33,13 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
+		// Requires PHP 5.3 (need this check because of earlier version use)
+		if (version_compare(PHP_VERSION, '5.3', 'lt'))
+		{
+			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
+			return false;
+		}
+
 		// Requires Joomla! 2.5.6 (need this check because of earlier version use)
 		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '2.5.6', 'lt'))

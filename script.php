@@ -39,6 +39,13 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
+		// Requires PHP 5.3
+		if (version_compare(PHP_VERSION, '5.3', 'lt'))
+		{
+			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
+			return false;
+		}
+
 		// Requires Joomla! 2.5.6
 		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '2.5.6', 'lt'))

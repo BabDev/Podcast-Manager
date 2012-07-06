@@ -1,3 +1,6 @@
+5-July-2012 Michael Babker
+! Raise minimum PHP version to PHP 5.3
+
 2-July-2012 Michael Babker
 # [#69] PHP filesize cannot parse off-server media
 
