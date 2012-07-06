@@ -257,8 +257,22 @@ class PodcastManagerPlayer
 		// Add the media
 		$document = JFactory::getDocument();
 
-		// Check if we should load jQuery
-		if ($this->pluginParams->get('loadJQuery', '1') == '1')
+		/*
+		 * Check if we should load jQuery
+		 * First, set our default value based on the version of Joomla!
+		 * Default enabled for 2.5, disabled for 3.0 (due to core inclusion)
+		 */
+		$jversion = new JVersion;
+		if (version_compare($jversion->getShortVersion(), '3.0', 'lt'))
+		{
+			$default = '1';
+		}
+		else
+		{
+			$default = '0';
+		}
+
+		if ($this->pluginParams->get('loadJQuery', $default) == '1')
 		{
 			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
 		}
