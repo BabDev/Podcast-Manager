@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
-
 /**
  * Podcast Media Component Manager Model
  *
@@ -23,7 +21,7 @@ jimport('joomla.application.component.model');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaModelManager extends JModel
+class PodcastMediaModelManager extends JModelLegacy
 {
 	/**
 	 * Method to get model state variables

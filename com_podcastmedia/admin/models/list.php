@@ -14,7 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
@@ -25,7 +24,7 @@ jimport('joomla.filesystem.file');
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaModelList extends JModel
+class PodcastMediaModelList extends JModelLegacy
 {
 	/**
 	 * Method to get model state variables
