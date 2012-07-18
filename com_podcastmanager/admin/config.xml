@@ -7,7 +7,7 @@
 		<field
 			name="linkhandling"
 			type="list"
-			default="link"
+			default="player"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
 			<option value="custom">COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_OPTION_CUSTOM</option>
@@ -48,7 +48,7 @@
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
 		<field
 			name="minstability"
-			type="radio"
+			type="list"
 			default="alpha"
 			label="COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_MINSTABILITY_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_MINSTABILITY_DESCRIPTION" >
@@ -62,6 +62,7 @@
 			type="radio"
 			default="0"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_LABEL"
+			class="btn-group"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_DESCRIPTION">
 			<option
 				value="0">JNO</option>
