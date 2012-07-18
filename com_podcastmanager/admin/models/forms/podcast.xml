@@ -2,8 +2,8 @@
 <form>
 	<fieldset
 		addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
-		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+		<field name="id" type="text" class="readonly span12 small" label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
 			readonly="true" />
 		<field name="asset_id" type="hidden" filter="unset" />
 		<field name="filename" type="podcastmedia" hide_none="1"
@@ -12,7 +12,7 @@
 		<field name="title" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
 			size="30" required="true" />
-		<field name="published" type="list" class="inputbox" filter="intval"
+		<field name="published" type="list" class="inputbox span12 small" filter="intval"
 			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
 			<option
@@ -80,7 +80,7 @@
 			label="COM_PODCASTMANAGER_FIELD_MIMETYPE_LABEL" description="COM_PODCASTMANAGER_FIELD_MIMETYPE_DESCRIPTION"
 			size="30" default="audio/mpeg" />
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
+			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox span12 small">
 			<option value="*">JALL</option>
 		</field>
 	</fieldset>
