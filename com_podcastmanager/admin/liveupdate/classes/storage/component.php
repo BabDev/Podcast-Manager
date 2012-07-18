@@ -65,13 +65,6 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		// JComponentHelper::getComponent() returns the old, cached version of
 		// them. So, we have to forget the following code and shoot ourselves in
 		// the feet. Dammit!!!
-		/*
-		jimport('joomla.html.parameter');
-		jimport('joomla.application.component.helper');
-		$component = JComponentHelper::getComponent(self::$component);
-		$params = new JParameter($component->params);
-		$params->setValue(self::$key, $data);
-		*/
 
 		$sql = $db->getQuery(true)
 			->select($db->qn('params'))

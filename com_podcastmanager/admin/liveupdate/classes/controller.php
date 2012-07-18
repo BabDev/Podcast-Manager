@@ -9,15 +9,23 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 
+if(!class_exists('JoomlaSucksController')) {
+	if(interface_exists('JController')) {
+		abstract class JoomlaSucksController extends JControllerLegacy {}
+	} else {
+		class JoomlaSucksController extends JController {}
+	}
+}
+
 /**
  * The Live Update MVC controller
  */
-class LiveUpdateController extends JController
+class LiveUpdateController extends JoomlaSucksController
 {
 	/**
-	 * Object contructor
+	 * Object contructor 
 	 * @param array $config
-	 *
+	 * 
 	 * @return LiveUpdateController
 	 */
 	public function __construct($config = array())
@@ -26,7 +34,7 @@ class LiveUpdateController extends JController
 
 		$this->registerDefaultTask('overview');
 	}
-
+	
 	/**
 	 * Runs the overview page task
 	 */
@@ -34,7 +42,7 @@ class LiveUpdateController extends JController
 	{
 		$this->display();
 	}
-
+	
 	/**
 	 * Starts the update procedure. If the FTP credentials are required, it asks for them.
 	 */
@@ -48,7 +56,7 @@ class LiveUpdateController extends JController
 				$this->redirect();
 			}
 		}
-
+		
 		$ftp = $this->setCredentialsFromRequest('ftp');
 		if($ftp === true) {
 			// The user needs to supply the FTP credentials
@@ -59,7 +67,7 @@ class LiveUpdateController extends JController
 			$this->redirect();
 		}
 	}
-
+	
 	/**
 	 * Download the update package
 	 */
@@ -79,12 +87,12 @@ class LiveUpdateController extends JController
 			$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
 			if($user) {
 				$url .= '&username='.urlencode($user).'&password='.urlencode($pass);
-			}
+			}			
 			$this->setRedirect($url);
 		}
 		$this->redirect();
 	}
-
+	
 	public function extract()
 	{
 		$ftp = $this->setCredentialsFromRequest('ftp');
@@ -102,7 +110,7 @@ class LiveUpdateController extends JController
 			if($user) {
 				$url .= '&username='.urlencode($user).'&password='.urlencode($pass);
 			}
-
+			
 			// Do we have SRP installed yet?
 			$app = JFactory::getApplication();
 			$jResponse = $app->triggerEvent('onSRPEnabled');
@@ -114,7 +122,7 @@ class LiveUpdateController extends JController
 					$status = $status || $response;
 				}
 			}
-
+			
 			// SRP enabled, use it
 			if($status) {
 				$return = $url;
@@ -123,12 +131,12 @@ class LiveUpdateController extends JController
 					$url = $return;
 				}
 			}
-
+			
 			$this->setRedirect($url);
 		}
 		$this->redirect();
 	}
-
+	
 	public function install()
 	{
 		$ftp = $this->setCredentialsFromRequest('ftp');
@@ -142,25 +150,25 @@ class LiveUpdateController extends JController
 		} else {
 			// Installation successful. Show the installation message.
 			$cache = JFactory::getCache('mod_menu');
-			$cache->clean();
-
+			$cache->clean();				
+			
 			$this->display();
 		}
 	}
-
+	
 	public function cleanup()
 	{
 		// Perform the cleanup
 		$ftp = $this->setCredentialsFromRequest('ftp');
 		$model = $this->getThisModel();
 		$model->cleanup();
-
+		
 		// Force reload update information
 		$dummy = LiveUpdate::getUpdateInformation(true);
-
+		
 		die('OK');
 	}
-
+	
 	/**
 	 * Displays the current view
 	 * @param bool $cachable Ignored!
@@ -190,31 +198,31 @@ class LiveUpdateController extends JController
 	public final function getThisView()
 	{
 		static $view = null;
-
+		
 		if(is_null($view))
 		{
 			$basePath = $this->basePath;
 			$tPath = dirname(__FILE__).'/tmpl';
-
+			
 			require_once('view.php');
 			$view = new LiveUpdateView(array('base_path'=>$basePath, 'template_path'=>$tPath));
 		}
-
+		
 		return $view;
 	}
-
+	
 	public final function getThisModel()
 	{
 		static $model = null;
-
+		
 		if(is_null($model))
 		{
 			require_once('model.php');
 			$model = new LiveUpdateModel();
 			$task = $this->task;
-
+			
 			$model->setState( 'task', $task );
-
+			
 			$app	= JFactory::getApplication();
 			$menu	= $app->getMenu();
 			if (is_object( $menu ))
@@ -227,12 +235,12 @@ class LiveUpdateController extends JController
 					$model->setState( 'parameters.menu', $params );
 				}
 			}
-
+			
 		}
-
+		
 		return $model;
 	}
-
+	
 	private function setCredentialsFromRequest($client)
 	{
 		// Determine wether FTP credentials have been passed along with the current request
@@ -255,5 +263,5 @@ class LiveUpdateController extends JController
 		}
 
 		return $return;
-	}
+	}	
 }

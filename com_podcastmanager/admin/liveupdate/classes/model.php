@@ -9,10 +9,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.model');
 
+if(!class_exists('JoomlaSucksModel')) {
+	if(interface_exists('JModel')) {
+		abstract class JoomlaSucksModel extends JModelLegacy {}
+	} else {
+		class JoomlaSucksModel extends JModel {}
+	}
+}
+
 /**
  * The Live Update MVC model
  */
-class LiveUpdateModel extends JModel
+class LiveUpdateModel extends JoomlaSucksModel
 {
 	public function download()
 	{

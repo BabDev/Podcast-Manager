@@ -9,10 +9,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
+if(!class_exists('JoomlaSucksView')) {
+	if(interface_exists('JView')) {
+		abstract class JoomlaSucksView extends JViewLegacy {}
+	} else {
+		class JoomlaSucksView extends JView {}
+	}
+}
+
 /**
  * The Live Update MVC view
  */
-class LiveUpdateView extends JView
+class LiveUpdateView extends JoomlaSucksView
 {
 	public function display($tpl = null)
 	{
