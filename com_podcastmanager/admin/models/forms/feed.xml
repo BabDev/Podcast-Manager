@@ -91,9 +91,6 @@
 			class="readonly" readonly="true" filter="unset" />
 		<field name="checked_out" type="hidden" filter="unset" />
 		<field name="checked_out_time" type="hidden" filter="unset" />
-		<field name="publish_up" type="calendar"
-			label="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_LABEL" description="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_DESCRIPTION"
-			class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
 			<option value="*">JALL</option>
