@@ -143,6 +143,26 @@ class Pkg_PodcastManagerInstallerScript
 	}
 
 	/**
+	 * Function to perform changes during update
+	 *
+	 * @param   JInstallerPackage  $parent  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   2.1
+	 */
+	public function update($parent)
+	{
+		// If in CMS 3, install the Strapped layouts
+		$jversion = new JVersion;
+		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		{
+			$installer = new JInstaller;
+			$installer->update(__DIR__ . '/strapped');
+		}
+	}
+
+	/**
 	 * Function to act after the installation process runs
 	 *
 	 * @param   string             $type     The action being performed
