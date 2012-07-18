@@ -65,55 +65,77 @@ JHtml::_('behavior.framework');
 	<!-- Begin Content -->
 	<div class="span9">
 		<h5><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></h5>
-		<div class="well">
-			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'); ?></h6>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_INTRO')?></p>
-			<ul>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_COMPONENT_MANAGER')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_COMPONENT_MEDIA')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_GETID3')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_FEED')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_LINK')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_CONTENT')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_EDITOR')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_PODCASTMEDIA')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_FEEDS')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_PODCASTS')?></li>
-			</ul>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_LAYOUTS')?></p>
-		</div>
-		<div class="well">
-			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'); ?></h6>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_INTRO')?></p>
-			<ul>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_AUDIO')?></li>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_VIDEO')?></li>
-			</ul>
-		</div>
-		<div class="well">
-			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'); ?></h6>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_1')?></p>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_2')?></p>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_3')?></p>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_4')?></p>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_5')?></p>
-		</div>
-		<div class="well">
-			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'); ?></h6>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
-			<ul>
-				<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_PTBR')?></li>
-			</ul>
-			<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_TRANSLATIONS_CONTRIBUTE', $transifex);?></p>
-		</div>
-		<div class="well">
-			<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS'); ?></h6>
-			<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS_INTRO')?></p>
-			<ul>
-				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_LIVEUPDATE', $liveupdate);?></li>
-				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_GETID3', $getid3);?></li>
-				<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_MEDIAELEMENT', $mejs);?></li>
-			</ul>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#howitworks" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS');?></a></li>
+			<li><a href="#allowedfiles" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES');?></a></li>
+			<li><a href="#whattoexpect" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT');?></a></li>
+			<li><a href="#translations" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS');?></a></li>
+			<li><a href="#credits" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS');?></a></li>
+		</ul>
+		<div class="tab-content">
+			<!-- Begin Tabs -->
+			<div class="tab-pane active" id="howitworks">
+				<div class="well">
+					<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS'); ?></h6>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_INTRO')?></p>
+					<ul>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_COMPONENT_MANAGER')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_COMPONENT_MEDIA')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_GETID3')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_FEED')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_MODULE_LINK')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_CONTENT')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_EDITOR')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_PODCASTMEDIA')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_FEEDS')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_PLUGIN_SMARTSEARCH_PODCASTS')?></li>
+					</ul>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_HOW_PODCAST_MANAGER_WORKS_LAYOUTS')?></p>
+				</div>
+			</div>
+			<div class="tab-pane" id="allowedfiles">
+				<div class="well">
+					<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES'); ?></h6>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_INTRO')?></p>
+					<ul>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_AUDIO')?></li>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_ALLOWED_FILE_TYPES_VIDEO')?></li>
+					</ul>
+				</div>
+			</div>
+			<div class="tab-pane" id="whattoexpect">
+				<div class="well">
+					<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT'); ?></h6>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_1')?></p>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_2')?></p>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_3')?></p>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_4')?></p>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_WHAT_TO_EXPECT_PARA_5')?></p>
+				</div>
+			</div>
+			<div class="tab-pane" id="translations">
+				<div class="well">
+					<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS'); ?></h6>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
+					<ul>
+						<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_PTBR')?></li>
+					</ul>
+					<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_TRANSLATIONS_CONTRIBUTE', $transifex);?></p>
+				</div>
+			</div>
+			<div class="tab-pane" id="credits">
+				<div class="well">
+					<h6><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS'); ?></h6>
+					<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_CREDITS_INTRO')?></p>
+					<ul>
+						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_LIVEUPDATE', $liveupdate);?></li>
+						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_GETID3', $getid3);?></li>
+						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_MEDIAELEMENT', $mejs);?></li>
+					</ul>
+				</div>
+			</div>
+			<!-- End Tabs -->
 		</div>
 	</div>
 	<!-- End Content -->
