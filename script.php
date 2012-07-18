@@ -119,9 +119,6 @@ class Pkg_PodcastManagerInstallerScript
 						JFile::delete($cPath . '/' . $file);
 					}
 				}
-
-				// Remove the parent folder now
-				JFolder::delete($path);
 			}
 
 			// We need to get the extension ID for our Strapped layouts first
