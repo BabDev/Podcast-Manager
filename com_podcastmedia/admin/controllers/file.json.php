@@ -52,7 +52,8 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Get some data from the request
 		$input  = JFactory::getApplication()->input;
-		$file   = $input->files->get('Filedata', '', 'array');
+		// $file   = $input->files->get('Filedata', '', 'array');
+		$file   = JRequest::getVar('Filedata', '', 'files', 'array');
 		$folder = $input->get('folder', '', 'path');
 
 		$params = JComponentHelper::getParams('com_media');
