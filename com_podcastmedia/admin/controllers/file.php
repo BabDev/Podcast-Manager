@@ -350,8 +350,11 @@ class PodcastMediaControllerFile extends JControllerLegacy
 	{
 		$name = JFile::makeSafe($name);
 
+		// Remove spaces from the name to be RSS compliant
+		$name = str_replace(' ', '_', $name);
+
 		return array(
-			'name'		=> str_replace(' ', '_', $name),
+			'name'		=> $name,
 			'type'		=> $type,
 			'tmp_name'	=> $tmp_name,
 			'error'		=> $error,
