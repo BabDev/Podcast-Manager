@@ -26,6 +26,35 @@ jimport('joomla.filesystem.folder');
  */
 class PodcastMediaControllerFile extends JControllerLegacy
 {
+	/*
+	 * The folder we are uploading into
+	 *
+	 * @var    string
+	 * @since  2.1
+	 */
+	protected $folder = '';
+
+	/**
+	 * Check that the user is authorized to perform this action
+	 *
+	 * @param   string  $action  The action being performed
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @since   2.1
+	 */
+	protected function authoriseUser($action)
+	{
+		if (!JFactory::getUser()->authorise('core.' . strtolower($action), 'com_podcastmanager'))
+		{
+			// User is not authorised
+			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Upload a file
 	 *
@@ -38,28 +67,87 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		// Check for request forgeries
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Get the user
-		$user = JFactory::getUser();
-
 		// Get some data from the request
-		$input = JFactory::getApplication()->input;
-		$file = $input->files->get('Filedata', '', 'array');
-		$folder = $input->get('folder', '', 'path');
-		$return = $input->post->get('return-url', null, 'base64');
-
-		// Set FTP credentials, if given
-		JClientHelper::setCredentialsFromRequest('ftp');
+		$input        = JFactory::getApplication()->input;
+		$files        = $input->files->get('Filedata', '', 'array');
+		$this->folder = $input->get('folder', '', 'path');
+		$return       = $input->post->get('return-url', null, 'base64');
 
 		// Set the redirect
 		if ($return)
 		{
-			$this->setRedirect(base64_decode($return) . '&folder=' . $folder);
+			$this->setRedirect(base64_decode($return) . '&folder=' . $this->folder);
 		}
 
-		// Make the filename safe
-		$file['name'] = JFile::makeSafe($file['name']);
+		// Authorize the user
+		if (!$this->authoriseUser('create'))
+		{
+			return false;
+		}
 
-		if (isset($file['name']))
+		$params = JComponentHelper::getParams('com_media');
+
+		if (
+			$_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024 ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024 ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024
+		)
+		{
+			JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+			return false;
+		}
+
+		/*
+		 * Input is in the form of an associative array containing numerically indexed arrays
+		 * We want a numerically indexed array containing associative arrays
+		 * Cast each item as array in case the Filedata parameter was not sent as such
+		 */
+		$files = array_map(
+			array($this, 'reformatFilesArray'),
+			(array) $files['name'],
+			(array) $files['type'],
+			(array) $files['tmp_name'],
+			(array) $files['error'],
+			(array) $files['size']
+		);
+
+		// Perform basic checks on file info before attempting anything
+		foreach ($files as &$file)
+		{
+			if ($file['error'] == 1)
+			{
+				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+				return false;
+			}
+
+			if ($file['size'] > ($params->get('upload_maxsize', 0) * 1024 * 1024))
+			{
+				JError::raiseNotice(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+				return false;
+			}
+
+			if (JFile::exists($file['filepath']))
+			{
+				// A file with this name already exists
+				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS'));
+				return false;
+			}
+
+			if (!isset($file['name']))
+			{
+				// No filename (after the name was cleaned by JFile::makeSafe)
+				$this->setRedirect('index.php', JText::_('COM_PODCASTMEDIA_INVALID_REQUEST'), 'error');
+				return false;
+			}
+		}
+
+		// Set FTP credentials, if given
+		JClientHelper::setCredentialsFromRequest('ftp');
+		JPluginHelper::importPlugin('content');
+		$dispatcher = JDispatcher::getInstance();
+
+		foreach ($files as &$file)
 		{
 			// The request is valid
 			$err = null;
@@ -70,35 +158,20 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				return false;
 			}
 
-			// Remove spaces from the file name for RSS validation
-			$filename = str_replace(' ', '_', $file['name']);
-
-			$filepath = JPath::clean(COM_PODCASTMEDIA_BASE . '/' . $folder . '/' . strtolower($filename));
-
 			// Trigger the onContentBeforeSave event.
-			JPluginHelper::importPlugin('content');
-			$dispatcher = JDispatcher::getInstance();
 			$object_file = new JObject($file);
-			$object_file->filepath = $filepath;
 			$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.file', &$object_file));
 			if (in_array(false, $result, true))
 			{
 				// There are some errors in the plugins
-				JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
-				return false;
-			}
-			$file = (array) $object_file;
-
-			if (JFile::exists($file['filepath']))
-			{
-				// File exists
-				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS'));
-				return false;
-			}
-			elseif (!$user->authorise('core.create', 'com_podcastmanager'))
-			{
-				// File does not exist and user is not authorised to create
-				JError::raiseWarning(403, JText::_('COM_PODCASTMEDIA_ERROR_CREATE_NOT_PERMITTED'));
+				JError::raiseWarning(
+					100,
+					JText::plural(
+						'COM_PODCASTMEDIA_ERROR_BEFORE_SAVE',
+						count($errors = $object_file->getErrors()),
+						implode('<br />', $errors)
+					)
+				);
 				return false;
 			}
 
@@ -113,14 +186,10 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.file', &$object_file, true));
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE))));
-				return true;
 			}
 		}
-		else
-		{
-			$this->setRedirect('index.php', JText::_('COM_PODCASTMEDIA_INVALID_REQUEST'), 'error');
-			return false;
-		}
+
+		return true;
 	}
 
 	/**
@@ -138,18 +207,28 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		$user = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl = $input->get('tmpl', '', 'cmd');
-		$paths = $input->get('rm', array(), 'array');
+		$tmpl   = $input->get('tmpl', '', 'cmd');
+		$paths  = $input->get('rm', array(), 'array');
 		$folder = $input->get('folder', '', 'path');
 
+		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
 		if ($tmpl == 'component')
 		{
 			// We are inside the iframe
-			$this->setRedirect('index.php?option=com_podcastmedia&view=mediaList&folder=' . $folder . '&tmpl=component');
+			$redirect .= '&view=mediaList&tmpl=component';
 		}
-		else
+		$this->setRedirect($redirect);
+
+		// Nothing to delete
+		if (empty($paths))
 		{
-			$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $folder);
+			return true;
+		}
+
+		// Authorize the user
+		if (!$this->authoriseUser('delete'))
+		{
+			return false;
 		}
 
 		if (!$user->authorise('core.delete', 'com_podcastmanager'))
@@ -158,75 +237,125 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 			return false;
 		}
-		else
+
+		// Set FTP credentials, if given
+		JClientHelper::setCredentialsFromRequest('ftp');
+		JPluginHelper::importPlugin('content');
+		$dispatcher	= JDispatcher::getInstance();
+
+		// Initialise variables.
+		$ret = true;
+		foreach ($paths as $path)
 		{
-			// Set FTP credentials, if given
-			JClientHelper::setCredentialsFromRequest('ftp');
-
-			// Initialise variables.
-			$ret = true;
-
-			if (count($paths))
+			if ($path !== JFile::makeSafe($path))
 			{
-				JPluginHelper::importPlugin('content');
-				$dispatcher = JDispatcher::getInstance();
-				foreach ($paths as $path)
+				// filename is not safe
+				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
+				JError::raiseWarning(
+					100,
+					JText::sprintf(
+						'COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME',
+						substr($filename, strlen(COM_PODCASTMEDIA_BASE))
+					)
+				);
+				continue;
+			}
+
+			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
+			$object_file = new JObject(array('filepath' => $fullPath));
+			if (is_file($fullPath))
+			{
+				// Trigger the onContentBeforeDelete event.
+				$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
+				if (in_array(false, $result, true))
 				{
-					if ($path !== JFile::makeSafe($path))
+					// There are some errors in the plugins
+					JError::raiseWarning(
+						100,
+						JText::plural(
+							'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
+							count($errors = $object_file->getErrors()),
+							implode('<br />', $errors)
+						)
+					);
+					continue;
+				}
+
+				$ret &= JFile::delete($fullPath);
+
+				// Trigger the onContentAfterDelete event.
+				$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
+				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+			}
+			elseif (is_dir($fullPath))
+			{
+				$contents = JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+				if (empty($contents))
+				{
+					// Trigger the onContentBeforeDelete event.
+					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
+					if (in_array(false, $result, true))
 					{
-						// Filename is not safe
-						$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-						JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_PODCASTMEDIA_BASE))));
+						// There are some errors in the plugins
+						JError::raiseWarning(
+							100,
+							JText::plural(
+								'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
+								count($errors = $object_file->getErrors()),
+								implode('<br />', $errors)
+							)
+						);
 						continue;
 					}
 
-					$fullPath = JPath::clean(COM_PODCASTMEDIA_BASE . '/' . $folder . '/' . $path);
-					$object_file = new JObject(array('filepath' => $fullPath));
-					if (is_file($fullPath))
-					{
-						// Trigger the onContentBeforeDelete event.
-						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
-						if (in_array(false, $result, true))
-						{
-							// There are some errors in the plugins
-							JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
-							continue;
-						}
+					$ret &= JFolder::delete($fullPath);
 
-						$ret = JFile::delete($fullPath);
-
-						// Trigger the onContentAfterDelete event.
-						$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
-						$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-					}
-					elseif (is_dir($fullPath))
-					{
-						if (count(JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX'), array('index.html', '^\..*', '.*~'))) == 0)
-						{
-							// Trigger the onContentBeforeDelete event.
-							$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
-							if (in_array(false, $result, true))
-							{
-								// There are some errors in the plugins
-								JError::raiseWarning(100, JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)));
-								continue;
-							}
-
-							$ret &= JFolder::delete($fullPath);
-
-							// Trigger the onContentAfterDelete event.
-							$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
-							$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-						}
-						else
-						{
-							// This makes no sense...
-							JError::raiseWarning(100, JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
-						}
-					}
+					// Trigger the onContentAfterDelete event.
+					$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
+					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+				}
+				else
+				{
+					// This makes no sense...
+					JError::raiseWarning(
+						100,
+						JText::sprintf(
+							'COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',
+							substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))
+						)
+					);
 				}
 			}
-			return $ret;
 		}
+
+		return $ret;
+	}
+
+	/**
+	 * Used as a callback for array_map, turns the multi-file input array into a sensible array of files
+	 * Also, removes illegal characters from the 'name' and sets a 'filepath' as the final destination of the file
+	 *
+	 * @param   string  $name      The file name
+	 * @param   string	$type      The file type
+	 * @param   string	$tmp_name  The temporary name of the file
+	 * @param   string	$error     Error information about the file
+	 * @param   string	$size      The file size
+	 *
+	 * @return  array  Array containing the file information
+	 *
+	 * @since   2.1
+	 */
+	protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
+	{
+		$name = JFile::makeSafe($name);
+
+		return array(
+			'name'		=> str_replace(' ', '_', $name),
+			'type'		=> $type,
+			'tmp_name'	=> $tmp_name,
+			'error'		=> $error,
+			'size'		=> $size,
+			'filepath'	=> JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $this->folder, $name)))
+		);
 	}
 }

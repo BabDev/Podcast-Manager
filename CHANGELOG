@@ -1,3 +1,6 @@
+18-July-2012 Michael Babker
+~ Resync media component to core
+
 5-July-2012 Michael Babker
 ! Raise minimum PHP version to PHP 5.3
 ~ Update MediaElement.JS to 2.9.1

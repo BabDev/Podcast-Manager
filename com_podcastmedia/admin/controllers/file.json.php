@@ -35,15 +35,6 @@ class PodcastMediaControllerFile extends JControllerLegacy
 	 */
 	public function upload()
 	{
-		static $log;
-
-		if ($log == null)
-		{
-			$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
-			$options['text_file'] = 'podcastmedia_upload.error.php';
-			$log = JLog::addLogger($options);
-		}
-
 		// Check for request forgeries
 		if (!JSession::checkToken('request'))
 		{
@@ -57,12 +48,29 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Get the user
 		$user = JFactory::getUser();
+		JLog::addLogger(array('text_file' => 'podcastmedia_upload.error.php'), JLog::ALL, array('upload'));
 
 		// Get some data from the request
-		$input = JFactory::getApplication()->input;
-		// $file = $input->files->get('Filedata', '', 'array');
-		$file = JRequest::getVar('Filedata', '', 'files', 'array');
+		$input  = JFactory::getApplication()->input;
+		$file   = $input->files->get('Filedata', '', 'array');
 		$folder = $input->get('folder', '', 'path');
+
+		$params = JComponentHelper::getParams('com_media');
+
+		if (
+			$_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024 ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024 ||
+			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024
+		)
+		{
+			$response = array(
+				'status' => '0',
+				'error' => JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE')
+			);
+			echo json_encode($response);
+			return;
+		}
 
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -82,7 +90,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{
-				JLog::add('Invalid: ' . $filepath . ': ' . $err, JLog::ERROR);
+				JLog::add('Invalid: ' . $filepath . ': ' . $err, JLog::INFO, 'upload');
 				$response = array(
 					'status' => '0',
 					'error' => JText::_($err)
@@ -100,7 +108,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			if (in_array(false, $result, true))
 			{
 				// There are some errors in the plugins
-				JLog::add('Errors before save: ' . $filepath . ' : ' . implode(', ', $object_file->getErrors()), JLog::ERROR);
+				JLog::add('Errors before save: ' . $filepath . ' : ' . implode(', ', $object_file->getErrors()), JLog::INFO, 'upload');
 				$response = array(
 					'status' => '0',
 					'error' => JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
@@ -112,7 +120,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			if (JFile::exists($filepath))
 			{
 				// File exists
-				JLog::add('File exists: ' . $filepath . ' by user_id ' . $user->id, JLog::ERROR);
+				JLog::add('File exists: ' . $filepath . ' by user_id ' . $user->id, JLog::INFO, 'upload');
 				$response = array(
 					'status' => '0',
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS')
@@ -123,7 +131,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			elseif (!$user->authorise('core.create', 'com_podcastmanager'))
 			{
 				// File does not exist and user is not authorised to create
-				JLog::add('Create not permitted: ' . $filepath . ' by user_id ' . $user->id, JLog::ERROR);
+				JLog::add('Create not permitted: ' . $filepath . ' by user_id ' . $user->id, JLog::INFO, 'upload');
 				$response = array(
 					'status' => '0',
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_CREATE_NOT_PERMITTED')
@@ -136,7 +144,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			if (!JFile::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
-				JLog::add('Error on upload: ' . $filepath, JLog::ERROR);
+				JLog::add('Error on upload: ' . $filepath, JLog::INFO, 'upload');
 				$response = array(
 					'status' => '0',
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
@@ -148,7 +156,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.file', &$object_file, true));
-				JLog::add($folder, JLog::INFO);
+				JLog::add($folder, JLog::INFO, 'upload');
 				$response = array(
 					'status' => '1',
 					'error' => JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE)))

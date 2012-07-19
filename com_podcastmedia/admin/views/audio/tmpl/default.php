@@ -61,7 +61,7 @@ var audio_base_path = '<?php echo $params->get('file_path', 'media/com_podcastma
 		<legend><?php echo $this->medmanparams->get('upload_maxsize') == '0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
 		<fieldset id="upload-noflash" class="actions">
 			<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_UPLOAD_FILE'); ?></label>
-			<input type="file" id="upload-file" name="Filedata" />
+			<input type="file" id="upload-file" name="Filedata[]" multiple />
 			<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></label>
 			<input type="submit" id="upload-submit" value="<?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?>"/>
 		</fieldset>
