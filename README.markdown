@@ -4,7 +4,9 @@ Podcast Manager
 
 Compatibility
 ===============
-*Podcast Manager* is currently compatible with Joomla! 2.5.6 or newer.  2.5.6 is the minimum supported version of the 2.5 series due to supporting both Joomla! 2.5 and 3.x with a single package and the necessary support code not being present in earlier versions of 2.5.  Also, high level security issues exist in older versions of 2.5, and as such, they will NOT be supported.  Older versions of Podcast Manager compatible with older versions of Joomla! (the first supported version was Joomla! 1.6) are available from the downloads section of this repository.
+*Podcast Manager* is currently compatible with Joomla! 2.5.6 or newer.  Podcast Manager 2.1 also requires PHP 5.3 or newer; PHP 5.2 is no longer supported after the 2.0 series.
+
+Joomla! 2.5.6 is the minimum supported version of the 2.5 series due to supporting both Joomla! 2.5 and 3.x with a single package and the necessary support code not being present in earlier versions of 2.5.  Also, high level security issues exist in older versions of 2.5, and as such, they will NOT be supported.  Older versions of Podcast Manager compatible with older versions of Joomla! (the first supported version was Joomla! 1.6) are available from the downloads section of this repository.
 
 Requirements
 ===============
