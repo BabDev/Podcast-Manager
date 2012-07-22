@@ -85,6 +85,9 @@ class LiveUpdate
 		// Load language strings
 		self::loadLanguage();
 
+		// Initialize the array of button options
+		$button = array();
+
 		$defaultConfig = array(
 			'option'			=> JRequest::getCmd('option',''),
 			'view'				=> 'liveupdate',
@@ -92,55 +95,53 @@ class LiveUpdate
 		);
 		$c = array_merge($defaultConfig, $config);
 
-		$url = 'index.php?option='.$c['option'].'&view='.$c['view'];
-		$img = $c['mediaurl'];
+		$button['link'] = 'index.php?option='.$c['option'].'&view='.$c['view'];
+		$button['image'] = $c['mediaurl'];
 
 		$updateInfo = self::getUpdateInformation();
 		if(!$updateInfo->supported) {
 			// Unsupported
 			if(version_compare(JVERSION, '3.0', 'ge')) {
-				$class = 'icon-remove-sign';
+				$button['image'] = 'warning';
 			} else {
-				$class = 'liveupdate-icon-notsupported';
+				$button['class'] = 'liveupdate-icon-notsupported';
+				$button['image'] .= 'nosupport-32.png';
 			}
-			$img .= 'nosupport-32.png';
-			$lbl = JText::_('LIVEUPDATE_ICON_UNSUPPORTED');
+			$button['text'] = JText::_('LIVEUPDATE_ICON_UNSUPPORTED');
 		} elseif($updateInfo->stuck) {
 			// Stuck
 			if(version_compare(JVERSION, '3.0', 'ge')) {
-				$class = 'icon-remove-sign';
+				$button['image'] = 'cancel';
 			} else {
-				$class = 'liveupdate-icon-crashed';
+				$button['class'] = 'liveupdate-icon-crashed';
+				$button['image'] .= 'nosupport-32.png';
 			}
-			$img .= 'nosupport-32.png';
-			$lbl = JText::_('LIVEUPDATE_ICON_CRASHED');
+			$button['text'] = JText::_('LIVEUPDATE_ICON_CRASHED');
 		} elseif($updateInfo->hasUpdates) {
 			// Has updates
 			if(version_compare(JVERSION, '3.0', 'ge')) {
-				$class = 'icon-download';
+				$button['image'] = 'download';
 			} else {
-				$class = 'liveupdate-icon-updates';
+				$button['class'] = 'liveupdate-icon-updates';
+				$button['image'] .= 'update-32.png';
 			}
-			$img .= 'update-32.png';
-			$lbl = JText::_('LIVEUPDATE_ICON_UPDATES');
+			$button['text'] = JText::_('LIVEUPDATE_ICON_UPDATES');
 		} else {
 			// Already in the latest release
 			if(version_compare(JVERSION, '3.0', 'ge')) {
-				$class = 'icon-ok-sign';
+				$button['image'] = 'checkmark';
 			} else {
-				$class = 'liveupdate-icon-noupdates';
+				$button['class'] = 'liveupdate-icon-noupdates';
+				$button['image'] .= 'current-32.png';
 			}
-			$img .= 'current-32.png';
-			$lbl = JText::_('LIVEUPDATE_ICON_CURRENT');
+			$button['text'] = JText::_('LIVEUPDATE_ICON_CURRENT');
 		}
-		if(version_compare(JVERSION, '3.0', 'ge')) {
-			return '<div class="row-fluid"><div class="span12"><a href="'.$url.'">'.
-			'<i class="'.$class.'"></i>&nbsp;'.
-			'<span>'.$lbl.'</span></a></div></div>';
+		if(version_compare(JVERSION, '2.5', 'ge')) {
+			return JHtml::_('icons.button', $button);
 		} else {
-			return '<div class="icon"><a href="'.$url.'">'.
-			'<div><img src="'.$img.'" width="32" height="32" border="0" align="middle" style="float: none" /></div>'.
-			'<span class="'.$class.'">'.$lbl.'</span></a></div>';
+			return '<div class="icon"><a href="'.$button['link'].'">'.
+			'<div><img src="'.$button['image'].'" width="32" height="32" border="0" align="middle" style="float: none" /></div>'.
+			'<span class="'.$button['class'].'">'.$button['text'].'</span></a></div>';
 		}
 	}
 }
