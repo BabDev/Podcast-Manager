@@ -35,7 +35,7 @@ JHtml::_('behavior.framework');
 					<div class="row-fluid">
 						<div class="span12">
 							<a href="index.php?option=com_podcastmanager&amp;view=feeds">
-								<i class="icon-tags"></i>&nbsp;
+								<i class="icon-feed"></i>&nbsp;
 								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS')?></span>
 							</a>
 						</div>
@@ -43,7 +43,7 @@ JHtml::_('behavior.framework');
 					<div class="row-fluid">
 						<div class="span12">
 							<a href="index.php?option=com_podcastmanager&amp;view=podcasts">
-								<i class="icon-headphones"></i>&nbsp;
+								<i class="icon-broadcast"></i>&nbsp;
 								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS')?></span>
 							</a>
 						</div>
@@ -51,7 +51,7 @@ JHtml::_('behavior.framework');
 					<div class="row-fluid">
 						<div class="span12">
 							<a href="index.php?option=com_podcastmedia&view=media">
-								<i class="icon-folder-open"></i>&nbsp;
+								<i class="icon-pictures"></i>&nbsp;
 								<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FILES')?></span>
 							</a>
 						</div>
