@@ -68,7 +68,7 @@ class PlgButtonPodcastManager extends JPlugin
 
 		/*
 		 * Use the modal view to select the podcast.
-		 * Currently uses blank class.
+		 * Currently uses broadcast class for the image.
 		 */
 		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
@@ -76,7 +76,7 @@ class PlgButtonPodcastManager extends JPlugin
 		$button->set('modal', true);
 		$button->set('link', $link);
 		$button->set('text', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON'));
-		$button->set('name', 'blank');
+		$button->set('name', 'broadcast');
 		$button->set('title', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON_TOOLTIP'));
 		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
 

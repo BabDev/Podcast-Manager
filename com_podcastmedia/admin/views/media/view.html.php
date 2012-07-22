@@ -231,7 +231,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			{
 				$title = JText::_('COM_PODCASTMEDIA_CREATE_FOLDER');
 				$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn">
-							<i class="icon-folder-open" title="' . $title . '"></i>
+							<i class="icon-folder" title="' . $title . '"></i>
 							' . $title . '</button>';
 				$bar->appendButton('Custom', $dhtml, 'folder');
 				JToolBarHelper::divider();
