@@ -148,12 +148,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							if ($canEdit || $canEditOwn)
 							{ ?>
 								<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id=' . (int) $item->id); ?>">
-									<?php echo $this->escape($item->name); ?>
+									<?php echo $this->escape($item->title); ?>
 								</a>
 							<?php }
 							else
 							{
-								echo $this->escape($item->name);
+								echo $this->escape($item->title);
 							} ?>
 						</td>
 						<td class="center">
