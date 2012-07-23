@@ -21,28 +21,24 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
 
-<form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))
 	{ ?>
-	<fieldset class="filters">
+	<fieldset class="filters alert alert-info">
 		<?php if ($this->params->get('filter_field') != 'hide')
 		{ ?>
-		<legend class="hidelabeltxt">
-			<?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
-		</legend>
-
 		<div class="filter-search">
 			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_LABEL') . '&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
+			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox span4" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
 		</div>
 		<?php }
 
 		if ($this->params->get('show_pagination_limit'))
 		{ ?>
-		<div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+		<label>
+			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+		</label>
+		<?php echo $this->pagination->getLimitBox(); ?>
 		<?php } ?>
 
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
@@ -58,7 +54,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	else
 	{ ?>
 
-	<table class="table table-striped table-bordered">
+	<table class="table table-bordered">
 		<?php if ($this->params->get('show_headings'))
 		{ ?>
 		<thead>
@@ -152,7 +148,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<div class="pagination">
 			<?php if ($this->params->def('show_pagination_results', 1))
 			{ ?>
-			<p class="counter">
+			<p class="counter pull-right">
 				<?php echo $this->pagination->getPagesCounter(); ?>
 			</p>
 			<?php }
