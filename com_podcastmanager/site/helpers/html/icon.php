@@ -37,7 +37,7 @@ class JHtmlIcon
 	 */
 	public static function feedEdit($feed, $params)
 	{
-		$uri = JFactory::getURI();
+		$uri = JUri::getInstance();
 
 		if ($params && $params->get('popup'))
 		{
@@ -90,7 +90,7 @@ class JHtmlIcon
 	 */
 	public static function podcastEdit($podcast, $params)
 	{
-		$uri = JFactory::getURI();
+		$uri = JUri::getInstance();
 
 		if ($params && $params->get('popup'))
 		{
