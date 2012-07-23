@@ -90,7 +90,7 @@ class Pkg_PodcastManagerInstallerScript
 			jimport('joomla.filesystem.file');
 
 			// First, the array of folders we need to get the children for
-			$folders = array('com_podcastmanager');
+			$folders = array('com_podcastmanager', 'com_podcastmedia');
 
 			// Set up our base path
 			$base = JPATH_ADMINISTRATOR . '/templates/strapped/html/';

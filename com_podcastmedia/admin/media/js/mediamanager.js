@@ -23,7 +23,8 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 		this.frame		= window.frames['folderframe'];
 		this.frameurl	= this.frame.location.href;
 
-		this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
+		/* Commented for testing on CMS 3.0
+		 this.tree = new MooTreeControl({ div: 'media-tree_tree', mode: 'folders', grid: true, theme: '../media/system/images/mootree.gif', onClick:
 				function(node){
 					target = node.data.target != null ? node.data.target : '_self';
 
@@ -36,7 +37,7 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 					}
 				}.bind(this)
 			},{ text: '', open: true, data: { url: 'index.php?option=com_podcastmedia&view=mediaList&tmpl=component', target: 'folderframe'}});
-		this.tree.adopt('media-tree');
+		this.tree.adopt('media-tree'); */
 	},
 
 	submit: function(task)
@@ -59,17 +60,17 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 		if (folder) {
 			this.updatepaths.each(function(path){ path.value =folder; });
 			this.folderpath.value = basepath+'/'+folder;
-			node = this.tree.get('node_'+folder);
-			node.toggle(false, true);
+			// node = this.tree.get('node_'+folder);
+			// node.toggle(false, true);
 		} else {
 			this.updatepaths.each(function(path){ path.value = ''; });
 			this.folderpath.value = basepath;
-			node = this.tree.root;
+			// node = this.tree.root;
 		}
 
-		if (node) {
+		/* if (node) {
 			this.tree.select(node, true);
-		}
+		} */
 
 		document.id(viewstyle).addClass('active');
 

@@ -18,6 +18,11 @@
 			<folder>podcasts</folder>
 			<file>index.html</file>
 		</files>
+		<files folder="com_podcastmedia" target="administrator/templates/strapped/html/com_podcastmedia">
+			<folder>media</folder>
+			<folder>medialist</folder>
+			<file>index.html</file>
+		</files>
 	</fileset>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_strapped.ini</language>
