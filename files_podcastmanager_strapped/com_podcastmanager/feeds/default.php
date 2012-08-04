@@ -28,8 +28,22 @@ $uri = JURI::getInstance();
 $protocol = $uri->getScheme();
 $domain = $uri->getHost();
 $base = $protocol . '://' . $domain;
+
+$sortFields = $this->getSortFields();
 ?>
 <script type="text/javascript">
+	Joomla.orderTable = function() {
+		table = document.getElementById('sortTable');
+		direction = document.getElementById('directionTable');
+		order = table.options[table.selectedIndex].value;
+		if (order != '<?php echo $listOrder; ?>') {
+			dirn = 'asc';
+		} else {
+			dirn = direction.options[direction.selectedIndex].value;
+		}
+		Joomla.tableOrdering(order, dirn, '');
+	}
+
 	Joomla.submitbutton = function(pressbutton) {
 		if (pressbutton == 'feeds.delete') {
 			if (confirm(Joomla.JText._('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE'))) {
@@ -61,12 +75,14 @@ $base = $protocol . '://' . $domain;
 				<hr />
 				<div class="filter-select">
 					<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></h4>
-					<select name="filter_published" class="span12 small" onchange="this.form.submit()">
+					<label for="filter_published" class="element-invisible"><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></label>
+					<select name="filter_published" id="filter_published" class="span12 small" onchange="this.form.submit()">
 						<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 						<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true);?>
 					</select>
 					<hr class="hr-condensed" />
-					<select name="filter_language" class="span12 small" onchange="this.form.submit()">
+					<label for="filter_language" class="element-invisible"><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></label>
+					<select name="filter_language" id="filter_language" class="span12 small" onchange="this.form.submit()">
 						<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
 						<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 					</select>
@@ -76,44 +92,59 @@ $base = $protocol . '://' . $domain;
 		<!-- End Sidebar -->
 		<!-- Begin Content -->
 		<div class="span10">
+			<div id="filter-bar" class="btn-toolbar">
+				<div class="btn-group pull-right hidden-phone">
+					<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+					<select name="directionTable" id="directionTable" class="input-small" onchange="Joomla.orderTable()">
+						<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
+						<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
+						<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
+					</select>
+				</div>
+				<div class="btn-group pull-right">
+					<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
+					<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+						<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
+						<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
+					</select>
+				</div>
+			</div>
+			<div class="clearfix"> </div>
+
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th width="1%">
+						<th width="1%" class="hidden-phone">
 							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 						</th>
-						<th>
-							<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
+						<th width="5%" style="min-width: 55px" class="center">
+							<?php echo JText::_('JSTATUS'); ?>
 						</th>
-						<th width="10%">
+						<th>
+							<?php echo JText::_('JGLOBAL_TITLE'); ?>
+						</th>
+						<th width="10%" class="hidden-phone">
 							<?php echo JText::_('COM_PODCASTMANAGER_HEADING_PUBLISHED_ITEMS'); ?>
 						</th>
-						<th width="10%">
+						<th width="10%" class="hidden-phone">
 							<?php echo JText::_('COM_PODCASTMANAGER_HEADING_UNPUBLISHED_ITEMS'); ?>
 						</th>
-						<th width="10%">
+						<th width="10%" class="hidden-phone">
 							<?php echo JText::_('COM_PODCASTMANAGER_HEADING_TRASHED_ITEMS'); ?>
 						</th>
-						<th width="5%">
-							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
+						<th width="5%" class="hidden-phone">
+							<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
 						</th>
-						<th width="1%">
-							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+						<th width="1%" class="hidden-phone">
+							<?php echo JText::_('JGRID_HEADING_ID'); ?>
 						</th>
 					</tr>
 				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="7">
-							<?php echo $this->pagination->getListFooter(); ?>
-						</td>
-					</tr>
-				</tfoot>
 				<tbody>
 				<?php if (count($this->items) == 0)
 				{ ?>
 					<tr class="row0">
-						<td class="center" colspan="7">
+						<td class="center" colspan="8">
 							<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 						</td>
 					</tr>
@@ -130,15 +161,17 @@ $base = $protocol . '://' . $domain;
 					$rssRoute = PodcastManagerHelperRoute::getFeedRssRoute($item->id);
 				?>
 					<tr class="row<?php echo $i % 2; ?>">
-						<td class="center">
+						<td class="center hidden-phone">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+						</td>
+						<td class="center">
+							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 						</td>
 						<td>
 							<?php if ($item->checked_out)
 							{
 								echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
 							}
-							echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange);
 							if ($canEdit || $canEditOwn)
 							{ ?>
 								<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id=' . $item->id); ?>">
@@ -156,22 +189,22 @@ $base = $protocol . '://' . $domain;
 								</a>
 							</p>
 						</td>
-						<td class="center btns">
+						<td class="center btns hidden-phone">
 							<a class="badge badge-success" href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=1');?>">
 								<?php echo $item->count_published; ?>
 							</a>
 						</td>
-						<td class="center btns">
+						<td class="center btns hidden-phone">
 							<a class="badge" href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=0');?>">
 								<?php echo $item->count_unpublished; ?>
 							</a>
 						</td>
-						<td class="center btns">
+						<td class="center btns hidden-phone">
 							<a class="badge badge-error" href="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&feedname=' . $item->id . '&filter_published=-2');?>">
 								<?php echo $item->count_trashed; ?>
 							</a>
 						</td>
-						<td class="center">
+						<td class="center hidden-phone">
 							<?php if ($item->language == '*')
 							{
 								echo JText::alt('JALL', 'language');
@@ -181,7 +214,7 @@ $base = $protocol . '://' . $domain;
 								echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
 							} ?>
 						</td>
-						<td class="center">
+						<td class="center hidden-phone">
 							<?php echo $item->id; ?>
 						</td>
 					</tr>
@@ -189,6 +222,7 @@ $base = $protocol . '://' . $domain;
 				} ?>
 				</tbody>
 			</table>
+			<?php echo $this->pagination->getListFooter(); ?>
 
 			<div>
 				<input type="hidden" name="task" value="" />

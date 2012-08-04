@@ -105,6 +105,8 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		$jversion = new JVersion;
+
 		$canDo = PodcastManagerHelper::getActions($this->state->get('filter.feedname'));
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
@@ -113,12 +115,14 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		{
 			JToolBarHelper::addNew('podcast.add');
 		}
+
 		if (
 			$canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0) ||
 			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
 			JToolBarHelper::editList('podcast.edit');
 		}
+
 		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::divider();
@@ -128,6 +132,7 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 			JToolBarHelper::checkin('podcasts.checkin');
 			JToolBarHelper::divider();
 		}
+
 		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
 			JToolBarHelper::deleteList('', 'podcasts.delete', 'JTOOLBAR_EMPTY_TRASH');
@@ -138,9 +143,40 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 			JToolBarHelper::trash('podcasts.trash');
 			JToolBarHelper::divider();
 		}
+
+		// Add a batch button in J! 3.0
+		if (version_compare($jversion->getShortVersion(), '3.0', 'ge') && $canDo->get('core.edit'))
+		{
+			$bar = JToolBar::getInstance('toolbar');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = '<button data-toggle="modal" data-target="#collapseModal" class="btn">'
+					. '<i class="icon-checkbox-partial" title="' . $title . '"></i>'
+					. $title . '</button>';
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
+
 		if ($canDo->get('core.admin'))
 		{
 			JToolBarHelper::preferences('com_podcastmanager');
 		}
+	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.published' => JText::_('JSTATUS'),
+			'a.title' => JText::_('JGLOBAL_TITLE'),
+			'a.feedname' => JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'),
+			'a.created' => JText::_('JDATE'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' => JText::_('JGRID_HEADING_ID')
+		);
 	}
 }

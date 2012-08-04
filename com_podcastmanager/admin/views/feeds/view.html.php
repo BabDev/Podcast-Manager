@@ -137,4 +137,21 @@ class PodcastManagerViewFeeds extends JViewLegacy
 			JToolBarHelper::preferences('com_podcastmanager');
 		}
 	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.published' => JText::_('JSTATUS'),
+			'a.name' => JText::_('JGLOBAL_TITLE'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' => JText::_('JGRID_HEADING_ID')
+		);
+	}
 }
