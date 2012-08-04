@@ -76,7 +76,7 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function uninstall($parent)
 	{
-		// If in CMS 3, uninstall the Strapped layouts
+		// If in CMS 3, uninstall the Isis layouts
 		$jversion = new JVersion;
 		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
 		{
@@ -93,7 +93,7 @@ class Pkg_PodcastManagerInstallerScript
 			$folders = array('com_podcastmanager', 'com_podcastmedia');
 
 			// Set up our base path
-			$base = JPATH_ADMINISTRATOR . '/templates/strapped/html/';
+			$base = JPATH_ADMINISTRATOR . '/templates/isis/html/';
 
 			// Process our parent folders
 			foreach ($folders as $folder)
