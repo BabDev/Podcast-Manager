@@ -93,9 +93,19 @@ class JFormFieldPodcastMedia extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// The text field.
-		$html[] = '<div class="fltlft">';
-		$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
-		$html[] = '</div>';
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$html[] = '<div class="input-prepend input-append">';
+			$html[] = '	<input type="text" class="input-medium" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
+		}
+		else
+		{
+			$html[] = '<div class="fltlft">';
+			$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
+			$html[] = '</div>';
+		}
 
 		// Check if only one podcastmedia plugin is enabled
 		$count = PodcastManagerHelper::countMediaPlugins();
@@ -139,20 +149,38 @@ class JFormFieldPodcastMedia extends JFormField
 			$folder = '';
 		}
 		// The button.
-		$html[] = '<div class="button2-left">';
-		$html[] = '	<div class="blank">';
-		$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="' . ($this->element['readonly'] ? ''
-		: ($link ? $link
-		: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-		$html[] = '			' . JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
-		$html[] = '	</div>';
-		$html[] = '</div>';
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$html[] = '<a class="modal btn" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
+				. ($this->element['readonly'] ? ''
+				: ($link ? $link
+					: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
+					. $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
+				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+			$html[] = '<i class="icon-picture"></i> ';
+			$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a><a class="btn" rel="tooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
+			$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
+			$html[] = 'return false;';
+			$html[] = '">';
+			$html[] = '<i class="icon-remove"></i></a>';
+		}
+		else
+		{
+			$html[] = '<div class="button2-left">';
+			$html[] = '	<div class="blank">';
+			$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="' . ($this->element['readonly'] ? ''
+			: ($link ? $link
+			: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
+			$html[] = '	</div>';
+			$html[] = '</div>';
 
-		$html[] = '<div class="button2-left">';
-		$html[] = '	<div class="blank">';
-		$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
-		$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
-		$html[] = '	</div>';
+			$html[] = '<div class="button2-left">';
+			$html[] = '	<div class="blank">';
+			$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
+			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
+			$html[] = '	</div>';
+		}
 		$html[] = '</div>';
 
 		return implode("\n", $html);
