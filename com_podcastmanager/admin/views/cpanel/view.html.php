@@ -70,4 +70,65 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			JToolBarHelper::preferences('com_podcastmanager');
 		}
 	}
+
+	/**
+	 * Generates the data for the control panel buttons
+	 *
+	 * @return  array  Array of button data
+	 *
+	 * @since   2.1
+	 */
+	protected function getButtons()
+	{
+		// Initialize the array of button options
+		$buttons = array();
+
+		// Set the array of views
+		$views = array('feeds', 'podcasts', 'files');
+
+		// Set the icons
+		$iconBase = JURI::base() . 'components/com_podcastmanager/media/images/icons/';
+		$icons = array(
+			'feeds' => $iconBase . 'feeds.png',
+			'podcasts' => $iconBase . 'podcasts.png',
+			'files' => $iconBase . 'files.png'
+		);
+
+		// Set the BS classes
+		$classes = array(
+			'feeds' => 'feed',
+			'podcasts' => 'broadcast',
+			'files' => 'pictures'
+		);
+
+		// Build the buttons array
+		foreach ($views as $view)
+		{
+			$button = array();
+
+			if ($view == 'files')
+			{
+				$button['link'] = JRoute::_('index.php?option=com_podcastmedia&view=media');
+			}
+			else
+			{
+				$button['link'] = JRoute::_('index.php?option=com_podcastmanager&view=' . $view);
+			}
+
+			if (version_compare(JVERSION, '3.0', 'ge'))
+			{
+				$button['image'] = $classes[$view];
+			}
+			else
+			{
+				$button['image'] = $icons[$view];
+			}
+
+			$button['text'] = JText::_('COM_PODCASTMANAGER_SUBMENU_' . strtoupper($view));
+
+			$buttons[] = $button;
+		}
+
+		return $buttons;
+	}
 }

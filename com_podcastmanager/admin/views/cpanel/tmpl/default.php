@@ -24,31 +24,16 @@ $transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-
 // Icons folder
 $icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
 
+$buttons = $this->getButtons();
+
 JHtml::_('behavior.framework');
 ?>
 
 <div id="cpanel">
 	<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></p>
 	<div class="cpanel-left">
-		<div class="icon">
-			<a href="index.php?option=com_podcastmanager&amp;view=feeds">
-				<img src="<?php echo $icons; ?>/feeds.png" />
-				<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS')?></span>
-			</a>
-		</div>
-		<div class="icon">
-			<a href="index.php?option=com_podcastmanager&amp;view=podcasts">
-				<img src="<?php echo $icons; ?>/podcasts.png" />
-				<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS')?></span>
-			</a>
-		</div>
-		<div class="icon">
-			<a href="index.php?option=com_podcastmedia&view=media">
-				<img src="<?php echo $icons; ?>/files.png" />
-				<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FILES')?></span>
-			</a>
-		</div>
-		<?php echo LiveUpdate::getIcon(); ?>
+		<?php echo JHtml::_('icons.buttons', $buttons);
+		echo LiveUpdate::getIcon(); ?>
 	</div>
 
 	<div class="cpanel-right">

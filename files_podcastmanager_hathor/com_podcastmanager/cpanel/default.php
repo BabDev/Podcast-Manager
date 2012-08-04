@@ -24,8 +24,7 @@ $liveupdate	= '<b><a href="https://www.akeebabackup.com/software/akeeba-live-upd
 $mejs		= '<b><a href="http://mediaelementjs.com" target="_blank">MediaElement.JS</a></b>';
 $transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-manager" target="_blank">https://opentranslators.transifex.net/projects/p/podcast-manager</a>';
 
-// Icons folder
-$icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
+$buttons = $this->getButtons();
 
 JHtml::_('behavior.framework');
 ?>
@@ -33,31 +32,8 @@ JHtml::_('behavior.framework');
 <p class="intro"><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_THANK_YOU_FOR_INSTALLING', $babdev);?></p>
 <div class="cpanel-icons">
 	<div id="cpanel">
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmanager&amp;view=feeds">
-					<img src="<?php echo $icons; ?>/feeds.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS')?></span>
-				</a>
-			</div>
-		</div>
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmanager&amp;view=podcasts">
-					<img src="<?php echo $icons; ?>/podcasts.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS')?></span>
-				</a>
-			</div>
-		</div>
-		<div class="icon-wrapper">
-			<div class="icon">
-				<a href="index.php?option=com_podcastmedia&view=media">
-					<img src="<?php echo $icons; ?>/files.png" />
-					<span><?php echo JText::_('COM_PODCASTMANAGER_SUBMENU_FILES')?></span>
-				</a>
-			</div>
-		</div>
-		<?php echo LiveUpdate::getIcon(); ?>
+		<?php echo JHtml::_('icons.buttons', $buttons);
+		echo LiveUpdate::getIcon(); ?>
 	</div>
 </div>
 
