@@ -41,8 +41,7 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Requires Joomla! 2.5.6 (need this check because of earlier version use)
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '2.5.6', 'lt'))
+		if (version_compare(JVERSION, '2.5.6', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
 			return false;

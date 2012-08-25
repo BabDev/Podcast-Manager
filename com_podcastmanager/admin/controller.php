@@ -47,9 +47,6 @@ class PodcastManagerController extends JControllerLegacy
 		$input = JFactory::getApplication('administrator')->input;
 		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
 
-		// Load the submenu.
-		PodcastManagerHelper::addSubmenu($input->get('view', 'feeds', 'word'));
-
 		$view = $input->get('view', $this->default_view, 'word');
 		$layout = $input->get('layout', $this->default_view, 'word');
 		$id = $input->get('id', null, 'int');

@@ -66,6 +66,13 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		// Load the submenu.
+		if ($this->getLayout() != 'modal')
+		{
+			PodcastManagerHelper::addSubmenu('podcasts');
+		}
+
+
 		// Initialise variables
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
@@ -105,8 +112,6 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$jversion = new JVersion;
-
 		$canDo = PodcastManagerHelper::getActions($this->state->get('filter.feedname'));
 
 		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
@@ -145,7 +150,7 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		}
 
 		// Add a batch button in J! 3.0
-		if (version_compare($jversion->getShortVersion(), '3.0', 'ge') && $canDo->get('core.edit'))
+		if (version_compare(JVERSION, '3.0', 'ge') && $canDo->get('core.edit'))
 		{
 			$bar = JToolBar::getInstance('toolbar');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -158,6 +163,32 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		if ($canDo->get('core.admin'))
 		{
 			JToolBarHelper::preferences('com_podcastmanager');
+		}
+
+		// Section below for 3.0 compatibility
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
+
+			JSubMenuHelper::setAction('index.php?option=com_podcastmanager&view=feeds');
+
+			JSubMenuHelper::addFilter(
+				JText::_('JOPTION_SELECT_PUBLISHED'),
+				'filter_published',
+				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
+			);
+
+			JSubMenuHelper::addFilter(
+				JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'),
+				'filter_feedname',
+				JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'))
+			);
+
+			JSubMenuHelper::addFilter(
+				JText::_('JOPTION_SELECT_LANGUAGE'),
+				'filter_language',
+				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			);
 		}
 	}
 

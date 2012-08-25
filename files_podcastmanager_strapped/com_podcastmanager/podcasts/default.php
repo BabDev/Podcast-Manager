@@ -51,181 +51,137 @@ $sortFields = $this->getSortFields();
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
-	<div class="row-fluid">
-		<!-- Begin Sidebar -->
-		<div id="sidebar" class="span2">
-			<div class="sidebar-nav">
-				<?php
-					// Display the submenu position modules
-					$this->modules = JModuleHelper::getModules('submenu');
-					foreach ($this->modules as $module)
+	<div id="filter-bar" class="btn-toolbar">
+		<div class="filter-search btn-group pull-left">
+			<label for="filter_search" class="element-invisible"><?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?></label>
+			<input type="text" name="filter_search" placeholder="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
+		</div>
+		<div class="btn-group pull-left hidden-phone">
+			<button class="btn tip" type="submit" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+			<button class="btn tip" type="button" onclick="document.id('filter_search').value='';this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+		</div>
+		<div class="btn-group pull-right hidden-phone">
+			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+		</div>
+		<div class="btn-group pull-right hidden-phone">
+			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+			<select name="directionTable" id="directionTable" class="input-small" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
+				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
+			</select>
+		</div>
+		<div class="btn-group pull-right">
+			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
+			<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
+				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
+			</select>
+		</div>
+	</div>
+	<div class="clearfix"> </div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th width="1%" class="hidden-phone">
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+				</th>
+				<th width="5%" style="min-width: 55px" class="center">
+					<?php echo JText::_('JSTATUS'); ?>
+				</th>
+				<th>
+					<?php echo JText::_('JGLOBAL_TITLE'); ?>
+				</th>
+				<th width="10%" class="hidden-phone">
+					<?php echo JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'); ?>
+				</th>
+				<th width="5%" class="hidden-phone">
+					<?php echo JText::_('JDATE'); ?>
+				</th>
+				<th width="5%" class="hidden-phone">
+					<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
+				</th>
+				<th width="1%" class="hidden-phone">
+					<?php echo JText::_('JGRID_HEADING_ID'); ?>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php if (count($this->items) == 0)
+		{ ?>
+			<tr class="row0">
+				<td class="center" colspan="7">
+					<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
+				</td>
+			</tr>
+		<?php }
+		else
+		{ ?>
+		<?php foreach ($this->items as $i => $item)
+		{
+			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->feedname);
+			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.' . $item->id);
+			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.' . $item->id) && $item->created_by == $userId;
+			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.podcast.' . $item->id) && $canCheckin;
+		?>
+			<tr class="row<?php echo $i % 2; ?>">
+				<td class="center hidden-phone">
+					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+				</td>
+				<td class="center">
+					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
+				</td>
+				<td>
+					<?php if ($item->checked_out)
 					{
-						$output = JModuleHelper::renderModule($module);
-						$params = new JRegistry;
-						$params->loadString($module->params);
-						echo $output;
+						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
 					}
-				?>
-				<hr />
-				<div class="filter-select">
-					<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></h4>
-					<label for="filter_published" class="element-invisible"><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></label>
-					<select name="filter_published" id="filter_published" class="span12 small" onchange="this.form.submit()">
-						<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-						<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true);?>
-					</select>
-					<hr class="hr-condensed" />
-					<label for="filter_feedname" class="element-invisible"><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'); ?></label>
-					<select name="filter_feedname" id="filter_feedname" class="span12 small" onchange="this.form.submit()">
-						<option value=""><?php echo JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME');?></option>
-						<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'));?>
-					</select>
-					<hr class="hr-condensed" />
-					<label for="filter_language" class="element-invisible"><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></label>
-					<select name="filter_language" id="filter_language" class="span12 small" onchange="this.form.submit()">
-						<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
-						<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
-					</select>
-				</div>
-			</div>
-		</div>
-		<!-- End Sidebar -->
-		<!-- Begin Content -->
-		<div class="span10">
-			<div id="filter-bar" class="btn-toolbar">
-				<div class="filter-search btn-group pull-left">
-					<label for="filter_search" class="element-invisible"><?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?></label>
-					<input type="text" name="filter_search" placeholder="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_SEARCH_DESCRIPTION'); ?>" />
-				</div>
-				<div class="btn-group pull-left hidden-phone">
-					<button class="btn tip" type="submit" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
-					<button class="btn tip" type="button" onclick="document.id('filter_search').value='';this.form.submit();" rel="tooltip" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
-				</div>
-				<div class="btn-group pull-right hidden-phone">
-					<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
-					<?php echo $this->pagination->getLimitBox(); ?>
-				</div>
-				<div class="btn-group pull-right hidden-phone">
-					<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
-					<select name="directionTable" id="directionTable" class="input-small" onchange="Joomla.orderTable()">
-						<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
-						<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
-						<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
-					</select>
-				</div>
-				<div class="btn-group pull-right">
-					<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
-					<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
-						<option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
-						<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder);?>
-					</select>
-				</div>
-			</div>
-			<div class="clearfix"> </div>
-
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th width="1%" class="hidden-phone">
-							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-						</th>
-						<th width="5%" style="min-width: 55px" class="center">
-							<?php echo JText::_('JSTATUS'); ?>
-						</th>
-						<th>
-							<?php echo JText::_('JGLOBAL_TITLE'); ?>
-						</th>
-						<th width="10%" class="hidden-phone">
-							<?php echo JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'); ?>
-						</th>
-						<th width="5%" class="hidden-phone">
-							<?php echo JText::_('JDATE'); ?>
-						</th>
-						<th width="5%" class="hidden-phone">
-							<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
-						</th>
-						<th width="1%" class="hidden-phone">
-							<?php echo JText::_('JGRID_HEADING_ID'); ?>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php if (count($this->items) == 0)
-				{ ?>
-					<tr class="row0">
-						<td class="center" colspan="7">
-							<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
-						</td>
-					</tr>
-				<?php }
-				else
-				{ ?>
-				<?php foreach ($this->items as $i => $item)
-				{
-					$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->feedname);
-					$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.' . $item->id);
-					$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-					$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.' . $item->id) && $item->created_by == $userId;
-					$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.podcast.' . $item->id) && $canCheckin;
-				?>
-					<tr class="row<?php echo $i % 2; ?>">
-						<td class="center hidden-phone">
-							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-						</td>
-						<td class="center">
-							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
-						</td>
-						<td>
-							<?php if ($item->checked_out)
-							{
-								echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
-							}
-							if ($canEdit || $canEditOwn)
-							{ ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id=' . (int) $item->id); ?>">
-									<?php echo $this->escape($item->title); ?>
-								</a>
-							<?php }
-							else
-							{
-								echo $this->escape($item->title);
-							} ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php if ($item->language == '*')
-							{
-								echo JText::alt('JALL', 'language');
-							}
-							else
-							{
-								echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-							} ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo $item->id; ?>
-						</td>
-					</tr>
+					if ($canEdit || $canEditOwn)
+					{ ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id=' . (int) $item->id); ?>">
+							<?php echo $this->escape($item->title); ?>
+						</a>
 					<?php }
-				} ?>
-				</tbody>
-			</table>
-			<?php // Load the batch processing form.
-			echo $this->loadTemplate('batch'); ?>
+					else
+					{
+						echo $this->escape($item->title);
+					} ?>
+				</td>
+				<td class="center hidden-phone">
+					<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
+				</td>
+				<td class="center hidden-phone">
+					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+				</td>
+				<td class="center hidden-phone">
+					<?php if ($item->language == '*')
+					{
+						echo JText::alt('JALL', 'language');
+					}
+					else
+					{
+						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
+					} ?>
+				</td>
+				<td class="center hidden-phone">
+					<?php echo $item->id; ?>
+				</td>
+			</tr>
+			<?php }
+		} ?>
+		</tbody>
+	</table>
+	<?php // Load the batch processing form.
+	echo $this->loadTemplate('batch'); ?>
 
-			<div>
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
-				<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-				<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-				<?php echo JHtml::_('form.token'); ?>
-			</div>
-		</div>
-		<!-- End Content -->
+	<div>
+		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

@@ -262,8 +262,7 @@ class PodcastManagerPlayer
 		 * First, set our default value based on the version of Joomla!
 		 * Default enabled for 2.5, disabled for 3.0 (due to core inclusion)
 		 */
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '3.0', 'lt'))
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			$default = '1';
 		}
@@ -284,8 +283,8 @@ class PodcastManagerPlayer
 		$jsFile = 'mediaelement-and-player.min.js';
 		$cssFile = 'mediaelementplayer.min.css';
 
-		// Use the non-minimized files if JDEBUG is set
-		if (JDEBUG)
+		// Use the non-minimized files if JDEBUG is set (must set manually for 2.5)
+		if (version_compare(JVERSION, '3.0', 'lt') && JDEBUG)
 		{
 			$jsFile = 'mediaelement-and-player.js';
 			$cssFile = 'mediaelementplayer.css';

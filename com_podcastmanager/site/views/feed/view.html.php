@@ -145,9 +145,8 @@ class PodcastManagerViewFeed extends JViewLegacy
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-		// Add the Bootstrap table css in J! 2.5 (assume 3.0 templates style the table on their own or use Bootstrap)
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '3.0', 'lt'))
+		// Add the Bootstrap CSS in J! 2.5 (assume 3.0 templates style the table on their own or use Bootstrap)
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			JHtml::stylesheet('components/com_podcastmanager/media/css/bootstrap.min.css', false, false, false);
 		}

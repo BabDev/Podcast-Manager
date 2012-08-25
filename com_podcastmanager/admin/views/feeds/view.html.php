@@ -66,6 +66,9 @@ class PodcastManagerViewFeeds extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		// Load the submenu.
+		PodcastManagerHelper::addSubmenu('feeds');
+
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
@@ -135,6 +138,24 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		if ($canDo->get('core.admin'))
 		{
 			JToolBarHelper::preferences('com_podcastmanager');
+		}
+
+		// Section below for 3.0 compatibility
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			JSubMenuHelper::setAction('index.php?option=com_podcastmanager&view=feeds');
+
+			JSubMenuHelper::addFilter(
+				JText::_('JOPTION_SELECT_PUBLISHED'),
+				'filter_published',
+				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
+			);
+
+			JSubMenuHelper::addFilter(
+				JText::_('JOPTION_SELECT_LANGUAGE'),
+				'filter_language',
+				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			);
 		}
 	}
 

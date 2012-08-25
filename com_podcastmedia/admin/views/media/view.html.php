@@ -74,14 +74,6 @@ class PodcastMediaViewMedia extends JViewLegacy
 	protected $state;
 
 	/**
-	 * CMS Version information
-	 *
-	 * @var    JVersion
-	 * @since  2.1
-	 */
-	protected $jversion;
-
-	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -94,7 +86,6 @@ class PodcastMediaViewMedia extends JViewLegacy
 	{
 		$medmanparams = JComponentHelper::getParams('com_media');
 		$params = JComponentHelper::getParams('com_podcastmedia');
-		$this->jversion = new JVersion;
 
 		$lang = JFactory::getLanguage();
 
@@ -114,7 +105,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 		JHtml::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
 
-		if (version_compare($this->jversion->getShortVersion(), '3.0', 'lt'))
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
@@ -222,7 +213,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
 
 		// Add a upload button
-		if (version_compare($this->jversion->getShortVersion(), '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			if ($user->authorise('core.create', 'com_podcastmanager'))
 			{
@@ -236,7 +227,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 		}
 
 		// Add a create folder button
-		if (version_compare($this->jversion->getShortVersion(), '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			if ($user->authorise('core.create', 'com_podcastmanager'))
 			{
@@ -253,7 +244,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 		if ($user->authorise('core.delete', 'com_podcastmanager'))
 		{
 			$title = JText::_('JTOOLBAR_DELETE');
-			if (version_compare($this->jversion->getShortVersion(), '3.0', 'ge'))
+			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn">
 							<i class="icon-remove" title="' . $title . '"></i>

@@ -47,8 +47,7 @@ class Pkg_PodcastManagerInstallerScript
 		}
 
 		// Requires Joomla! 2.5.6
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '2.5.6', 'lt'))
+		if (version_compare(JVERSION, '2.5.6', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
 			return false;
@@ -77,8 +76,7 @@ class Pkg_PodcastManagerInstallerScript
 	public function uninstall($parent)
 	{
 		// If in CMS 3, uninstall the Isis layouts
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			/*
 			 * Since the adapter doesn't remove folders with content, we have to remove the content here
@@ -151,8 +149,7 @@ class Pkg_PodcastManagerInstallerScript
 	public function update($parent)
 	{
 		// If in CMS 3, install the Strapped layouts
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$installer = new JInstaller;
 			$installer->update(__DIR__ . '/strapped');
@@ -173,8 +170,7 @@ class Pkg_PodcastManagerInstallerScript
 	public function postflight($type, $parent, $results)
 	{
 		// If in CMS 3, install the Strapped layouts
-		$jversion = new JVersion;
-		if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$installer = new JInstaller;
 			$strapped = $installer->install(__DIR__ . '/strapped');
@@ -257,7 +253,7 @@ class Pkg_PodcastManagerInstallerScript
 				</tr>
 				<?php
 				}
-				if (version_compare($jversion->getShortVersion(), '3.0', 'ge'))
+				if (version_compare(JVERSION, '3.0', 'ge'))
 				{ ?>
 				<tr class="row0">
 					<td class="key"><?php echo JText::_('PKG_PODCASTMANAGER_STRAPPED'); ?></td>

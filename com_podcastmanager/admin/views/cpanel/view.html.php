@@ -41,9 +41,6 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			return false;
 		}
 
-		$document = JFactory::getDocument();
-		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
-
 		// Add the component media
 		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
 

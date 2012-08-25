@@ -56,14 +56,6 @@ class PodcastMediaViewMediaList extends JViewLegacy
 	protected $state;
 
 	/**
-	 * CMS Version information
-	 *
-	 * @var    JVersion
-	 * @since  2.1
-	 */
-	protected $jversion;
-
-	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -79,7 +71,6 @@ class PodcastMediaViewMediaList extends JViewLegacy
 
 		$params = JComponentHelper::getParams('com_podcastmedia');
 		$style = $params->get('layout', 'thumbs');
-		$this->jversion = new JVersion;
 
 		$lang = JFactory::getLanguage();
 
@@ -87,7 +78,7 @@ class PodcastMediaViewMediaList extends JViewLegacy
 
 		$document = JFactory::getDocument();
 
-		if (version_compare($this->jversion->getShortVersion(), '3.0', 'lt'))
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			$document->addStyleSheet('../media/media/css/medialist-' . $style . '.css');
 			if ($lang->isRTL())
