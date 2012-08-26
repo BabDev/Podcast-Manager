@@ -72,7 +72,6 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 			PodcastManagerHelper::addSubmenu('podcasts');
 		}
 
-
 		// Initialise variables
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');

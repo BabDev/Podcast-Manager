@@ -179,7 +179,7 @@ class PodcastManagerPlayer
 			$filepath = JPATH_ROOT . '/' . $filename;
 
 			// Check if the file exists
-			if (JFile::exists($filepath))
+			if (is_file($filepath))
 			{
 				$filename = JURI::base() . $filename;
 			}

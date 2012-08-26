@@ -37,7 +37,7 @@ class PlgContentPodcastManagerInstallerScript
 		if ($type != 'uninstall')
 		{
 			// Check if Podcast Manager is installed
-			if (!JFolder::exists(JPATH_BASE . '/components/com_podcastmanager'))
+			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
 				JError::raiseNotice(null, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_COMPONENT'));
 				return false;
@@ -166,7 +166,7 @@ class PlgContentPodcastManagerInstallerScript
 		// Remove the folders
 		foreach ($folders as $folder)
 		{
-			if (JFolder::exists($base . $folder))
+			if (is_dir($base . $folder))
 			{
 				JFolder::delete($base . $folder);
 			}

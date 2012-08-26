@@ -118,7 +118,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				return;
 			}
 
-			if (JFile::exists($filepath))
+			if (is_file($filepath))
 			{
 				// File exists
 				JLog::add('File exists: ' . $filepath . ' by user_id ' . $user->id, JLog::INFO, 'upload');

@@ -72,13 +72,13 @@ class PlgButtonPodcastManager extends JPlugin
 		 */
 		$link = 'index.php?option=com_podcastmanager&amp;view=podcasts&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
-		$button = new JObject;
-		$button->set('modal', true);
-		$button->set('link', $link);
-		$button->set('text', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON'));
-		$button->set('name', 'broadcast');
-		$button->set('title', JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON_TOOLTIP'));
-		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
+		$button = new stdClass;
+		$button->modal = true;
+		$button->link = $link;
+		$button->text = JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON');
+		$button->name = 'broadcast';
+		$button->title = JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON_TOOLTIP');
+		$button->options = "{handler: 'iframe', size: {x: 770, y: 400}}";
 
 		return $button;
 	}

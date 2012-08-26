@@ -37,7 +37,7 @@ class PlgFinderPodcastManager_FeedsInstallerScript
 		if ($type != 'uninstall')
 		{
 			// Check if Podcast Manager is installed
-			if (!JFolder::exists(JPATH_BASE . '/components/com_podcastmanager'))
+			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
 				JError::raiseNotice(null, JText::_('PLG_FINDER_PODCASTMANAGER_FEEDS_ERROR_COMPONENT'));
 				return false;

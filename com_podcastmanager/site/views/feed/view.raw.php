@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-
 /**
  * Feed RAW view class.
  *
@@ -220,7 +218,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 				$filepath = JPATH_ROOT . '/' . $item->filename;
 
 				// Check if the file exists
-				if (JFile::exists($filepath))
+				if (is_file($filepath))
 				{
 					$filename = JURI::base() . $item->filename;
 				}

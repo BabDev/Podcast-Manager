@@ -124,7 +124,7 @@ class PodcastMediaViewMediaList extends JViewLegacy
 		}
 		else
 		{
-			$this->_tmp_folder = new JObject;
+			$this->_tmp_folder = new stdClass;
 		}
 	}
 
@@ -145,7 +145,7 @@ class PodcastMediaViewMediaList extends JViewLegacy
 		}
 		else
 		{
-			$this->_tmp_audio = new JObject;
+			$this->_tmp_audio = new stdClass;
 		}
 	}
 }

@@ -83,7 +83,6 @@ class PodcastManagerHelper
 	 */
 	public static function fillMetaData($data)
 	{
-		jimport('joomla.filesystem.file');
 		jimport('getid3.getid3');
 		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
 
@@ -98,7 +97,7 @@ class PodcastManagerHelper
 		}
 
 		// Only push through getID3 if the file actually exists and is local
-		if (!preg_match('/^http/', $filename) && JFile::exists($filename))
+		if (!preg_match('/^http/', $filename) && is_file($filename))
 		{
 			$getID3 = new getID3;
 			$getID3->setOption(array('encoding' => 'UTF-8'));
@@ -174,8 +173,8 @@ class PodcastManagerHelper
 	 */
 	public static function getActions($feedId = 0, $podcastId = 0)
 	{
-		$user		= JFactory::getUser();
-		$result		= new JObject;
+		$user   = JFactory::getUser();
+		$result = new JObject;
 
 		if (empty($podcastId) && empty($feedId))
 		{

@@ -47,7 +47,7 @@ class Com_PodcastMediaInstallerScript
 		{
 			jimport('joomla.filesystem.file');
 
-			if (JFile::exists(JPATH_SITE . '/components/com_podcastmedia/controller.php'))
+			if (is_file(JPATH_SITE . '/components/com_podcastmedia/controller.php'))
 			{
 				JFile::delete(JPATH_SITE . '/components/com_podcastmedia/controller.php');
 			}

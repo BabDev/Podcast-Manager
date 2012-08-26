@@ -128,7 +128,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				return false;
 			}
 
-			if (JFile::exists($file['filepath']))
+			if (is_file($file['filepath']))
 			{
 				// A file with this name already exists
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS'));

@@ -354,7 +354,7 @@ class Com_PodcastManagerInstallerScript
 		// Remove the admin files
 		foreach ($adminFiles as $adminFile)
 		{
-			if (JFile::exists($adminBase . $adminFile))
+			if (is_file($adminBase . $adminFile))
 			{
 				JFile::delete($adminBase . $adminFile);
 			}
@@ -363,7 +363,7 @@ class Com_PodcastManagerInstallerScript
 		// Remove the site files
 		foreach ($siteFiles as $siteFile)
 		{
-			if (JFile::exists($siteBase . $siteFile))
+			if (is_file($siteBase . $siteFile))
 			{
 				JFile::delete($siteBase . $siteFile);
 			}

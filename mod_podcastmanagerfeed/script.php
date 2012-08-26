@@ -34,7 +34,7 @@ class Mod_PodcastManagerFeedInstallerScript
 	public function preflight($type, $parent)
 	{
 		// Check if Podcast Manager is installed
-		if (!JFolder::exists(JPATH_BASE . '/components/com_podcastmanager'))
+		if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 		{
 			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGERFEED_ERROR_COMPONENT'));
 			return false;
