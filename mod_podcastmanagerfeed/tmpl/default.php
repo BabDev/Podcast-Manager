@@ -21,6 +21,11 @@ defined('_JEXEC') or die;
 		<?php if ((JPluginHelper::isEnabled('content', 'podcastmanager')) && $params->get('show_item_player') == 1)
 		{
 			echo $item->text;
+
+			if ($params->get('description') == 1 && strlen($item->itSummary) >= 1)
+			{
+				echo '<br />' . $item->itSummary;
+			}
 		}
 		else
 		{ ?>
