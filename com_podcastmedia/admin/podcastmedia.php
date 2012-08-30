@@ -31,18 +31,18 @@ if (!$user->authorise('core.manage', 'com_podcastmanager')
 
 $podmedparams = JComponentHelper::getParams('com_podcastmedia');
 
-// Load the admin HTML helper
-JLoader::register('PodcastMediaHelper', JPATH_COMPONENT . '/helpers/podcastmedia.php');
+// Load the admin helper
+JLoader::register('PodcastMediaHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php');
 
 // Set the path definitions
 $popup_upload = $input->get('pop_up', null, 'cmd');
-$path = 'file_path';
+$path         = 'file_path';
 
 $view = $input->get('view', '', 'cmd');
 
 define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
 define('COM_PODCASTMEDIA_BASEURL', JURI::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
 
-$controller = JControllerLegacy::getInstance('PodcastMedia');
+$controller = JControllerLegacy::getInstance('PodcastMedia', array('base_path' => JPATH_COMPONENT_ADMINISTRATOR));
 $controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

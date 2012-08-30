@@ -35,47 +35,50 @@ class PodcastMediaController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		$input = JFactory::getApplication()->input;
 		JPluginHelper::importPlugin('content');
+		$app    = JFactory::getApplication();
+		$input  = $app->input;
 		$params = JComponentHelper::getParams('com_podcastmedia');
-		$vName = $input->get('view', 'media', 'cmd');
+		$vName  = $input->get('view', 'media', 'cmd');
 
 		switch ($vName)
 		{
 			case 'audio':
 				$vLayout = $input->get('layout', 'default', 'cmd');
-				$mName = 'manager';
+				$mName   = 'manager';
 
 				break;
 
 			case 'audioList':
 				$vLayout = $input->get('layout', 'default', 'cmd');
-				$mName = 'list';
+				$mName   = 'list';
 
 				break;
 
 			case 'mediaList':
 				$vLayout = $params->get('layout', 'thumbs');
-				$mName = 'list';
+				$mName   = 'list';
 
 				break;
 
 			case 'media':
 			default:
-				$vName = 'media';
+				$vName   = 'media';
 				$vLayout = $input->get('layout', 'default', 'cmd');
-				$mName = 'manager';
+				$mName   = 'manager';
 				break;
 		}
 
-		$document = JFactory::getDocument();
-		$vType = $document->getType();
+		$vType = JFactory::getDocument()->getType();
 
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);
 
 		// Add the template path for requests coming from the site app
-		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR . '/views/' . strtolower($vName) . '/tmpl');
+		if ($app->isSite())
+		{
+			$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR . '/views/' . strtolower($vName) . '/tmpl');
+		}
 
 		// Get/Create the model
 		if ($model = $this->getModel($mName))
