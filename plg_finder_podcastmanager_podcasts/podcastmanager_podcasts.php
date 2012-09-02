@@ -190,8 +190,18 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
-		// Index the item.
-		FinderIndexer::index($item);
+		/*
+		 * Index the item.
+		 * The indexer is abstract in 3.0, and called statically in 2.5.
+		 */
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->indexer->index($item);
+		}
+		else
+		{
+			FinderIndexer::index($item);
+		}
 	}
 
 	/**
