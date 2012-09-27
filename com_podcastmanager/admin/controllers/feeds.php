@@ -30,14 +30,15 @@ class PodcastManagerControllerFeeds extends JControllerAdmin
 	 *
 	 * @param   string  $name    The model name. Optional.
 	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 *
 	 * @since   1.7
 	 */
-	public function &getModel($name = 'Feed', $prefix = 'PodcastManagerModel')
+	public function &getModel($name = 'Feed', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		$model = parent::getModel($name, $prefix, $config);
 		return $model;
 	}
 }

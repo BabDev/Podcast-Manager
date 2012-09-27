@@ -273,11 +273,19 @@ class PodcastManagerPlayer
 
 		if ($this->pluginParams->get('loadJQuery', $default) == '1')
 		{
-			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
-		}
+			// Load jQuery via JHtml in 3.0, use Google API in 2.5
+			if (version_compare(JVERSION, '3.0', 'lt'))
+			{
+				$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
 
-		// Ensure jQuery.noConflict() is set, just in case ;-)
-		JHtml::script('mediaelements/jquery-noconflict.js', false, true);
+				// Ensure jQuery.noConflict() is set, just in case ;-)
+				JHtml::script('mediaelements/jquery-noconflict.js', false, true);
+			}
+			else
+			{
+				JHtml::_('jquery.framework');
+			}
+		}
 
 		// Set the default file names
 		$jsFile = 'mediaelement-and-player.min.js';

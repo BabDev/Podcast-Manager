@@ -42,7 +42,7 @@ abstract class ModPodcastManagerFeedHelper
 		$model = JModelLegacy::getInstance('Feed', 'PodcastManagerModel', array('ignore_request' => true));
 
 		// Set application parameters in model
-		$app = JFactory::getApplication('site');
+		$app       = JFactory::getApplication('site');
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 

@@ -106,9 +106,9 @@ function podcastManagerParseRoute($segments)
 	$vars = array();
 
 	// Get the active menu item.
-	$app	= JFactory::getApplication();
-	$menu	= $app->getMenu();
-	$item	= $menu->getActive();
+	$app  = JFactory::getApplication();
+	$menu = $app->getMenu();
+	$item = $menu->getActive();
 
 	// Count route segments
 	$count = count($segments);
@@ -116,12 +116,12 @@ function podcastManagerParseRoute($segments)
 	// Standard routing for the feed views.
 	if (!isset($item))
 	{
-		$vars['view'] = $segments[0];
+		$vars['view']     = $segments[0];
 		$vars['feedname'] = $segments[$count - 1];
 		return $vars;
 	}
 
-	$vars['view'] = $input->get('view', '', 'cmd');
+	$vars['view']     = $input->get('view', '', 'cmd');
 	$vars['feedname'] = $input->get('feedname', '', 'int');
 
 	return $vars;

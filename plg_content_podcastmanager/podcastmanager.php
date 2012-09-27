@@ -116,16 +116,16 @@ class PlgContentPodcastManager extends JPlugin
 				$options = array();
 
 				// Set the default player type and size from the component params
-				$options['playerType'] = $podmanparams->get('linkhandling', 'player');
-				$options['width'] = (int) $podmanparams->get('playerwidth', 400);
+				$options['playerType']  = $podmanparams->get('linkhandling', 'player');
+				$options['width']       = (int) $podmanparams->get('playerwidth', 400);
 				$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
 				$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
 
 				// Check if we're in a Podcast Manager instance; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
 				{
-					$podtitle = $article->title;
-					$podfilepath = $article->filename;
+					$podtitle             = $article->title;
+					$podfilepath          = $article->filename;
 					$options['podcastID'] = (int) $article->id;
 				}
 				else
@@ -174,7 +174,7 @@ class PlgContentPodcastManager extends JPlugin
 					}
 
 					// Query the DB for the title string, returning the filename
-					$db = JFactory::getDBO();
+					$db    = JFactory::getDBO();
 					$query = $db->getQuery(true);
 
 					// Common query fields regardless of method
@@ -200,8 +200,8 @@ class PlgContentPodcastManager extends JPlugin
 					}
 					else
 					{
-						$dbResult = $db->loadObject();
-						$podfilepath = $dbResult->filename;
+						$dbResult             = $db->loadObject();
+						$podfilepath          = $dbResult->filename;
 						$options['podcastID'] = (int) $dbResult->id;
 
 						// Set the title if we searched by ID
