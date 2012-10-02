@@ -24,6 +24,22 @@ defined('_JEXEC') or die;
 class PodcastManagerViewFeed extends JViewLegacy
 {
 	/**
+	 * Stat tracking service
+	 *
+	 * @var    string
+	 * @since  2.1
+	 */
+	protected $tracking;
+
+	/**
+	 * Username for the stat tracking service
+	 *
+	 * @var    string
+	 * @since  2.1
+	 */
+	protected $trackUser;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -39,6 +55,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Get the component params
 		$params = JComponentHelper::getParams('com_podcastmanager');
 
+		// Enable logging
 		if ($params->get('enableLogging', '0') == '1')
 		{
 			if ($log == null)
@@ -49,9 +66,13 @@ class PodcastManagerViewFeed extends JViewLegacy
 			}
 		}
 
+		// Store the values for the tracking service
+		$this->tracking  = $params->get('tracking', 'none');
+		$this->trackUser = $params->get('trackname', '');
+
 		// Get the data from the model
 		$items = $this->get('Items');
-		$feed = $this->get('Feed');
+		$feed  = $this->get('Feed');
 
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
@@ -220,7 +241,22 @@ class PodcastManagerViewFeed extends JViewLegacy
 				// Check if the file exists
 				if (is_file($filepath))
 				{
-					$filename = JURI::base() . $item->filename;
+					$filename = JUri::base() . $item->filename;
+
+					// If stat tracking is enabled, prepend the service's URL
+					switch ($this->tracking)
+					{
+						case 'blubrry':
+							$filename = 'http://media.blubrry.com/' . $this->trackUser . '/www.' . JUri::base(true) . $item->filename;
+							continue;
+
+						case 'podtrac':
+							$filename = 'http://www.podtrac.com/pts/redirect.mp3/www.' . JUri::base(true) . $item->filename;
+							continue;
+
+						default:
+							continue;
+					}
 				}
 
 				// Process the filesize now

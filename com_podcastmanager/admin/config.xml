@@ -47,6 +47,22 @@
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKTITLE_DESCRIPTION" />
 		<field
+			name="tracking"
+			type="list"
+			default="none"
+			label="COM_PODCASTMANAGER_CONFIG_TRACKING_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_TRACKING_DESCRIPTION" >
+			<option value="none">COM_PODCASTMANAGER_CONFIG_OPTION_NONE</option>
+			<option value="blubrry">COM_PODCASTMANAGER_CONFIG_TRACKING_OPTION_BLUBRRY</option>
+			<option value="podtrac">COM_PODCASTMANAGER_CONFIG_TRACKING_OPTION_PODTRAC</option>
+		</field>
+		<field
+			name="trackname"
+			type="text"
+			default=""
+			label="COM_PODCASTMANAGER_CONFIG_FIELD_TRACKNAME_LABEL"
+			description="COM_PODCASTMANAGER_CONFIG_FIELD_TRACKNAME_DESCRIPTION" />
+		<field
 			name="minstability"
 			type="list"
 			default="alpha"
