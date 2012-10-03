@@ -40,6 +40,14 @@ class PodcastManagerViewFeeds extends JViewLegacy
 	protected $pagination;
 
 	/**
+	 * The HTML markup for the sidebar
+	 *
+	 * @var    string
+	 * @since  2.1
+	 */
+	protected $sidebar;
+
+	/**
 	 * The state information
 	 *
 	 * @var    JObject
@@ -90,6 +98,13 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		JText::script('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE');
 
 		$this->addToolbar();
+
+		// Add the sidebar for J! 3.0
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
+
 		parent::display($tpl);
 	}
 
@@ -143,15 +158,15 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		// Section below for 3.0 compatibility
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
-			JSubMenuHelper::setAction('index.php?option=com_podcastmanager&view=feeds');
+			JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_PUBLISHED'),
 				'filter_published',
 				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
 			);
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_LANGUAGE'),
 				'filter_language',
 				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))

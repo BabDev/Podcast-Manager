@@ -34,17 +34,27 @@ class PodcastManagerHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
+		// Use the sidebar layout for 3.0, submenu module in 2.5
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$class = 'JHtmlSidebar';
+		}
+		else
+		{
+			$class = 'JSubMenuHelper';
+		}
+
+		$class::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FEEDS'),
 			'index.php?option=com_podcastmanager&view=feeds',
 			$vName == 'feeds'
 		);
-		JSubMenuHelper::addEntry(
+		$class::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_PODCASTS'),
 			'index.php?option=com_podcastmanager&view=podcasts',
 			$vName == 'podcasts'
 		);
-		JSubMenuHelper::addEntry(
+		$class::addEntry(
 			JText::_('COM_PODCASTMANAGER_SUBMENU_FILES'),
 			'index.php?option=com_podcastmedia&view=media',
 			$vName == 'media'

@@ -40,6 +40,14 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	protected $pagination;
 
 	/**
+	 * The HTML markup for the sidebar
+	 *
+	 * @var    string
+	 * @since  2.1
+	 */
+	protected $sidebar;
+
+	/**
 	 * The state information
 	 *
 	 * @var    JObject
@@ -73,9 +81,9 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		}
 
 		// Initialise variables
-		$this->items = $this->get('Items');
+		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
+		$this->state      = $this->get('State');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -94,6 +102,12 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 			JText::script('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH');
 
 			$this->addToolbar();
+
+			// Add the sidebar for J! 3.0
+			if (version_compare(JVERSION, '3.0', 'ge'))
+			{
+				$this->sidebar = JHtmlSidebar::render();
+			}
 		}
 
 		// Add the HTML Helper
@@ -169,21 +183,21 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		{
 			JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
 
-			JSubMenuHelper::setAction('index.php?option=com_podcastmanager&view=feeds');
+			JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_PUBLISHED'),
 				'filter_published',
 				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
 			);
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'),
 				'filter_feedname',
 				JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'))
 			);
 
-			JSubMenuHelper::addFilter(
+			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_LANGUAGE'),
 				'filter_language',
 				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
