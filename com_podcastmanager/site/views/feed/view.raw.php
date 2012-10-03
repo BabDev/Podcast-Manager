@@ -244,14 +244,15 @@ class PodcastManagerViewFeed extends JViewLegacy
 					$filename = JUri::base() . $item->filename;
 
 					// If stat tracking is enabled, prepend the service's URL
+					$replacement = str_replace(array('http://', 'https://'), '', $filename);
 					switch ($this->tracking)
 					{
 						case 'blubrry':
-							$filename = 'http://media.blubrry.com/' . $this->trackUser . '/www.' . JUri::base(true) . $item->filename;
+							$filename = 'http://media.blubrry.com/' . $this->trackUser . '/' . $replacement;
 							continue;
 
 						case 'podtrac':
-							$filename = 'http://www.podtrac.com/pts/redirect.mp3/www.' . JUri::base(true) . $item->filename;
+							$filename = 'http://www.podtrac.com/pts/redirect.mp3/' . $replacement;
 							continue;
 
 						default:

@@ -27,6 +27,7 @@
 				<field
 					name="loadJQuery"
 					type="radio"
+					class="btn-group"
 					default="1"
 					label="PLG_CONTENT_PODCASTMANAGER_FIELDSET_ADVANCED_LOADJQUERY_LABEL"
 					description="PLG_CONTENT_PODCASTMANAGER_FIELDSET_ADVANCED_LOADJQUERY_DESCRIPTION" >

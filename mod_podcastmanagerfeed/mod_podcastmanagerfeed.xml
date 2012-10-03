@@ -41,6 +41,7 @@
 				<field
 					name="description"
 					type="radio"
+					class="btn-group"
 					default="1"
 					label="MOD_PODCASTMANAGERFEED_FIELD_DESCRIPTION_LABEL"
 					description="MOD_PODCASTMANAGER_FIELD_DESCRIPTION_DESCRIPTION">
@@ -52,6 +53,7 @@
 				<field
 					name="author"
 					type="radio"
+					class="btn-group"
 					default="1"
 					label="MOD_PODCASTMANAGERFEED_FIELD_AUTHOR_LABEL"
 					description="MOD_PODCASTMANAGER_FIELD_AUTHOR_DESCRIPTION">
@@ -63,6 +65,7 @@
 				<field
 					name="created"
 					type="radio"
+					class="btn-group"
 					default="1"
 					label="MOD_PODCASTMANAGERFEED_FIELD_CREATED_LABEL"
 					description="MOD_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION">
@@ -74,6 +77,7 @@
 				<field
 					name="show_item_player"
 					type="radio"
+					class="btn-group"
 					default="0"
 					label="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_LABEL"
 					description="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_DESCRIPTION">
@@ -97,7 +101,8 @@
 					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 				<field
 					name="cache"
-					type="list"
+					type="radio"
+					class="btn-group"
 					default="1"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
 					description="COM_MODULES_FIELD_CACHING_DESC">

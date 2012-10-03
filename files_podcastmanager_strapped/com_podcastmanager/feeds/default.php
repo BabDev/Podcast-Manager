@@ -15,8 +15,9 @@
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHtml::_('formbehavior.chosen', 'select');
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');

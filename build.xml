@@ -10,7 +10,7 @@
 	</tstamp>
 
 	<!-- Build a package for testing -->
-	<target name="dev_head" description="Builds test packages based on the development head" depends="phpcs,rebuild-packages,copy-files,zip-packages">
+	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
 		<echo msg="Deleting old master builds" />
 		<delete includeemptydirs="true">
 			<fileset dir=".">
