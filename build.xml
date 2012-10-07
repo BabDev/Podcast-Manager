@@ -8,6 +8,8 @@
 	<tstamp>
 		<format property="build.date" pattern="%Y-%m-%d" />
 	</tstamp>
+	<taskdef name="gittag" classname="phing.tasks.ext.git.GitTagTask" />
+	<taskdef name="gitpush" classname="phing.tasks.ext.git.GitPushTask" />
 
 	<!-- Build a package for testing -->
 	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
