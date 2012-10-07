@@ -1,5 +1,5 @@
 [main]
-host = https://opentranslators.transifex.net
+host = https://opentranslators.transifex.com
 lang_map = en: en-GB, pt_BR: pt-BR
 type = INI
 
