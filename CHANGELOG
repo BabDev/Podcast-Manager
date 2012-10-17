@@ -1,3 +1,6 @@
+17-October-2012 Michael Babker
++ Add the stat tracking URL to all front-end locations if the option is enabled, including offsite media
+
 7-October-2012 Michael Babker
 # Editor plugin requires a JObject
 ~ Update pt-BR translation

@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
+
 /**
  * Podcast Manager player builder.
  *
@@ -181,9 +183,12 @@ class PodcastManagerPlayer
 			// Check if the file exists
 			if (is_file($filepath))
 			{
-				$filename = JURI::base() . $filename;
+				$filename = JUri::base() . $filename;
 			}
 		}
+
+		// Process the URL through the helper to get the stat tracking details if applicable
+		$filename = PodcastManagerHelper::getMediaUrl($filename);
 
 		return $filename;
 	}

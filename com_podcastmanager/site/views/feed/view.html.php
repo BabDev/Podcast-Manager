@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
+
 /**
  * Feed HTML view class.
  *

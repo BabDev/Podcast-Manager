@@ -108,8 +108,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 							else
 							{
 								// The file is stored on site
-								$link = JURI::base() . $item->filename;
-							} ?>
+								$link = JUri::base() . $item->filename;
+							}
+							// Process the URL through the helper to get the stat tracking details if applicable
+							$link = PodcastManagerHelper::getMediaUrl($link);
+							?>
 							<a href="<?php echo $link; ?>" class="<?php echo $menuclass; ?>" rel="nofollow">
 								<?php echo $this->escape($item->title); ?>
 							</a>

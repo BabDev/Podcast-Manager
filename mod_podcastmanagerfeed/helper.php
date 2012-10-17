@@ -71,8 +71,11 @@ abstract class ModPodcastManagerFeedHelper
 			// Check if the file is from off site
 			if (!preg_match('/^http/', $item->link))
 			{
-				$item->link = JURI::base() . $item->filename;
+				$item->link = JUri::base() . $item->filename;
 			}
+
+			// Process the URL through the helper to get the stat tracking details if applicable
+			$item->link = PodcastManagerHelper::getMediaUrl($item->link);
 		}
 
 		// If we're displaying the media player, and the plugin is enabled, then render it here

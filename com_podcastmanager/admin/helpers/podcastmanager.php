@@ -286,4 +286,42 @@ class PodcastManagerHelper
 
 		return $url;
 	}
+
+	/**
+	 * Method to return the URL to a media file with optional stat tracking information added
+	 *
+	 * @param   string  $url  The media file URL
+	 *
+	 * @return  string  The URL for the file based on the stat tracking configuration
+	 *
+	 * @since   2.1
+	 */
+	public static function getMediaUrl($url)
+	{
+		static $params;
+
+		// Get the component params if we don't have them already
+		if (!$params)
+		{
+			$params = JComponentHelper::getParams('com_podcastmanager');
+		}
+
+		// Get the values for the tracking service
+		$tracking  = $params->get('tracking', 'none');
+		$trackUser = $params->get('trackname', '');
+
+		$replacement = str_replace(array('http://', 'https://'), '', $url);
+		switch ($tracking)
+		{
+			case 'blubrry':
+				return 'http://media.blubrry.com/' . $trackUser . '/' . $replacement;
+
+			case 'podtrac':
+				return 'http://www.podtrac.com/pts/redirect.mp3/' . $replacement;
+
+			default:
+				return $url;
+		}
+
+	}
 }

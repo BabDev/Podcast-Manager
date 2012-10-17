@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('PodcastManagerPlayer', JPATH_SITE . '/plugins/content/podcastmanager/player.php');
+JLoader::register('PodcastManagerPlayer', JPATH_PLUGINS . '/content/podcastmanager/player.php');
 
 /**
  * Podcast Manager content plugin.
@@ -174,7 +174,7 @@ class PlgContentPodcastManager extends JPlugin
 					}
 
 					// Query the DB for the title string, returning the filename
-					$db    = JFactory::getDBO();
+					$db    = JFactory::getDbo();
 					$query = $db->getQuery(true);
 
 					// Common query fields regardless of method
