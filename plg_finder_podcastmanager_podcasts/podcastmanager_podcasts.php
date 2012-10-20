@@ -232,18 +232,18 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	{
 		// Check if we can use the supplied SQL query.
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName('feedname'));
-		$sql->select($this->db->quoteName('title'));
-		$sql->select($this->db->quoteName('itSummary', 'summary'));
-		$sql->select($this->db->quoteName('published', 'state'));
-		$sql->select($this->db->quoteName('created', 'start_date'));
-		$sql->select($this->db->quoteName('itAuthor', 'author'));
-		$sql->select($this->db->quoteName('language'));
-		$sql->select($this->db->quoteName('publish_up', 'publish_start_date'));
+		$sql->select($this->db->quoteName('a.id'));
+		$sql->select($this->db->quoteName('a.feedname'));
+		$sql->select($this->db->quoteName('a.title'));
+		$sql->select($this->db->quoteName('a.itSummary', 'summary'));
+		$sql->select($this->db->quoteName('a.published', 'state'));
+		$sql->select($this->db->quoteName('a.created', 'start_date'));
+		$sql->select($this->db->quoteName('a.itAuthor', 'author'));
+		$sql->select($this->db->quoteName('a.language'));
+		$sql->select($this->db->quoteName('a.publish_up', 'publish_start_date'));
 		$sql->select('0 AS publish_end_date');
 		$sql->select('1 AS access');
-		$sql->from($this->db->quoteName('#__podcastmanager'));
+		$sql->from($this->db->quoteName('#__podcastmanager', 'a'));
 
 		return $sql;
 	}
@@ -276,10 +276,10 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	protected  function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName($this->state_field, 'state'));
+		$sql->select($this->db->quoteName('a.id'));
+		$sql->select($this->db->quoteName('a.' . $this->state_field, 'state'));
 		$sql->select('NULL AS cat_state');
-		$sql->from($this->db->quoteName($this->table));
+		$sql->from($this->db->quoteName($this->table, 'a'));
 
 		return $sql;
 	}

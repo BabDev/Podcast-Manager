@@ -230,17 +230,17 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	{
 		// Check if we can use the supplied SQL query.
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName('name', 'title'));
-		$sql->select($this->db->quoteName('description', 'summary'));
-		$sql->select($this->db->quoteName('published', 'state'));
-		$sql->select($this->db->quoteName('created', 'start_date'));
-		$sql->select($this->db->quoteName('author'));
-		$sql->select($this->db->quoteName('language'));
+		$sql->select($this->db->quoteName('a.id'));
+		$sql->select($this->db->quoteName('a.name', 'title'));
+		$sql->select($this->db->quoteName('a.description', 'summary'));
+		$sql->select($this->db->quoteName('a.published', 'state'));
+		$sql->select($this->db->quoteName('a.created', 'start_date'));
+		$sql->select($this->db->quoteName('a.author'));
+		$sql->select($this->db->quoteName('a.language'));
 		$sql->select('0 AS publish_start_date');
 		$sql->select('0 AS publish_end_date');
 		$sql->select('1 AS access');
-		$sql->from($this->db->quoteName('#__podcastmanager_feeds'));
+		$sql->from($this->db->quoteName('#__podcastmanager_feeds', 'a'));
 
 		return $sql;
 	}
@@ -273,10 +273,10 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	protected function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('id'));
-		$sql->select($this->db->quoteName($this->state_field, 'state'));
+		$sql->select($this->db->quoteName('a.id'));
+		$sql->select($this->db->quoteName('a.' . $this->state_field, 'state'));
 		$sql->select('NULL AS cat_state');
-		$sql->from($this->db->quoteName($this->table));
+		$sql->from($this->db->quoteName($this->table, 'a'));
 
 		return $sql;
 	}

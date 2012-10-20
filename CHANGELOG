@@ -1,3 +1,6 @@
+20-October-2012 Michael Babker
+# Use field alias in Smart Search plugin queries
+
 17-October-2012 Michael Babker
 + Add the stat tracking URL to all front-end locations if the option is enabled, including offsite media
 
