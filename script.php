@@ -54,8 +54,7 @@ class Pkg_PodcastManagerInstallerScript
 		}
 
 		// Check to see if the database type is supported
-		$db = JFactory::getDbo();
-		if (!in_array($db->name, $this->dbSupport))
+		if (!in_array(JFactory::getDbo()->name, $this->dbSupport))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
 			return false;
@@ -206,71 +205,52 @@ class Pkg_PodcastManagerInstallerScript
 				</tr>
 			</tfoot>
 			<tbody>
-				<?php foreach ($results as $result)
-				{
+				<?php foreach ($results as $result) :
 					$extension = (string) $result['name'];
 					$e_type = substr($extension, 0, 3); ?>
 				<tr class="row<?php echo ($result % 2); ?>">
 					<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
 					<td><strong>
-						<?php if ($e_type == 'com')
-						{
+						<?php if ($e_type == 'com') :
 							echo JText::_('COM_INSTALLER_TYPE_COMPONENT');
-						}
-						elseif ($e_type == 'mod')
-						{
+						elseif ($e_type == 'mod') :
 							echo JText::_('COM_INSTALLER_TYPE_MODULE');
-						}
-						elseif ($e_type == 'plg')
-						{
+						elseif ($e_type == 'plg') :
 							echo JText::_('COM_INSTALLER_TYPE_PLUGIN');
-						}
-						elseif ($e_type == 'get')
-						{
+						elseif ($e_type == 'get') :
 							echo JText::_('COM_INSTALLER_TYPE_LIBRARY');
-						} ?></strong>
+						endif; ?></strong>
 					</td>
 					<td><strong>
-						<?php if ($result['result'] == true)
-						{
+						<?php if ($result['result'] == true) :
 							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-						}
-						else
-						{
+						else :
 							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-						} ?></strong>
+						endif; ?></strong>
 					</td>
 					<td><strong>
-						<?php if ($enabled[$extension] == 1)
-						{
+						<?php if ($enabled[$extension] == 1) :
 							echo JText::_('JYES');
-						}
-						else
-						{
+						else :
 							echo JText::_('JNO');
-						} ?></strong>
+						endif; ?></strong>
 					</td>
 				</tr>
-				<?php
-				}
-				if (version_compare(JVERSION, '3.0', 'ge'))
-				{ ?>
+				<?php endforeach;
+				if (version_compare(JVERSION, '3.0', 'ge')) : ?>
 				<tr class="row0">
 					<td class="key"><?php echo JText::_('PKG_PODCASTMANAGER_STRAPPED'); ?></td>
 					<td><strong><?php echo JText::_('COM_INSTALLER_TYPE_FILE'); ?></strong></td>
 					<td><strong>
-						<?php if ($strapped == true)
-						{
+						<?php if ($strapped == true) :
 							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-						}
-						else
-						{
+						else :
 							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-						} ?></strong>
+						endif; ?></strong>
 					</td>
 					<td><strong><?php echo JText::_('PKG_PODCASTMANAGER_NA'); ?></strong></td>
 				</tr>
-				<?php } ?>
+				<?php endif; ?>
 			</tbody>
 		</table>
 		<?php

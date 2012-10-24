@@ -88,12 +88,10 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		$params = JComponentHelper::getParams('com_media');
 
-		if (
-			$_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024) ||
-			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024 ||
-			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024 ||
-			$_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024
-		)
+		if ($_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024)
+			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024
+			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024
+			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024)
 		{
 			JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
 			return false;
@@ -250,7 +248,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		{
 			if ($path !== JFile::makeSafe($path))
 			{
-				// filename is not safe
+				// Filename is not safe
 				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
 				JError::raiseWarning(
 					100,
@@ -337,10 +335,10 @@ class PodcastMediaControllerFile extends JControllerLegacy
 	 * Also, removes illegal characters from the 'name' and sets a 'filepath' as the final destination of the file
 	 *
 	 * @param   string  $name      The file name
-	 * @param   string	$type      The file type
-	 * @param   string	$tmp_name  The temporary name of the file
-	 * @param   string	$error     Error information about the file
-	 * @param   string	$size      The file size
+	 * @param   string  $type      The file type
+	 * @param   string  $tmp_name  The temporary name of the file
+	 * @param   string  $error     Error information about the file
+	 * @param   string  $size      The file size
 	 *
 	 * @return  array  Array containing the file information
 	 *

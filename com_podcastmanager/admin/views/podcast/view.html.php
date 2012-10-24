@@ -114,10 +114,10 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		else
 		{
 			// Since it's an existing record, check the edit permission.
-			if (
-				!$checkedOut &&
-				($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
-				|| ($canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId)))
+			if (!$checkedOut
+				&& ($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
+				|| ($canDo->get('core.edit.own')
+				|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId)))
 			{
 				JToolBarHelper::apply('podcast.apply');
 				JToolBarHelper::save('podcast.save');
@@ -128,6 +128,7 @@ class PodcastManagerViewPodcast extends JViewLegacy
 					JToolBarHelper::save2new('podcast.save2new');
 				}
 			}
+
 			// If an existing item, can save as a copy
 			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{

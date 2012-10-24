@@ -10,7 +10,7 @@
 	</tstamp>
 
 	<!-- Build a package for testing -->
-	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
+	<target name="dev_head" description="Builds test packages based on the development head" depends="phpcs,rebuild-packages,copy-files,zip-packages">
 		<echo msg="Deleting old master builds" />
 		<delete includeemptydirs="true">
 			<fileset dir=".">
@@ -254,9 +254,10 @@
 		<phpcodesniffer
 			standard="${platform.dir}/build/phpcs/Joomla"
 			format="full"
-			ignorePatterns="${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/packaging,${repo.dir}/releases"
+			ignorePatterns="com_podcastmanager/admin/liveupdate,com_podcastmanager/admin/media/js,com_podcastmanager/site/media,lib_getid3,plg_content_podcastmanager/mediaelements,packaging,releases,*/tmpl/*,files_podcastmanager_*"
 			file="${repo.dir}"
-			allowedFileExtensions="php,css">
+			allowedFileExtensions="php"
+			verbosity="1">
 			<formatter type="full" outfile="${repo.dir}/build/codesniff.txt" />
 			<formatter type="checkstyle" outfile="${repo.dir}/build/checkstyle.xml" />
 		</phpcodesniffer>

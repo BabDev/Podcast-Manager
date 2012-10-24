@@ -125,9 +125,8 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		{
 			JToolBarHelper::addNew('feed.add');
 		}
-		if (
-			$canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0) ||
-			$canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
+		if ($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
+			|| $canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
 			JToolBarHelper::editList('feed.edit');
 		}
@@ -140,7 +139,8 @@ class PodcastManagerViewFeeds extends JViewLegacy
 			JToolBarHelper::checkin('feeds.checkin');
 			JToolBarHelper::divider();
 		}
-		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
+		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete')
+			|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
 			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
 			JToolBarHelper::divider();

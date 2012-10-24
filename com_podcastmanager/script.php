@@ -347,8 +347,8 @@ class Com_PodcastManagerInstallerScript
 			'en-GB.plg_editors-xtd_podcastmanager.sys.ini'
 		);
 		$siteFiles = array(
-			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.mod_podcastmanager.ini', 'en-GB.mod_podcastmanager.sys.ini',
-			'en-GB.mod_podcastmanagerfeed.ini', 'en-GB.mod_podcastmanagerfeed.sys.ini'
+			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.mod_podcastmanager.ini',
+			'en-GB.mod_podcastmanager.sys.ini', 'en-GB.mod_podcastmanagerfeed.ini', 'en-GB.mod_podcastmanagerfeed.sys.ini'
 		);
 
 		// Remove the admin files
