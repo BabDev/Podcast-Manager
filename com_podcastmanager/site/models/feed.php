@@ -103,6 +103,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Filter by feed
 		$feed = $this->getState('feed.id');
+
 		if (is_numeric($feed))
 		{
 			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feed);
@@ -110,6 +111,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Filter by state
 		$state = $this->getState('filter.published');
+
 		if (is_numeric($state))
 		{
 			$query->where($db->quoteName('a.published') . ' = ' . (int) $state);
@@ -149,6 +151,7 @@ class PodcastManagerModelFeed extends JModelList
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering', 'a.publish_up');
 		$direction = $this->getState('list.direction', 'DESC');
+
 		if (!empty($ordering))
 		{
 			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
@@ -186,6 +189,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Item sort and order
 		$orderCol = $input->get('filter_order', 'a.publish_up', 'cmd');
+
 		if (!in_array($orderCol, $this->filter_fields))
 		{
 			$orderCol = 'a.publish_up';
@@ -193,6 +197,7 @@ class PodcastManagerModelFeed extends JModelList
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $input->get('filter_order_Dir', 'DESC', 'cmd');
+
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
 			$listOrder = 'DESC';
@@ -200,6 +205,7 @@ class PodcastManagerModelFeed extends JModelList
 		$this->setState('list.direction', $listOrder);
 
 		$user = JFactory::getUser();
+
 		if ((!$user->authorise('core.edit.state', 'com_podcastmanager')) && (!$user->authorise('core.edit', 'com_podcastmanager')))
 		{
 			// Limit to published for people who can't edit or edit.state.

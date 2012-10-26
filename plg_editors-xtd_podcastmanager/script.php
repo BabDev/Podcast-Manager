@@ -40,6 +40,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
 				JError::raiseNotice(null, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_COMPONENT'));
+
 				return false;
 			}
 		}
@@ -76,6 +77,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 		$query->set($db->quoteName('enabled') . ' = 1');
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-xtd_podcastmanager'));
 		$db->setQuery($query);
+
 		if (!$db->query())
 		{
 			JError::raiseNotice(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));

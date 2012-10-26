@@ -67,6 +67,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (empty($pks))
 		{
 			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+
 			return false;
 		}
 
@@ -79,6 +80,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			if ($cmd == 'c')
 			{
 				$result = $this->batchCopy($commands['feed_id'], $pks, $contexts);
+
 				if (is_array($result))
 				{
 					$pks = $result;
@@ -108,6 +110,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+
 			return false;
 		}
 
@@ -139,17 +142,20 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if ($feedId != '0')
 		{
 			$feedTable = $this->getTable();
+
 			if (!$feedTable->load($feedId))
 			{
 				if ($error = $feedTable->getError())
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
 				{
 					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 					return false;
 				}
 			}
@@ -158,14 +164,17 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (is_null($feedId))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 			return false;
 		}
 
 		// Check that the user has create permission for the component
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
 			return false;
 		}
 
@@ -184,6 +193,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -207,6 +217,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -214,6 +225,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -252,17 +264,20 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if ($feedId != '0')
 		{
 			$feedTable = $this->getTable();
+
 			if (!$feedTable->load($feedId))
 			{
 				if ($error = $feedTable->getError())
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
 				{
 					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 					return false;
 				}
 			}
@@ -271,20 +286,24 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if (is_null($feedId))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+
 			return false;
 		}
 
 		// Check that user has create and edit permission for the component
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+
 			return false;
 		}
 
@@ -298,6 +317,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -315,6 +335,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -322,6 +343,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 		}
@@ -408,6 +430,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;

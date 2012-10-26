@@ -37,6 +37,7 @@ class Mod_PodcastManagerInstallerScript
 		if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 		{
 			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGER_ERROR_COMPONENT'));
+
 			return false;
 		}
 

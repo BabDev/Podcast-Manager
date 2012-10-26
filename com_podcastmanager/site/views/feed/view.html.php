@@ -111,6 +111,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -135,6 +136,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$active = $app->getMenu()->getActive();
+
 		if (isset($active->query['layout']))
 		{
 			// We need to set the layout in case this is an alternative menu item (with an alternative layout)

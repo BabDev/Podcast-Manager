@@ -96,6 +96,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		$xw->writeElement('link', JURI::base());
 
 		$feedLang = $feed->language;
+
 		if ($feedLang == '*')
 		{
 			$feedLang = JFactory::getLanguage()->getTag();

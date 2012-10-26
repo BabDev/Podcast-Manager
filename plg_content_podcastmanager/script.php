@@ -40,6 +40,7 @@ class PlgContentPodcastManagerInstallerScript
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
 				JError::raiseNotice(null, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_COMPONENT'));
+
 				return false;
 			}
 		}
@@ -79,6 +80,7 @@ class PlgContentPodcastManagerInstallerScript
 		if ($version == 'Error')
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+
 			return;
 		}
 
@@ -104,6 +106,7 @@ class PlgContentPodcastManagerInstallerScript
 		$query->set($db->quoteName('enabled') . ' = 1');
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_content_podcastmanager'));
 		$db->setQuery($query);
+
 		if (!$db->query())
 		{
 			JError::raiseNotice(1, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
@@ -127,10 +130,12 @@ class PlgContentPodcastManagerInstallerScript
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('podcastmanager'), 'AND');
 		$query->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
 		$db->setQuery($query);
+
 		if (!$db->loadObject())
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			$version = 'Error';
+
 			return $version;
 		}
 		else

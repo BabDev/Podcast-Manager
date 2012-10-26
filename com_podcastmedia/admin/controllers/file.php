@@ -49,6 +49,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		{
 			// User is not authorised
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
+
 			return false;
 		}
 
@@ -94,6 +95,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024)
 		{
 			JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+
 			return false;
 		}
 
@@ -117,12 +119,14 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			if ($file['error'] == 1)
 			{
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+
 				return false;
 			}
 
 			if ($file['size'] > ($params->get('upload_maxsize', 0) * 1024 * 1024))
 			{
 				JError::raiseNotice(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
+
 				return false;
 			}
 
@@ -130,6 +134,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// A file with this name already exists
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS'));
+
 				return false;
 			}
 
@@ -137,6 +142,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// No filename (after the name was cleaned by JFile::makeSafe)
 				$this->setRedirect('index.php', JText::_('COM_PODCASTMEDIA_INVALID_REQUEST'), 'error');
+
 				return false;
 			}
 		}
@@ -150,16 +156,19 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		{
 			// The request is valid
 			$err = null;
+
 			if (!PodcastMediaHelper::canUpload($file, $err))
 			{
 				// The file can't be upload
 				JError::raiseNotice(100, JText::_($err));
+
 				return false;
 			}
 
 			// Trigger the onContentBeforeSave event.
 			$object_file = new JObject($file);
 			$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.file', &$object_file));
+
 			if (in_array(false, $result, true))
 			{
 				// There are some errors in the plugins
@@ -171,6 +180,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 						implode('<br />', $errors)
 					)
 				);
+
 				return false;
 			}
 
@@ -178,6 +188,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// Error in upload
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
+
 				return false;
 			}
 			else
@@ -211,6 +222,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		$folder = $input->get('folder', '', 'path');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
+
 		if ($tmpl == 'component')
 		{
 			// We are inside the iframe
@@ -234,6 +246,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		{
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+
 			return false;
 		}
 
@@ -244,6 +257,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Initialise variables.
 		$ret = true;
+
 		foreach ($paths as $path)
 		{
 			if ($path !== JFile::makeSafe($path))
@@ -262,10 +276,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
 			$object_file = new JObject(array('filepath' => $fullPath));
+
 			if (is_file($fullPath))
 			{
 				// Trigger the onContentBeforeDelete event.
 				$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
+
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
@@ -289,10 +305,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			elseif (is_dir($fullPath))
 			{
 				$contents = JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+
 				if (empty($contents))
 				{
 					// Trigger the onContentBeforeDelete event.
 					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
+
 					if (in_array(false, $result, true))
 					{
 						// There are some errors in the plugins

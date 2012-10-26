@@ -83,6 +83,7 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
@@ -94,6 +95,7 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Filter by feed ID
 		$feedname = $this->getState('filter.feedname');
+
 		if (is_numeric($feedname))
 		{
 			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feedname);
@@ -101,6 +103,7 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Filter by search in title
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -116,6 +119,7 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		// Filter on the language.
 		$language = $this->getState('filter.language');
+
 		if (!empty($language))
 		{
 			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
@@ -124,6 +128,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
+
 		if (!empty($ordering))
 		{
 			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));
@@ -179,6 +184,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		$this->setState('filter.published', $published);
 
 		$feedname = $input->get('feedname', '', 'var');
+
 		if ($feedname)
 		{
 			if ($feedname != $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', ''))

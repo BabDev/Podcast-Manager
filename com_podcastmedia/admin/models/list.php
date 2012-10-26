@@ -148,6 +148,7 @@ class PodcastMediaModelList extends JModelLegacy
 					$tmp->size = filesize($tmp->path);
 
 					$ext = strtolower(JFile::getExt($file));
+
 					switch ($ext)
 					{
 						// Allowed media file

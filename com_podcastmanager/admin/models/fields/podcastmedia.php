@@ -59,6 +59,7 @@ class JFormFieldPodcastMedia extends JFormField
 			$asset = JFactory::getApplication('administrator')->input->get('option', '', 'cmd');
 		}
 		$link = (string) $this->element['link'];
+
 		if (!self::$initialised)
 		{
 			// Load the modal behavior script.
@@ -109,6 +110,7 @@ class JFormFieldPodcastMedia extends JFormField
 
 		// Check if only one podcastmedia plugin is enabled
 		$count = PodcastManagerHelper::countMediaPlugins();
+
 		if ($count == 1)
 		{
 			JPluginHelper::importPlugin('podcastmedia');

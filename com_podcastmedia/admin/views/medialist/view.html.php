@@ -81,6 +81,7 @@ class PodcastMediaViewMediaList extends JViewLegacy
 		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			$document->addStyleSheet('../media/media/css/medialist-' . $style . '.css');
+
 			if ($lang->isRTL())
 			{
 				$document->addStyleSheet('../media/media/css/medialist-' . $style . '_rtl.css');
@@ -99,12 +100,12 @@ class PodcastMediaViewMediaList extends JViewLegacy
 		});"
 		);
 
-		$this->baseURL = JURI::root();
+		$this->baseURL = JUri::root();
 		$this->audio = $this->get('Audio');
 		$this->folders = $this->get('Folders');
 		$this->state = $this->get('State');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

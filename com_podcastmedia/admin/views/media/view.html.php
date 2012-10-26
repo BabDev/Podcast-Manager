@@ -110,6 +110,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
 			JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
+
 			if ($lang->isRTL())
 			{
 				JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
@@ -117,6 +118,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 
 			JHtml::_('script', 'system/mootree.js', true, true, false, false);
 			JHtml::_('stylesheet', 'system/mootree.css', array(), true);
+
 			if ($lang->isRTL())
 			{
 				JHtml::_('stylesheet', 'media/mootree_rtl.css', array(), true);
@@ -134,6 +136,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			// This is what controls the logic
 			$filterTypes = '';
 			$firstType = true;
+
 			foreach ($types AS $type)
 			{
 				if (!$firstType)
@@ -192,8 +195,9 @@ class PodcastMediaViewMedia extends JViewLegacy
 		// Set the toolbar
 		$this->addToolbar();
 
-		parent::display($tpl);
-		echo JHtml::_('behavior.keepalive');
+		JHtml::_('behavior.keepalive');
+
+		return parent::display($tpl);
 	}
 
 	/**
@@ -244,6 +248,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 		if ($user->authorise('core.delete', 'com_podcastmanager'))
 		{
 			$title = JText::_('JTOOLBAR_DELETE');
+
 			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn">
@@ -281,6 +286,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 	{
 		$this->folders_id = null;
 		$txt = null;
+
 		if (isset($folder['children']) && count($folder['children']))
 		{
 			$tmp = $this->folders;
@@ -288,6 +294,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			$txt = $this->loadTemplate('folders');
 			$this->folders = $tmp;
 		}
+
 		return $txt;
 	}
 }

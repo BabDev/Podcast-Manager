@@ -39,6 +39,7 @@ class PodcastManagerControllerFeeds extends JControllerAdmin
 	public function &getModel($name = 'Feed', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
+
 		return $model;
 	}
 }

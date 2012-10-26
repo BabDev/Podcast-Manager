@@ -242,6 +242,7 @@ abstract class PodcastManagerHelperRoute
 
 			$component = JComponentHelper::getComponent('com_podcastmanager');
 			$items = $menus->getItems('component_id', $component->id);
+
 			foreach ($items as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
@@ -287,6 +288,7 @@ abstract class PodcastManagerHelperRoute
 		else
 		{
 			$active = $menus->getActive();
+
 			if ($active && $active->component == 'com_podcastmanager')
 			{
 				return $active->id;

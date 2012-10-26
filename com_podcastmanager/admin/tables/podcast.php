@@ -47,6 +47,7 @@ class PodcastManagerTablePodcast extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
+
 		return 'com_podcastmanager.podcast.' . (int) $this->$k;
 	}
 
@@ -89,6 +90,7 @@ class PodcastManagerTablePodcast extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
+
 			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
@@ -106,6 +108,7 @@ class PodcastManagerTablePodcast extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
+
 			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
@@ -185,6 +188,7 @@ class PodcastManagerTablePodcast extends JTable
 				}
 			}
 		}
+
 		return parent::store($updateNulls);
 	}
 }

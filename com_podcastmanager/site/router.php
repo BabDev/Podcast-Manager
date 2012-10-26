@@ -43,6 +43,7 @@ function podcastManagerBuildRoute(&$query)
 	if (isset($query['view']))
 	{
 		$view = $query['view'];
+
 		if (empty($query['Itemid']))
 		{
 			$segments[] = $query['view'];
@@ -55,6 +56,7 @@ function podcastManagerBuildRoute(&$query)
 	{
 		unset($query['view']);
 		unset($query['feedname']);
+
 		return $segments;
 	}
 
@@ -86,7 +88,7 @@ function podcastManagerBuildRoute(&$query)
 				unset($query['layout']);
 			}
 		}
-	};
+	}
 
 	return $segments;
 }
@@ -118,6 +120,7 @@ function podcastManagerParseRoute($segments)
 	{
 		$vars['view']     = $segments[0];
 		$vars['feedname'] = $segments[$count - 1];
+
 		return $vars;
 	}
 

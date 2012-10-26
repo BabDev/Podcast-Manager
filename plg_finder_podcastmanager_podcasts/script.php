@@ -40,6 +40,7 @@ class PlgFinderPodcastManager_PodcastsInstallerScript
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
 				JError::raiseNotice(null, JText::_('PLG_FINDER_PODCASTMANAGER_PODCASTS_ERROR_COMPONENT'));
+
 				return false;
 			}
 		}

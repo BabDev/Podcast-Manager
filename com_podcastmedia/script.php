@@ -39,6 +39,7 @@ class Com_PodcastMediaInstallerScript
 		if ($version == 'Error')
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_UPDATE'));
+
 			return;
 		}
 
@@ -85,10 +86,12 @@ class Com_PodcastMediaInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmedia'));
 		$db->setQuery($query);
+
 		if (!$db->loadObject())
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			$version = 'Error';
+
 			return $version;
 		}
 		else
@@ -119,6 +122,7 @@ class Com_PodcastMediaInstallerScript
 		$query->delete($db->quoteName('#__menu'));
 		$query->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));
 		$db->setQuery($query);
+
 		if (!$db->query())
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));

@@ -47,6 +47,7 @@ class PodcastManagerTableFeed extends JTable
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
+
 		return 'com_podcastmanager.feed.' . (int) $this->$k;
 	}
 
@@ -89,6 +90,7 @@ class PodcastManagerTableFeed extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
+
 			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
@@ -163,6 +165,7 @@ class PodcastManagerTableFeed extends JTable
 				$this->created_by = $user->get('id');
 			}
 		}
+
 		return parent::store($updateNulls);
 	}
 }

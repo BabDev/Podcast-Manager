@@ -43,6 +43,7 @@ class Pkg_PodcastManagerInstallerScript
 		if (version_compare(PHP_VERSION, '5.3', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
+
 			return false;
 		}
 
@@ -50,6 +51,7 @@ class Pkg_PodcastManagerInstallerScript
 		if (version_compare(JVERSION, '2.5.6', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
+
 			return false;
 		}
 
@@ -57,6 +59,7 @@ class Pkg_PodcastManagerInstallerScript
 		if (!in_array(JFactory::getDbo()->name, $this->dbSupport))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
+
 			return false;
 		}
 
@@ -179,6 +182,7 @@ class Pkg_PodcastManagerInstallerScript
 		$enabled = array();
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
+
 		foreach ($results as $result)
 		{
 			$extension = (string) $result['name'];

@@ -135,6 +135,7 @@ class PodcastManagerHelper
 			{
 				$t = $fileInfo['tags_html'];
 				$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
+
 				if ($tags)
 				{
 					// Set the title field
@@ -233,6 +234,7 @@ class PodcastManagerHelper
 		$db->setQuery($query);
 		$allFeeds = $db->loadObjectList('id');
 		$allowedFeeds = array();
+
 		foreach ($allFeeds as $feed)
 		{
 			if ($user->authorise($action, $feed->asset_name))
@@ -311,6 +313,7 @@ class PodcastManagerHelper
 		$trackUser = $params->get('trackname', '');
 
 		$replacement = str_replace(array('http://', 'https://'), '', $url);
+
 		switch ($tracking)
 		{
 			case 'blubrry':

@@ -37,6 +37,7 @@ class Com_PodcastManagerInstallerScript
 		if (version_compare(PHP_VERSION, '5.3', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
+
 			return false;
 		}
 
@@ -44,6 +45,7 @@ class Com_PodcastManagerInstallerScript
 		if (version_compare(JVERSION, '2.5.6', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
+
 			return false;
 		}
 
@@ -78,6 +80,7 @@ class Com_PodcastManagerInstallerScript
 		if ($version == 'Error')
 		{
 			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+
 			return;
 		}
 
@@ -153,6 +156,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
+
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
@@ -172,6 +176,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
+
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
@@ -193,6 +198,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
+
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
@@ -226,6 +232,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
+
 		if (count($ids) > 1)
 		{
 			asort($ids);
@@ -250,6 +257,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 		$ids = $db->loadObjectList();
+
 		if (count($ids) > 1)
 		{
 			asort($ids);
@@ -276,6 +284,7 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
 		$ids = $db->loadColumn();
+
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
@@ -305,10 +314,12 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
+
 		if (!$db->loadObject())
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 			$version = 'Error';
+
 			return $version;
 		}
 		else

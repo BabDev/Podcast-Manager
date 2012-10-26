@@ -72,6 +72,7 @@ class PodcastMediaViewAudioList extends JViewLegacy
 		$lang = JFactory::getLanguage();
 
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
+
 		if ($lang->isRTL())
 		{
 			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
@@ -86,7 +87,7 @@ class PodcastMediaViewAudioList extends JViewLegacy
 		$this->folders = $this->get('Folders');
 		$this->state = $this->get('State');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

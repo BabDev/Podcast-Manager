@@ -117,6 +117,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_podcastmanager.feed', 'feed', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;

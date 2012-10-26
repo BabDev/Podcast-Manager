@@ -75,6 +75,7 @@ class PlgContentPodcastManager extends JPlugin
 
 		// Handle instances coming from Podcast Manager extensions
 		$podManContexts = array('com_podcastmanager.feed', 'mod_podcastmanagerfeed.module');
+
 		if (in_array($context, $podManContexts))
 		{
 			// If the player isn't enabled, return
@@ -193,6 +194,7 @@ class PlgContentPodcastManager extends JPlugin
 						$query->where($db->quoteName('id') . ' = ' . (int) $podtitle);
 					}
 					$db->setQuery($query);
+
 					if (!$db->loadObject())
 					{
 						// Write the DB error to the log

@@ -55,13 +55,16 @@ abstract class PodcastMediaHelper
 		if (empty($file['name']))
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_UPLOAD_INPUT';
+
 			return false;
 		}
 
 		jimport('joomla.filesystem.file');
+
 		if ($file['name'] !== JFile::makesafe($file['name']))
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILENAME';
+
 			return false;
 		}
 
@@ -69,21 +72,26 @@ abstract class PodcastMediaHelper
 
 		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
 		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
+
 		if (!in_array($format, $allowable) && !in_array($format, $ignored))
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETYPE';
+
 			return false;
 		}
 
 		$maxSize = (int) ($medmanparams->get('upload_maxsize', 0) * 1024 * 1024);
+
 		if ($maxSize > 0 && (int) $file['size'] > $maxSize)
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE';
+
 			return false;
 		}
 
 		$user = JFactory::getUser();
 		$imginfo = null;
+
 		if ($medmanparams->get('restrict_uploads', 1))
 		{
 			if (!in_array($format, $ignored))
@@ -91,14 +99,17 @@ abstract class PodcastMediaHelper
 				// If it's not an allowed file and we're not ignoring it
 				$allowed_mime = explode(',', 'audio/mpeg,audio/x-m4a,video/mp4,video/x-m4v,video/quicktime');
 				$illegal_mime = explode(',', $medmanparams->get('upload_mime_illegal'));
+
 				if (function_exists('finfo_open') && $medmanparams->get('check_mime', 1))
 				{
 					// We have fileinfo
 					$finfo = finfo_open(FILEINFO_MIME);
 					$type = finfo_file($finfo, $file['tmp_name']);
+
 					if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime))
 					{
 						$err = 'COM_PODCASTMEDIA_ERROR_WARNINVALID_MIME';
+
 						return false;
 					}
 					finfo_close($finfo);
@@ -109,9 +120,11 @@ abstract class PodcastMediaHelper
 					{
 						// We have mime magic
 						$type = mime_content_type($file['tmp_name']);
+
 						if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime))
 						{
 							$err = 'COM_PODCASTMEDIA_ERROR_WARNINVALID_MIME';
+
 							return false;
 						}
 					}
@@ -120,6 +133,7 @@ abstract class PodcastMediaHelper
 						if (!$user->authorise('core.manage', 'com_podcastmanager'))
 						{
 							$err = 'COM_PODCASTMEDIA_ERROR_WARNNOTADMIN';
+
 							return false;
 						}
 					}
@@ -137,15 +151,18 @@ abstract class PodcastMediaHelper
 							'param', 'plaintext', 'pre', 'rt', 'ruby', 's', 'samp', 'script', 'select', 'server', 'shadow', 'sidebar', 'small',
 							'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead',
 							'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE', '!--');
+
 		foreach ($html_tags as $tag)
 		{
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if (stristr($xss_check, '<' . $tag . ' ') || stristr($xss_check, '<' . $tag . '>'))
 			{
 				$err = 'COM_PODCASTMEDIA_ERROR_WARNIEXSS';
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -166,6 +183,7 @@ abstract class PodcastMediaHelper
 		if (is_dir($dir))
 		{
 			$d = dir($dir);
+
 			while (false !== ($entry = $d->read()))
 			{
 				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false
@@ -173,6 +191,7 @@ abstract class PodcastMediaHelper
 				{
 					$total_file++;
 				}
+
 				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry))
 				{
 					$total_dir++;
@@ -181,6 +200,7 @@ abstract class PodcastMediaHelper
 
 			$d->close();
 		}
+
 		return array($total_file, $total_dir);
 	}
 }

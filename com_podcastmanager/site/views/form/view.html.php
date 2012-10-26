@@ -107,6 +107,7 @@ class PodcastManagerViewForm extends JViewLegacy
 		if ($authorised !== true)
 		{
 			JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+
 			return false;
 		}
 
@@ -119,6 +120,7 @@ class PodcastManagerViewForm extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseWarning(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -126,7 +128,8 @@ class PodcastManagerViewForm extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		$this->prepareDocument();
-		parent::display($tpl);
+
+		return parent::display($tpl);
 	}
 
 	/**
@@ -165,6 +168,7 @@ class PodcastManagerViewForm extends JViewLegacy
 		}
 
 		$title = $this->params->def('page_title', $head);
+
 		if ($app->getCfg('sitename_pagetitles', 0) == 1)
 		{
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);

@@ -99,6 +99,7 @@ class PodcastManagerModelFeeds extends JModelList
 		if ($db->getErrorNum())
 		{
 			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 
@@ -112,6 +113,7 @@ class PodcastManagerModelFeeds extends JModelList
 		if ($db->getErrorNum())
 		{
 			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 
@@ -125,6 +127,7 @@ class PodcastManagerModelFeeds extends JModelList
 		if ($db->getErrorNum())
 		{
 			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 
@@ -165,6 +168,7 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
@@ -176,6 +180,7 @@ class PodcastManagerModelFeeds extends JModelList
 
 		// Filter on the language.
 		$language = $this->getState('filter.language');
+
 		if (!empty($language))
 		{
 			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
@@ -184,6 +189,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
+
 		if (!empty($ordering))
 		{
 			$query->order($db->escape($ordering) . ' ' . $db->escape($direction));

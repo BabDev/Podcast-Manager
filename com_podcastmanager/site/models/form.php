@@ -55,6 +55,7 @@ class PodcastManagerModelForm extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_podcastmanager.form', 'form', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
@@ -155,6 +156,7 @@ class PodcastManagerModelForm extends JModelForm
 		{
 			$data = $this->getItem();
 		}
+
 		return $data;
 	}
 
@@ -225,6 +227,7 @@ class PodcastManagerModelForm extends JModelForm
 			if (!$table->bind($data))
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -232,14 +235,17 @@ class PodcastManagerModelForm extends JModelForm
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
 			// Trigger the onContentBeforeSave event.
 			$result = $dispatcher->trigger('onContentBeforeSave', array($this->option . '.' . $this->name, &$table, $isNew));
+
 			if (in_array(false, $result, true))
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -247,6 +253,7 @@ class PodcastManagerModelForm extends JModelForm
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -259,6 +266,7 @@ class PodcastManagerModelForm extends JModelForm
 		catch (Exception $e)
 		{
 			$this->setError($e->getMessage());
+
 			return false;
 		}
 

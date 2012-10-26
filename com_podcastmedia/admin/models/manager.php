@@ -154,6 +154,7 @@ class PodcastMediaModelManager extends JModelLegacy
 			$node = (object) array('name' => $name, 'relative' => $relative, 'absolute' => $absolute);
 
 			$tmp = &$tree;
+
 			for ($i = 0, $n = count($path); $i < $n; $i++)
 			{
 				if (!isset($tmp['children']))

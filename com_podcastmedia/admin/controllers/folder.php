@@ -46,6 +46,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		$folder = $input->get('folder', '', 'path');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
+
 		if ($tmpl == 'component')
 		{
 			// We are inside the iframe
@@ -63,6 +64,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		{
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+
 			return false;
 		}
 
@@ -76,6 +78,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		{
 			JPluginHelper::importPlugin('content');
 			$dispatcher = JDispatcher::getInstance();
+
 			foreach ($paths as $path)
 			{
 				if ($path !== JFile::makeSafe($path))
@@ -93,21 +96,23 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 
 				$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
 				$object_file = new JObject(array('filepath' => $fullPath));
+
 				if (is_file($fullPath))
 				{
 					// Trigger the onContentBeforeDelete event.
 					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
+
 					if (in_array(false, $result, true))
 					{
-					// There are some errors in the plugins
-					JError::raiseWarning(
-						100,
-						JText::plural(
-							'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
-							count($errors = $object_file->getErrors()),
-							implode('<br />', $errors)
-						)
-					);
+						// There are some errors in the plugins
+						JError::raiseWarning(
+							100,
+							JText::plural(
+								'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
+								count($errors = $object_file->getErrors()),
+								implode('<br />', $errors)
+							)
+						);
 						continue;
 					}
 
@@ -123,6 +128,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 					{
 						// Trigger the onContentBeforeDelete event.
 						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
+
 						if (in_array(false, $result, true))
 						{
 							// There are some errors in the plugins
@@ -157,6 +163,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				}
 			}
 		}
+
 		return $ret;
 	}
 
@@ -187,6 +194,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 			{
 				// User is not authorised to delete
 				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
+
 				return false;
 			}
 
@@ -198,10 +206,12 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 			if (($folderCheck !== null) && ($folder !== $folderCheck))
 			{
 				$this->setMessage(JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
+
 				return false;
 			}
 
 			$path = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $parent, $folder)));
+
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.
@@ -209,6 +219,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				JPluginHelper::importPlugin('content');
 				$dispatcher = JDispatcher::getInstance();
 				$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.folder', &$object_file));
+
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
@@ -220,6 +231,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 							implode('<br />', $errors)
 						)
 					);
+
 					return false;
 				}
 

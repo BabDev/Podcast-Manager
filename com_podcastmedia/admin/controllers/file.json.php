@@ -43,6 +43,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				'error' => JText::_('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
+
 			return;
 		}
 
@@ -68,6 +69,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				'error' => JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE')
 			);
 			echo json_encode($response);
+
 			return;
 		}
 
@@ -95,6 +97,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::_($err)
 				);
 				echo json_encode($response);
+
 				return;
 			}
 
@@ -104,6 +107,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			$object_file = new JObject($file);
 			$object_file->filepath = $filepath;
 			$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.file', &$object_file));
+
 			if (in_array(false, $result, true))
 			{
 				// There are some errors in the plugins
@@ -113,6 +117,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_SAVE', count($errors = $object_file->getErrors()), implode('<br />', $errors))
 				);
 				echo json_encode($response);
+
 				return;
 			}
 
@@ -125,6 +130,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_FILE_EXISTS')
 				);
 				echo json_encode($response);
+
 				return;
 			}
 			elseif (!$user->authorise('core.create', 'com_podcastmanager'))
@@ -136,10 +142,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_CREATE_NOT_PERMITTED')
 				);
 				echo json_encode($response);
+
 				return;
 			}
 
 			$file = (array) $object_file;
+
 			if (!JFile::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
@@ -149,6 +157,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
 				);
 				echo json_encode($response);
+
 				return;
 			}
 			else
@@ -161,6 +170,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					'error' => JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE)))
 				);
 				echo json_encode($response);
+
 				return;
 			}
 		}
@@ -172,6 +182,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			);
 
 			echo json_encode($response);
+
 			return;
 		}
 	}
