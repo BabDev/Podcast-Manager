@@ -19,6 +19,7 @@
 			<file>index.html</file>
 		</files>
 		<files folder="com_podcastmedia" target="administrator/templates/isis/html/com_podcastmedia">
+			<folder>audio</folder>
 			<folder>media</folder>
 			<folder>medialist</folder>
 			<file>index.html</file>
