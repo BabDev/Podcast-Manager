@@ -27,7 +27,7 @@ $feed       = $params->get('feedname', '');
 
 if (!$plainlink)
 {
-	$plainlink = JRoute::_(PodcastManagerHelperRoute::getFeedRssRoute($feed));
+	$plainlink = JRoute::_(PodcastManagerHelperRoute::getFeedRssRoute($feed), false, 2);
 }
 
 if ($otherimage)
