@@ -168,7 +168,7 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		{
 			$bar = JToolBar::getInstance('toolbar');
 			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = '<button data-toggle="modal" data-target="#collapseModal" class="btn">'
+			$dhtml = '<button data-toggle="modal" data-target="#collapseModal" class="btn btn-small">'
 					. '<i class="icon-checkbox-partial" title="' . $title . '"></i>'
 					. $title . '</button>';
 			$bar->appendButton('Custom', $dhtml, 'batch');
