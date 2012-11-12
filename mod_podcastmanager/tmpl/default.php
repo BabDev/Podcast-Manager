@@ -23,11 +23,10 @@ defined('_JEXEC') or die;
 		<?php echo $img; ?>
 	</a>
 </div>
-<?php if ($params->get('plainlink') == 1)
-{ ?>
+<?php if ($params->get('plainlink') == 1) : ?>
 <div>
 	<a href="<?php echo $plainlink; ?>">
 		<?php echo JText::_('MOD_PODCASTMANAGER_FULLFEED');?>
 	</a>
 </div>
-<?php }
+<?php endif;
