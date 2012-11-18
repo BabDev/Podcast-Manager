@@ -230,9 +230,10 @@ class PodcastManagerPlayer
 	protected function player()
 	{
 		// Player height and width
-		$width = $this->options['width'];
+		$width       = $this->options['width'];
 		$audioheight = $this->options['audioHeight'];
 		$videoheight = $this->options['videoHeight'];
+		$style       = $this->options['style'];
 
 		// Valid extensions to determine correct player
 		$validAudio = array('m4a', 'mp3');
@@ -247,12 +248,12 @@ class PodcastManagerPlayer
 		// Process audio file
 		if (in_array($extension, $validAudio))
 		{
-			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" controls="controls" preload="none">';
+			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none">';
 		}
 		// Process video file
 		elseif (in_array($extension, $validVideo))
 		{
-			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" controls="controls" preload="none">';
+			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none">';
 		}
 		// Invalid file type
 		else

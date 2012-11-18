@@ -121,6 +121,7 @@ class PlgContentPodcastManager extends JPlugin
 				$options['width']       = (int) $podmanparams->get('playerwidth', 400);
 				$options['audioHeight'] = (int) $podmanparams->get('playerheight', 30);
 				$options['videoHeight'] = (int) $podmanparams->get('videoheight', 400);
+				$options['style']       = $podmanparams->get('playerstyle', '');
 
 				// Check if we're in a Podcast Manager instance; if so, extract data from the object
 				if ((isset($feedView)) && ($feedView == $context))
@@ -171,6 +172,13 @@ class PlgContentPodcastManager extends JPlugin
 							// Remove the height= portion and set the player height for both audio and video for this instance
 							$options['audioHeight'] = (int) substr($articleTag[3], 7);
 							$options['videoHeight'] = (int) substr($articleTag[3], 7);
+						}
+
+						// Check if we have element 4, the style override, and if the string has anything
+						if (isset($articleTag[4]) && strpos($articleTag[4], 'style') === 0 && strlen($articleTag[4]) >= 5)
+						{
+							// Remove the height= portion and set the player height for both audio and video for this instance
+							$options['style'] = substr($articleTag[4], 6);
 						}
 					}
 

@@ -1,3 +1,9 @@
+17-November-2012 Michael Babker
++ Add a style config for the player
+
+11-November-2012 Michael Babker
+# Fix the link processing for the feed module
+
 20-October-2012 Michael Babker
 # Use field alias in Smart Search plugin queries
 
