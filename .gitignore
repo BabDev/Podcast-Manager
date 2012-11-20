@@ -26,3 +26,7 @@ build.properties
 
 # Personal stuff #
 build
+
+# External Build Tools #
+phing-joomla-extension-builder.xml
+build.properties.dist
