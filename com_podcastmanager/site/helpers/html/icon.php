@@ -30,12 +30,14 @@ class JHtmlIcon
 	 *
 	 * @param   object     $feed    The feed object
 	 * @param   JRegistry  $params  The item parameters
+	 * @param   boolean    $legacy  True to use 2.5 style icon, false to use 3.0 font face
+	 * @param   boolean    $force   Force to use font face in 2.5
 	 *
 	 * @return  mixed  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function feedEdit($feed, $params)
+	public static function feedEdit($feed, $params, $legacy = false, $force = false)
 	{
 		$uri = JUri::getInstance();
 
@@ -51,8 +53,6 @@ class JHtmlIcon
 
 		JHtml::_('behavior.tooltip');
 		$url = PodcastManagerHelperRoute::getFeedEditRoute($feed->id, base64_encode($uri));
-		$icon = $feed->published ? 'edit.png' : 'edit_unpublished.png';
-		$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
 
 		if ($feed->published == 0)
 		{
@@ -71,6 +71,17 @@ class JHtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
+		if (!$legacy && (version_compare(JVERSION, '3.0', 'ge') || $force))
+		{
+			$icon = $feed->published ? 'edit' : 'eye-close';
+			$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_FEED') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
+		}
+		else
+		{
+			$icon = $feed->published ? 'edit.png' : 'edit_unpublished.png';
+			$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
+		}
+
 		$button = JHtml::_('link', JRoute::_($url), $text);
 
 		$output = '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
@@ -83,12 +94,14 @@ class JHtmlIcon
 	 *
 	 * @param   object     $podcast  The podcast object
 	 * @param   JRegistry  $params   The item parameters
+	 * @param   boolean    $legacy   True to use 2.5 style icon, false to use 3.0 font face
+	 * @param   boolean    $force    Force to use font face in 2.5
 	 *
 	 * @return  string  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function podcastEdit($podcast, $params)
+	public static function podcastEdit($podcast, $params, $legacy = false, $force = false)
 	{
 		$uri = JUri::getInstance();
 
@@ -104,8 +117,6 @@ class JHtmlIcon
 
 		JHtml::_('behavior.tooltip');
 		$url = PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
-		$icon = $podcast->published ? 'edit.png' : 'edit_unpublished.png';
-		$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
 
 		if ($podcast->published == 0)
 		{
@@ -123,6 +134,17 @@ class JHtmlIcon
 		$overlib .= $date;
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
+
+		if (!$legacy && (version_compare(JVERSION, '3.0', 'ge') || $force))
+		{
+			$icon = $podcast->published ? 'edit' : 'eye-close';
+			$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_PODCAST') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
+		}
+		else
+		{
+			$icon = $podcast->published ? 'edit.png' : 'edit_unpublished.png';
+			$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
+		}
 
 		$button = JHtml::_('link', JRoute::_($url), $text);
 
