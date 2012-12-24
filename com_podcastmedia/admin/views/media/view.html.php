@@ -265,6 +265,13 @@ class PodcastMediaViewMedia extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
+		// Add a back button
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_podcastmanager');
+			JToolBarHelper::divider();
+		}
+
 		if ($user->authorise('core.admin', 'com_podcastmanager'))
 		{
 			JToolBarHelper::preferences('com_podcastmedia');
