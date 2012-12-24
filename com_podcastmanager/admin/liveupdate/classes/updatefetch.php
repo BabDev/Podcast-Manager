@@ -23,9 +23,9 @@ class LiveUpdateFetch extends JObject
 	 * 
 	 * @return int 0 = no updates, 1 = updates available, -1 = updates not supported, -2 = fetching updates crashes the server
 	 */
-	public function hasUpdates()
+	public function hasUpdates($force = false)
 	{
-		$updateInfo = $this->getUpdateInformation();
+		$updateInfo = $this->getUpdateInformation($force);
 		
 		if($updateInfo->stuck) return -2;
 		
@@ -317,10 +317,11 @@ class LiveUpdateFetch extends JObject
 			return $ret;
 		}
 		
-		$ret['version'] = $iniData['version'];
-		$ret['date'] = $iniData['date'];
+		$ret['version'] = array_key_exists('version', $iniData) ? $iniData['version'] : '';
+		$ret['date'] = array_key_exists('date', $iniData) ? $iniData['date'] : '';
 		$config = LiveUpdateConfig::getInstance();
 		$auth = $config->getAuthorization();
+		if(!array_key_exists('link', $iniData)) $iniData['link'] = '';
 		$glue = strpos($iniData['link'],'?') === false ? '?' : '&';
 		$ret['downloadURL'] = $iniData['link'] . (empty($auth) ? '' : $glue.$auth);
 		if(array_key_exists('stability', $iniData)) {

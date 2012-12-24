@@ -69,7 +69,7 @@ class LiveUpdate
 		require_once dirname(__FILE__).'/classes/updatefetch.php';
 		$update = new LiveUpdateFetch();
 		$info = $update->getUpdateInformation($force);
-		$hasUpdates = $update->hasUpdates();
+		$hasUpdates = $update->hasUpdates($force);
 		$info->hasUpdates = $hasUpdates;
 
 		$config = LiveUpdateConfig::getInstance();

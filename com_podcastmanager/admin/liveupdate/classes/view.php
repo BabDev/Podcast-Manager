@@ -9,18 +9,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
-if(!class_exists('JoomlaSucksView')) {
+if(!class_exists('JoomlaCompatView')) {
 	if(interface_exists('JView')) {
-		abstract class JoomlaSucksView extends JViewLegacy {}
+		abstract class JoomlaCompatView extends JViewLegacy {}
 	} else {
-		class JoomlaSucksView extends JView {}
+		class JoomlaCompatView extends JView {}
 	}
 }
 
 /**
  * The Live Update MVC view
  */
-class LiveUpdateView extends JoomlaSucksView
+class LiveUpdateView extends JoomlaCompatView
 {
 	public function display($tpl = null)
 	{
@@ -34,7 +34,7 @@ class LiveUpdateView extends JoomlaSucksView
 			$document->addStyleSheet($url, 'text/css');
 		}
 
-		$requeryURL = 'index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&force=1';
+		$requeryURL = rtrim(JURI::base(),'/').'/index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&force=1';
 		$this->assign('requeryURL', $requeryURL);
 
 		$model = $this->getModel();
@@ -43,6 +43,15 @@ class LiveUpdateView extends JoomlaSucksView
 		JToolBarHelper::title($extInfo->title.' &ndash; '.JText::_('LIVEUPDATE_TASK_OVERVIEW'),'liveupdate');
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option='.JRequest::getCmd('option',''));
 
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$j3css = <<<ENDCSS
+div#toolbar div#toolbar-back button.btn span.icon-back::before {
+	content: "";
+}
+ENDCSS;
+			JFactory::getDocument()->addStyleDeclaration($j3css);
+		}
+		
 		switch(JRequest::getCmd('task','default'))
 		{
 			case 'startupdate':

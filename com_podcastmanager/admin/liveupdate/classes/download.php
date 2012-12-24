@@ -319,18 +319,18 @@ class LiveUpdateDownloadHelper
 			jimport('joomla.client.ftp');
 			if(version_compare(JVERSION,'3.0','ge')) {
 				$ftp = JClientFTP::getInstance(
-					$ftpOptions['host'], $ftpOptions['port'], null,
+					$ftpOptions['host'], $ftpOptions['port'], array(),
 					$ftpOptions['user'], $ftpOptions['pass']
 				);
 			} else {
 				if(version_compare(JVERSION,'3.0','ge')) {
 					$ftp = JClientFTP::getInstance(
-						$ftpOptions['host'], $ftpOptions['port'], null,
+						$ftpOptions['host'], $ftpOptions['port'], array(),
 						$ftpOptions['user'], $ftpOptions['pass']
 					);
 				} else {
 					$ftp = JFTP::getInstance(
-						$ftpOptions['host'], $ftpOptions['port'], null,
+						$ftpOptions['host'], $ftpOptions['port'], array(),
 						$ftpOptions['user'], $ftpOptions['pass']
 					);
 				}

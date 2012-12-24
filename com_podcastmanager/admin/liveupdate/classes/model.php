@@ -9,18 +9,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.model');
 
-if(!class_exists('JoomlaSucksModel')) {
+if(!class_exists('JoomlaCompatModel')) {
 	if(interface_exists('JModel')) {
-		abstract class JoomlaSucksModel extends JModelLegacy {}
+		abstract class JoomlaCompatModel extends JModelLegacy {}
 	} else {
-		class JoomlaSucksModel extends JModel {}
+		class JoomlaCompatModel extends JModel {}
 	}
 }
 
 /**
  * The Live Update MVC model
  */
-class LiveUpdateModel extends JoomlaSucksModel
+class LiveUpdateModel extends JoomlaCompatModel
 {
 	public function download()
 	{
@@ -152,7 +152,7 @@ class LiveUpdateModel extends JoomlaSucksModel
 		if(!JFile::exists($instModelFile)) return false;
 
 		require_once $instModelFile;
-		$model	= JModel::getInstance('Installer', 'AkeebaModel');
+		$model	= JoomlaCompatModel::getInstance('Installer', 'AkeebaModel');
 		$packageType = JInstallerHelper::detectType($tempdir);
 		$name = $model->getExtensionName($tempdir);
 

@@ -183,9 +183,14 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	/**
 	 * Fetch username/password and Download ID from the component's configuration.
 	 */
-	private function populateAuthorization()
+	protected function populateAuthorization()
 	{
 		if(!$this->_requiresAuthorization) return;
+		
+		// Do we already have authorizaton information?
+		if( (!empty($this->_username) && !empty($this->_password)) || !empty($this->_downloadID) ) {
+			return;
+		}
 
 		if(substr($this->_extensionName,0,3) != 'com') return;
 

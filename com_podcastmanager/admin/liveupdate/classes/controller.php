@@ -9,18 +9,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.controller');
 
-if(!class_exists('JoomlaSucksController')) {
+if(!class_exists('JoomlaCompatController')) {
 	if(interface_exists('JController')) {
-		abstract class JoomlaSucksController extends JControllerLegacy {}
+		abstract class JoomlaCompatController extends JControllerLegacy {}
 	} else {
-		class JoomlaSucksController extends JController {}
+		class JoomlaCompatController extends JController {}
 	}
 }
 
 /**
  * The Live Update MVC controller
  */
-class LiveUpdateController extends JoomlaSucksController
+class LiveUpdateController extends JoomlaCompatController
 {
 	/**
 	 * Object contructor 
