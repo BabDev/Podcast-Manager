@@ -44,7 +44,7 @@ abstract class JHtmlPodcast
 	{
 		$hash = md5('com_podcastmanager.' . serialize($config));
 
-		if (!isset(self::$items[$hash]))
+		if (!isset(static::$items[$hash]))
 		{
 			$config = (array) $config;
 			$db = JFactory::getDbo();
@@ -73,16 +73,16 @@ abstract class JHtmlPodcast
 			$items = $db->loadObjectList();
 
 			// Assemble the list options.
-			self::$items[$hash] = array();
+			static::$items[$hash] = array();
 
 			foreach ($items as &$item)
 			{
-				self::$items[$hash][] = JHtml::_('select.option', $item->id, $item->name);
+				static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->name);
 			}
 			// "No Feed" option:
-			self::$items[$hash][] = JHtml::_('select.option', '0', JText::_('JNONE'));
+			static::$items[$hash][] = JHtml::_('select.option', '0', JText::_('JNONE'));
 		}
 
-		return self::$items[$hash];
+		return static::$items[$hash];
 	}
 }

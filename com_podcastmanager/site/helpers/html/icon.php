@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
  * @subpackage  com_podcastmanager
  * @since       1.8
  */
-class JHtmlIcon
+abstract class JHtmlIcon
 {
 	/**
 	 * Method to create an edit icon for a feed

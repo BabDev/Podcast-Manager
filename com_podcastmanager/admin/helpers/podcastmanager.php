@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
  * @subpackage  com_podcastmanager
  * @since       1.6
  */
-class PodcastManagerHelper
+abstract class PodcastManagerHelper
 {
 	/**
 	 * Configure the Linkbar.

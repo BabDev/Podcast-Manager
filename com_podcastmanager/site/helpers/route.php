@@ -65,8 +65,8 @@ abstract class PodcastManagerHelperRoute
 		);
 
 		// Set some vars for further processing
-		self::$format = 'html';
-		self::$type = 'feed';
+		static::$format = 'html';
+		static::$type = 'feed';
 
 		if ($id < 1)
 		{
@@ -74,7 +74,7 @@ abstract class PodcastManagerHelperRoute
 		}
 		else
 		{
-			if ($item = self::findItem($needles))
+			if ($item = static::findItem($needles))
 			{
 				$link = 'index.php?Itemid=' . $item;
 			}
@@ -83,11 +83,11 @@ abstract class PodcastManagerHelperRoute
 				// Create the link
 				$link = 'index.php?option=com_podcastmanager&view=feed&layout=feed&feedname=' . $id;
 
-				if ($item = self::findItem($needles))
+				if ($item = static::findItem($needles))
 				{
 					$link .= '&Itemid=' . $item;
 				}
-				elseif ($item = self::findItem())
+				elseif ($item = static::findItem())
 				{
 					$link .= '&Itemid=' . $item;
 				}
@@ -113,8 +113,8 @@ abstract class PodcastManagerHelperRoute
 		);
 
 		// Set some vars for further processing
-		self::$format = 'raw';
-		self::$type = 'feed';
+		static::$format = 'raw';
+		static::$type = 'feed';
 
 		if ($id < 1)
 		{
@@ -122,7 +122,7 @@ abstract class PodcastManagerHelperRoute
 		}
 		else
 		{
-			if ($item = self::findItem($needles))
+			if ($item = static::findItem($needles))
 			{
 				$link = 'index.php?Itemid=' . $item;
 			}
@@ -131,11 +131,11 @@ abstract class PodcastManagerHelperRoute
 				// Create the link
 				$link = 'index.php?option=com_podcastmanager&format=raw&feedname=' . $id;
 
-				if ($item = self::findItem($needles))
+				if ($item = static::findItem($needles))
 				{
 					$link .= '&Itemid=' . $item;
 				}
-				elseif ($item = self::findItem())
+				elseif ($item = static::findItem())
 				{
 					$link .= '&Itemid=' . $item;
 				}
@@ -186,11 +186,11 @@ abstract class PodcastManagerHelperRoute
 		// Create the link
 		$link = 'index.php?option=com_podcastmanager&view=podcast&id=' . $id;
 
-		if ($item = self::findItem($needles))
+		if ($item = static::findItem($needles))
 		{
 			$link .= '&Itemid=' . $item;
 		}
-		elseif ($item = self::findItem())
+		elseif ($item = static::findItem())
 		{
 			$link .= '&Itemid=' . $item;
 		}
@@ -236,9 +236,9 @@ abstract class PodcastManagerHelperRoute
 		$menus = $app->getMenu('site');
 
 		// Prepare the reverse lookup array.
-		if (self::$lookup === null)
+		if (static::$lookup === null)
 		{
-			self::$lookup = array();
+			static::$lookup = array();
 
 			$component = JComponentHelper::getComponent('com_podcastmanager');
 			$items = $menus->getItems('component_id', $component->id);
@@ -249,19 +249,19 @@ abstract class PodcastManagerHelperRoute
 				{
 					$view = $item->query['view'];
 
-					if (!isset(self::$lookup[$view]))
+					if (!isset(static::$lookup[$view]))
 					{
-						self::$lookup[$view] = array();
+						static::$lookup[$view] = array();
 					}
 
 					// Some trickery to get the right link for the feeds
-					if (isset(self::$type) && self::$type == 'feed')
+					if (isset(static::$type) && static::$type == 'feed')
 					{
-						if ($item->query['format'] == self::$format)
+						if ($item->query['format'] == static::$format)
 						{
 							if (isset($item->query['feedname']))
 							{
-								self::$lookup[$view][$item->query['feedname']] = $item->id;
+								static::$lookup[$view][$item->query['feedname']] = $item->id;
 							}
 						}
 					}
@@ -273,13 +273,13 @@ abstract class PodcastManagerHelperRoute
 		{
 			foreach ($needles as $view => $ids)
 			{
-				if (isset(self::$lookup[$view]))
+				if (isset(static::$lookup[$view]))
 				{
 					foreach ($ids as $id)
 					{
-						if (isset(self::$lookup[$view][(int) $id]))
+						if (isset(static::$lookup[$view][(int) $id]))
 						{
-							return self::$lookup[$view][(int) $id];
+							return static::$lookup[$view][(int) $id];
 						}
 					}
 				}
