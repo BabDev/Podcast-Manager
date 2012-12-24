@@ -286,7 +286,7 @@ class PodcastManagerPlayer
 				$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
 
 				// Ensure jQuery.noConflict() is set, just in case ;-)
-				JHtml::script('mediaelements/jquery-noconflict.js', false, true);
+				JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
 			}
 			else
 			{
@@ -306,8 +306,8 @@ class PodcastManagerPlayer
 		}
 
 		// And finally, load in MediaElement.JS
-		JHtml::script('mediaelements/' . $jsFile, false, true);
-		JHtml::stylesheet('mediaelements/' . $cssFile, false, true, false);
+		JHtml::_('script', 'mediaelements/' . $jsFile, false, true);
+		JHtml::_('stylesheet', 'mediaelements/' . $cssFile, false, true, false);
 		$player .= "<br /><script>
 				var player = new MediaElementPlayer('#" . $ID . "');
 			</script>";
