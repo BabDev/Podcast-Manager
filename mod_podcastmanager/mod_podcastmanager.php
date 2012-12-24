@@ -22,7 +22,6 @@ $params->def('urischeme', 'http');
 $params->def('plainlink', 1);
 
 $plainlink  = $params->get('otherlink', '');
-$otherimage = $params->get('otherimage', '');
 $feed       = $params->get('feedname', '');
 
 if (!$plainlink)
@@ -30,16 +29,7 @@ if (!$plainlink)
 	$plainlink = JRoute::_(PodcastManagerHelperRoute::getFeedRssRoute($feed), false, 2);
 }
 
-if ($otherimage)
-{
-	$image = $otherimage;
-}
-else
-{
-	$image = 'modules/mod_podcastmanager/media/images/podcast-mini2.png';
-}
-
-$img = JHtml::_('image', $image, JText::_('MOD_PODCASTMANAGER_PODCASTFEED'));
+$img = JHtml::_('image', 'mod_podcastmanager/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'), null, true);
 
 if ($params->get('urischeme') == 'http')
 {

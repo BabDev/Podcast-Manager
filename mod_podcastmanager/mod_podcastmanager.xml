@@ -12,11 +12,14 @@
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder>language</folder>
-		<folder>media</folder>
 		<folder>tmpl</folder>
 		<filename module="mod_podcastmanager">mod_podcastmanager.php</filename>
 		<filename>index.html</filename>
 	</files>
+	<media destination="mod_podcastmanager" folder="media">
+		<folder>images</folder>
+		<filename>index.html</filename>
+	</media>
 	<config>
 		<fields name="params">
 			<fieldset name="basic"
@@ -66,11 +69,6 @@
 					type="text"
 					label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL"
 					description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
-				<field
-					name="otherimage"
-					type="text"
-					label="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_OTHERIMAGE_DESCRIPTION" />
 			</fieldset>
 			<fieldset name="advanced">
 				<field
