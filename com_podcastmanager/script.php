@@ -89,6 +89,12 @@ class Com_PodcastManagerInstallerScript
 		{
 			$this->_removeLanguageFiles();
 		}
+
+		// If coming from versions earlier than 2.1, remove the component media folders
+		if (version_compare($version, '2.1', 'lt'))
+		{
+			$this->_removeMediaFolders();
+		}
 	}
 
 	/**
@@ -133,6 +139,31 @@ class Com_PodcastManagerInstallerScript
 		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store())
 		{
 			// Do nothing ;-)
+		}
+	}
+
+	/**
+	 * Function to perform changes when component is initially installed
+	 *
+	 * @param   string               $type    The action being performed
+	 * @param   JInstallerComponent  $parent  The class calling this method
+	 *
+	 * @return  void
+	 *
+	 * @since   2.1
+	 */
+	public function postflight($type, $parent)
+	{
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+
+		if ($type == 'install')
+		{
+			if (!is_dir(JPATH_ROOT . '/media/com_podcastmanager'))
+			{
+				JFolder::create(JPATH_ROOT . '/media/com_podcastmanager');
+				JFile::copy(JPATH_ROOT . '/media/index.html', JPATH_ROOT . '/media/com_podcastmanager/index.html');
+			}
 		}
 	}
 
@@ -377,6 +408,30 @@ class Com_PodcastManagerInstallerScript
 			if (is_file($siteBase . $siteFile))
 			{
 				JFile::delete($siteBase . $siteFile);
+			}
+		}
+	}
+
+	/**
+	 * Function to remove media folders from the component due to moving to the /media folder
+	 *
+	 * @return  void
+	 *
+	 * @since   2.1
+	 */
+	private function _removeMediaFolders()
+	{
+		jimport('joomla.filesystem.folder');
+
+		// Build the folder array
+		$folders = array(JPATH_ADMINISTRATOR . '/components/com_podcastmanager/media', JPATH_SITE . '/components/com_podcastmanager/media');
+
+		// Remove the admin files
+		foreach ($folders as $folder)
+		{
+			if (is_dir($folder))
+			{
+				JFolder::delete($folder);
 			}
 		}
 	}

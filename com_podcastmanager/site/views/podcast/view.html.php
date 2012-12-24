@@ -93,7 +93,7 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		$this->params = $this->state->params;
 
 		// Add the component media
-		JHtml::script('components/com_podcastmanager/media/js/podcast.js', false, false);
+		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
 
 		if (empty($this->item->id))
 		{

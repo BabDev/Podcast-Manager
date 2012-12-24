@@ -72,8 +72,8 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		}
 
 		// Add the component media
-		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-		JHtml::script('administrator/components/com_podcastmanager/media/js/podcast.js', false, false);
+		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
+		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
 
 		$this->addToolbar();
 		parent::display($tpl);

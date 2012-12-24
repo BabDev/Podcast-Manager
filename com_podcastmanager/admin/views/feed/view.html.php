@@ -80,7 +80,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		}
 
 		// Add the component media
-		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
+		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
 
 		$this->addToolbar();
 		parent::display($tpl);

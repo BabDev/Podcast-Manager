@@ -152,7 +152,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Add the Bootstrap CSS in J! 2.5 (assume 3.0 templates style the table on their own or use Bootstrap)
 		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
-			JHtml::stylesheet('components/com_podcastmanager/media/css/bootstrap.min.css', false, false, false);
+			JHtml::_('stylesheet', 'podcastmanager/bootstrap.min.css', false, true, false);
 		}
 
 		return parent::display($tpl);
