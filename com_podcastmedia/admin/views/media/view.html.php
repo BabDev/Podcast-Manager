@@ -222,7 +222,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			if ($user->authorise('core.create', 'com_podcastmanager'))
 			{
 				$title = JText::_('JTOOLBAR_UPLOAD');
-				$dhtml = '<button data-toggle="collapse" data-target="#collapseUpload" class="btn btn-primary">
+				$dhtml = '<button data-toggle="collapse" data-target="#collapseUpload" class="btn btn-small btn-success">
 							<i class="icon-plus icon-white" title="' . $title . '"></i>
 							' . $title . '</button>';
 				$bar->appendButton('Custom', $dhtml, 'upload');
@@ -236,7 +236,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 			if ($user->authorise('core.create', 'com_podcastmanager'))
 			{
 				$title = JText::_('COM_PODCASTMEDIA_CREATE_FOLDER');
-				$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn">
+				$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn btn-small">
 							<i class="icon-folder" title="' . $title . '"></i>
 							' . $title . '</button>';
 				$bar->appendButton('Custom', $dhtml, 'folder');
@@ -251,7 +251,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 
 			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
-				$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn">
+				$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn btn-small">
 							<i class="icon-remove" title="' . $title . '"></i>
 							' . $title . '</button>';
 			}
@@ -270,7 +270,6 @@ class PodcastMediaViewMedia extends JViewLegacy
 			JToolBarHelper::preferences('com_podcastmedia');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_CONTENT_MEDIA_MANAGER');
 	}
 
 	/**
