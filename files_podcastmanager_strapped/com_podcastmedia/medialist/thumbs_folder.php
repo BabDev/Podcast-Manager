@@ -31,7 +31,7 @@ $user = JFactory::getUser();
 	</div>
 	<div class="small">
 		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
-			<?php echo substr($this->_tmp_folder->name, 0, 10) . (strlen($this->_tmp_folder->name) > 10 ? '...' : ''); ?>
+			<?php echo JHtml::_('string.truncate', $this->_tmp_folder->name, 10, false); ?>
 		</a>
 	</div>
 </li>

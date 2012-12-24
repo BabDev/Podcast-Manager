@@ -33,7 +33,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 		</a>
 	</div>
 	<div class="small">
-		<?php echo $this->_tmp_audio->title; ?>
+		<?php echo JHtml::_('string.truncate', $this->_tmp_audio->name, 10, false); ?>
 	</div>
 </li>
 <?php
