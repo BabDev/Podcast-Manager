@@ -20,6 +20,7 @@
 		</files>
 		<files folder="com_podcastmedia" target="administrator/templates/isis/html/com_podcastmedia">
 			<folder>audio</folder>
+			<folder>audiolist</folder>
 			<folder>media</folder>
 			<folder>medialist</folder>
 			<file>index.html</file>

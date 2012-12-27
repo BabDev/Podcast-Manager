@@ -3,7 +3,7 @@
  * Podcast Manager for Joomla!
  *
  * @package     PodcastManager
- * @subpackage  com_podcastmedia
+ * @subpackage  files_podcastmanager_strapped
  *
  * @copyright   Copyright (C) 2011-2012 Michael Babker. All rights reserved.
  * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -17,10 +17,13 @@ defined('_JEXEC') or die;
 <tr>
 	<td class="imgTotal">
 		<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">
-			<?php echo JHtml::_('image', 'media/folderup_16.png', '..', array('width' => 16, 'height' => 16), true); ?></a>
+			<i class="icon-arrow-up"></i>
+		</a>
 	</td>
 	<td class="description">
-		<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">..</a>
+		<a href="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">
+			..
+		</a>
 	</td>
 	<td>&#160;</td>
 </tr>
