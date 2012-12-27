@@ -106,6 +106,14 @@ abstract class PodcastManagerHelper
 			$filename = JPATH_ROOT . '/' . $filename;
 		}
 
+		// Throw an error if for some reason getID3 isn't found
+		if (!is_file(JPATH_PLATFORM . '/getid3/getid3.php'))
+		{
+			JError::raiseNotice('500', JText::_('COM_PODCASTMANAGER_GETID3_NOT_FOUND'));
+
+			return $data;
+		}
+
 		// Only push through getID3 if the file actually exists and is local
 		if (!preg_match('/^http/', $filename) && is_file($filename))
 		{
