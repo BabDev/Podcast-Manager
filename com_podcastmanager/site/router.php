@@ -62,9 +62,9 @@ function podcastManagerBuildRoute(&$query)
 
 	if (isset($view) and ($view == 'feed'))
 	{
-		if ($mId != intval($query['feedname']) || $mView != $view)
+		if (isset($query['feedname']) && $mId != intval($query['feedname']) || $mView != $view)
 		{
-			if ($view == 'feed')
+			if (isset($query['feedname']) && $view == 'feed')
 			{
 				$segments[] = $query['feedname'];
 			}
