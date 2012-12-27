@@ -248,12 +248,12 @@ class PodcastManagerPlayer
 		// Process audio file
 		if (in_array($extension, $validAudio))
 		{
-			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none">';
+			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none"></audio>';
 		}
 		// Process video file
 		elseif (in_array($extension, $validVideo))
 		{
-			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none">';
+			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none"></video>';
 		}
 		// Invalid file type
 		else
