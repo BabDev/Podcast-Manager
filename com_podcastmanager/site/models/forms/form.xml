@@ -31,9 +31,9 @@
 			label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION"
 			size="30" />
 		<field name="owneremail" type="text" class="inputbox" size="30" filter="safehtml"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
+			label="COM_PODCASTMANAGER_FIELD_ITOWNEREMAIL_LABEL" description="COM_PODCASTMANAGER_FIELD_ITOWNEREMAIL_DESCRIPTION" />
 		<field name="ownername" type="text" class="inputbox" size="30" filter="safehtml"
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_DESCRIPTION" />
+			label="COM_PODCASTMANAGER_FIELD_ITOWNERNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_ITOWNERNAME_DESCRIPTION" />
 		<field name="keywords" type="text" class="inputbox" size="30" filter="safehtml"
 			label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL" description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
 		<field name="author" type="text" class="inputbox" size="30" filter="safehtml"
@@ -44,13 +44,13 @@
 		<field name="image" type="media" hide_none="1"
 			label="COM_PODCASTMANAGER_FEED_FIELD_ITIMAGE_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_ITIMAGE_DESCRIPTION" />
 		<field name="category1" type="itunescategory" default=""
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY1_DESCRIPTION"
+			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY1_LABEL" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY1_DESCRIPTION"
 			size="1" />
 		<field name="category2" type="itunescategory" default=""
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY2_DESCRIPTION"
+			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY2_LABEL" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY2_DESCRIPTION"
 			size="1" />
 		<field name="category3" type="itunescategory" default=""
-			label="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITCATEGORY3_DESCRIPTION"
+			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY3_LABEL" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY3_DESCRIPTION"
 			size="1" />
 		<field name="published" type="list" class="inputbox" filter="intval"
                label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
@@ -63,7 +63,7 @@
 				value="-2">JTRASH</option>
 		</field>
 		<field name="block" type="radio" default="0" filter="intval"
-               label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITBLOCK_DESCRIPTION" >
+               label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" >
 			<option
 				value="0">JNO</option>
 			<option
