@@ -80,6 +80,46 @@ class PodcastManagerControllerFeed extends JControllerForm
 				return true;
 			}
 		}
+
 		return false;
+	}
+
+
+	/**
+	 * Function that allows child controller access to model data after the data has been saved.
+	 *
+	 * @param   JModelLegacy  $model      The data model object.
+	 * @param   array         $validData  The validated data.
+	 *
+	 * @return  void
+	 *
+	 * @since   2.1
+	 */
+	protected function postSaveHook(JModelLegacy $model, $validData = array())
+	{
+		$item = $model->getItem();
+
+		$id = $item->id;
+
+		if (empty($validData['tags']) && !empty($item->tags))
+		{
+			$oldTags = new JTags;
+			$oldTags->unTagItem($id, 'com_podcastmanager.feed');
+
+			return;
+		}
+
+		$tags = $validData['tags'];
+
+		// Store the tag data if the feed was saved.
+		if ($tags[0] != '')
+		{
+			$isNew = $item->id == 0 ? true : false;
+
+			$tagsHelper = new JTags;
+			$tagsHelper->tagItem($id, 'com_podcastmanager.feed', $isNew, $item, $tags, null);
+		}
+
+		return;
 	}
 }

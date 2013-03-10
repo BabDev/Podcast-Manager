@@ -44,10 +44,10 @@ JHtml::_('behavior.keepalive');
 					<?php echo $this->form->getInput('description'); ?></li>
 
 					<li><?php echo $this->form->getLabel('bp_position'); ?>
-						<?php echo $this->form->getInput('bp_position'); ?></li>
+					<?php echo $this->form->getInput('bp_position'); ?></li>
 
 					<li><?php echo $this->form->getLabel('boilerplate'); ?>
-						<?php echo $this->form->getInput('boilerplate'); ?></li>
+					<?php echo $this->form->getInput('boilerplate'); ?></li>
 
 					<li><?php echo $this->form->getLabel('published'); ?>
 					<?php echo $this->form->getInput('published'); ?></li>
@@ -61,8 +61,7 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('image'); ?>
 					<?php echo $this->form->getInput('image'); ?></li>
 
-					<?php if ($this->canDo->get('core.admin'))
-					{ ?>
+					<?php if ($this->canDo->get('core.admin')) : ?>
 					<li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
 					<div class="button2-left">
 						<div class="blank">
@@ -72,10 +71,15 @@ JHtml::_('behavior.keepalive');
 		      			</div>
 		      		</div>
 		    		</li>
-					<?php } ?>
+					<?php endif; ?>
 
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
+
+					<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+					<li><?php echo $this->form->getLabel('tags'); ?>
+					<?php echo $this->form->getInput('tags'); ?></li>
+					<?php endif; ?>
 
 					<li><?php echo $this->form->getLabel('id'); ?>
 					<?php echo $this->form->getInput('id'); ?></li>
@@ -97,14 +101,13 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('publish_up'); ?>
 					<?php echo $this->form->getInput('publish_up'); ?></li>
 
-					<?php if ($this->item->modified_by)
-					{ ?>
+					<?php if ($this->item->modified_by) : ?>
 					<li><?php echo $this->form->getLabel('modified_by'); ?>
 					<?php echo $this->form->getInput('modified_by'); ?></li>
 
 					<li><?php echo $this->form->getLabel('modified'); ?>
 					<?php echo $this->form->getInput('modified'); ?></li>
-					<?php } ?>
+					<?php endif; ?>
 				</ul>
 			</fieldset>
 
@@ -143,8 +146,7 @@ JHtml::_('behavior.keepalive');
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 
-	<?php if ($this->canDo->get('core.admin'))
-	{ ?>
+	<?php if ($this->canDo->get('core.admin')) : ?>
 	<div class="width-100 fltlft">
 		<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 
@@ -156,7 +158,7 @@ JHtml::_('behavior.keepalive');
 
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
-	<?php } ?>
+	<?php endif; ?>
 	<div>
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>

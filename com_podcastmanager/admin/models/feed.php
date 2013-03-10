@@ -135,6 +135,15 @@ class PodcastManagerModelFeed extends JModelAdmin
 			$form->setFieldAttribute('publish_up', 'filter', 'unset');
 			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
+
+		// Add tags for CMS 3.1 and later
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$form->setField(
+				new SimpleXMLElement('<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" />')
+			);
+		}
+
 		return $form;
 	}
 
