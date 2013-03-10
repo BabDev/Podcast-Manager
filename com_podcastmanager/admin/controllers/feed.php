@@ -97,27 +97,31 @@ class PodcastManagerControllerFeed extends JControllerForm
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
-		$item = $model->getItem();
-
-		$id = $item->id;
-
-		if (empty($validData['tags']) && !empty($item->tags))
+		// Only supports CMS 3.1+ for now
+		if (version_compare(JVERSION, '3.1', 'ge'))
 		{
-			$oldTags = new JTags;
-			$oldTags->unTagItem($id, 'com_podcastmanager.feed');
+			$item = $model->getItem();
 
-			return;
-		}
+			$id = $item->id;
 
-		$tags = $validData['tags'];
+			if (empty($validData['tags']) && !empty($item->tags))
+			{
+				$oldTags = new JTags;
+				$oldTags->unTagItem($id, 'com_podcastmanager.feed');
 
-		// Store the tag data if the feed was saved.
-		if ($tags[0] != '')
-		{
-			$isNew = $item->id == 0 ? true : false;
+				return;
+			}
 
-			$tagsHelper = new JTags;
-			$tagsHelper->tagItem($id, 'com_podcastmanager.feed', $isNew, $item, $tags, null);
+			$tags = $validData['tags'];
+
+			// Store the tag data if the feed was saved.
+			if ($tags[0] != '')
+			{
+				$isNew = $item->id == 0 ? true : false;
+
+				$tagsHelper = new JTags;
+				$tagsHelper->tagItem($id, 'com_podcastmanager.feed', $isNew, $item, $tags, null);
+			}
 		}
 
 		return;
