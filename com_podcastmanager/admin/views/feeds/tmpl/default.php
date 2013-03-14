@@ -18,16 +18,16 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$user      = JFactory::getUser();
+$userId    = $user->get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 
-// Get info about the URL to build a proper one to display for the RSS links
-$uri = JURI::getInstance();
+// Get info about the site to build a proper front end URL to display for the RSS links
+$uri      = JUri::getInstance();
 $protocol = $uri->getScheme();
-$domain = $uri->getHost();
-$base = $protocol . '://' . $domain;
+$domain   = $uri->getHost();
+$base     = $protocol . '://' . $domain;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {
@@ -99,44 +99,39 @@ $base = $protocol . '://' . $domain;
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php if (count($this->items) == 0)
-		{ ?>
+		<?php if (count($this->items) == 0) : ?>
 			<tr class="row0">
 				<td align="center" colspan="8">
 					<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 				</td>
 			</tr>
-		<?php }
-		else
-		{ ?>
-		<?php foreach ($this->items as $i => $item)
-		{
-			$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->id);
-			$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.feed.' . $item->id);
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-			$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.feed.' . $item->id) && $item->created_by == $userId;
-			$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.feed.' . $item->id) && $canCheckin;
-			$rssRoute = PodcastManagerHelperRoute::getFeedRssRoute($item->id);
+		<?php else : ?>
+		<?php foreach ($this->items as $i => $item) :
+			$canCreate	= $user->authorise('core.create',     'com_podcastmanager.feed.' . $item->id);
+			$canEdit	= $user->authorise('core.edit',       'com_podcastmanager.feed.' . $item->id);
+			$canCheckin	= $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+			$canEditOwn	= $user->authorise('core.edit.own',   'com_podcastmanager.feed.' . $item->id) && $item->created_by == $userId;
+			$canChange	= $user->authorise('core.edit.state', 'com_podcastmanager.feed.' . $item->id) && $canCheckin;
+			$rssRoute   = PodcastManagerHelperRoute::getFeedRssRoute($item->id);
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php if ($item->checked_out)
-					{
+					<?php if ($item->checked_out) :
 						echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
-					}
-					if ($canEdit || $canEditOwn)
-					{ ?>
+					endif;
+					if ($canEdit || $canEditOwn) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id=' . $item->id); ?>">
 							<?php echo $this->escape($item->name); ?>
 						</a>
-					<?php }
-					else
-					{
+					<?php else :
 						echo $this->escape($item->name);
-					} ?>
+					endif; ?>
+					<p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+					</p>
 					<p class="smallsub">
 						<span><?php echo JText::_('COM_PODCASTMANAGER_RSS_FEED_URL') ?></span>
 						<a href="<?php echo $base . PodcastManagerHelper::getFeedRoute($rssRoute); ?>" target="_blank">
@@ -163,21 +158,18 @@ $base = $protocol . '://' . $domain;
 					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 				</td>
 				<td class="center nowrap">
-					<?php if ($item->language == '*')
-					{
+					<?php if ($item->language == '*') :
 						echo JText::alt('JALL', 'language');
-					}
-					else
-					{
+					else :
 						echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-					} ?>
+					endif; ?>
 				</td>
 				<td class="center">
 					<?php echo $item->id; ?>
 				</td>
 			</tr>
-			<?php }
-		} ?>
+			<?php endforeach;
+		endif; ?>
 		</tbody>
 	</table>
 

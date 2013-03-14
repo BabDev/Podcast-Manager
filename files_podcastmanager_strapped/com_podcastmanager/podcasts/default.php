@@ -36,6 +36,7 @@ $sortFields = $this->getSortFields();
 		} else {
 			dirn = direction.options[direction.selectedIndex].value;
 		}
+
 		Joomla.tableOrdering(order, dirn, '');
 	}
 
@@ -114,23 +115,19 @@ $sortFields = $this->getSortFields();
 				</tr>
 			</thead>
 			<tbody>
-			<?php if (count($this->items) == 0)
-			{ ?>
+			<?php if (count($this->items) == 0) : ?>
 				<tr class="row0">
 					<td class="center" colspan="7">
 						<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 					</td>
 				</tr>
-			<?php }
-			else
-			{ ?>
-			<?php foreach ($this->items as $i => $item)
-			{
-				$canCreate	= $user->authorise('core.create',		'com_podcastmanager.feed.' . $item->feedname);
-				$canEdit	= $user->authorise('core.edit',			'com_podcastmanager.podcast.' . $item->id);
-				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-				$canEditOwn	= $user->authorise('core.edit.own',		'com_podcastmanager.podcast.' . $item->id) && $item->created_by == $userId;
-				$canChange	= $user->authorise('core.edit.state',	'com_podcastmanager.podcast.' . $item->id) && $canCheckin;
+			<?php else : ?>
+			<?php foreach ($this->items as $i => $item) :
+				$canCreate	= $user->authorise('core.create',     'com_podcastmanager.feed.' . $item->feedname);
+				$canEdit	= $user->authorise('core.edit',       'com_podcastmanager.podcast.' . $item->id);
+				$canCheckin	= $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+				$canEditOwn	= $user->authorise('core.edit.own',   'com_podcastmanager.podcast.' . $item->id) && $item->created_by == $userId;
+				$canChange	= $user->authorise('core.edit.state', 'com_podcastmanager.podcast.' . $item->id) && $canCheckin;
 			?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="center hidden-phone">
@@ -140,20 +137,16 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
 					</td>
 					<td>
-						<?php if ($item->checked_out)
-						{
+						<?php if ($item->checked_out) :
 							echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
-						}
-						if ($canEdit || $canEditOwn)
-						{ ?>
+						endif;
+						if ($canEdit || $canEditOwn) : ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id=' . (int) $item->id); ?>">
 								<?php echo $this->escape($item->title); ?>
 							</a>
-						<?php }
-						else
-						{
-							echo $this->escape($item->title);
-						} ?>
+						<?php else : ?>
+							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
+						<?php endif; ?>
 					</td>
 					<td class="center hidden-phone">
 						<?php echo $item->feed_name ? $this->escape($item->feed_name) : JText::_('JNONE'); ?>
@@ -162,21 +155,18 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 					</td>
 					<td class="center hidden-phone">
-						<?php if ($item->language == '*')
-						{
+						<?php if ($item->language == '*') :
 							echo JText::alt('JALL', 'language');
-						}
-						else
-						{
+						else :
 							echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-						} ?>
+						endif; ?>
 					</td>
 					<td class="center hidden-phone">
 						<?php echo $item->id; ?>
 					</td>
 				</tr>
-				<?php }
-			} ?>
+				<?php endforeach;
+			endif; ?>
 			</tbody>
 		</table>
 		<?php // Load the batch processing form.

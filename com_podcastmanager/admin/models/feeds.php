@@ -159,7 +159,7 @@ class PodcastManagerModelFeeds extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the needed fields from the table.
-		$query->select($this->getState('list.select', 'a.id, a.name, a.published, a.language, a.checked_out, a.created_by'));
+		$query->select($this->getState('list.select', 'a.id, a.name, a.alias, a.published, a.language, a.checked_out, a.created_by'));
 		$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 
 		// Join over the language

@@ -6,6 +6,7 @@ CREATE TABLE [#__podcastmanager](
 	[filename] [nvarchar](255) NULL,
 	[feedname] [bigint] NULL,
 	[title] [nvarchar](255) NOT NULL,
+	[alias] [nvarchar](255) NOT NULL,
 	[published] [smallint] NOT NULL,
 	[created] [datetime] NOT NULL,
 	[created_by] [bigint] NOT NULL,
@@ -33,6 +34,8 @@ CREATE TABLE [#__podcastmanager](
 ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_asset_id]  DEFAULT ((0)) FOR [asset_id];
 
 ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_title]  DEFAULT ((N'')) FOR [title];
+
+ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_alias]  DEFAULT ((N'')) FOR [alias];
 
 ALTER TABLE [#__podcastmanager] ADD  CONSTRAINT [DF_#__podcastmanager_published]  DEFAULT ((0)) FOR [published];
 
@@ -74,6 +77,7 @@ CREATE TABLE [#__podcastmanager_feeds](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[asset_id] [bigint] NOT NULL,
 	[name] [nvarchar](255) NULL,
+	[alias] [nvarchar](255) NOT NULL,
 	[subtitle] [nvarchar](255) NOT NULL,
 	[description] [nvarchar](max) NOT NULL,
 	[boilerplate] [nvarchar](max) NOT NULL,
@@ -107,6 +111,8 @@ CREATE TABLE [#__podcastmanager_feeds](
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_asset_id]  DEFAULT ((0)) FOR [asset_id];
 
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_name]  DEFAULT ((N'')) FOR [name];
+
+ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_alias]  DEFAULT ((N'')) FOR [alias];
 
 ALTER TABLE [#__podcastmanager_feeds] ADD  CONSTRAINT [DF_#__podcastmanager_feeds_subtitle]  DEFAULT ((N'')) FOR [subtitle];
 

@@ -27,6 +27,9 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('name'); ?>
 					<?php echo $this->form->getInput('name'); ?></li>
 
+					<li><?php echo $this->form->getLabel('alias'); ?>
+					<?php echo $this->form->getInput('alias'); ?></li>
+
 					<li><?php echo $this->form->getLabel('subtitle'); ?>
 					<?php echo $this->form->getInput('subtitle'); ?></li>
 
@@ -34,10 +37,10 @@ JHtml::_('behavior.keepalive');
 					<?php echo $this->form->getInput('description'); ?></li>
 
 					<li><?php echo $this->form->getLabel('bp_position'); ?>
-						<?php echo $this->form->getInput('bp_position'); ?></li>
+					<?php echo $this->form->getInput('bp_position'); ?></li>
 
 					<li><?php echo $this->form->getLabel('boilerplate'); ?>
-						<?php echo $this->form->getInput('boilerplate'); ?></li>
+					<?php echo $this->form->getInput('boilerplate'); ?></li>
 
 					<li><?php echo $this->form->getLabel('published'); ?>
 					<?php echo $this->form->getInput('published'); ?></li>

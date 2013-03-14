@@ -145,6 +145,14 @@ JHtml::_('formbehavior.chosen', 'select');
 				<div class="tab-pane" id="publishing">
 					<div class="control-group">
 						<div class="control-label">
+							<?php echo $this->form->getLabel('alias'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('alias'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
 							<?php echo $this->form->getLabel('created'); ?>
 						</div>
 						<div class="controls">

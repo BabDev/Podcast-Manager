@@ -205,7 +205,9 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			}
 
 			// Alter the title & alias
+			$data = $this->generateNewTitle($feedId, $table->alias, $table->title);
 			$table->title = 'Copy of ' . $table->title;
+			$table->alias = $data['1'];
 
 			// Reset the ID because we are making a copy
 			$table->id = 0;
@@ -414,6 +416,31 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	protected function cleanCache($group = 'com_podcastmanager', $client_id = 1)
 	{
 		parent::cleanCache($group, $client_id);
+	}
+
+	/**
+	 * Method to change the title & alias.
+	 *
+	 * @param   integer  $category_id  The id of the feed.
+	 * @param   string   $alias        The alias.
+	 * @param   string   $title        The title.
+	 *
+	 * @return	array  Contains the modified title and alias.
+	 *
+	 * @since	2.1
+	 */
+	protected function generateNewTitle($category_id, $alias, $title)
+	{
+		// Alter the title & alias
+		$table = $this->getTable();
+
+		while ($table->load(array('alias' => $alias, 'feedname' => $category_id)))
+		{
+			$title = JString::increment($title);
+			$alias = JString::increment($alias, 'dash');
+		}
+
+		return array($title, $alias);
 	}
 
 	/**

@@ -40,6 +40,9 @@ JHtml::_('behavior.keepalive');
 				<li><?php echo $this->form->getLabel('title'); ?>
 				<?php echo $this->form->getInput('title'); ?></li>
 
+				<li><?php echo $this->form->getLabel('alias'); ?>
+				<?php echo $this->form->getInput('alias'); ?></li>
+
 				<li><?php echo $this->form->getLabel('feedname'); ?>
 				<?php echo $this->form->getInput('feedname'); ?></li>
 

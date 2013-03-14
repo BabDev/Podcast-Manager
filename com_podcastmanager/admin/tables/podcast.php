@@ -127,6 +127,34 @@ class PodcastManagerTablePodcast extends JTable
 	}
 
 	/**
+	 * Method to perform sanity checks on the JTable instance properties to ensure
+	 * they are safe to store in the database.  Child classes should override this
+	 * method to make sure the data they are storing in the database is safe and
+	 * as expected before storage.
+	 *
+	 * @return  boolean  True if the instance is sane and able to be stored in the database.
+	 *
+	 * @since   2.1
+	 * @see     JTable::check()
+	 */
+	public function check()
+	{
+		if (trim($this->alias) == '')
+		{
+			$this->alias = $this->title;
+		}
+
+		$this->alias = JApplication::stringURLSafe($this->alias);
+
+		if (trim(str_replace('-', '', $this->alias)) == '')
+		{
+			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+		}
+
+		return true;
+	}
+
+	/**
 	 * Overriden JTable::store to set modified data and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.

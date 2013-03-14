@@ -1,4 +1,4 @@
-CREATE TABLE "#__podcastmanager" (
+CREATE TABLE "#__podcastmanager_new" (
   "id" serial NOT NULL,
   "asset_id" bigint DEFAULT 0 NOT NULL,
   "filename" character varying(255) DEFAULT '' NULL,
@@ -26,7 +26,11 @@ CREATE TABLE "#__podcastmanager" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE "#__podcastmanager_feeds" (
+INSERT INTO "#__podcastmanager_new" SELECT * FROM "#__podcastmanager";
+DROP TABLE "#__podcastmanager" CASCADE;
+ALTER TABLE "#__podcastmanager_new" RENAME TO "#__podcastmanager";
+
+CREATE TABLE "#__podcastmanager_feeds_new" (
   "id" serial NOT NULL,
   "asset_id" bigint DEFAULT 0 NOT NULL,
   "name" character varying(255) DEFAULT '' NULL,
@@ -57,3 +61,7 @@ CREATE TABLE "#__podcastmanager_feeds" (
   "language" character varying(7) NOT NULL,
   PRIMARY KEY ("id")
 );
+
+INSERT INTO "#__podcastmanager_feeds_new" SELECT * FROM "#__podcastmanager_feeds";
+DROP TABLE "#__podcastmanager_feeds" CASCADE;
+ALTER TABLE "#__podcastmanager_feeds_new" RENAME TO "#__podcastmanager_feeds";

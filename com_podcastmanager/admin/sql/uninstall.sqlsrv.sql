@@ -1,5 +1,6 @@
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_asset_id];
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_title];
+ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_alias];
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_published];
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_created];
 ALTER TABLE [#__podcastmanager] DROP CONSTRAINT [DF_#__podcastmanager_created_by];
@@ -21,6 +22,7 @@ DROP TABLE [#__podcastmanager];
 
 ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_asset_id];
 ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_name];
+ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_alias];
 ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_subtitle];
 ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_description];
 ALTER TABLE [#__podcastmanager_feeds] DROP CONSTRAINT [DF_#__podcastmanager_feeds_copyright];

@@ -12,6 +12,8 @@
 		<field name="title" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
 			size="30" required="true" />
+		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC" class="inputbox" size="45" labelclass="control-label" />
 		<field name="published" type="list" class="inputbox span12 small" filter="intval"
 			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
