@@ -165,6 +165,90 @@ class Com_PodcastManagerInstallerScript
 				JFile::copy(JPATH_ROOT . '/media/index.html', JPATH_ROOT . '/media/com_podcastmanager/index.html');
 			}
 		}
+
+		// Deal with Tags support in 3.1+
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			// Insert a column in the #__content_types table if one doesn't exist already, only supported in MySQL for now
+			$db = JFactory::getDbo();
+
+			if (substr($db->name, 0, 5) == 'mysql')
+			{
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('type_id'));
+				$query->from($db->quoteName('#__content_types'));
+				$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'));
+				$db->setQuery($query);
+				$typeId = $db->loadResult();
+
+				// If we don't have the type ID, assume the type data doesn't exist yet
+				if (!$typeId)
+				{
+					// This object contains all fields that are mapped to the core_content table
+					$commonObject = new stdClass;
+					$commonObject->core_title = 'name';
+					$commonObject->core_alias = 'alias';
+					$commonObject->core_body = 'description';
+					$commonObject->core_state = 'published';
+					$commonObject->core_checked_out_time = 'checked_out_time';
+					$commonObject->core_checked_out_user_id = 'checked_out';
+					$commonObject->core_created_user_id = 'created_by';
+					$commonObject->core_created_by_alias = 'author';
+					$commonObject->core_created_time = 'created';
+					$commonObject->core_modified_user_id = 'modified_by';
+					$commonObject->core_modified_time = 'modified';
+					$commonObject->core_language = 'language';
+					$commonObject->asset_id = 'asset_id';
+
+					// This object contains unique fields
+					$specialObject = new stdClass;
+					$specialObject->subtitle = 'subtitle';
+					$specialObject->boilerplate = 'boilerplate';
+					$specialObject->bp_position = 'bp_position';
+					$specialObject->copyright = 'copyright';
+					$specialObject->explicit = 'explicit';
+					$specialObject->block = 'block';
+					$specialObject->ownername = 'ownername';
+					$specialObject->owneremail = 'owneremail';
+					$specialObject->keywords = 'keywords';
+					$specialObject->newFeed = 'newFeed';
+					$specialObject->image = 'image';
+					$specialObject->category1 = 'category1';
+					$specialObject->category2 = 'category2';
+					$specialObject->category3 = 'category3';
+
+					// Prepare the object
+					$fieldMappings = array(
+						'common' => array(
+							$commonObject
+						),
+						'special' => array(
+							$specialObject
+						)
+					);
+
+					// Set the table columns to insert table to
+					$columnsArray = array(
+						$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
+						$db->quoteName('field_mappings'), $db->quoteName('router')
+					);
+
+					// Insert the link.
+					$query->clear();
+					$query->insert($db->quoteName('#__content_types'));
+					$query->columns($columnsArray);
+					$query->values(
+						$db->quote('Podcast Manager Feed') . ', '
+						. $db->quote('com_podcastmanager.feed') . ', '
+						. $db->quote('#__podcastmanager_feeds') . ', '
+						. $db->quote(json_encode($fieldMappings)) . ', '
+						. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute')
+					);
+					$db->setQuery($query);
+					$db->execute();
+				}
+			}
+		}
 	}
 
 	/**
@@ -338,6 +422,14 @@ class Com_PodcastManagerInstallerScript
 	 */
 	private function _getVersion()
 	{
+		static $version;
+
+		// Only retrieve the version info once
+		if (!$version)
+		{
+			return $version;
+		}
+
 		// Get the record from the database
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
