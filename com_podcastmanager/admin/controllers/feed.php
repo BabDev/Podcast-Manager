@@ -106,7 +106,7 @@ class PodcastManagerControllerFeed extends JControllerForm
 
 			if (empty($validData['tags']) && !empty($item->tags))
 			{
-				$oldTags = new JTags;
+				$oldTags = new JHelperTags;
 				$oldTags->unTagItem($id, 'com_podcastmanager.feed');
 
 				return;
@@ -119,7 +119,7 @@ class PodcastManagerControllerFeed extends JControllerForm
 			{
 				$isNew = $item->id == 0 ? true : false;
 
-				$tagsHelper = new JTags;
+				$tagsHelper = new JHelperTags;
 				$tagsHelper->tagItem($id, 'com_podcastmanager.feed', $isNew, $item, $tags, null);
 			}
 		}
