@@ -25,8 +25,11 @@ $published	= $this->state->get('filter.published');
 	<p><?php echo JText::_('COM_PODCASTMANAGER_BATCH_TIP'); ?></p>
 	<?php echo JHtml::_('batch.language'); ?>
 
-	<?php if ($published >= 0)
-	{ ?>
+	<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+	<?php echo JHtml::_('batch.tag'); ?>
+	<?php endif; ?>
+
+	<?php if ($published >= 0) : ?>
 	<label id="batch-choose-action-lbl" for="batch-choose-action">
 		<?php echo JText::_('COM_PODCASTMANAGER_BATCH_FEED_LABEL'); ?>
 	</label>
@@ -37,12 +40,12 @@ $published	= $this->state->get('filter.published');
 		</select>
 		<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
 	</fieldset>
-	<?php } ?>
+	<?php endif; ?>
 
 	<button type="submit" onclick="submitbutton('podcast.batch');">
 		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>
 	</button>
-	<button type="button" onclick="document.id('batch-feed-id').value='';document.id('batch-language').value=''">
+	<button type="button" onclick="document.id('batch-feed-id').value='';document.id('batch-language').value='';document.id('batch-tag').value=''">
 		<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>
 	</button>
 </fieldset>

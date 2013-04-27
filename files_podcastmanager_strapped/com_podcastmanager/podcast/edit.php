@@ -222,6 +222,16 @@ JHtml::_('formbehavior.chosen', 'select');
 						<?php echo $this->form->getInput('language'); ?>
 					</div>
 				</div>
+				<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('tags'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('tags'); ?>
+					</div>
+				</div>
+				<?php endif; ?>
 				<div class="control-group">
 					<div class="control-label">
 						<?php echo $this->form->getLabel('id'); ?>

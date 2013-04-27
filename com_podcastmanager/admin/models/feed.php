@@ -148,6 +148,39 @@ class PodcastManagerModelFeed extends JModelAdmin
 	}
 
 	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  mixed  Object on success, false on failure.
+	 *
+	 * @since   2.1
+	 */
+	public function getItem($pk = null)
+	{
+		if ($item = parent::getItem($pk))
+		{
+			// Convert the metadata field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($item->metadata);
+			$item->metadata = $registry->toArray();
+
+			// Tags support in CMS 3.1+
+			if (version_compare(JVERSION, '3.1', 'ge'))
+			{
+				if (!empty($item->id))
+				{
+					$item->tags = new JHelperTags;
+					$item->tags->getTagIds($item->id, 'com_podcastmanager.feed');
+					$item->metadata['tags'] = $item->tags;
+				}
+			}
+		}
+
+		return $item;
+	}
+
+	/**
 	 * Returns a JTable object, always creating it
 	 *
 	 * @param   string  $type    The table type to instantiate

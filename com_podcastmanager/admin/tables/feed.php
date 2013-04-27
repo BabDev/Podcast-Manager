@@ -24,6 +24,14 @@ defined('_JEXEC') or die;
 class PodcastManagerTableFeed extends JTable
 {
 	/**
+	 * Helper object for storing and deleting tag information.
+	 *
+	 * @var    JHelperTags
+	 * @since  2.1
+	 */
+	protected $tagsHelper;
+
+	/**
 	 * The class constructor.
 	 *
 	 * @param   JDatabase  &$db  JDatabase connector object.
@@ -33,6 +41,13 @@ class PodcastManagerTableFeed extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__podcastmanager_feeds', 'id', $db);
+
+		// Tags support in CMS 3.1+
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$this->tagsHelper = new JHelperTags;
+			$this->tagsHelper->typeAlias = 'com_podcastmanager.feed';
+		}
 	}
 
 	/**
@@ -161,6 +176,32 @@ class PodcastManagerTableFeed extends JTable
 	}
 
 	/**
+	 * Override parent delete method to delete tags information.
+	 *
+	 * @param   integer  $pk  Primary key to delete.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @since   2.1
+	 */
+	public function delete($pk = null)
+	{
+		$result = parent::delete($pk);
+
+		// Tags support in CMS 3.1+
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$tagResult = $this->tagsHelper->deleteTagData($this, $pk);
+		}
+		else
+		{
+			$tagResult = true;
+		}
+
+		return $result && $tagResult;
+	}
+
+	/**
 	 * Overriden JTable::store to set modified data and user id.
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
@@ -194,6 +235,24 @@ class PodcastManagerTableFeed extends JTable
 			}
 		}
 
-		return parent::store($updateNulls);
+		// Tags support in CMS 3.1+
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$this->tagsHelper->preStoreProcess($this);
+		}
+
+		$result = parent::store($updateNulls);
+
+		// Tags support in CMS 3.1+
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$tagResult = $this->tagsHelper->postStoreProcess($this);
+		}
+		else
+		{
+			$tagResult = true;
+		}
+
+		return $result && $tagResult;
 	}
 }

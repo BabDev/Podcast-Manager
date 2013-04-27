@@ -107,6 +107,16 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$done = true;
 		}
 
+		if (!empty($commands['tag']))
+		{
+			if (!$this->batchTag($commands['tag'], $pks, $contexts))
+			{
+				return false;
+			}
+
+			$done = true;
+		}
+
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
@@ -476,7 +486,48 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
+		// Add tags for CMS 3.1 and later
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$form->setField(
+				new SimpleXMLElement('<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" />')
+			);
+		}
+
 		return $form;
+	}
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  mixed  Object on success, false on failure.
+	 *
+	 * @since   2.1
+	 */
+	public function getItem($pk = null)
+	{
+		if ($item = parent::getItem($pk))
+		{
+			// Convert the metadata field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($item->metadata);
+			$item->metadata = $registry->toArray();
+
+			// Tags support in CMS 3.1+
+			if (version_compare(JVERSION, '3.1', 'ge'))
+			{
+				if (!empty($item->id))
+				{
+					$item->tags = new JHelperTags;
+					$item->tags->getTagIds($item->id, 'com_podcastmanager.podcast');
+					$item->metadata['tags'] = $item->tags;
+				}
+			}
+		}
+
+		return $item;
 	}
 
 	/**

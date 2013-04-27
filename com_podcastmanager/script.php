@@ -147,26 +147,23 @@ class Com_PodcastManagerInstallerScript
 			// Remove the data in the core content tables
 			$db = JFactory::getDbo();
 
-			if ($db->name != ('sqlsrv' || 'sqlazure'))
-			{
-				$query = $db->getQuery(true);
-				$query->delete($db->quoteName('#__content_types'));
-				$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-				$db->setQuery($query);
-				$db->execute();
+			$query = $db->getQuery(true);
+			$query->delete($db->quoteName('#__content_types'));
+			$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+			$db->setQuery($query);
+			$db->execute();
 
-				$query->clear();
-				$query->delete($db->quoteName('#__contentitem_tag_map'));
-				$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-				$db->setQuery($query);
-				$db->execute();
+			$query->clear();
+			$query->delete($db->quoteName('#__contentitem_tag_map'));
+			$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+			$db->setQuery($query);
+			$db->execute();
 
-				$query->clear();
-				$query->delete($db->quoteName('#__core_content'));
-				$query->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-				$db->setQuery($query);
-				$db->execute();
-			}
+			$query->clear();
+			$query->delete($db->quoteName('#__ucm_content'));
+			$query->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+			$db->setQuery($query);
+			$db->execute();
 		}
 	}
 
@@ -197,154 +194,151 @@ class Com_PodcastManagerInstallerScript
 		// Deal with Tags support in 3.1+
 		if (version_compare(JVERSION, '3.1', 'ge'))
 		{
-			// Insert the columns in the #__content_types table if they don't exist already, not yet in SQL Server
+			// Insert the columns in the #__content_types table if they don't exist already
 			$db = JFactory::getDbo();
 
-			if ($db->name != ('sqlsrv' || 'sqlazure'))
+			// Get the type ID for a Podcast Manager feed
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('type_id'));
+			$query->from($db->quoteName('#__content_types'));
+			$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'));
+			$db->setQuery($query);
+			$feedTypeId = $db->loadResult();
+
+			// Get the type ID for a Podcast Manager podcast
+			$query->clear('where');
+			$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'));
+			$db->setQuery($query);
+			$podcastTypeId = $db->loadResult();
+
+			// If we don't have the feed type ID, assume the type data doesn't exist yet
+			if (!$feedTypeId)
 			{
-				// Get the type ID for a Podcast Manager feed
-				$query = $db->getQuery(true);
-				$query->select($db->quoteName('type_id'));
-				$query->from($db->quoteName('#__content_types'));
-				$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'));
+				// This object contains all fields that are mapped to the core_content table
+				$commonObject = new stdClass;
+				$commonObject->core_title = 'name';
+				$commonObject->core_alias = 'alias';
+				$commonObject->core_body = 'description';
+				$commonObject->core_state = 'published';
+				$commonObject->core_checked_out_time = 'checked_out_time';
+				$commonObject->core_checked_out_user_id = 'checked_out';
+				$commonObject->core_created_user_id = 'created_by';
+				$commonObject->core_created_by_alias = 'author';
+				$commonObject->core_created_time = 'created';
+				$commonObject->core_modified_user_id = 'modified_by';
+				$commonObject->core_modified_time = 'modified';
+				$commonObject->core_language = 'language';
+				$commonObject->asset_id = 'asset_id';
+
+				// This object contains unique fields
+				$specialObject = new stdClass;
+				$specialObject->subtitle = 'subtitle';
+				$specialObject->boilerplate = 'boilerplate';
+				$specialObject->bp_position = 'bp_position';
+				$specialObject->copyright = 'copyright';
+				$specialObject->explicit = 'explicit';
+				$specialObject->block = 'block';
+				$specialObject->ownername = 'ownername';
+				$specialObject->owneremail = 'owneremail';
+				$specialObject->keywords = 'keywords';
+				$specialObject->newFeed = 'newFeed';
+				$specialObject->image = 'image';
+				$specialObject->category1 = 'category1';
+				$specialObject->category2 = 'category2';
+				$specialObject->category3 = 'category3';
+
+				// Prepare the object
+				$fieldMappings = array(
+					'common' => array(
+						$commonObject
+					),
+					'special' => array(
+						$specialObject
+					)
+				);
+
+				// Set the table columns to insert table to
+				$columnsArray = array(
+					$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
+					$db->quoteName('field_mappings'), $db->quoteName('router')
+				);
+
+				// Insert the link.
+				$query->clear();
+				$query->insert($db->quoteName('#__content_types'));
+				$query->columns($columnsArray);
+				$query->values(
+					$db->quote('Podcast Manager Feed') . ', '
+					. $db->quote('com_podcastmanager.feed') . ', '
+					. $db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
+					. $db->quote(json_encode($fieldMappings)) . ', '
+					. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute')
+				);
 				$db->setQuery($query);
-				$feedTypeId = $db->loadResult();
+				$db->execute();
+			}
 
-				// Get the type ID for a Podcast Manager podcast
-				$query->clear('where');
-				$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'));
+			// If we don't have the podcast type ID, assume the type data doesn't exist yet
+			if (!$feedTypeId)
+			{
+				// This object contains all fields that are mapped to the core_content table
+				$commonObject = new stdClass;
+				$commonObject->core_title = 'title';
+				$commonObject->core_alias = 'alias';
+				$commonObject->core_body = 'itSummary';
+				$commonObject->core_state = 'published';
+				$commonObject->core_checked_out_time = 'checked_out_time';
+				$commonObject->core_checked_out_user_id = 'checked_out';
+				$commonObject->core_created_user_id = 'created_by';
+				$commonObject->core_created_by_alias = 'itAuthor';
+				$commonObject->core_created_time = 'created';
+				$commonObject->core_modified_user_id = 'modified_by';
+				$commonObject->core_modified_time = 'modified';
+				$commonObject->core_language = 'language';
+				$commonObject->core_publish_up = 'publish_up';
+				$commonObject->asset_id = 'asset_id';
+
+				// This object contains unique fields
+				$specialObject = new stdClass;
+				$specialObject->filename = 'filename';
+				$specialObject->feedname = 'feedname';
+				$specialObject->itBlock = 'itBlock';
+				$specialObject->itDuration = 'itDuration';
+				$specialObject->itExplicit = 'itExplicit';
+				$specialObject->itImage = 'itImage';
+				$specialObject->itKeywords = 'itKeywords';
+				$specialObject->itSubtitle = 'itSubtitle';
+				$specialObject->mime = 'mime';
+
+				// Prepare the object
+				$fieldMappings = array(
+					'common' => array(
+						$commonObject
+					),
+					'special' => array(
+						$specialObject
+					)
+				);
+
+				// Set the table columns to insert table to
+				$columnsArray = array(
+					$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
+					$db->quoteName('field_mappings'), $db->quoteName('router')
+				);
+
+				// Insert the link.
+				$query->clear();
+				$query->insert($db->quoteName('#__content_types'));
+				$query->columns($columnsArray);
+				$query->values(
+					$db->quote('Podcast Manager Podcast') . ', '
+					. $db->quote('com_podcastmanager.podcast') . ', '
+					. $db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
+					. $db->quote(json_encode($fieldMappings)) . ', '
+					. $db->quote('PodcastManagerHelperRoute::getPodcastRoute')
+				);
 				$db->setQuery($query);
-				$podcastTypeId = $db->loadResult();
-
-				// If we don't have the feed type ID, assume the type data doesn't exist yet
-				if (!$feedTypeId)
-				{
-					// This object contains all fields that are mapped to the core_content table
-					$commonObject = new stdClass;
-					$commonObject->core_title = 'name';
-					$commonObject->core_alias = 'alias';
-					$commonObject->core_body = 'description';
-					$commonObject->core_state = 'published';
-					$commonObject->core_checked_out_time = 'checked_out_time';
-					$commonObject->core_checked_out_user_id = 'checked_out';
-					$commonObject->core_created_user_id = 'created_by';
-					$commonObject->core_created_by_alias = 'author';
-					$commonObject->core_created_time = 'created';
-					$commonObject->core_modified_user_id = 'modified_by';
-					$commonObject->core_modified_time = 'modified';
-					$commonObject->core_language = 'language';
-					$commonObject->asset_id = 'asset_id';
-
-					// This object contains unique fields
-					$specialObject = new stdClass;
-					$specialObject->subtitle = 'subtitle';
-					$specialObject->boilerplate = 'boilerplate';
-					$specialObject->bp_position = 'bp_position';
-					$specialObject->copyright = 'copyright';
-					$specialObject->explicit = 'explicit';
-					$specialObject->block = 'block';
-					$specialObject->ownername = 'ownername';
-					$specialObject->owneremail = 'owneremail';
-					$specialObject->keywords = 'keywords';
-					$specialObject->newFeed = 'newFeed';
-					$specialObject->image = 'image';
-					$specialObject->category1 = 'category1';
-					$specialObject->category2 = 'category2';
-					$specialObject->category3 = 'category3';
-
-					// Prepare the object
-					$fieldMappings = array(
-						'common' => array(
-							$commonObject
-						),
-						'special' => array(
-							$specialObject
-						)
-					);
-
-					// Set the table columns to insert table to
-					$columnsArray = array(
-						$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-						$db->quoteName('field_mappings'), $db->quoteName('router')
-					);
-
-					// Insert the link.
-					$query->clear();
-					$query->insert($db->quoteName('#__content_types'));
-					$query->columns($columnsArray);
-					$query->values(
-						$db->quote('Podcast Manager Feed') . ', '
-						. $db->quote('com_podcastmanager.feed') . ', '
-						. $db->quote('#__podcastmanager_feeds') . ', '
-						. $db->quote(json_encode($fieldMappings)) . ', '
-						. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute')
-					);
-					$db->setQuery($query);
-					$db->execute();
-				}
-
-				// If we don't have the podcast type ID, assume the type data doesn't exist yet
-				if (!$feedTypeId)
-				{
-					// This object contains all fields that are mapped to the core_content table
-					$commonObject = new stdClass;
-					$commonObject->core_title = 'title';
-					$commonObject->core_alias = 'alias';
-					$commonObject->core_body = 'itSummary';
-					$commonObject->core_state = 'published';
-					$commonObject->core_checked_out_time = 'checked_out_time';
-					$commonObject->core_checked_out_user_id = 'checked_out';
-					$commonObject->core_created_user_id = 'created_by';
-					$commonObject->core_created_by_alias = 'itAuthor';
-					$commonObject->core_created_time = 'created';
-					$commonObject->core_modified_user_id = 'modified_by';
-					$commonObject->core_modified_time = 'modified';
-					$commonObject->core_language = 'language';
-					$commonObject->core_publish_up = 'publish_up';
-					$commonObject->asset_id = 'asset_id';
-
-					// This object contains unique fields
-					$specialObject = new stdClass;
-					$specialObject->filename = 'filename';
-					$specialObject->feedname = 'feedname';
-					$specialObject->itBlock = 'itBlock';
-					$specialObject->itDuration = 'itDuration';
-					$specialObject->itExplicit = 'itExplicit';
-					$specialObject->itImage = 'itImage';
-					$specialObject->itKeywords = 'itKeywords';
-					$specialObject->itSubtitle = 'itSubtitle';
-					$specialObject->mime = 'mime';
-
-					// Prepare the object
-					$fieldMappings = array(
-						'common' => array(
-							$commonObject
-						),
-						'special' => array(
-							$specialObject
-						)
-					);
-
-					// Set the table columns to insert table to
-					$columnsArray = array(
-						$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-						$db->quoteName('field_mappings'), $db->quoteName('router')
-					);
-
-					// Insert the link.
-					$query->clear();
-					$query->insert($db->quoteName('#__content_types'));
-					$query->columns($columnsArray);
-					$query->values(
-						$db->quote('Podcast Manager Podcast') . ', '
-						. $db->quote('com_podcastmanager.podcast') . ', '
-						. $db->quote('#__podcastmanager') . ', '
-						. $db->quote(json_encode($fieldMappings)) . ', '
-						. $db->quote('PodcastManagerHelperRoute::getPodcastRoute')
-					);
-					$db->setQuery($query);
-					$db->execute();
-				}
+				$db->execute();
 			}
 		}
 	}

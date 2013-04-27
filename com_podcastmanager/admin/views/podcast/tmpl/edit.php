@@ -79,6 +79,11 @@ JHtml::_('behavior.keepalive');
 				<li><?php echo $this->form->getLabel('language'); ?>
 				<?php echo $this->form->getInput('language'); ?></li>
 
+				<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+				<li><?php echo $this->form->getLabel('tags'); ?>
+				<?php echo $this->form->getInput('tags'); ?></li>
+				<?php endif; ?>
+
 				<li><?php echo $this->form->getLabel('id'); ?>
 				<?php echo $this->form->getInput('id'); ?></li>
 			</ul>

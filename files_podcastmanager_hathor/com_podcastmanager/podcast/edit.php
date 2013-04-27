@@ -93,6 +93,11 @@ JHtml::_('behavior.formvalidation');
 						echo $this->form->getInput('language'); ?>
 					</li>
 
+					<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+					<li><?php echo $this->form->getLabel('tags'); ?>
+					<?php echo $this->form->getInput('tags'); ?></li>
+					<?php endif; ?>
+
 					<li><?php echo $this->form->getLabel('id');
 						echo $this->form->getInput('id'); ?>
 					</li>

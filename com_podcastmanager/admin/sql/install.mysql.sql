@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `itSummary` varchar(5120) NOT NULL default '',
   `mime` varchar(20) NOT NULL default '',
   `language` char(7) NOT NULL,
+	`metadata` text NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -55,5 +56,6 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `checked_out` integer unsigned NOT NULL default '0',
   `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
   `language` char(7) NOT NULL,
+	`metadata` text NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;

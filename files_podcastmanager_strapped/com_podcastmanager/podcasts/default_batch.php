@@ -32,6 +32,13 @@ $published	= $this->state->get('filter.published');
 				<?php echo JHtml::_('batch.language'); ?>
 			</div>
 		</div>
+		<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
+		<div class="control-group">
+			<div class="controls">
+				<?php echo JHtml::_('batch.tag');?>
+			</div>
+		</div>
+		<?php endif; ?>
 		<?php if ($published >= 0) : ?>
 		<div class="control-group">
 			<label id="batch-choose-action-lbl" for="batch-feed-id" class="control-label">
@@ -50,7 +57,7 @@ $published	= $this->state->get('filter.published');
 		<?php endif; ?>
 	</div>
 	<div class="modal-footer">
-		<button class="btn" type="button" onclick="document.id('batch-feed-id').value='';document.id('batch-language-id').value=''" data-dismiss="modal">
+		<button class="btn" type="button" onclick="document.id('batch-feed-id').value='';document.id('batch-language-id').value='';document.id('batch-tag-id').value=''" data-dismiss="modal">
 			<?php echo JText::_('JCANCEL'); ?>
 		</button>
 		<button class="btn btn-primary" type="submit" onclick="Joomla.submitbutton('podcast.batch');">
