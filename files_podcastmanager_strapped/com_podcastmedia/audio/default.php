@@ -67,7 +67,7 @@ $params = JComponentHelper::getParams('com_podcastmedia');
 </form>
 
 <?php if ($user->authorise('core.create', 'com_podcastmedia')): ?>
-	<form action="<?php echo JUri::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;asset=<?php echo $input->getCmd('asset');?>&amp;author=<?php echo $input->getCmd('author');?>&amp;format=<?php echo $this->medmanparams->get('enable_flash') == '1' ? 'json' : '' ?>" id="uploadForm" class="form-horizontal" name="uploadForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo JUri::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo JSession::getFormToken();?>=1&amp;asset=<?php echo $input->getCmd('asset');?>&amp;author=<?php echo $input->getCmd('author');?>" id="uploadForm" class="form-horizontal" name="uploadForm" method="post" enctype="multipart/form-data">
 		<div id="uploadform" class="well">
 			<fieldset id="upload-noflash" class="actions">
 				<div class="control-group">
@@ -80,26 +80,6 @@ $params = JComponentHelper::getParams('com_podcastmedia');
 					</div>
 				</div>
 			</fieldset>
-			<div id="upload-flash" class="hide">
-				<ul>
-					<li><a href="#" id="upload-browse"><?php echo JText::_('COM_PODCASTMEDIA_BROWSE_FILES'); ?></a></li>
-					<li><a href="#" id="upload-clear"><?php echo JText::_('COM_PODCASTMEDIA_CLEAR_LIST'); ?></a></li>
-					<li><a href="#" id="upload-start"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></a></li>
-				</ul>
-				<div class="clr"> </div>
-				<p class="overall-title"></p>
-				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
-				<div class="clr"> </div>
-				<p class="current-title"></p>
-				<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
-				<p class="current-text"></p>
-				<ul class="upload-queue" id="upload-queue">
-					<li style="display:none;"></li>
-				</ul>
-				<ul class="upload-queue" id="upload-queue">
-					<li style="display: none"></li>
-				</ul>
-			</div>
 			<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia&view=audio&tmpl=component&fieldid=' . $input->getCmd('fieldid', '') . '&e_name=' . $input->getCmd('e_name') . '&asset=' . $input->getCmd('asset') . '&author=' . $input->getCmd('author')); ?>" />
 		</div>
 	</form>

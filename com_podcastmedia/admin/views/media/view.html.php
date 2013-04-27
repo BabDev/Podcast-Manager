@@ -125,45 +125,6 @@ class PodcastMediaViewMedia extends JViewLegacy
 			}
 		}
 
-		if ($medmanparams->get('enable_flash', 1))
-		{
-			$fileTypes = 'mp3,m4a,mov,mp4,m4v';
-			$types = explode(',', $fileTypes);
-
-			// These types are what the user sees
-			$displayTypes = '';
-
-			// This is what controls the logic
-			$filterTypes = '';
-			$firstType = true;
-
-			foreach ($types AS $type)
-			{
-				if (!$firstType)
-				{
-					$displayTypes .= ', ';
-					$filterTypes .= '; ';
-				}
-				else
-				{
-					$firstType = false;
-				}
-				$displayTypes .= '*.' . $type;
-				$filterTypes .= '*.' . $type;
-			}
-			$typeString = '{ \'' . JText::_('COM_PODCASTMEDIA_FILES', 'true') . ' (' . $displayTypes . ')\': \'' . $filterTypes . '\' }';
-
-			JHtml::_(
-				'behavior.uploader', 'upload-flash', array(
-															'onBeforeStart' => 'function(){ Uploader.setOptions({url: document.id(\'uploadForm\').action + \'&folder=\' + document.id(\'mediamanager-form\').folder.value}); }',
-															'onComplete' => 'function(){ PodcastMediaManager.refreshFrame(); }',
-															'targetURL' => '\\document.id(\'uploadForm\').action',
-															'typeFilter' => $typeString,
-															'fileSizeMax' => (int) ($medmanparams->get('upload_maxsize', 0) * 1024 * 1024)
-														)
-			);
-		}
-
 		if (DIRECTORY_SEPARATOR == '\\')
 		{
 			$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_PODCASTMEDIA_BASE);

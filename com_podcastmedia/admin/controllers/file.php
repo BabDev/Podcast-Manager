@@ -26,7 +26,7 @@ jimport('joomla.filesystem.folder');
  */
 class PodcastMediaControllerFile extends JControllerLegacy
 {
-	/*
+	/**
 	 * The folder we are uploading into
 	 *
 	 * @var    string
@@ -70,8 +70,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Get some data from the request
 		$input        = JFactory::getApplication()->input;
-		// $files        = $input->files->get('Filedata', '', 'array');
-		$files        = JRequest::getVar('Filedata', '', 'files', 'array');
+		$files        = $input->files->get('Filedata', '', 'array');
 		$this->folder = $input->get('folder', '', 'path');
 		$return       = $input->post->get('return-url', null, 'base64');
 
@@ -99,23 +98,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			return false;
 		}
 
-		/*
-		 * Input is in the form of an associative array containing numerically indexed arrays
-		 * We want a numerically indexed array containing associative arrays
-		 * Cast each item as array in case the Filedata parameter was not sent as such
-		 */
-		$files = array_map(
-			array($this, 'reformatFilesArray'),
-			(array) $files['name'],
-			(array) $files['type'],
-			(array) $files['tmp_name'],
-			(array) $files['error'],
-			(array) $files['size']
-		);
-
 		// Perform basic checks on file info before attempting anything
 		foreach ($files as &$file)
 		{
+			$file['name']     = JFile::makeSafe($file['name']);
+			$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $this->folder, $file['name'])));
+
 			if ($file['error'] == 1)
 			{
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
@@ -184,7 +172,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				return false;
 			}
 
-			if (!JFile::upload($file['tmp_name'], $file['filepath']))
+			if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
 			{
 				// Error in upload
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
@@ -195,7 +183,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.file', &$object_file, true));
-				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_PODCASTMEDIA_BASE))));
+				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 		}
 
@@ -277,7 +265,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
 			$object_file = new JObject(array('filepath' => $fullPath));
 
-			if (is_file($fullPath))
+			if (is_file($object_file->filepath))
 			{
 				// Trigger the onContentBeforeDelete event.
 				$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
@@ -296,15 +284,15 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					continue;
 				}
 
-				$ret &= JFile::delete($fullPath);
+				$ret &= JFile::delete($object_file->filepath);
 
 				// Trigger the onContentAfterDelete event.
 				$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
-				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
-			elseif (is_dir($fullPath))
+			elseif (is_dir($object_file->filepath))
 			{
-				$contents = JFolder::files($fullPath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+				$contents = JFolder::files($object_file->filepath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
 
 				if (empty($contents))
 				{
@@ -325,11 +313,11 @@ class PodcastMediaControllerFile extends JControllerLegacy
 						continue;
 					}
 
-					$ret &= JFolder::delete($fullPath);
+					$ret &= JFolder::delete($object_file->filepath);
 
 					// Trigger the onContentAfterDelete event.
 					$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
-					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))));
+					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 				}
 				else
 				{
@@ -338,7 +326,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 						100,
 						JText::sprintf(
 							'COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',
-							substr($fullPath, strlen(COM_PODCASTMEDIA_BASE))
+							substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))
 						)
 					);
 				}
@@ -346,36 +334,5 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * Used as a callback for array_map, turns the multi-file input array into a sensible array of files
-	 * Also, removes illegal characters from the 'name' and sets a 'filepath' as the final destination of the file
-	 *
-	 * @param   string  $name      The file name
-	 * @param   string  $type      The file type
-	 * @param   string  $tmp_name  The temporary name of the file
-	 * @param   string  $error     Error information about the file
-	 * @param   string  $size      The file size
-	 *
-	 * @return  array  Array containing the file information
-	 *
-	 * @since   2.1
-	 */
-	protected function reformatFilesArray($name, $type, $tmp_name, $error, $size)
-	{
-		$name = JFile::makeSafe($name);
-
-		// Remove spaces from the name to be RSS compliant
-		$name = str_replace(' ', '_', $name);
-
-		return array(
-			'name'		=> $name,
-			'type'		=> $type,
-			'tmp_name'	=> $tmp_name,
-			'error'		=> $error,
-			'size'		=> $size,
-			'filepath'	=> JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $this->folder, $name)))
-		);
 	}
 }

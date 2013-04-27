@@ -26,8 +26,7 @@ $user = JFactory::getUser();
 			</fieldset>
 		</td>
 		<td>
-			<?php if (($user->authorise('core.create', 'com_podcastmanager')) and $this->require_ftp)
-			{ ?>
+			<?php if (($user->authorise('core.create', 'com_podcastmanager')) and $this->require_ftp) : ?>
 			<form action="index.php?option=com_podcastmedia&amp;task=ftpValidate" name="ftpForm" id="ftpForm" method="post">
 				<fieldset title="<?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?>">
 					<legend><?php echo JText::_('COM_PODCASTMEDIA_DESCFTPTITLE'); ?></legend>
@@ -39,7 +38,7 @@ $user = JFactory::getUser();
 					<input type="password" id="password" name="password" class="inputbox" size="70" value="" />
 				</fieldset>
 			</form>
-			<?php } ?>
+			<?php endif; ?>
 
 			<form action="index.php?option=com_podcastmedia" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data" >
 				<input type="hidden" name="task" value="" />
@@ -54,22 +53,20 @@ $user = JFactory::getUser();
 					</div>
 					<legend><?php echo JText::_('COM_PODCASTMEDIA_FILES'); ?></legend>
 					<div class="path">
-					<?php if ($user->authorise('core.create', 'com_podcastmanager'))
-					{ ?>
+					<?php if ($user->authorise('core.create', 'com_podcastmanager')) : ?>
 						<input class="inputbox" type="text" id="folderpath" readonly="readonly" />
 						<input class="inputbox" type="text" id="foldername" name="foldername"  />
 						<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="<?php echo $this->state->folder; ?>" />
 						<button type="submit"><?php echo JText::_('COM_PODCASTMEDIA_CREATE_FOLDER'); ?></button>
-					<?php } ?>
+					<?php endif; ?>
 					</div>
 					<?php echo JHtml::_('form.token'); ?>
 				</fieldset>
 			</form>
 
-			<?php if ($user->authorise('core.create', 'com_podcastmanager'))
-			{ ?>
+			<?php if ($user->authorise('core.create', 'com_podcastmanager')) : ?>
 			<!-- File Upload Form -->
-			<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken(); ?>=1&amp;format=<?php echo $this->medmanparams->get('enable_flash')=='1' ? 'json' : 'html' ?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+			<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken(); ?>=1&amp;format=html" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 				<fieldset id="uploadform">
 					<legend><?php echo $this->medmanparams->get('upload_maxsize') == '0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
 					<fieldset id="upload-noflash" class="actions">
@@ -78,27 +75,11 @@ $user = JFactory::getUser();
 						<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></label>
 						<input type="submit" id="upload-submit" value="<?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?>"/>
 					</fieldset>
-					<div id="upload-flash" class="hide">
-						<ul>
-							<li><a href="#" id="upload-browse"><?php echo JText::_('COM_PODCASTMEDIA_BROWSE_FILES'); ?></a></li>
-							<li><a href="#" id="upload-clear"><?php echo JText::_('COM_PODCASTMEDIA_CLEAR_LIST'); ?></a></li>
-							<li><a href="#" id="upload-start"><?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></a></li>
-						</ul>
-						<div class="clr"></div>
-						<p class="overall-title"></p>
-						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
-						<div class="clr"></div>
-						<p class="current-title"></p>
-						<?php echo JHtml::_('image', 'media/bar.gif', JText::_('COM_PODCASTMEDIA_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
-						<p class="current-text"></p>
-					</div>
-					<ul class="upload-queue" id="upload-queue">
-						<li style="display:none;"></li>
-					</ul>
+					<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
 					<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia'); ?>" />
 				</fieldset>
 			</form>
-			<?php } ?>
+			<?php endif; ?>
 		</td>
 	</tr>
 </table>
