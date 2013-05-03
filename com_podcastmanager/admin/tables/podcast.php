@@ -142,6 +142,31 @@ class PodcastManagerTablePodcast extends JTable
 	}
 
 	/**
+	 * Overloaded bind function.
+	 *
+	 * @param   array   $array   Named array
+	 * @param   string  $ignore  An optional array or space separated list of properties
+	 *                           to ignore while binding.
+	 *
+	 * @return  mixed  Null if operation was satisfactory, otherwise returns an error
+	 *
+	 * @since   2.1
+	 * @see     JTable:bind()
+	 */
+	public function bind($array, $ignore = '')
+	{
+		// Bind the metadata.
+		if (isset($array['metadata']) && is_array($array['metadata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['metadata']);
+			$array['metadata'] = (string) $registry;
+		}
+
+		return parent::bind($array, $ignore);
+	}
+
+	/**
 	 * Method to perform sanity checks on the JTable instance properties to ensure
 	 * they are safe to store in the database.  Child classes should override this
 	 * method to make sure the data they are storing in the database is safe and
