@@ -2,17 +2,18 @@
 <extension type="library" version="2.5" method="upgrade">
 	<name>getID3</name>
 	<libraryname>getid3</libraryname>
-	<creationDate>13 December 2011</creationDate>
+	<creationDate>20 February 2013</creationDate>
 	<author>James Heinrich</author>
 	<copyright>(C) James Heinrich</copyright>
 	<authorEmail>info@getid3.org</authorEmail>
 	<authorUrl>http://www.getid3.org</authorUrl>
-	<version>1.9.3</version>
+	<version>1.9.5</version>
 	<license>GNU/GPL Version 2</license>
 	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
 	<files folder="getid3">
 		<file>extension.cache.dbm.php</file>
 		<file>extension.cache.mysql.php</file>
+		<file>extension.cache.sqlite3.php</file>
 		<file>getid3.lib.php</file>
 		<file>getid3.php</file>
 		<file>index.html</file>
@@ -31,6 +32,7 @@
 		<file>module.audio-video.real.php</file>
 		<file>module.audio-video.riff.php</file>
 		<file>module.audio-video.swf.php</file>
+		<file>module.audio-video.ts.php</file>
 		<file>module.audio.aa.php</file>
 		<file>module.audio.aac.php</file>
 		<file>module.audio.ac3.php</file>

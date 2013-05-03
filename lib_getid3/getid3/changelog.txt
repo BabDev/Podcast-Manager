@@ -17,7 +17,68 @@
 Version History
 ===============
 
-1.9.3: [2012-12-13] Dmitry Arkhipov, James Heinrich
+1.9.5: [2013-02-20] James Heinrich, Dmitry Arkhipov
+    » DTS-in-WAV now properly supported
+    ¤ DSS files return additional data in new keys, and some existing
+      keys have been renamed
+    * Bugfix: open_basedir not parsed correctly under Windows
+      (thanks yannick*jamontØgmail*com)
+    * Bugfix: [demo/demo.browse] might not display file or directory name
+      on PHP >=5.4.0 if filename not UTF-8 friendly
+    * Bugfix: [demo/demo.zip] could read more uncompressed data than
+      required; fail to read file if local data descriptor not set;
+      some wrong include files were listed; improved error message display
+    * Bugfix: [module.audio-video.riff] INFO comment chunks with null name
+      chunk not parsed correctly
+    * Bugfix: [module.archive.gz] gzip files with filename stored may have
+      filename reduplicated in [gzip][files] output
+    * Bugfix: [module.archive.zip] data_descriptor not parsed correctly
+    * Bugfix: [module.archive.zip] some newer compression methods unknown
+    * Bugfix: [module.archive.zip] not all flags parsed
+    * Bugfix: [module.archive.zip] local file header not parsed correctly
+      if file has zero values for compressed_size in Local File Header
+    * Bugfix: (#1493) better support for >2GB filesize on 32-bit Linux
+    * Bugfix: (#1474) unneccesary call to GetDataImageSize in JPEG module
+    * Bugfix: (#1470) GIF files falsely detected as TS format
+    * Bugfix: (#1431) Matroska did not parse PixelCrop* / DisplayUnit
+      (thanks jgerberØwikimedia*org)
+    * Bugfix: (#1430) split ID3v2 text values on null separator
+    * Bugfix: (#1426) MS Office 2007 file format now recognized as zip.msoffice
+    * Bugfix: (#1423) optimized CreateDeepArray function
+    * Bugfix: (#1415) add support for DS2 variant of DSS
+
+1.9.4b1: [2012-10-05] James Heinrich, Dmitry Arkhipov, Karl G. Holz
+    » New module: extension.cache.sqlite3.php (by Karl G. Holz)
+    » New demo: demos/getid3.demo.dirscan.php (by Karl G. Holz)
+    » PHP5 standards improvements (thanks phansysØgmail*com)
+    » more reliable >4GB file size parsing using COM (if available)
+      Scripting.FileSystemObject rather than parsing `dir` output
+    * added support for FLAC inside Matroska (audio bitrate cannot
+        be determined in this case)
+    * XMP module now returns all tags, not just whitelisted ones
+    * (#1297) Added detection of MPEG Transport Stream files.
+      Stub module.audio-video.ts.php incomplete
+    * (#1383) removed unneeded ?> tags (thanks daveØholyfield*info)
+    * Bugfix: XMP returns attributes array not just value strings
+    * Bugfix: (#1369) ID3v2 IPLS contents not parsed
+    * Bugfix: (#1357) demo.mysql.php mysql_table_exists() failed
+    * Bugfix: (#1355) copy Foobar2000 QuickTime tags to [comments]
+    * Bugfix: (#1351) QuickTime files with zero-sized atom boxes
+      could cause infinite loop
+    * Bugfix: (#1343) FLAC attached pictures Ogg not handled
+    * Bugfix: (#1343) ID3v2 inside WAV "id3 " chunk not handled
+    * Bugfix: (#1315) BMP detection was broken
+    * Bugfix: (#1309) ID3v2.2 content_group_description (TT2) did
+      not copy to same place as ID3v2.3/ID3v2.4 (TIT2)
+    * Bugfix: (#1308) [playtime_string] could show hh:mm:60
+    * Bugfix: (#1306) extension.cache.mysql.php keyword TYPE->ENGINE
+    * Bugfix: (#1295) missing video information if QuickTime file has
+      disabled tracks
+    * Bugfix: (#1275) MD5/SHA1 data hashes not working properly
+      under Windows
+
+
+1.9.3: [2011-12-13] Dmitry Arkhipov, James Heinrich
     * Matroska module improved:
       1. Added support for A_MS/ACM audio codec
       2. Fixed issues in tags, cues, chapters and clusters parsing
