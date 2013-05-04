@@ -48,11 +48,10 @@ $user = JFactory::getUser();
 			<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
 		</form>
 
-		<?php if ($user->authorise('core.create', 'com_podcastmanager'))
-		{ ?>
+		<?php if ($user->authorise('core.create', 'com_podcastmanager')) : ?>
 		<!-- File Upload Form -->
 		<div id="collapseUpload" class="collapse">
-			<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken(); ?>=1&amp;format=html" id="uploadForm" class="form-inline" name="uploadForm" method="post" enctype="multipart/form-data">
+			<form action="<?php echo JUri::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken(); ?>=1&amp;format=html" id="uploadForm" class="form-inline" name="uploadForm" method="post" enctype="multipart/form-data">
 				<div id="uploadform">
 					<fieldset id="upload-noflash" class="actions">
 						<label for="upload-file" class="control-label"><?php echo JText::_('COM_PODCASTMEDIA_UPLOAD_FILE'); ?></label>
@@ -73,7 +72,7 @@ $user = JFactory::getUser();
 				<?php echo JHtml::_('form.token'); ?>
 			</form>
 		</div>
-		<?php } ?>
+		<?php endif; ?>
 
 		<form action="index.php?option=com_podcastmedia&amp;task=folder.create&amp;tmpl=<?php echo JFactory::getApplication()->input->get('tmpl', 'index', 'cmd'); ?>" name="folderForm" id="folderForm" method="post">
 			<div id="folderview">

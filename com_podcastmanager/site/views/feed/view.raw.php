@@ -93,7 +93,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		$xw->startElement('channel');
 
 		$xw->writeElement('title', $feed->name);
-		$xw->writeElement('link', JURI::base());
+		$xw->writeElement('link', JUri::base());
 
 		$feedLang = $feed->language;
 
@@ -101,6 +101,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		{
 			$feedLang = JFactory::getLanguage()->getTag();
 		}
+
 		$xw->writeElement('language', $feedLang);
 
 		$xw->writeElement('copyright', $feed->copyright);
@@ -154,8 +155,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 			if (!preg_match('/^http/', $imageURL))
 			{
-				$imageURL = JURI::root() . $imageURL;
+				$imageURL = JUri::root() . $imageURL;
 			}
+
 			$xw->writeAttribute('href', $imageURL);
 			$xw->endElement();
 		}
@@ -278,8 +280,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 					if (!preg_match('/^http/', $imageURL))
 					{
-						$imageURL = JURI::root() . $imageURL;
+						$imageURL = JUri::root() . $imageURL;
 					}
+
 					$xw->writeAttribute('href', $imageURL);
 					$xw->endElement();
 				}

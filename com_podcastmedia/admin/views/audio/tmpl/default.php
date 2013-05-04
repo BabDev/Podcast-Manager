@@ -55,7 +55,7 @@ var audio_base_path = '<?php echo $params->get('file_path', 'media/com_podcastma
 </form>
 
 <?php if ($user->authorise('core.create', 'com_podcastmanager')) : ?>
-<form action="<?php echo JURI::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken();?>=1&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo JUri::base(); ?>index.php?option=com_podcastmedia&amp;task=file.upload&amp;tmpl=component&amp;<?php echo $this->session->getName() . '=' . $this->session->getId(); ?>&amp;<?php echo $this->session->getFormToken();?>=1&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>" id="uploadForm" name="uploadForm" method="post" enctype="multipart/form-data">
 	<fieldset id="uploadform">
 		<legend><?php echo $this->medmanparams->get('upload_maxsize') == '0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></legend>
 		<fieldset id="upload-noflash" class="actions">

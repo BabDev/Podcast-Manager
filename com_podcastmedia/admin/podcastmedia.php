@@ -41,7 +41,7 @@ $path         = 'file_path';
 $view = $input->get('view', '', 'cmd');
 
 define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
-define('COM_PODCASTMEDIA_BASEURL', JURI::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
+define('COM_PODCASTMEDIA_BASEURL', JUri::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
 
 $controller = JControllerLegacy::getInstance('PodcastMedia', array('base_path' => JPATH_COMPONENT_ADMINISTRATOR));
 $controller->execute($input->get('task', '', 'cmd'));

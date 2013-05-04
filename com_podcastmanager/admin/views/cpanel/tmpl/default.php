@@ -22,7 +22,7 @@ $mejs		= '<b><a href="http://mediaelementjs.com" target="_blank">MediaElement.JS
 $transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-manager" target="_blank">https://opentranslators.transifex.net/projects/p/podcast-manager</a>';
 
 // Icons folder
-$icons = JURI::base() . 'components/com_podcastmanager/media/images/icons';
+$icons = JUri::base() . 'components/com_podcastmanager/media/images/icons';
 
 $buttons = $this->getButtons();
 
