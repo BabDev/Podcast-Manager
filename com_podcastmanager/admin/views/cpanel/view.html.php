@@ -85,7 +85,7 @@ class PodcastManagerViewCpanel extends JViewLegacy
 		$views = array('feeds', 'podcasts', 'files');
 
 		// Set the icons
-		$iconBase = JURI::base() . 'media/podcastmanager/images/icons/';
+		$iconBase = JUri::root() . 'media/podcastmanager/images/icons/';
 		$icons = array(
 			'feeds' => $iconBase . 'feeds.png',
 			'podcasts' => $iconBase . 'podcasts.png',
