@@ -80,8 +80,10 @@ JHtml::_('behavior.keepalive');
 					<?php echo $this->form->getInput('language'); ?></li>
 
 					<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
-					<li><?php echo $this->form->getLabel('tags'); ?>
-					<?php echo $this->form->getInput('tags'); ?></li>
+						<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+							<li><?php echo $field->label; ?>
+								<?php echo $field->input; ?></li>
+						<?php endforeach ?>
 					<?php endif; ?>
 
 					<li><?php echo $this->form->getLabel('id'); ?>

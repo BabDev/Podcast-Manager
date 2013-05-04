@@ -228,6 +228,7 @@ class Com_PodcastManagerInstallerScript
 				$commonObject->core_modified_user_id = 'modified_by';
 				$commonObject->core_modified_time = 'modified';
 				$commonObject->core_language = 'language';
+				$commonObject->core_content_item_id = 'id';
 				$commonObject->asset_id = 'asset_id';
 
 				// This object contains unique fields
@@ -296,6 +297,7 @@ class Com_PodcastManagerInstallerScript
 				$commonObject->core_modified_time = 'modified';
 				$commonObject->core_language = 'language';
 				$commonObject->core_publish_up = 'publish_up';
+				$commonObject->core_content_item_id = 'id';
 				$commonObject->asset_id = 'asset_id';
 
 				// This object contains unique fields

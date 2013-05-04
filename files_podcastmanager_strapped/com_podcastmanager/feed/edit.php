@@ -280,14 +280,16 @@ JHtml::_('formbehavior.chosen', 'select');
 					</div>
 				</div>
 				<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('tags'); ?>
+					<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
 					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('tags'); ?>
-					</div>
-				</div>
+					<?php endforeach ?>
 				<?php endif; ?>
 				<div class="control-group">
 					<div class="control-label">

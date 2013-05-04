@@ -54,22 +54,23 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('image'); ?>
 					<?php echo $this->form->getInput('image'); ?></li>
 
-					<?php if ($this->canDo->get('core.admin'))
-					{ ?>
+					<?php if ($this->canDo->get('core.admin')) : ?>
 					<li>
 						<span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
 						<button type="button" onclick="document.location.href='#access-rules';">
 							<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
 						</button>
 					</li>
-					<?php } ?>
+					<?php endif; ?>
 
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
 
 					<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
-					<li><?php echo $this->form->getLabel('tags'); ?>
-					<?php echo $this->form->getInput('tags'); ?></li>
+						<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+							<li><?php echo $field->label; ?>
+								<?php echo $field->input; ?></li>
+						<?php endforeach ?>
 					<?php endif; ?>
 
 					<li><?php echo $this->form->getLabel('id'); ?>

@@ -140,7 +140,10 @@ class PodcastManagerModelFeed extends JModelAdmin
 		if (version_compare(JVERSION, '3.1', 'ge'))
 		{
 			$form->setField(
-				new SimpleXMLElement('<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" />')
+				new SimpleXMLElement(
+					'<fields name="metadata"><fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">'
+					. '<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" /></fieldset></fields>'
+				)
 			);
 		}
 
