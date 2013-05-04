@@ -486,17 +486,6 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
-		// Add tags for CMS 3.1 and later
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$form->setField(
-				new SimpleXMLElement(
-					'<fields name="metadata"><fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">'
-					. '<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" /></fieldset></fields>'
-				)
-			);
-		}
-
 		return $form;
 	}
 
@@ -571,6 +560,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 				$data = PodcastManagerHelper::fillMetaData($data);
 			}
 		}
+
 		return $data;
 	}
 
@@ -590,5 +580,34 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		{
 			$table->publish_up = JFactory::getDate()->toSql();
 		}
+	}
+
+	/**
+	 * Method to allow derived classes to preprocess the form.
+	 *
+	 * @param   JForm   $form   A JForm object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
+	 * @return  void
+	 *
+	 * @see     JFormField
+	 * @since   2.1
+	 * @throws  Exception if there is an error in the form event.
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		// Add tags for CMS 3.1 and later
+		if (version_compare(JVERSION, '3.1', 'ge'))
+		{
+			$form->setField(
+				new SimpleXMLElement(
+					'<fields name="metadata"><fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">'
+					. '<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" /></fieldset></fields>'
+				)
+			);
+		}
+
+		parent::preprocessForm($form, $data, $group);
 	}
 }
