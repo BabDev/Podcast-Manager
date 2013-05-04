@@ -101,7 +101,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		// Perform basic checks on file info before attempting anything
 		foreach ($files as &$file)
 		{
-			$file['name']     = JFile::makeSafe($file['name']);
+			$file['name']     = JFile::makeSafe(str_replace(' ', '_', $file['name']));
 			$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $this->folder, $file['name'])));
 
 			if ($file['error'] == 1)
