@@ -232,11 +232,7 @@
 	<!-- Rebuild the staging area -->
 	<target name="rebuild-packages" description="Delete old packages">
 		<echo msg="Deleting packaging directory" />
-		<delete includeemptydirs="true">
-			<fileset dir=".">
-				<include name="packaging" />
-			</fileset>
-		</delete>
+		<delete dir="${repo.dir}/packaging" includeemptydirs="true" failonerror="true" />
 		<echo msg="Creating packaging directory" />
 		<mkdir dir="packaging" />
 	</target>
