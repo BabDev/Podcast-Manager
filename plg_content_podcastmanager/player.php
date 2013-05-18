@@ -261,13 +261,10 @@ class PodcastManagerPlayer
 			throw new RuntimeException('Invalid File Type', 500);
 		}
 
-		// Add the media
-		$document = JFactory::getDocument();
-
 		/*
 		 * Check if we should load jQuery
 		 * First, set our default value based on the version of Joomla!
-		 * Default enabled for 2.5, disabled for 3.0 (due to core inclusion)
+		 * Default enabled for 2.5, disabled for 3.x (due to core inclusion)
 		 */
 		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
@@ -280,10 +277,10 @@ class PodcastManagerPlayer
 
 		if ($this->pluginParams->get('loadJQuery', $default) == '1')
 		{
-			// Load jQuery via JHtml in 3.0, use Google API in 2.5
+			// Load jQuery via JHtml in 3.x, use Google API in 2.5 (use the same version of jQuery as shipped in latest CMS 3.x)
 			if (version_compare(JVERSION, '3.0', 'lt'))
 			{
-				$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
+				JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js');
 
 				// Ensure jQuery.noConflict() is set, just in case ;-)
 				JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
