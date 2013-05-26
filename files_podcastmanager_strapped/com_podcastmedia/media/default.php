@@ -66,9 +66,10 @@ $user = JFactory::getUser();
 				<div class="path">
 					<input class="inputbox" type="text" id="folderpath" readonly="readonly" />
 					<input class="inputbox" type="text" id="foldername" name="foldername"  />
-					<input class="update-folder" type="hidden" name="folderbase" id="folderbase" value="<?php echo $this->state->folder; ?>" />
 					<button type="submit" class="btn"><i class="icon-folder"></i> <?php echo JText::_('COM_PODCASTMEDIA_CREATE_FOLDER'); ?></button>
 				</div>
+				<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
+				<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia'); ?>" />
 				<?php echo JHtml::_('form.token'); ?>
 			</form>
 		</div>
