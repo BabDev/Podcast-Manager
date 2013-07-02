@@ -222,7 +222,13 @@ class PlgContentPodcastManager extends JPlugin
 					}
 				}
 
-				if (isset($podfilepath))
+				// If the document isn't HTML, remove the marker
+				if (JFactory::getDocument()->getType() != 'html')
+				{
+					// Remove the {podcast marker
+					$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+				}
+				elseif (isset($podfilepath))
 				{
 					try
 					{
