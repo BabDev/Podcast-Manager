@@ -17,6 +17,15 @@
 Version History
 ===============
 
+1.9.6: [2013-06-03] James Heinrich
+    » getID3() is now licensed under GPL / LGPL / MozillaPL / gCL
+      See license.txt for more details.
+    * Bugfix: (#1550) Quicktime video track sample description parsed
+      incorrectly
+    * Bugfix: (#1550) Quicktime matrix U/V/W values calculated incorrectly
+    * [demo.browse] disable edit-tag and delete-file links by default
+    * Bugfix: option_max_2gb_check should issue warning not error on >2GB
+
 1.9.5: [2013-02-20] James Heinrich, Dmitry Arkhipov
     » DTS-in-WAV now properly supported
     ¤ DSS files return additional data in new keys, and some existing
