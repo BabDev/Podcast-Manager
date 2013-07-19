@@ -610,4 +610,33 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 		parent::preprocessForm($form, $data, $group);
 	}
+
+	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 *
+	 * @see     JFormRule
+	 * @see     JFilterInput
+	 * @since   2.1
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		$data = parent::validate($form, $data, $group);
+
+		// Tags B/C break at 3.1.2
+		if (version_compare(JVERSION, '3.1.2', 'ge'))
+		{
+			if (isset($data['metadata']['tags']))
+			{
+				$data['tags'] = $data['metadata']['tags'];
+			}
+		}
+
+		return $data;
+	}
 }
