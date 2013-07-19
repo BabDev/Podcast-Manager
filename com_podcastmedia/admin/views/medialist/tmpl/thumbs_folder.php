@@ -19,7 +19,7 @@ $user = JFactory::getUser();
 <div class="imgOutline">
 	<div class="imgTotal">
 		<div align="center" class="imgBorder">
-			<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
+			<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
 				<?php echo JHtml::_('image', 'media/folder.png', JText::_('COM_PODCASTMEDIA_FOLDER'), array('width' => 80, 'height' => 80, 'border' => 0), true); ?>
 			</a>
 		</div>
@@ -34,7 +34,7 @@ $user = JFactory::getUser();
 	<?php } ?>
 	</div>
 	<div class="imginfoBorder">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
 			<?php echo substr($this->_tmp_folder->name, 0, 10) . (strlen($this->_tmp_folder->name) > 10 ? '...' : ''); ?>
 		</a>
 	</div>

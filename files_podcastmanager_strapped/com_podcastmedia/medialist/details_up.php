@@ -17,12 +17,12 @@ $user = JFactory::getUser();
 ?>
 <tr>
 	<td class="imgTotal">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
 			<i class="icon-arrow-up"></i>
 		</a>
 	</td>
 	<td class="description">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
 			..
 		</a>
 	</td>

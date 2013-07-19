@@ -49,13 +49,13 @@ class PodcastMediaController extends JControllerLegacy
 
 				break;
 
-			case 'audioList':
+			case 'audiolist':
 				$vLayout = $input->get('layout', 'default', 'cmd');
 				$mName   = 'list';
 
 				break;
 
-			case 'mediaList':
+			case 'medialist':
 				$vLayout = $params->get('layout', 'thumbs');
 				$mName   = 'list';
 
@@ -66,6 +66,7 @@ class PodcastMediaController extends JControllerLegacy
 				$vName   = 'media';
 				$vLayout = $input->get('layout', 'default', 'cmd');
 				$mName   = 'manager';
+
 				break;
 		}
 

@@ -25,12 +25,12 @@ $user = JFactory::getUser();
 		<div class="clearfix"></div>
 	<?php endif;?>
 	<div class="height-50">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
 			<i class="icon-folder-2"></i>
 		</a>
 	</div>
 	<div class="small">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
 			<?php echo JHtml::_('string.truncate', $this->_tmp_folder->name, 10, false); ?>
 		</a>
 	</div>

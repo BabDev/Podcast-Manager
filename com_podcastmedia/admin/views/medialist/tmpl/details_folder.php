@@ -17,12 +17,12 @@ $user = JFactory::getUser();
 ?>
 <tr>
 	<td class="imgTotal">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>" target="folderframe">
 			<?php echo JHtml::_('image', 'media/folder_sm.png', $this->_tmp_folder->name, array('width' => 16, 'height' => 16), true); ?>
 		</a>
 	</td>
 	<td class="description">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>"
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>"
 		   target="folderframe"><?php echo $this->_tmp_folder->name; ?>
 		</a>
 	</td>

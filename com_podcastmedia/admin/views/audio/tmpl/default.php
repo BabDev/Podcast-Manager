@@ -37,7 +37,7 @@ var audio_base_path = '<?php echo $params->get('file_path', 'media/com_podcastma
 		</div>
 	</fieldset>
 
-	<iframe id="audioframe" name="audioframe" src="index.php?option=com_podcastmedia&amp;view=audioList&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>"></iframe>
+	<iframe id="audioframe" name="audioframe" src="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->state->folder?>&amp;asset=<?php echo $input->get('asset', '', 'cmd');?>&amp;author=<?php echo $input->get('author', '', 'cmd');?>"></iframe>
 
 	<fieldset>
 		<table class="properties">

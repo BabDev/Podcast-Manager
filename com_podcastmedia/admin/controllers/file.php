@@ -214,7 +214,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		if ($tmpl == 'component')
 		{
 			// We are inside the iframe
-			$redirect .= '&view=mediaList&tmpl=component';
+			$redirect .= '&view=medialist&tmpl=component';
 		}
 		$this->setRedirect($redirect);
 

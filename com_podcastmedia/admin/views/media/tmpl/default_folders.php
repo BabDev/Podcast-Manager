@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
 <?php if (isset($this->folders['children'])) :
 foreach ($this->folders['children'] as $folder) : ?>
 	<li id="<?php echo $folder['data']->relative; ?>">
-		<a href="index.php?option=com_podcastmedia&amp;view=mediaList&amp;tmpl=component&amp;folder=<?php echo $folder['data']->relative; ?>" target="folderframe">
+		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $folder['data']->relative; ?>" target="folderframe">
 			<?php echo $folder['data']->name; ?>
 		</a>
 		<?php echo $this->getFolderLevel($folder); ?>

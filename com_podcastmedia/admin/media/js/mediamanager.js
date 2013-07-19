@@ -36,7 +36,7 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 						window.frames[target].location.href = node.data.url;
 					}
 				}.bind(this)
-			},{ text: '', open: true, data: { url: 'index.php?option=com_podcastmedia&view=mediaList&tmpl=component', target: 'folderframe'}});
+			},{ text: '', open: true, data: { url: 'index.php?option=com_podcastmedia&view=medialist&tmpl=component', target: 'folderframe'}});
 		this.tree.adopt('media-tree'); */
 	},
 
@@ -106,7 +106,7 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 		document.id(viewstyle).removeClass('active');
 		viewstyle = type;
 		var folder = this.getFolder();
-		this._setFrameUrl('index.php?option=com_podcastmedia&view=mediaList&tmpl=component&folder='+folder+'&layout='+type);
+		this._setFrameUrl('index.php?option=com_podcastmedia&view=medialist&tmpl=component&folder='+folder+'&layout='+type);
 	},
 
 	refreshFrame: function()

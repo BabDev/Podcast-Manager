@@ -21,7 +21,7 @@ defined('_JEXEC') or die;
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class PodcastMediaViewMediaList extends JViewLegacy
+class PodcastMediaViewMedialist extends JViewLegacy
 {
 	/**
 	 * An array of audio files
