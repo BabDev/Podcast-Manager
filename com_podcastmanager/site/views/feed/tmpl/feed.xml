@@ -16,10 +16,6 @@
 				label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL">
 				<option value="">JALL</option>
 			</field>
-			<field name="limit" type="text"
-				description="COM_PODCASTMANAGER_LIMIT_DESCRIPTION"
-				label="COM_PODCASTMANAGER_LIMIT_LABEL"
-				size="3" filter="integer" />
 			<field name="filter_order" type="list" filter="options"
 				description="COM_PODCASTMANAGER_ORDER_DESCRIPTION"
 				label="COM_PODCASTMANAGER_ORDER_LABEL" default="a.publish_up">

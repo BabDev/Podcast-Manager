@@ -178,13 +178,13 @@ class PodcastManagerModelFeed extends JModelList
 		$params = JComponentHelper::getParams('com_podcastmanager');
 
 		// List state information
-		$feed = $input->get('feedname', '', 'int');
+		$feed = $input->get('feedname', '', 'uint');
 		$this->setState('feed.id', $feed);
 
-		$limit = $input->get('limit', '', 'int');
+		$limit = $input->get('limit', $app->getCfg('list_limit', 0), 'uint');
 		$this->setState('list.limit', $limit);
 
-		$limitstart = $input->get('limitstart', 0, 'int');
+		$limitstart = $input->get('limitstart', 0, 'uint');
 		$this->setState('list.start', $limitstart);
 
 		// Item sort and order
