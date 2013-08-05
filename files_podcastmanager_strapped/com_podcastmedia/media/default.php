@@ -58,6 +58,9 @@ $user = JFactory::getUser();
 						<input type="file" id="upload-file" name="Filedata[]" multiple /> <button class="btn btn-primary" id="upload-submit"><i class="icon-upload icon-white"></i> <?php echo JText::_('COM_PODCASTMEDIA_START_UPLOAD'); ?></button>
 						<p class="help-block"><?php echo $this->medmanparams->get('upload_maxsize')=='0' ? JText::_('COM_PODCASTMEDIA_UPLOAD_FILES_NOLIMIT') : JText::sprintf('COM_PODCASTMEDIA_UPLOAD_FILES', $this->medmanparams->get('upload_maxsize')); ?></p>
 					</fieldset>
+					<input class="update-folder" type="hidden" name="folder" id="folder" value="<?php echo $this->state->folder; ?>" />
+					<input type="hidden" name="return-url" value="<?php echo base64_encode('index.php?option=com_podcastmedia'); ?>" />
+					<?php echo JHtml::_('form.token'); ?>
 				</div>
 			</form>
 		</div>
