@@ -73,7 +73,7 @@ abstract class PodcastMediaHelper
 		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
 		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
 
-		if (!in_array($format, $allowable) && !in_array($format, $ignored))
+		if ($format == '' || $format == false || (!in_array($format, $allowable) && !in_array($format, $ignored)))
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILETYPE';
 
