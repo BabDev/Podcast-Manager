@@ -24,9 +24,6 @@ files_podman_hathor.xml
 # Phing #
 build.properties
 
-# Personal stuff #
-build
-
 # External Build Tools #
 phing-joomla-extension-builder.xml
 build.properties.dist

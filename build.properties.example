@@ -1,4 +1,3 @@
 # Property files contain key/value pairs
 
 localgit=/path/to/git/executable
-platform.dir=/path/to/joomla-platform

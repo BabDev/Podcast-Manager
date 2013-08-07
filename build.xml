@@ -237,25 +237,25 @@
 		<mkdir dir="packaging" />
 	</target>
 
-	<!-- Check code style based on Joomla Platform -->
+	<!-- Check code style based on Joomla Coding Standard -->
 	<target name="phpcs" description="Generate codestyle report using PHP_CodeSniffer">
 		<echo msg="Remove previous codestyle report" />
 		<delete quiet="yes" includeemptydirs="true">
 			<fileset dir=".">
-				<include name="build/codesniff.txt" />
-				<include name="build/checkstyle.xml" />
+				<include name="build/logs/codesniff.txt" />
+				<include name="build/logs/checkstyle.xml" />
 			</fileset>
 		</delete>
-		<echo msg="Running phpcs with Joomla! Platform standards" />
+		<echo msg="Running phpcs with Joomla! Coding Standard" />
 		<phpcodesniffer
-			standard="${platform.dir}/build/phpcs/Joomla"
+			standard="${repo.dir}/build/phpcs/Joomla"
 			format="full"
-			ignorePatterns="com_podcastmanager/admin/liveupdate,com_podcastmanager/admin/media/js,com_podcastmanager/site/media,lib_getid3,plg_content_podcastmanager/mediaelements,packaging,releases,*/tmpl/*,files_podcastmanager_*"
+			ignorePatterns="com_podcastmanager/admin/liveupdate,com_podcastmanager/admin/media/js,com_podcastmanager/site/media,lib_getid3,plg_content_podcastmanager/mediaelements,packaging,releases,*/tmpl/*,files_podcastmanager_*,build/*"
 			file="${repo.dir}"
 			allowedFileExtensions="php"
 			verbosity="1">
-			<formatter type="full" outfile="${repo.dir}/build/codesniff.txt" />
-			<formatter type="checkstyle" outfile="${repo.dir}/build/checkstyle.xml" />
+			<formatter type="full" outfile="${repo.dir}/build/logs/codesniff.txt" />
+			<formatter type="checkstyle" outfile="${repo.dir}/build/logs/checkstyle.xml" />
 		</phpcodesniffer>
 	</target>
 </project>
