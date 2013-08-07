@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @package LiveUpdate
- * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
-
 defined('_JEXEC') or die();
 
 /**
@@ -12,88 +12,114 @@ defined('_JEXEC') or die();
  * @author nicholas
  *
  */
-class LiveUpdateStorage
+abstract class LiveUpdateStorage
 {
 	/**
-	 * The update data registry
-	 * @var JRegistry
+	 * @var  JRegistry  The update data registry
 	 */
-	public static $registry = null;
+	protected $registry = null;
 
 	/**
+	 * @var  string  The key prefix for the registry data
+	 */
+	protected $keyPrefix = 'update.';
+
+	/**
+	 * Singleton implementation
 	 *
-	 * @param string $type
-	 * @param array $config
-	 * @return LiveUpdateStorage
+	 * @param   string  $type    Storage tyme (file, component)
+	 * @param   array   $config  Configuration array
+	 *
+	 * @return  LiveUpdateStorage
 	 */
 	public static function getInstance($type, $config)
 	{
 		static $instances = array();
 
 		$sig = md5($type, serialize($config));
-		if(!array_key_exists($sig, $instances)) {
-			require_once dirname(__FILE__).'/'.strtolower($type).'.php';
-			$className = 'LiveUpdateStorage'.ucfirst($type);
-			$object = new $className($config);
+		if (!array_key_exists($sig, $instances))
+		{
+			$className = 'LiveUpdateStorage' . ucfirst($type);
+
+			if (!class_exists($className))
+			{
+				require_once __DIR__ . '/' . strtolower($type) . '.php';
+			}
+
+			$object	= new $className($config);
 			$object->load($config);
-			$newRegistry = clone(self::$registry);
-			$object->setRegistry($newRegistry);
+
 			$instances[$sig] = $object;
 		}
+
 		return $instances[$sig];
 	}
 
 	/**
-	 * Returns the internally used registry
+	 * Set a value to the storage registry. Automatically encodes updatedata.
 	 *
-	 * @return JRegistry
-	 */
-	public function &getRegistry()
-	{
-		return self::$registry;
-	}
-
-	/**
-	 * Replaces the internally used registry with the one supplied
+	 * @param   string  $key    The key to set
+	 * @param   mixed   $value  The value of the key to set
 	 *
-	 * @param JRegistry $registry
+	 * @return  void
 	 */
-	public function setRegistry($registry)
-	{
-		self::$registry = $registry;
-	}
-
-
 	public final function set($key, $value)
 	{
-		if($key == 'updatedata') {
-			if(function_exists('json_encode') && function_exists('json_decode')) {
-				$value = json_encode($value);
-			} elseif(function_exists('base64_encode') && function_exists('base64_decode')) {
+		if ($key == 'updatedata')
+		{
+			if (function_exists('base64_encode') && function_exists('base64_decode'))
+			{
 				$value = base64_encode(serialize($value));
-			} else {
+			}
+			else
+			{
 				$value = serialize($value);
 			}
 		}
-		self::$registry->set("update.$key", $value);
+
+		$this->registry->set($this->keyPrefix . $key, $value);
 	}
 
+	/**
+	 * Read a value from the storage registry
+	 *
+	 * @param   string  $key      The key to read
+	 * @param   mixed   $default  The default value of the key, if the key is not present
+	 *
+	 * @return  mixed  The value of the key
+	 */
 	public final function get($key, $default)
 	{
-		$value = self::$registry->get("update.$key", $default);
-		if($key == 'updatedata') {
-			if(function_exists('json_encode') && function_exists('json_decode')) {
-				$value = json_decode($value);
-			} elseif(function_exists('base64_encode') && function_exists('base64_decode')) {
+		$value = $this->registry->get($this->keyPrefix . $key, $default);
+
+		if ($key == 'updatedata')
+		{
+			if (function_exists('base64_encode') && function_exists('base64_decode'))
+			{
 				$value = unserialize(base64_decode($value));
-			} else {
+			}
+			else
+			{
 				$value = unserialize($value);
 			}
 		}
+
 		return $value;
 	}
 
-	public function save() {}
+	/**
+	 * Save the contents of the registry to the appropriate storage
+	 *
+	 * @return  void
+	 */
+	abstract public function save();
 
-	public function load($config) {}
+	/**
+	 * Load data from the storage
+	 *
+	 * @param   array  The configuration options
+	 *
+	 * @return  void
+	 */
+	abstract public function load($config);
 }

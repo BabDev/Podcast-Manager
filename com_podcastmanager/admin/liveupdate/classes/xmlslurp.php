@@ -1,7 +1,7 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
@@ -67,7 +67,7 @@ class LiveUpdateXMLSlurp extends JObject
 		$path = JPATH_ADMINISTRATOR.'/components/'.$extensionName;
 		$altExtensionName = substr($extensionName,4);
 
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		if(JFile::exists("$path/$xmlName")) {
 			$filename = "$path/$xmlName";
 		} elseif(JFile::exists("$path/$extensionName.xml")) {
@@ -114,8 +114,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 		$path = JPATH_SITE.'/modules/'.$extensionName;
 		if(!JFolder::exists($path)) {
 			$path = JPATH_ADMINISTRATOR.'/modules/'.$extensionName;
@@ -192,8 +192,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 
 		$base = JPATH_PLUGINS;
 
@@ -242,8 +242,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 
 		// First look for administrator templates
 		$path = JPATH_THEMES.'/'.$altExtensionName;
@@ -301,8 +301,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$extensionName = strtolower($extensionName);
 		$altExtensionName = substr($extensionName,4);
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 		$path = JPATH_ADMINISTRATOR.'/manifests/packages';
 
 		$filename = "$path/$xmlName";
@@ -349,7 +349,7 @@ class LiveUpdateXMLSlurp extends JObject
 	 */
 	private function searchForManifest($path)
 	{
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 		$files = JFolder::files($path, '\.xml$', false, true);
 		if(!empty($files)) foreach($files as $filename) {
 			try {

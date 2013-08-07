@@ -1,13 +1,13 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.controller');
+JLoader::import('joomla.application.component.controller');
 
 if(!class_exists('JoomlaCompatController')) {
 	if(interface_exists('JController')) {
@@ -184,7 +184,7 @@ class LiveUpdateController extends JoomlaCompatController
 		$view->setModel($model, true);
 
 		// Assign the FTP credentials from the request, or return TRUE if they are required
-		jimport('joomla.client.helper');
+		JLoader::import('joomla.client.helper');
 		$ftp	= $this->setCredentialsFromRequest('ftp');
 		$view->assignRef('ftp', $ftp);
 
@@ -244,7 +244,7 @@ class LiveUpdateController extends JoomlaCompatController
 	private function setCredentialsFromRequest($client)
 	{
 		// Determine wether FTP credentials have been passed along with the current request
-		jimport('joomla.client.helper');
+		JLoader::import('joomla.client.helper');
 		$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
 		$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
 		if ($user != '' && $pass != '')

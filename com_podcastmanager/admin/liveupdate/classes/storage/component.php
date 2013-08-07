@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @package LiveUpdate
- * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
-
 defined('_JEXEC') or die();
 
 /**
@@ -16,46 +16,58 @@ defined('_JEXEC') or die();
  */
 class LiveUpdateStorageComponent extends LiveUpdateStorage
 {
-	private static $component = null;
-	private static $key = null;
+	private $component = null;
+
+	private $key = null;
+
+	public function __construct()
+	{
+		$this->keyPrefix = '';
+	}
 
 	public function load($config)
 	{
-		if(!array_key_exists('component', $config)) {
-			self::$component = $config['extensionName'];
-		} else {
-			self::$component = $config['component'];
+		if (!array_key_exists('component', $config))
+		{
+			$this->component = $config['extensionName'];
+		}
+		else
+		{
+			$this->component = $config['component'];
 		}
 
-		if(!array_key_exists('key', $config)) {
-			self::$key = 'liveupdate';
-		} else {
-			self::$key = $config['key'];
+		if (!array_key_exists('key', $config))
+		{
+			$this->key = 'liveupdate';
+		}
+		else
+		{
+			$this->key = $config['key'];
 		}
 
 		// Not using JComponentHelper to avoid conflicts ;)
-		$db = JFactory::getDbo();
-		$sql = $db->getQuery(true)
+		$db			 = JFactory::getDbo();
+		$sql		 = $db->getQuery(true)
 			->select($db->qn('params'))
 			->from($db->qn('#__extensions'))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q(self::$component));
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q($this->component));
 		$db->setQuery($sql);
-		$rawparams = $db->loadResult();
-		$params = new JRegistry();
+		$rawparams	 = $db->loadResult();
+		$params		 = new JRegistry();
 		$params->loadString($rawparams, 'JSON');
 
-		$data = $params->get(self::$key, '');
+		$data = $params->get($this->key, '');
 
-		jimport('joomla.registry.registry');
-		self::$registry = new JRegistry('update');
+		JLoader::import('joomla.registry.registry');
+		$this->registry = new JRegistry('update');
 
-		self::$registry->loadString($data, 'INI');
+		$this->registry->loadString($data, 'INI');
 	}
 
 	public function save()
 	{
-		$data = self::$registry->toString('INI');
+		$data = $this->registry->toString('INI');
 
 		$db = JFactory::getDBO();
 
@@ -65,28 +77,27 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		// JComponentHelper::getComponent() returns the old, cached version of
 		// them. So, we have to forget the following code and shoot ourselves in
 		// the feet. Dammit!!!
-
 		$sql = $db->getQuery(true)
 			->select($db->qn('params'))
 			->from($db->qn('#__extensions'))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q(self::$component));
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q($this->component));
 		$db->setQuery($sql);
-		$rawparams = $db->loadResult();
-		$params = new JRegistry();
+		$rawparams	 = $db->loadResult();
+		$params		 = new JRegistry();
 		$params->loadString($rawparams, 'JSON');
 
-		$params->set(self::$key, $data);
+		$params->set($this->key, $data);
 
-		// Joomla! 1.6
-		$data = $params->toString('JSON');
-		$sql = $db->getQuery(true)
+		$data	 = $params->toString('JSON');
+		$sql	 = $db->getQuery(true)
 			->update($db->qn('#__extensions'))
-			->set($db->qn('params').' = '.$db->q($data))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q(self::$component));
+			->set($db->qn('params') . ' = ' . $db->q($data))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q($this->component));
 
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 	}
+
 }
