@@ -195,12 +195,14 @@ class PlgContentPodcastManager extends JPlugin
 					{
 						$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
 					}
+
 					// If an integer, we need to also get the title of the podcast, as well as search on the ID
 					elseif (is_int($podtitle))
 					{
 						$query->select($db->quoteName('title'));
 						$query->where($db->quoteName('id') . ' = ' . (int) $podtitle);
 					}
+
 					$db->setQuery($query);
 
 					if (!$db->loadObject())

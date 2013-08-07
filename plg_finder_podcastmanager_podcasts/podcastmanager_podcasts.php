@@ -115,6 +115,7 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 		{
 			return true;
 		}
+
 		// Remove the items.
 		return $this->remove($id);
 	}

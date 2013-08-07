@@ -81,6 +81,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 		{
 			return $user->authorise('core.edit.state', 'com_podcastmanager.feed.' . (int) $record->id);
 		}
+
 		// Default to component settings if no feed to check.
 		else
 		{

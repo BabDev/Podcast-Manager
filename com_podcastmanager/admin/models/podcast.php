@@ -94,6 +94,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			{
 				return false;
 			}
+
 			$done = true;
 		}
 
@@ -406,6 +407,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		{
 			return $user->authorise('core.edit.state', 'com_podcastmanager.podcast.' . (int) $record->id);
 		}
+
 		// Default to component settings if no feed to check.
 		else
 		{

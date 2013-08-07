@@ -175,6 +175,7 @@ class PodcastMediaModelManager extends JModelLegacy
 				}
 			}
 		}
+
 		$tree['data'] = (object) array('name' => JText::_('COM_PODCASTMEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
 
 		return $tree;

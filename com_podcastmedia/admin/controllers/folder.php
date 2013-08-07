@@ -52,6 +52,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 			// We are inside the iframe
 			$redirect .= '&view=medialist&tmpl=component';
 		}
+
 		$this->setRedirect($redirect);
 
 		// Nothing to delete
@@ -183,6 +184,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 
 		$input       = JFactory::getApplication()->input;
 		$folder      = $input->get('foldername', '', 'cmd');
+
 		// TODO: Once support for <3.1 is ended
 		// $folderCheck = (string) $this->input->get('foldername', null, 'raw');
 		$folderCheck = JRequest::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
@@ -245,6 +247,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
+
 			$input->set('folder', ($parent) ? $parent . '/' . $folder : $folder);
 		}
 	}

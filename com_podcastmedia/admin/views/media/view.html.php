@@ -222,6 +222,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 							<span class="icon-32-delete" title="' . $title . '"></span>
 							' . $title . '</a>';
 			}
+
 			$bar->appendButton('Custom', $dhtml, 'delete');
 			JToolBarHelper::divider();
 		}

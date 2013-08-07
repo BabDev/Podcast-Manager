@@ -237,6 +237,7 @@ class PodcastManagerTableFeed extends JTable
 			{
 				$this->created = $date->toSQL();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');

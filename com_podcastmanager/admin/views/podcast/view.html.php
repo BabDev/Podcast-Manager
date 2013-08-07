@@ -135,6 +135,7 @@ class PodcastManagerViewPodcast extends JViewLegacy
 			{
 				JToolBarHelper::save2copy('podcast.save2copy');
 			}
+
 			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

@@ -151,11 +151,13 @@ abstract class PodcastManagerHelper
 					{
 						$data->title = $tags['title'][0];
 					}
+
 					// Set the album field
 					if (isset($tags['album']))
 					{
 						$data->itSubtitle = $tags['album'][0];
 					}
+
 					// Set the artist field
 					if (isset($tags['artist']))
 					{
@@ -250,6 +252,7 @@ abstract class PodcastManagerHelper
 				$allowedFeeds[] = (int) $feed->id;
 			}
 		}
+
 		return $allowedFeeds;
 	}
 
@@ -333,6 +336,5 @@ abstract class PodcastManagerHelper
 			default:
 				return $url;
 		}
-
 	}
 }

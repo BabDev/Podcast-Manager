@@ -136,11 +136,13 @@ class PodcastManagerViewFeed extends JViewLegacy
 					JToolBarHelper::save2new('feed.save2new');
 				}
 			}
+
 			// If an existing item, can save as a copy
 			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{
 				JToolBarHelper::save2copy('feed.save2copy');
 			}
+
 			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

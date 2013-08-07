@@ -37,6 +37,7 @@ function podcastManagerBuildRoute(&$query)
 	{
 		$menuItem = $menu->getItem($query['Itemid']);
 	}
+
 	$mView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 	$mId	= (empty($menuItem->query['feedname'])) ? null : $menuItem->query['feedname'];
 
@@ -48,6 +49,7 @@ function podcastManagerBuildRoute(&$query)
 		{
 			$segments[] = $query['view'];
 		}
+
 		unset($query['view']);
 	}
 
@@ -69,6 +71,7 @@ function podcastManagerBuildRoute(&$query)
 				$segments[] = $query['feedname'];
 			}
 		}
+
 		unset($query['feedname']);
 	}
 

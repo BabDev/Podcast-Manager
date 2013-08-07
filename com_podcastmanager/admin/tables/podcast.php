@@ -248,6 +248,7 @@ class PodcastManagerTablePodcast extends JTable
 			{
 				$this->created = $date->toSQL();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');
@@ -269,12 +270,11 @@ class PodcastManagerTablePodcast extends JTable
 				// Append the boilerplate if enabled
 				if ($BP->bp_position !== 0)
 				{
-					// Boilerplate at top of summary
+					// Position 1 is top, 2 is bottom
 					if ($BP->bp_position === 1)
 					{
 						$this->itSummary = $BP->boilerplate . PHP_EOL . PHP_EOL . $this->itSummary;
 					}
-					// Boilerplate at bottom of summary
 					elseif ($BP->bp_position === 2)
 					{
 						$this->itSummary = $this->itSummary . PHP_EOL . PHP_EOL . $BP->boilerplate;

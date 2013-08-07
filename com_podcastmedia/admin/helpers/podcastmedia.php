@@ -112,6 +112,7 @@ abstract class PodcastMediaHelper
 
 						return false;
 					}
+
 					finfo_close($finfo);
 				}
 				else

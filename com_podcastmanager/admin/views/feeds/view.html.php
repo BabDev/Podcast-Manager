@@ -126,11 +126,13 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		{
 			JToolBarHelper::addNew('feed.add');
 		}
+
 		if ($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
 			|| $canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
 			JToolBarHelper::editList('feed.edit');
 		}
+
 		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
 			JToolBarHelper::divider();
@@ -140,6 +142,7 @@ class PodcastManagerViewFeeds extends JViewLegacy
 			JToolBarHelper::checkin('feeds.checkin');
 			JToolBarHelper::divider();
 		}
+
 		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete')
 			|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
@@ -151,6 +154,7 @@ class PodcastManagerViewFeeds extends JViewLegacy
 			JToolBarHelper::trash('feeds.trash');
 			JToolBarHelper::divider();
 		}
+
 		if ($canDo->get('core.admin'))
 		{
 			JToolBarHelper::preferences('com_podcastmanager');

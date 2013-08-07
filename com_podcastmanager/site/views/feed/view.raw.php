@@ -297,7 +297,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 				{
 					$mime = $item->mime;
 				}
-				// Default if not set
 				else
 				{
 					$mime = 'audio/mpeg';

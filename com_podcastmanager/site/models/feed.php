@@ -194,6 +194,7 @@ class PodcastManagerModelFeed extends JModelList
 		{
 			$orderCol = 'a.publish_up';
 		}
+
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $input->get('filter_order_Dir', 'DESC', 'cmd');
@@ -202,6 +203,7 @@ class PodcastManagerModelFeed extends JModelList
 		{
 			$listOrder = 'DESC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 
 		$user = JFactory::getUser();

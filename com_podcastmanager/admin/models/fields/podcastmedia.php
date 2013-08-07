@@ -58,6 +58,7 @@ class JFormFieldPodcastMedia extends JFormField
 		{
 			$asset = JFactory::getApplication('administrator')->input->get('option', '', 'cmd');
 		}
+
 		$link = (string) $this->element['link'];
 
 		if (!self::$initialised)
@@ -118,9 +119,9 @@ class JFormFieldPodcastMedia extends JFormField
 			$results = $dispatcher->trigger('onPathFind');
 			$directory = $results['0'];
 		}
-		// Can only handle one at a time, throw a warning and default
 		elseif ($count > 1)
 		{
+			// Can only handle one at a time, throw a warning and default
 			JError::raiseWarning(null, JText::_('COM_PODCASTMANAGER_TOO_MANY_MEDIA_PLUGINS'));
 			$directory = '';
 		}
@@ -150,6 +151,7 @@ class JFormFieldPodcastMedia extends JFormField
 		{
 			$folder = '';
 		}
+
 		// The button.
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
@@ -183,6 +185,7 @@ class JFormFieldPodcastMedia extends JFormField
 			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
 			$html[] = '	</div>';
 		}
+
 		$html[] = '</div>';
 
 		return implode("\n", $html);

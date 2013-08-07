@@ -163,6 +163,7 @@ class PodcastManagerModelPodcast extends JModelForm
 				$data = PodcastManagerHelper::fillMetaData($data);
 			}
 		}
+
 		return $data;
 	}
 
@@ -285,6 +286,7 @@ class PodcastManagerModelPodcast extends JModelForm
 		{
 			$this->setState($this->getName() . '.id', $table->$pkName);
 		}
+
 		$this->setState($this->getName() . '.new', $isNew);
 
 		return true;

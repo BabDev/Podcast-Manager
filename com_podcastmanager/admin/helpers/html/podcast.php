@@ -79,6 +79,7 @@ abstract class JHtmlPodcast
 			{
 				static::$items[$hash][] = JHtml::_('select.option', $item->id, $item->name);
 			}
+
 			// "No Feed" option:
 			static::$items[$hash][] = JHtml::_('select.option', '0', JText::_('JNONE'));
 		}
