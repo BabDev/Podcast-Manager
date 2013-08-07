@@ -38,10 +38,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<?php echo $this->pagination->getLimitBox();
 		endif; ?>
 
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<input type="hidden" name="limitstart" value="" />
+	<input type="hidden" name="task" value="" />
 	<?php endif;
 
 	if (empty($this->items)) : ?>

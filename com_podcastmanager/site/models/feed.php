@@ -176,19 +176,20 @@ class PodcastManagerModelFeed extends JModelList
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$params = JComponentHelper::getParams('com_podcastmanager');
+		$itemid = $input->get('feedname', 0, 'uint') . ':' . $input->get('Itemid', 0, 'uint');
 
 		// List state information
 		$feed = $input->get('feedname', '', 'uint');
 		$this->setState('feed.id', $feed);
 
-		$limit = $input->get('limit', $app->getCfg('list_limit', 0), 'uint');
+		$limit = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', 20, 'uint');
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $input->get('limitstart', 0, 'uint');
 		$this->setState('list.start', $limitstart);
 
 		// Item sort and order
-		$orderCol = $input->get('filter_order', 'a.publish_up', 'cmd');
+		$orderCol = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -197,7 +198,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder = $input->get('filter_order_Dir', 'DESC', 'cmd');
+		$listOrder = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
 		{
