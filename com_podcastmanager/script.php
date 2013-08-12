@@ -261,7 +261,7 @@ class Com_PodcastManagerInstallerScript
 				// Set the table columns to insert table to
 				$columnsArray = array(
 					$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-					$db->quoteName('field_mappings'), $db->quoteName('router')
+					$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router')
 				);
 
 				// Insert the link.
@@ -272,6 +272,7 @@ class Com_PodcastManagerInstallerScript
 					$db->quote('Podcast Manager Feed') . ', '
 					. $db->quote('com_podcastmanager.feed') . ', '
 					. $db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
+					. $db->quote('') . ', '
 					. $db->quote(json_encode($fieldMappings)) . ', '
 					. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute')
 				);
@@ -325,7 +326,7 @@ class Com_PodcastManagerInstallerScript
 				// Set the table columns to insert table to
 				$columnsArray = array(
 					$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-					$db->quoteName('field_mappings'), $db->quoteName('router')
+					$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router')
 				);
 
 				// Insert the link.
@@ -336,6 +337,7 @@ class Com_PodcastManagerInstallerScript
 					$db->quote('Podcast Manager Podcast') . ', '
 					. $db->quote('com_podcastmanager.podcast') . ', '
 					. $db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
+					. $db->quote('') . ', '
 					. $db->quote(json_encode($fieldMappings)) . ', '
 					. $db->quote('PodcastManagerHelperRoute::getPodcastRoute')
 				);
