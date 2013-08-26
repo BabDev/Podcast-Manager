@@ -281,7 +281,7 @@ class Com_PodcastManagerInstallerScript
 			}
 
 			// If we don't have the podcast type ID, assume the type data doesn't exist yet
-			if (!$feedTypeId)
+			if (!$podcastTypeId)
 			{
 				// This object contains all fields that are mapped to the core_content table
 				$commonObject = new stdClass;
