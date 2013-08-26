@@ -15,34 +15,28 @@
 defined('_JEXEC') or die;
 
 // Check if user is allowed to add/edit based on component permissions.
-$canEdit = $this->user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->feed->id);
+$canEdit = $this->feed->id && $this->user->authorise('core.edit', 'com_podcastmanager.feed.' . $this->feed->id);
 ?>
 <div class="podcastmanager-feed<?php echo $this->pageclass_sfx;?>">
-<?php if ($this->params->def('show_page_heading', 1))
-{ ?>
+<?php if ($this->params->def('show_page_heading', 1)) : ?>
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-<?php }
-if ($this->params->get('show_feed_title', 1))
-{ ?>
+<?php endif;
+if ($this->feed->name && $this->params->get('show_feed_title', 1)) : ?>
 	<h2><?php echo JHtml::_('content.prepare', $this->feed->name); ?></h2>
-<?php }
-if ($this->params->get('show_feed_description', 1) || $this->params->get('show_feed_image', 1))
-{ ?>
+<?php endif;
+if ($this->params->get('show_feed_description', 1) || $this->params->get('show_feed_image', 1)) : ?>
 	<div class="feed-desc">
-	<?php if ($this->params->get('show_feed_image') && $this->feed->image)
-	{ ?>
+	<?php if ($this->params->get('show_feed_image') && $this->feed->image) : ?>
 		<img src="<?php echo $this->feed->image; ?>"/>
-	<?php }
-	if ($this->params->get('show_feed_description') && $this->feed->description)
-	{
+	<?php endif;
+	if ($this->params->get('show_feed_description') && $this->feed->description) :
 		echo JHtml::_('content.prepare', $this->feed->description);
-	} ?>
+	endif; ?>
 		<div class="clr"></div>
 	</div>
-<?php }
-if ($canEdit)
-{
+<?php endif;
+if ($canEdit) :
 	echo JHtml::_('icon.feededit', $this->feed, $this->params);
-}
+endif;
 echo $this->loadTemplate('items'); ?>
 </div>

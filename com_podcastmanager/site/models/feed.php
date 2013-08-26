@@ -64,21 +64,23 @@ class PodcastManagerModelFeed extends JModelList
 	 */
 	public function getFeed()
 	{
-		// Create a new query object.
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
+		// Only query if state->feed.id is valid
+		if ($this->getState('feed.id') > 0)
+		{
+			$db = $this->getDbo();
+			$query = $db->getQuery(true)
+				->select('*')
+				->from($db->quoteName('#__podcastmanager_feeds'))
+				->where($db->quoteName('id') . ' = ' . (int) $this->getState('feed.id'));
 
-		// Select required fields
-		$query->select('*');
-		$query->from($db->quoteName('#__podcastmanager_feeds'));
+			$db->setQuery($query);
 
-		$feedId = $this->getState('feed.id');
-		$query->where($db->quoteName('id') . ' = ' . (int) $feedId);
-
-		$db->setQuery($query);
-		$feed = $db->loadObject();
-
-		return $feed;
+			return $db->loadObject();
+		}
+		else
+		{
+			return new stdClass;
+		}
 	}
 
 	/**
@@ -104,7 +106,7 @@ class PodcastManagerModelFeed extends JModelList
 		// Filter by feed
 		$feed = $this->getState('feed.id');
 
-		if (is_numeric($feed))
+		if ($feed > 0)
 		{
 			$query->where($db->quoteName('a.feedname') . ' = ' . (int) $feed);
 		}
@@ -118,8 +120,8 @@ class PodcastManagerModelFeed extends JModelList
 		}
 
 		// Filter by start date.
-		$nullDate = $db->Quote($db->getNullDate());
-		$nowDate = $db->Quote(JFactory::getDate()->toSQL());
+		$nullDate = $db->quote($db->getNullDate());
+		$nowDate = $db->quote(JFactory::getDate()->toSql());
 
 		if ($this->getState('filter.publish_date'))
 		{
@@ -179,7 +181,7 @@ class PodcastManagerModelFeed extends JModelList
 		$itemid = $input->get('feedname', 0, 'uint') . ':' . $input->get('Itemid', 0, 'uint');
 
 		// List state information
-		$feed = $input->get('feedname', '', 'uint');
+		$feed = $input->get('feedname', 0, 'uint');
 		$this->setState('feed.id', $feed);
 
 		$limit = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', 20, 'uint');

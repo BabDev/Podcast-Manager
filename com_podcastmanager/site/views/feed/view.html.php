@@ -172,7 +172,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 		$app = JFactory::getApplication();
 		$menus = $app->getMenu();
 		$pathway = $app->getPathway();
-		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -236,11 +235,11 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		if ($this->feed->author)
 		{
-			$this->document->setMetaData('author', $feed->author);
+			$this->document->setMetaData('author', $this->feed->author);
 		}
 
 		// Add alternative feed link
-		if ($this->params->get('show_feed_link', 1) == 1)
+		if ($this->feed->id && $this->params->get('show_feed_link', 1) == 1)
 		{
 			$link	= '&format=raw&layout=default&feedname=' . $this->feed->id;
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
