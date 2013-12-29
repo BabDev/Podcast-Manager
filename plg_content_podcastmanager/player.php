@@ -282,7 +282,7 @@ class PodcastManagerPlayer
 			// Load jQuery via JHtml in 3.x, use Google API in 2.5 (use the same version of jQuery as shipped in latest CMS 3.x)
 			if (version_compare(JVERSION, '3.0', 'lt'))
 			{
-				JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js');
+				JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
 
 				// Ensure jQuery.noConflict() is set, just in case ;-)
 				JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
