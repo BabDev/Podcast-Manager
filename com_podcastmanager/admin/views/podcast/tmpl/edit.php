@@ -86,6 +86,11 @@ JHtml::_('behavior.keepalive');
 					<?php endforeach ?>
 				<?php endif; ?>
 
+				<?php if (version_compare(JVERSION, '3.2', 'ge')) : ?>
+					<li><?php echo $this->form->getLabel('version_note'); ?>
+					<?php echo $this->form->getInput('version_note'); ?></li>
+				<?php endif; ?>
+
 				<li><?php echo $this->form->getLabel('id'); ?>
 				<?php echo $this->form->getInput('id'); ?></li>
 			</ul>

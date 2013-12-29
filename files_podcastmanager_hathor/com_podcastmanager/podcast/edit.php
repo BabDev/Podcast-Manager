@@ -100,6 +100,11 @@ JHtml::_('behavior.formvalidation');
 						<?php endforeach ?>
 					<?php endif; ?>
 
+					<?php if (version_compare(JVERSION, '3.2', 'ge')) : ?>
+						<li><?php echo $this->form->getLabel('version_note'); ?>
+						<?php echo $this->form->getInput('version_note'); ?></li>
+					<?php endif; ?>
+
 					<li><?php echo $this->form->getLabel('id');
 						echo $this->form->getInput('id'); ?>
 					</li>

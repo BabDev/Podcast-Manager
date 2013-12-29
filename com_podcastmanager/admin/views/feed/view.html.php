@@ -143,6 +143,12 @@ class PodcastManagerViewFeed extends JViewLegacy
 				JToolBarHelper::save2copy('feed.save2copy');
 			}
 
+			// Add versions toolbar for CMS 3.2+
+			if (version_compare(JVERSION, '3.2', 'ge') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
+			{
+				JToolbarHelper::versions('com_podcastmanager.feed', $this->item->id);
+			}
+
 			JToolBarHelper::cancel('feed.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}

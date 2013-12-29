@@ -291,6 +291,16 @@ JHtml::_('formbehavior.chosen', 'select');
 					</div>
 					<?php endforeach ?>
 				<?php endif; ?>
+				<?php if (version_compare(JVERSION, '3.2', 'ge')) : ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('version_note'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('version_note'); ?>
+						</div>
+					</div>
+				<?php endif; ?>
 				<div class="control-group">
 					<div class="control-label">
 						<?php echo $this->form->getLabel('id'); ?>

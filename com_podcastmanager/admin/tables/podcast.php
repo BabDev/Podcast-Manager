@@ -48,6 +48,14 @@ class PodcastManagerTablePodcast extends JTable
 			$this->tagsHelper = new JHelperTags;
 			$this->tagsHelper->typeAlias = 'com_podcastmanager.podcast';
 		}
+
+		// Content History support in CMS 3.2+
+		if (version_compare(JVERSION, '3.2', 'ge'))
+		{
+			JObserverMapper::addObserverClassToClass(
+				'JTableObserverContenthistory', 'PodcastManagerTablePodcast', array('typeAlias' => 'com_podcastmanager.podcast')
+			);
+		}
 	}
 
 	/**

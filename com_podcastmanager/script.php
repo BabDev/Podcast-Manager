@@ -52,11 +52,11 @@ class Com_PodcastManagerInstallerScript
 		// Bugfix for "Can not build admin menus"
 		if (in_array($type, array('install', 'discover_install')))
 		{
-			$this->_bugfixDBFunctionReturnedNoError();
+			$this->bugfixDBFunctionReturnedNoError();
 		}
 		else
 		{
-			$this->_bugfixCantBuildAdminMenus();
+			$this->bugfixCantBuildAdminMenus();
 		}
 
 		return true;
@@ -74,7 +74,7 @@ class Com_PodcastManagerInstallerScript
 	public function update($parent)
 	{
 		// Get the pre-update version
-		$version = $this->_getVersion();
+		$version = $this->getVersion();
 
 		// If in error, throw a message about the language files
 		if ($version == 'Error')
@@ -87,13 +87,13 @@ class Com_PodcastManagerInstallerScript
 		// If coming from 1.x, remove language files in administrator/language and language
 		if (version_compare($version, '2.0', 'lt'))
 		{
-			$this->_removeLanguageFiles();
+			$this->removeLanguageFiles();
 		}
 
 		// If coming from versions earlier than 2.1, remove the component media folders
 		if (version_compare($version, '2.1', 'lt'))
 		{
-			$this->_removeMediaFolders();
+			$this->removeMediaFolders();
 		}
 	}
 
@@ -141,7 +141,7 @@ class Com_PodcastManagerInstallerScript
 			// Do nothing ;-)
 		}
 
-		// Deal with Tags support in 3.1+
+		// Deal with UCM support in 3.1+
 		if (version_compare(JVERSION, '3.1', 'ge'))
 		{
 			// Remove the data in the core content tables
@@ -191,7 +191,7 @@ class Com_PodcastManagerInstallerScript
 			}
 		}
 
-		// Deal with Tags support in 3.1+
+		// Deal with UCM support in 3.1+
 		if (version_compare(JVERSION, '3.1', 'ge'))
 		{
 			// Insert the columns in the #__content_types table if they don't exist already
@@ -264,7 +264,16 @@ class Com_PodcastManagerInstallerScript
 					$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router')
 				);
 
-				// Insert the link.
+				$history = '';
+
+				// Content History support in 3.2+
+				if (version_compare(JVERSION, '3.2', 'ge'))
+				{
+					$columnsArray[] = $db->quoteName('content_history_options');
+					$history = ', ' . $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/feed.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":[],"displayLookup":[{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}');
+				}
+
+				// Insert the data.
 				$query->clear();
 				$query->insert($db->quoteName('#__content_types'));
 				$query->columns($columnsArray);
@@ -274,7 +283,7 @@ class Com_PodcastManagerInstallerScript
 					. $db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
 					. $db->quote('') . ', '
 					. $db->quote(json_encode($fieldMappings)) . ', '
-					. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute')
+					. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute') . $history
 				);
 				$db->setQuery($query);
 				$db->execute();
@@ -329,6 +338,15 @@ class Com_PodcastManagerInstallerScript
 					$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router')
 				);
 
+				$history = '';
+
+				// Content History support in 3.2+
+				if (version_compare(JVERSION, '3.2', 'ge'))
+				{
+					$columnsArray[] = $db->quoteName('content_history_options');
+					$history = ', ' . $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/podcast.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":["publish_up"],"displayLookup":[{"sourceColumn":"feedname","targetTable":"#__podcastmanager_feeds","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}');
+				}
+
 				// Insert the link.
 				$query->clear();
 				$query->insert($db->quoteName('#__content_types'));
@@ -339,7 +357,7 @@ class Com_PodcastManagerInstallerScript
 					. $db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
 					. $db->quote('') . ', '
 					. $db->quote(json_encode($fieldMappings)) . ', '
-					. $db->quote('PodcastManagerHelperRoute::getPodcastRoute')
+					. $db->quote('PodcastManagerHelperRoute::getPodcastRoute') . $history
 				);
 				$db->setQuery($query);
 				$db->execute();
@@ -356,7 +374,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   1.8
 	 */
-	private function _bugfixDBFunctionReturnedNoError()
+	private function bugfixDBFunctionReturnedNoError()
 	{
 		$db = JFactory::getDbo();
 
@@ -432,7 +450,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   1.8
 	 */
-	private function _bugfixCantBuildAdminMenus()
+	private function bugfixCantBuildAdminMenus()
 	{
 		$db = JFactory::getDbo();
 
@@ -516,7 +534,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   1.7
 	 */
-	private function _getVersion()
+	private function getVersion()
 	{
 		static $version;
 
@@ -563,7 +581,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   2.0
 	 */
-	private function _removeLanguageFiles()
+	private function removeLanguageFiles()
 	{
 		jimport('joomla.filesystem.file');
 
@@ -607,7 +625,7 @@ class Com_PodcastManagerInstallerScript
 	 *
 	 * @since   2.1
 	 */
-	private function _removeMediaFolders()
+	private function removeMediaFolders()
 	{
 		jimport('joomla.filesystem.folder');
 

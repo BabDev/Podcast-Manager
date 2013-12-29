@@ -235,6 +235,17 @@ class PodcastManagerModelFeed extends JModelAdmin
 			);
 		}
 
+		// Add version note for CMS 3.2 and later
+		if (version_compare(JVERSION, '3.2', 'ge'))
+		{
+			$form->setField(
+				new SimpleXMLElement(
+					'<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"'
+					. ' class="inputbox" size="45" labelclass="control-label" />'
+				)
+			);
+		}
+
 		parent::preprocessForm($form, $data, $group);
 	}
 
