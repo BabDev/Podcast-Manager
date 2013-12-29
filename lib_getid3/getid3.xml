@@ -2,12 +2,12 @@
 <extension type="library" version="2.5" method="upgrade">
 	<name>getID3</name>
 	<libraryname>getid3</libraryname>
-	<creationDate>3 June 2013</creationDate>
+	<creationDate>5 July 2013</creationDate>
 	<author>James Heinrich</author>
 	<copyright>(C) James Heinrich</copyright>
 	<authorEmail>info@getid3.org</authorEmail>
 	<authorUrl>http://www.getid3.org</authorUrl>
-	<version>1.9.6</version>
+	<version>1.9.7</version>
 	<license>GNU/GPL Version 2</license>
 	<description>getID3() is a PHP script that extracts useful information from MP3s and other multimedia file formats</description>
 	<files folder="getid3">
