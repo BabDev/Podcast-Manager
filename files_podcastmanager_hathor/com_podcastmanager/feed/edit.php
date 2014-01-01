@@ -5,7 +5,7 @@
  * @package     PodcastManager
  * @subpackage  files_podcastmanager_hathor
  *
- * @copyright   Copyright (C) 2011-2013 Michael Babker. All rights reserved.
+ * @copyright   Copyright (C) 2011-2014 Michael Babker. All rights reserved.
  * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  *
  * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
