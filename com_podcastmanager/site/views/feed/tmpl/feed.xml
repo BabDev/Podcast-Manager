@@ -100,6 +100,12 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field name="show_item_image" type="list" default="0"
+				label="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_LABEL"
+				description="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_DESCRIPTION" >
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 			<field name="show_pagination" type="list"
 				description="JGLOBAL_PAGINATION_DESC"
 				label="JGLOBAL_PAGINATION_LABEL" >

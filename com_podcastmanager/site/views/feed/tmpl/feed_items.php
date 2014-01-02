@@ -111,6 +111,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 
 					if (($this->params->get('show_item_description')) AND ($item->itSummary)) : ?>
 					<p><?php echo nl2br($item->itSummary); ?></p>
+					<?php endif;
+
+					if (($this->params->get('show_item_image')) AND ($item->itImage)) : ?>
+					<p><?php echo JHtml::_('image', $item->itImage, $item->title); ?></p>
 					<?php endif; ?>
 				</td>
 				<td class="list-date">
