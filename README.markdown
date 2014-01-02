@@ -1,4 +1,4 @@
-Podcast Manager
+Podcast Manager [![Analytics](https://ga-beacon.appspot.com/UA-42602973-2/podcast-manager/readme)](https://github.com/igrigorik/ga-beacon)
 ===============
 *Podcast Manager* is a suite of extensions for a Joomla! powered website which allows users to create, manage, and host a podcast feed directly from their website.
 
