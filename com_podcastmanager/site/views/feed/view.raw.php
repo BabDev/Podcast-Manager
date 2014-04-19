@@ -75,6 +75,8 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Get the data from the model
 		$items = $this->get('Items');
 		$feed  = $this->get('Feed');
+		$feedid = $feed->id;
+		$feedurl =  JUri::current() . '?format=raw&feedname=' . $feedid;
 
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
@@ -88,9 +90,16 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		$xw->startElement('rss');
 		$xw->writeAttribute('xmlns:itunes', 'http://www.itunes.com/dtds/podcast-1.0.dtd');
+		$xw->writeAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');
 		$xw->writeAttribute('version', '2.0');
 
 		$xw->startElement('channel');
+
+		$xw->startElement('atom:link');
+		$xw->writeAttribute('href', $feedurl);
+		$xw->writeAttribute('rel', 'self');
+		$xw->writeAttribute('type', 'application/rss+xml');
+		$xw->endElement();
 
 		$xw->writeElement('title', $feed->name);
 		$xw->writeElement('link', JUri::base());
