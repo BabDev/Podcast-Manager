@@ -75,8 +75,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Get the data from the model
 		$items = $this->get('Items');
 		$feed  = $this->get('Feed');
-		$feedid = $feed->id;
-		$feedurl =  JUri::current() . '?format=raw&feedname=' . $feedid;
+		$feedurl = JRoute::_('index.php?option=com_podcastmanager&format=raw&feedname=' . $feed->id);
 
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
