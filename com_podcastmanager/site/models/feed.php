@@ -193,7 +193,7 @@ class PodcastManagerModelFeed extends JModelList
 		{
 			$orderCol  = 'a.publish_up';
 			$listOrder = 'DESC';
-			$limit     = $input->get('limit', $app->getCfg('list_limit', 0), 'uint');
+			$limit     = '*';
 		}
 		else
 		{
