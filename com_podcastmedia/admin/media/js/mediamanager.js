@@ -58,12 +58,12 @@ var PodcastMediaManager = this.PodcastMediaManager = {
 
 		var folder = this.getFolder();
 		if (folder) {
-			this.updatepaths.each(function(path){ path.value =folder; });
+			this.updatepaths.each(function(path, el){ el.path.value =folder; });
 			this.folderpath.value = basepath+'/'+folder;
 			// node = this.tree.get('node_'+folder);
 			// node.toggle(false, true);
 		} else {
-			this.updatepaths.each(function(path){ path.value = ''; });
+			this.updatepaths.each(function(path, el){ el.path.value = ''; });
 			this.folderpath.value = basepath;
 			// node = this.tree.root;
 		}
