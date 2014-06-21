@@ -71,6 +71,19 @@ class PodcastManagerViewPodcast extends JViewLegacy
 			return false;
 		}
 
+		// Ensure jQuery is loaded for the metadata parser
+		if (version_compare(JVERSION, '3.0', 'lt'))
+		{
+			JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+
+			// Ensure jQuery.noConflict() is set, just in case ;-)
+			JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
+		}
+		else
+		{
+			JHtml::_('jquery.framework');
+		}
+
 		// Add the component media
 		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
 		JHtml::_('script', 'podcastmanager/podcast.js', false, true);

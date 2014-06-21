@@ -85,98 +85,107 @@ abstract class PodcastManagerHelper
 	/**
 	 * Method to process the file through the getID3 library to extract key data
 	 *
-	 * @param   mixed  $data  The data object for the form
+	 * @param   string  $filename  The filename to be processed
 	 *
 	 * @return  mixed  The processed data for the form.
 	 *
 	 * @since   2.0
+	 * @throws  RuntimeException
 	 */
-	public static function fillMetaData($data)
+	public static function fillMetaData($filename)
 	{
-		jimport('getid3.getid3');
-		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
-
-		$filename = $_COOKIE['podManFile'];
-
-		// Set the filename field (fallback for if session data doesn't retain)
-		$data->filename = $_COOKIE['podManFile'];
-
-		if (!preg_match('/^http/', $filename))
-		{
-			$filename = JPATH_ROOT . '/' . $filename;
-		}
-
 		// Throw an error if for some reason getID3 isn't found
 		if (!is_file(JPATH_PLATFORM . '/getid3/getid3.php'))
 		{
-			JError::raiseNotice('500', JText::_('COM_PODCASTMANAGER_GETID3_NOT_FOUND'));
-
-			return $data;
+			throw new RuntimeException(JText::_('COM_PODCASTMANAGER_GETID3_NOT_FOUND'));
 		}
 
+		// Import the getID3 library
+		jimport('getid3.getid3');
+		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
+
 		// Only push through getID3 if the file actually exists and is local
-		if (!preg_match('/^http/', $filename) && is_file($filename))
+		if (preg_match('/^http/', $filename))
 		{
-			$getID3 = new getID3;
-			$getID3->setOption(array('encoding' => 'UTF-8'));
-			$fileInfo = $getID3->analyze($filename);
+			throw new RuntimeException(JText::_('COM_PODCASTMANAGER_GETID3_CANNOT_PROCESS_REMOTE'));
+		}
 
-			// Check if there's an error from getID3
-			if (isset($fileInfo['error']))
+		$filename = JPATH_ROOT . '/' . $filename;
+
+		if (!is_file($filename))
+		{
+			throw new RuntimeException(JText::_('COM_PODCASTMANAGER_GETID3_FILE_NOT_FOUND'));
+		}
+
+		$data = new stdClass;
+		$data->messages = array();
+
+		// Instantiate getID3 and get the metadata
+		$getID3 = new getID3;
+		$getID3->setOption(array('encoding' => 'UTF-8'));
+		$fileInfo = $getID3->analyze($filename);
+
+		// Check if there's an error from getID3
+		if (isset($fileInfo['error']))
+		{
+			$data->messages['error'] = array();
+
+			foreach ($fileInfo['error'] as $error)
 			{
-				foreach ($fileInfo['error'] as $error)
+				$data->messages['error'][] = $error;
+			}
+		}
+
+		// Check if there's a warning from getID3
+		if (isset($fileInfo['warning']))
+		{
+			$data->messages['warning'] = array();
+
+			foreach ($fileInfo['warning'] as $warning)
+			{
+				$data->messages['warning'][] = $warning;
+			}
+		}
+
+		if (isset($fileInfo['tags']))
+		{
+			$t = $fileInfo['tags'];
+			$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
+
+			if ($tags)
+			{
+				// Set the title field
+				if (isset($tags['title']))
 				{
-					JError::raiseNotice('500', $error);
+					$data->title = $tags['title'][0];
+				}
+
+				// Set the album field
+				if (isset($tags['album']))
+				{
+					$data->itSubtitle = $tags['album'][0];
+				}
+
+				// Set the artist field
+				$artist = isset($tags['album_artist']) ? $tags['album_artist'] : (isset($tags['artist']) ? $tags['artist'] : null);
+
+				if (!is_null($artist))
+				{
+					$data->itAuthor = $artist;
 				}
 			}
+		}
 
-			// Check if there's a warning from getID3
-			if (isset($fileInfo['warning']))
-			{
-				foreach ($fileInfo['warning'] as $warning)
-				{
-					JError::raiseWarning('500', $warning);
-				}
-			}
+		// Set the duration field
+		if (isset($fileInfo['playtime_string']))
+		{
+			$data->itDuration = $fileInfo['playtime_string'];
+		}
 
-			if (isset($fileInfo['tags_html']))
-			{
-				$t = $fileInfo['tags_html'];
-				$tags = isset($t['id3v2']) ? $t['id3v2'] : (isset($t['id3v1']) ? $t['id3v1'] : (isset($t['quicktime']) ? $t['quicktime'] : null));
-
-				if ($tags)
-				{
-					// Set the title field
-					if (isset($tags['title']))
-					{
-						$data->title = $tags['title'][0];
-					}
-
-					// Set the album field
-					if (isset($tags['album']))
-					{
-						$data->itSubtitle = $tags['album'][0];
-					}
-
-					// Set the artist field
-					if (isset($tags['artist']))
-					{
-						$data->itAuthor = $tags['artist'][0];
-					}
-				}
-			}
-
-			// Set the duration field
-			if (isset($fileInfo['playtime_string']))
-			{
-				$data->itDuration = $fileInfo['playtime_string'];
-			}
-
-			// Set the MIME type
-			if (isset($fileInfo['mime_type']))
-			{
-				$data->mime = $fileInfo['mime_type'];
-			}
+		// Set the MIME type
+		if (isset($fileInfo['mime_type']))
+		{
+			$data->mime = $fileInfo['mime_type'];
 		}
 
 		return $data;

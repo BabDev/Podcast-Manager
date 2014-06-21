@@ -15,7 +15,6 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
-JLoader::register('PodcastManagerHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmanager.php');
 
 /**
  * Podcast edit model class.
@@ -156,12 +155,6 @@ class PodcastManagerModelPodcast extends JModelForm
 		if (empty($data))
 		{
 			$data = $this->getItem();
-
-			// If changing the selected file, process the new data through getID3
-			if (isset($_COOKIE['podManFile']))
-			{
-				$data = PodcastManagerHelper::fillMetaData($data);
-			}
 		}
 
 		return $data;

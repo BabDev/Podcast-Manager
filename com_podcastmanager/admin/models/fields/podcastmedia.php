@@ -167,6 +167,8 @@ class JFormFieldPodcastMedia extends JFormField
 			$html[] = 'return false;';
 			$html[] = '">';
 			$html[] = '<i class="icon-remove"></i></a>';
+			$html[] = '<a class="btn" title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '" href="#" onclick="parseMetadata()">';
+			$html[] = '<i class="icon-loop"></i> ' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
 		}
 		else
 		{
@@ -183,6 +185,12 @@ class JFormFieldPodcastMedia extends JFormField
 			$html[] = '	<div class="blank">';
 			$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
 			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
+			$html[] = '	</div>';
+
+			$html[] = '<div class="button2-left">';
+			$html[] = '	<div class="blank">';
+			$html[] = '		<a title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '"' . ' href="#"' . ' onclick="parseMetadata();">';
+			$html[] = '			' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
 			$html[] = '	</div>';
 		}
 

@@ -7,7 +7,7 @@
 		<field name="asset_id" type="hidden" filter="unset" />
 		<field name="filename" type="podcastmedia" hide_none="1"
 			label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION"
-			required="true" onchange="makeCookie();" />
+			required="true" />
 		<field name="title" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION"
 			size="30" required="true" />
