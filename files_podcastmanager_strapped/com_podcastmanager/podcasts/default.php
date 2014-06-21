@@ -169,6 +169,7 @@ $sortFields = $this->getSortFields();
 			endif; ?>
 			</tbody>
 		</table>
+		<?php echo $this->pagination->getListFooter(); ?>
 		<?php // Load the batch processing form.
 		echo $this->loadTemplate('batch'); ?>
 
