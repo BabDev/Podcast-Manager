@@ -75,6 +75,9 @@ JHtml::_('behavior.framework');
 			<div>
 				<p><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_INTRO')?></p>
 				<ul>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_FRCA')?></li>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_FRFR')?></li>
+					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_IDID')?></li>
 					<li><?php echo JText::_('COM_PODCASTMANAGER_INFO_TRANSLATIONS_PTBR')?></li>
 				</ul>
 				<p><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_TRANSLATIONS_CONTRIBUTE', $transifex);?></p>
