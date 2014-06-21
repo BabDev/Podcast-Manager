@@ -33,7 +33,7 @@ JHtml::_('formbehavior.chosen', 'select');
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feed&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
 	<div class="row-fluid">
 		<!-- Begin Content -->
-		<div class="span10 form-horizontal">
+		<div class="span9 form-horizontal">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></a></li>
 				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
@@ -259,7 +259,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		</div>
 		<!-- End Content -->
 		<!-- Begin Sidebar -->
-		<div class="span2">
+		<div class="span3">
 			<h4><?php echo JText::_('JDETAILS');?></h4>
 			<hr />
 			<fieldset class="form-vertical">

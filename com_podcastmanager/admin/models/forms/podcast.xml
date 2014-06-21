@@ -2,7 +2,7 @@
 <form>
 	<fieldset
 		addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
-		<field name="id" type="text" class="readonly span12 small" label="JGLOBAL_FIELD_ID_LABEL"
+		<field name="id" type="text" class="readonly small" label="JGLOBAL_FIELD_ID_LABEL"
 			description="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
 			readonly="true" />
 		<field name="asset_id" type="hidden" filter="unset" />
