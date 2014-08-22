@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="podcast-manager" default="dev_head" basedir=".">
 	<!-- Project properties -->
-	<property file="./build.properties" />
 	<property name="repo.dir" value="." />
 	<property name="version" value="2.2.0-dev" />
-	<resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
 	<tstamp>
-		<format property="build.date" pattern="%Y-%m-%d" />
+		<format property="build.date" pattern="yyyy-MM-dd" />
 	</tstamp>
+
+	<macrodef name="git">
+		<attribute name="command" />
+		<attribute name="dir" default="" />
+		<element name="args" optional="true" />
+		<sequential>
+			<exec executable="git" dir="@{dir}">
+				<arg value="@{command}" />
+				<args/>
+			</exec>
+		</sequential>
+	</macrodef>
 
 	<!-- Build a package for testing -->
 	<target name="dev_head" description="Builds test packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
-		<echo msg="Deleting old master builds" />
+		<echo message="Deleting old master builds" />
 		<delete includeemptydirs="true">
 			<fileset dir=".">
 				<include name="files_podcastmanager_hathor_${version}.zip" />
 				<include name="pkg_podcastmanager_${version}.zip" />
 			</fileset>
 		</delete>
-		<echo msg="Build Podcast Manager package" />
+		<echo message="Build Podcast Manager package" />
 		<zip destfile="pkg_podcastmanager_${version}.zip">
 			<fileset dir="packaging">
 				<include name="language/**" />
@@ -28,13 +38,13 @@
 				<include name="strapped/**" />
 			</fileset>
 		</zip>
-		<echo msg="Building Hathor Overrides package" />
+		<echo message="Building Hathor Overrides package" />
 		<zip destfile="files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
 	</target>
 
 	<!-- Build a package for release -->
 	<target name="release" description="Builds release packages based on the development head" depends="rebuild-packages,copy-files,zip-packages">
-		<echo msg="Build Podcast Manager package" />
+		<echo message="Build Podcast Manager package" />
 		<mkdir dir="releases" />
 		<zip destfile="releases/pkg_podcastmanager_${version}.zip">
 			<fileset dir="packaging">
@@ -45,177 +55,143 @@
 				<include name="strapped/**" />
 			</fileset>
 		</zip>
-		<echo msg="Building Hathor Overrides package" />
+		<echo message="Building Hathor Overrides package" />
 		<zip destfile="releases/files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
-		<echo msg="Creating Git tag" />
-		<gittag repository="${repo.dir.resolved}" name="${version}" gitPath="${localgit}" />
-		<echo msg="Pushing Version commit and tag to GitHub" />
-		<gitpush repository="${repo.dir.resolved}" gitPath="${localgit}" />
-		<gitpush repository="${repo.dir.resolved}" tags="true" gitPath="${localgit}" />
+		<echo message="Committing version" />
+		<git command="commit">
+			<args>
+				<arg value="-am 'Prepare ${version} release'" />
+			</args>
+		</git>
+		<echo message="Creating Git tag" />
+		<git command="tag">
+			<args>
+				<arg value="${version}" />
+			</args>
+		</git>
+		<echo message="Pushing Version commit and tag to GitHub" />
+		<git command="push">
+		</git>
+		<git command="push">
+			<args>
+				<arg value="--tags" />
+			</args>
+		</git>
 	</target>
 
 	<!-- Copy files to staging to allow for manipulation pre-package -->
 	<target name="copy-files" description="Stages the common files" depends="rebuild-packages">
-		<echo msg="Staging files for packaging" />
+		<echo message="Staging files for packaging" />
 
-		<echo msg="Create com_podcastmanager package" />
+		<echo message="Create com_podcastmanager package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/com_podcastmanager">
 				<fileset dir="com_podcastmanager" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/com_podcastmanager/podcastmanager.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/com_podcastmanager/podcastmanager.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create com_podcastmedia package" />
+		<echo message="Create com_podcastmedia package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/com_podcastmedia">
 				<fileset dir="com_podcastmedia" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/com_podcastmedia/podcastmedia.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/com_podcastmedia/podcastmedia.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create lib_getid3 package" />
+		<echo message="Create lib_getid3 package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/lib_getid3">
 				<fileset dir="lib_getid3" />
 			</copy>
 
-		<echo msg="Create mod_podcastmanager package" />
+		<echo message="Create mod_podcastmanager package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/mod_podcastmanager">
 				<fileset dir="mod_podcastmanager" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/mod_podcastmanager/mod_podcastmanager.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/mod_podcastmanager/mod_podcastmanager.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create mod_podcastmanagerfeed package" />
+		<echo message="Create mod_podcastmanagerfeed package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/mod_podcastmanagerfeed">
 				<fileset dir="mod_podcastmanagerfeed" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/mod_podcastmanagerfeed/mod_podcastmanagerfeed.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/mod_podcastmanagerfeed/mod_podcastmanagerfeed.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create plg_content_podcastmanager package" />
+		<echo message="Create plg_content_podcastmanager package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/plg_content_podcastmanager">
 				<fileset dir="plg_content_podcastmanager" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/plg_content_podcastmanager/podcastmanager.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/plg_content_podcastmanager/podcastmanager.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create plg_editors-xtd_podcastmanager package" />
+		<echo message="Create plg_editors-xtd_podcastmanager package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/plg_editors-xtd_podcastmanager">
 				<fileset dir="plg_editors-xtd_podcastmanager" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/plg_editors-xtd_podcastmanager/podcastmanager.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/plg_editors-xtd_podcastmanager/podcastmanager.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create plg_finder_podcastmanager_feeds package" />
+		<echo message="Create plg_finder_podcastmanager_feeds package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/plg_finder_podcastmanager_feeds">
 				<fileset dir="plg_finder_podcastmanager_feeds" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/plg_finder_podcastmanager_feeds/podcastmanager_feeds.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/plg_finder_podcastmanager_feeds/podcastmanager_feeds.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create plg_finder_podcastmanager_podcasts package" />
+		<echo message="Create plg_finder_podcastmanager_podcasts package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/plg_finder_podcastmanager_podcasts">
 				<fileset dir="plg_finder_podcastmanager_podcasts" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/staging/plg_finder_podcastmanager_podcasts/podcastmanager_podcasts.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/staging/plg_finder_podcastmanager_podcasts/podcastmanager_podcasts.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create plg_podcastmedia_user package" />
+		<echo message="Create plg_podcastmedia_user package" />
 			<mkdir dir="packaging/staging" />
 			<copy todir="packaging/staging/plg_podcastmedia_user">
 				<fileset dir="plg_podcastmedia_user" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+		<replace file="packaging/staging/plg_podcastmedia_user/user.xml" token="##DATE##" value="${build.date}" />
+		<replace file="packaging/staging/plg_podcastmedia_user/user.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Copy package manifest" />
-			<copy file="pkg_podcastmanager.xml" tofile="packaging/pkg_podcastmanager.xml" overwrite="true">
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
-			</copy>
+		<echo message="Copy package manifest" />
+			<copy file="pkg_podcastmanager.xml" tofile="packaging/pkg_podcastmanager.xml" overwrite="true" />
+			<replace file="packaging/pkg_podcastmanager.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/pkg_podcastmanager.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Copy package scriptfile" />
+		<echo message="Copy package scriptfile" />
 		<copy file="script.php" tofile="packaging/script.php" overwrite="true" />
 
-		<echo msg="Copy package language" />
+		<echo message="Copy package language" />
 			<copy todir="packaging/language">
 				<fileset dir="language" />
 			</copy>
 
-		<echo msg="Copy Strapped layout files" />
+		<echo message="Copy Strapped layout files" />
 			<copy todir="packaging/strapped">
 				<fileset dir="files_podcastmanager_strapped" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/strapped/podcastmanager_strapped.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/strapped/podcastmanager_strapped.xml" token="##VERSION##" value="${version}" />
 
-		<echo msg="Create files_podcastmanager_hathor package" />
+		<echo message="Create files_podcastmanager_hathor package" />
 			<copy todir="packaging/files_podcastmanager_hathor">
 				<fileset dir="files_podcastmanager_hathor" />
-				<filterchain>
-					<replacetokens begintoken="##" endtoken="##">
-						<token key="DATE" value="${build.date}" />
-						<token key="VERSION" value="${version}" />
-					</replacetokens>
-				</filterchain>
 			</copy>
+			<replace file="packaging/files_podcastmanager_hathor/podcastmanager_hathor.xml" token="##DATE##" value="${build.date}" />
+			<replace file="packaging/files_podcastmanager_hathor/podcastmanager_hathor.xml" token="##VERSION##" value="${version}" />
 	</target>
 
 	<!-- ZIP the separate extension packages -->
 	<target name="zip-packages" description="Creates ZIP archives for installation" depends="rebuild-packages,copy-files">
-		<echo msg="Archiving packages" />
+		<echo message="Archiving packages" />
 		<mkdir dir="packaging/packages" />
 		<zip destfile="packaging/packages/com_podcastmanager.zip" basedir="packaging/staging/com_podcastmanager" />
 		<zip destfile="packaging/packages/com_podcastmedia.zip" basedir="packaging/staging/com_podcastmedia" />
@@ -231,31 +207,29 @@
 
 	<!-- Rebuild the staging area -->
 	<target name="rebuild-packages" description="Delete old packages">
-		<echo msg="Deleting packaging directory" />
+		<echo message="Deleting packaging directory" />
 		<delete dir="${repo.dir}/packaging" includeemptydirs="true" failonerror="true" />
-		<echo msg="Creating packaging directory" />
+		<echo message="Creating packaging directory" />
 		<mkdir dir="packaging" />
 	</target>
 
 	<!-- Check code style based on Joomla Coding Standard -->
 	<target name="phpcs" description="Generate codestyle report using PHP_CodeSniffer">
-		<echo msg="Remove previous codestyle report" />
+		<echo message="Remove previous codestyle report" />
 		<delete quiet="yes" includeemptydirs="true">
 			<fileset dir=".">
-				<include name="build/logs/codesniff.txt" />
 				<include name="build/logs/checkstyle.xml" />
 			</fileset>
 		</delete>
-		<echo msg="Running phpcs with Joomla! Coding Standard" />
-		<phpcodesniffer
-			standard="${repo.dir}/build/phpcs/Joomla"
-			format="full"
-			ignorePatterns="com_podcastmanager/admin/liveupdate,com_podcastmanager/admin/media/js,com_podcastmanager/site/media,lib_getid3,plg_content_podcastmanager/mediaelements,packaging,releases,*/tmpl/*,files_podcastmanager_*,build/*"
-			file="${repo.dir}"
-			allowedFileExtensions="php"
-			verbosity="1">
-			<formatter type="full" outfile="${repo.dir}/build/logs/codesniff.txt" />
-			<formatter type="checkstyle" outfile="${repo.dir}/build/logs/checkstyle.xml" />
-		</phpcodesniffer>
+		<echo message="Running phpcs with Joomla! Coding Standard" />
+		<exec executable="phpcs">
+			<arg value="--report=checkstyle" />
+			<arg value="--extensions=php" />
+			<arg value="-p" />
+			<arg value="--report-file=${repo.dir}/build/logs/checkstyle.xml" />
+			<arg value="--standard=${repo.dir}/build/phpcs/Joomla" />
+			<arg value="--ignore=${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/packaging,${repo.dir}/releases,*/tmpl/*,${repo.dir}/files_podcastmanager_*,${repo.dir}/build/*" />
+			<arg path="${repo.dir}" />
+		</exec>
 	</target>
 </project>
