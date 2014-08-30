@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
 
 /**
@@ -44,6 +42,9 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 		{
 			$response['data'] = PodcastManagerHelper::fillMetaData($filename);
 			$response['error'] = false;
+
+			// Something in the messages array causes issues with JSON encoding, remove it
+			unset($response['data']->messages);
 		}
 		catch (RuntimeException $e)
 		{

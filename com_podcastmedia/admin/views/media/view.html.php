@@ -102,8 +102,8 @@ class PodcastMediaViewMedia extends JViewLegacy
 			});"
 		);
 
-		JHtml::stylesheet('administrator/components/com_podcastmanager/media/css/template.css', false, false, false);
-		JHtml::script('administrator/components/com_podcastmedia/media/js/mediamanager.js', false, false);
+		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
+		JHtml::_('script', 'podcastmanager/mediamanager.js', false, true);
 
 		if (version_compare(JVERSION, '3.0', 'lt'))
 		{

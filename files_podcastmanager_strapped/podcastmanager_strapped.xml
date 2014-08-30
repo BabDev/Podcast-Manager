@@ -25,6 +25,11 @@
 			<folder>medialist</folder>
 			<file>index.html</file>
 		</files>
+		<files folder="podcastmanager" target="administrator/templates/isis/js/podcastmanager">
+			<file>index.html</file>
+			<file>mediamanager.js</file>
+			<file>popup-audiomanager.js</file>
+		</files>
 	</fileset>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.files_podcastmanager_strapped.ini</language>

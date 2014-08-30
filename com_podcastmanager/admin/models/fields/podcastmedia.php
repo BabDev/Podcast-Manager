@@ -186,12 +186,14 @@ class JFormFieldPodcastMedia extends JFormField
 			$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
 			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
 			$html[] = '	</div>';
+			$html[] = '</div>';
 
 			$html[] = '<div class="button2-left">';
 			$html[] = '	<div class="blank">';
 			$html[] = '		<a title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '"' . ' href="#"' . ' onclick="parseMetadata();">';
 			$html[] = '			' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
 			$html[] = '	</div>';
+			$html[] = '</div>';
 		}
 
 		$html[] = '</div>';

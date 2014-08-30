@@ -90,10 +90,10 @@ class Pkg_PodcastManagerInstallerScript
 			jimport('joomla.filesystem.file');
 
 			// First, the array of folders we need to get the children for
-			$folders = array('com_podcastmanager', 'com_podcastmedia');
+			$folders = array('html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager');
 
 			// Set up our base path
-			$base = JPATH_ADMINISTRATOR . '/templates/isis/html/';
+			$base = JPATH_ADMINISTRATOR . '/templates/isis/';
 
 			// Process our parent folders
 			foreach ($folders as $folder)
@@ -172,7 +172,7 @@ class Pkg_PodcastManagerInstallerScript
 	public function postflight($type, $parent, $results)
 	{
 		// If in CMS 3, install the Strapped layouts
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge') && $type == 'install')
 		{
 			$installer = new JInstaller;
 			$strapped = $installer->install(__DIR__ . '/strapped');
@@ -182,13 +182,13 @@ class Pkg_PodcastManagerInstallerScript
 		$enabled = array();
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
+		$query->select($db->quoteName('enabled'));
+		$query->from($db->quoteName('#__extensions'));
 
 		foreach ($results as $result)
 		{
 			$extension = (string) $result['name'];
-			$query->clear();
-			$query->select($db->quoteName('enabled'));
-			$query->from($db->quoteName('#__extensions'));
+			$query->clear('where');
 			$query->where($db->quoteName('name') . ' = ' . $db->quote($extension));
 			$db->setQuery($query);
 			$enabled[$extension] = $db->loadResult();

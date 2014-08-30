@@ -90,7 +90,7 @@ class PodcastMediaViewAudio extends JViewLegacy
 		$this->require_ftp = $ftp;
 
 		JHtml::_('behavior.framework', true);
-		JHtml::script('administrator/components/com_podcastmedia/media/js/popup-audiomanager.js', false, false);
+		JHtml::_('script', 'podcastmanager/popup-audiomanager.js', false, true);
 		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
 
 		if ($lang->isRTL())
