@@ -107,6 +107,9 @@ $sortFields = $this->getSortFields();
 						<?php echo JText::_('JDATE'); ?>
 					</th>
 					<th width="5%" class="hidden-phone">
+						<?php echo JText::_('COM_PODCASTMANAGER_HEADING_PUBLISH_DATE'); ?>
+					</th>
+					<th width="5%" class="hidden-phone">
 						<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
 					</th>
 					<th width="1%" class="hidden-phone">
@@ -117,7 +120,7 @@ $sortFields = $this->getSortFields();
 			<tbody>
 			<?php if (count($this->items) == 0) : ?>
 				<tr class="row0">
-					<td class="center" colspan="7">
+					<td class="center" colspan="8">
 						<?php echo JText::_('COM_PODCASTMANAGER_NO_RECORDS_FOUND'); ?>
 					</td>
 				</tr>
@@ -153,6 +156,9 @@ $sortFields = $this->getSortFields();
 					</td>
 					<td class="center hidden-phone">
 						<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
+					</td>
+					<td class="center hidden-phone">
+						<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
 					</td>
 					<td class="center hidden-phone">
 						<?php if ($item->language == '*') :

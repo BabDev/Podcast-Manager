@@ -220,6 +220,7 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 			'a.title' => JText::_('JGLOBAL_TITLE'),
 			'a.feedname' => JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'),
 			'a.created' => JText::_('JDATE'),
+			'a.publish_up' => JText::_('COM_PODCASTMANAGER_HEADING_PUBLISH_DATE'),
 			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id' => JText::_('JGRID_HEADING_ID')
 		);
