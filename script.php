@@ -104,19 +104,22 @@ class Pkg_PodcastManagerInstallerScript
 				// Get the list of child folders
 				$children = JFolder::folders($path);
 
-				// Process the child folders and remove their files
-				foreach ($children as $child)
+				if (count($children))
 				{
-					// Set the path for the child
-					$cPath = $path . '/' . $child;
-
-					// Get the list of files
-					$files = JFolder::files($cPath);
-
-					// Now, remove the files
-					foreach ($files as $file)
+					// Process the child folders and remove their files
+					foreach ($children as $child)
 					{
-						JFile::delete($cPath . '/' . $file);
+						// Set the path for the child
+						$cPath = $path . '/' . $child;
+
+						// Get the list of files
+						$files = JFolder::files($cPath);
+
+						// Now, remove the files
+						foreach ($files as $file)
+						{
+							JFile::delete($cPath . '/' . $file);
+						}
 					}
 				}
 			}
