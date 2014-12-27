@@ -2,6 +2,7 @@
 /// getID3() by James Heinrich <info@getid3.org>               //
 //  available at http://getid3.sourceforge.net                 //
 //            or http://www.getid3.org                         //
+//          also https://github.com/JamesHeinrich/getID3       //
 /////////////////////////////////////////////////////////////////
 
 *****************************************************************
@@ -76,7 +77,7 @@ Reads & parses (to varying degrees):
  ¤ audio-lossy:
   * MP3/MP2/MP1
   * MPC / Musepack
-  * Ogg (Vorbis, OggFLAC, Speex)
+  * Ogg (Vorbis, OggFLAC, Speex, Opus)
   * AAC / MP4
   * AC3
   * DTS
@@ -424,13 +425,15 @@ http://www.getid3.org/phpBB3/viewtopic.php?t=25
     "movi" chunk that fits in the first 2GB, should issue error
     to show that playtime is incorrect. Other data should be mostly
     correct, assuming that data is constant throughout the file)
-
+* PHP <= v5 on Windows cannot read UTF-8 filenames
 
 
 Known Bugs/Issues in other programs
 -----------------------------------
 http://www.getid3.org/phpBB3/viewtopic.php?t=25
 
+* PZ TagEditor v4.53.408 has been known to insert ID3v2.3 frames
+  into an existing ID3v2.2 tag which, of course, breaks things
 * Windows Media Player (up to v11) and iTunes (up to v10+) do
     not correctly handle ID3v2.3 tags with UTF-16BE+BOM
     encoding (they assume the data is UTF-16LE+BOM and either
