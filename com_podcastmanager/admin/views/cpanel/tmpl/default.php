@@ -14,6 +14,10 @@
 
 defined('_JEXEC') or die;
 
+// If we're running Joomla! 3 and the Isis layouts aren't installed, assume we need to help the user migrate
+if (version_compare(JVERSION, '3.0', 'ge')) :
+	echo $this->loadTemplate('migrate');
+else :
 // Site addresses to be processed outside JText
 $babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
@@ -94,3 +98,4 @@ JHtml::_('behavior.framework');
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 </div>
+<?php endif;

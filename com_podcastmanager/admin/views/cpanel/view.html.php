@@ -24,6 +24,14 @@ defined('_JEXEC') or die;
 class PodcastManagerViewCpanel extends JViewLegacy
 {
 	/**
+	 * Container for Joomla! 3 migration errors
+	 *
+	 * @var    array
+	 * @since  2.2
+	 */
+	protected $migrationErrors = array();
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -42,12 +50,18 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			return false;
 		}
 
+		// Check for migration errors for Joomla! 3
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->migrationErrors = $this->get('migrationErrors');
+		}
+
 		// Add the component media
 		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
 
 		$this->addToolbar();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
