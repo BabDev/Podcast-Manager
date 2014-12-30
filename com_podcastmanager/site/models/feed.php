@@ -188,19 +188,23 @@ class PodcastManagerModelFeed extends JModelList
 		$limitstart = $input->get('limitstart', 0, 'uint');
 		$this->setState('list.start', $limitstart);
 
-		// Item sort, order, and limit
-		if ($format == 'raw')
-		{
-			$orderCol  = 'a.publish_up';
-			$listOrder = 'DESC';
-			$limit     = '*';
-		}
-		else
-		{
-			$orderCol  = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
-			$listOrder = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-			$limit     = $app->getUserStateFromRequest('com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', 20, 'uint');
-		}
+		$orderCol = $app->getUserStateFromRequest(
+			'com_podcastmanager.feed.list.' . $itemid . '.filter_order', 'filter_order', '', 'string'
+		);
+
+		$listOrder = $app->getUserStateFromRequest(
+			'com_podcastmanager.feed.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd'
+		);
+
+		/*
+		 * Assign our default limit based on request format; RAW is the RSS feed and as such should default to
+		 * displaying all items, otherwise we default to the app configuration
+		 */
+		$defaultLimit = ($format == 'raw') ? '*' : $app->getCfg('list_limit', 20);
+
+		$limit = $app->getUserStateFromRequest(
+			'com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', $defaultLimit, 'uint'
+		);
 
 		$this->setState('list.limit', $limit);
 
