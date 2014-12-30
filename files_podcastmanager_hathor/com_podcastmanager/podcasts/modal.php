@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 // Check for a token if accessing from front end
 if (JFactory::getApplication()->isSite())
 {
-	JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+	JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 }
 
 JHtml::_('behavior.tooltip');
