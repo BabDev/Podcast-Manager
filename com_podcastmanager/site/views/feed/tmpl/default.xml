@@ -21,6 +21,7 @@
 				<option value="">JDEFAULT</option>
 				<option value="a.title">COM_PODCASTMANAGER_ORDER_TITLE_LABEL</option>
 				<option value="a.publish_up">COM_PODCASTMANAGER_ORDER_PUBLISHED_LABEL</option>
+				<option value="a.created">COM_PODCASTMANAGER_ORDER_CREATED_LABEL</option>
 			</field>
 			<field name="filter_order_Dir" type="list" filter="options"
 				description="COM_PODCASTMANAGER_DIRECTION_DESCRIPTION"
