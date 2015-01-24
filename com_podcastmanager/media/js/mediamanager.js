@@ -1,7 +1,7 @@
 /**
 * Podcast Manager for Joomla!
 *
-* @copyright	Copyright (C) 2011-2014 Michael Babker. All rights reserved.
+* @copyright	Copyright (C) 2011-2015 Michael Babker. All rights reserved.
 * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
 * @package		PodcastManager
 * @subpackage	com_podcastmedia
