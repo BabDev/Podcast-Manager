@@ -2,7 +2,7 @@
 <project name="podcast-manager" default="dev_head" basedir=".">
 	<!-- Project properties -->
 	<property name="repo.dir" value="." />
-	<property name="version" value="2.2.0-dev" />
+	<property name="version" value="2.2.0-beta" />
 	<tstamp>
 		<format property="build.date" pattern="yyyy-MM-dd" />
 	</tstamp>
