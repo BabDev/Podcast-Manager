@@ -95,11 +95,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<th class="width-10">
 					<?php echo JHtml::_('grid.sort', 'COM_PODCASTMANAGER_HEADING_FEEDNAME', 'a.feedname', $listDirn, $listOrder); ?>
 				</th>
-				<th class="width-5">
-					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+				<th class="width-10">
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_CREATED_DATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
-				<th class="width-5">
-					<?php echo JHtml::_('grid.sort', 'COM_PODCASTMANAGER_HEADING_PUBLISH_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+				<th class="width-10">
+					<?php echo JHtml::_('grid.sort', 'JGLOBAL_PUBLISHED_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 				</th>
 				<th class="width-5">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>

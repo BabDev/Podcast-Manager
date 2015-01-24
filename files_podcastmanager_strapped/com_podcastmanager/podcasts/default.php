@@ -103,11 +103,11 @@ $sortFields = $this->getSortFields();
 					<th width="10%" class="hidden-phone">
 						<?php echo JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'); ?>
 					</th>
-					<th width="5%" class="hidden-phone">
-						<?php echo JText::_('JDATE'); ?>
+					<th width="10%" class="hidden-phone">
+						<?php echo JText::_('JGLOBAL_CREATED_DATE'); ?>
 					</th>
-					<th width="5%" class="hidden-phone">
-						<?php echo JText::_('COM_PODCASTMANAGER_HEADING_PUBLISH_DATE'); ?>
+					<th width="10%" class="hidden-phone">
+						<?php echo JText::_('JGLOBAL_PUBLISHED_DATE'); ?>
 					</th>
 					<th width="5%" class="hidden-phone">
 						<?php echo JText::_('JGRID_HEADING_LANGUAGE'); ?>
