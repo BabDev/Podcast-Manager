@@ -88,6 +88,16 @@ class PlgContentPodcastManager extends JPlugin
 			$feedView = $context;
 		}
 
+		// Special handling for com_tags if needed
+		if ($context == 'com_tags.tag')
+		{
+			// If there isn't a text element, set it as that's what we're using
+			if (!isset($article->text) || !$article->text)
+			{
+				$article->text = $article->core_body;
+			}
+		}
+
 		// Simple performance check to determine whether plugin should process further
 		if (strpos($article->text, 'podcast') === false)
 		{
