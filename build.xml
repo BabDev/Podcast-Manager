@@ -41,7 +41,7 @@
 		<echo message="Building Hathor Overrides package" />
 		<zip destfile="files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
 		<echo message="Building Isis Overrides package" />
-		<zip destfile="releases/files_podcastmanager_strapped_${version}.zip" basedir="packaging/strapped" />
+		<zip destfile="files_podcastmanager_strapped_${version}.zip" basedir="packaging/strapped" />
 	</target>
 
 	<!-- Build a package for release -->
