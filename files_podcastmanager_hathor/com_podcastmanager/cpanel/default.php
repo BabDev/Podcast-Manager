@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 JHtml::stylesheet('administrator/templates/hathor/html/com_podcastmanager/cpanel/cpanel.css', false, false, false);
 
 // Site addresses to be processed outside JText
-$babdev		= '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
+$babdev		= '<a href="https://www.babdev.com/extensions/podcast-manager" target="_blank">https://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
 $liveupdate	= '<b><a href="https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
 $mejs		= '<b><a href="http://mediaelementjs.com" target="_blank">MediaElement.JS</a></b>';

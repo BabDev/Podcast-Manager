@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_MIGRATION_TITLE'), 'podcastmanager.png');
 
 // Site addresses to be processed outside JText
-$babdev = '<a href="http://www.babdev.com/extensions/podcast-manager" target="_blank">http://www.babdev.com/extensions/podcast-manager</a>';
+$babdev = '<a href="https://www.babdev.com/extensions/podcast-manager" target="_blank">https://www.babdev.com/extensions/podcast-manager</a>';
 
 // Initialize the errors array
 $errors = array();

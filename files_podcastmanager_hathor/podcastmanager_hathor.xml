@@ -5,7 +5,7 @@
 	<author>Michael Babker</author>
 	<copyright>(C) 2011-2015 Michael Babker</copyright>
 	<authorEmail>mbabker@flbab.com</authorEmail>
-	<authorUrl>http://www.babdev.com</authorUrl>
+	<authorUrl>https://www.babdev.com</authorUrl>
 	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>FILES_PODCASTMANAGER_HATHOR_XML_DESCRIPTION</description>
@@ -27,6 +27,6 @@
 		<language tag="pt-BR">pt-BR/pt-BR.files_podcastmanager_hathor.sys.ini</language>
 	</languages>
 	<updateservers>
-		<server type="extension" name="Podcast Manager Hathor HTML Overrides Updates" priority="2">http://www.babdev.com/updates/files_podman_hathor.xml</server>
+		<server type="extension" name="Podcast Manager Hathor HTML Overrides Updates" priority="2">https://www.babdev.com/updates/files_podman_hathor.xml</server>
 	</updateservers>
 </extension>
