@@ -33,22 +33,6 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires PHP 5.3 (need this check because of earlier version use)
-		if (version_compare(PHP_VERSION, '5.3', 'lt'))
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
-
-			return false;
-		}
-
-		// Requires Joomla! 2.5.6 (need this check because of earlier version use)
-		if (version_compare(JVERSION, '2.5.6', 'lt'))
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
-
-			return false;
-		}
-
 		// Bugfix for "Can not build admin menus"
 		if (in_array($type, array('install', 'discover_install')))
 		{

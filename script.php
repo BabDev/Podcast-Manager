@@ -47,8 +47,8 @@ class Pkg_PodcastManagerInstallerScript
 			return false;
 		}
 
-		// Requires Joomla! 2.5.6
-		if (version_compare(JVERSION, '2.5.6', 'lt'))
+		// Requires Joomla! 3.4.0
+		if (version_compare(JVERSION, '3.4.0', 'lt'))
 		{
 			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
 
