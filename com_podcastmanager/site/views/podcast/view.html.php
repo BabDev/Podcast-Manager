@@ -93,17 +93,7 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		$this->params = $this->state->params;
 
 		// Ensure jQuery is loaded for the metadata parser
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
-
-			// Ensure jQuery.noConflict() is set, just in case ;-)
-			JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
-		}
-		else
-		{
-			JHtml::_('jquery.framework');
-		}
+		JHtml::_('jquery.framework');
 
 		// Add the component media
 		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
@@ -182,13 +172,13 @@ class PodcastManagerViewPodcast extends JViewLegacy
 
 		$title = $this->params->def('page_title', $head);
 
-		if ($app->getCfg('sitename_pagetitles', 0) == 1)
+		if ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$this->document->setTitle($title);

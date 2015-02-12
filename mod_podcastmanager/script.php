@@ -24,8 +24,8 @@ class Mod_PodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string            $type    The action being performed
-	 * @param   JInstallerModule  $parent  The class calling this method
+	 * @param   string                   $type    The action being performed
+	 * @param   JInstallerAdapterModule  $parent  The function calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
@@ -47,7 +47,7 @@ class Mod_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during update
 	 *
-	 * @param   JInstallerModule  $parent  The class calling this method
+	 * @param   JInstallerAdapterModule  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -83,32 +83,30 @@ class Mod_PodcastManagerInstallerScript
 	private function _getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('mod_podcastmanager'));
 		$db->setQuery($query);
 
-		if (!$db->loadObject())
+		try
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$manifest = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 			$version = 'Error';
 
 			return $version;
-		}
-		else
-		{
-			$manifest = $db->loadObject();
 		}
 
 		// Decode the JSON
 		$record = json_decode($manifest->manifest_cache);
 
 		// Get the version
-		$version = $record->version;
-
-		return $version;
+		return $record->version;
 	}
 
 	/**

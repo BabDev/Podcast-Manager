@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.helper');
-
 /**
  * HTML View class for the Podcast Media component
  *
@@ -105,26 +103,6 @@ class PodcastMediaViewMedia extends JViewLegacy
 		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
 		JHtml::_('script', 'podcastmanager/mediamanager.js', false, true);
 
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
-
-			JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
-
-			if ($lang->isRTL())
-			{
-				JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
-			}
-
-			JHtml::_('script', 'system/mootree.js', true, true, false, false);
-			JHtml::_('stylesheet', 'system/mootree.css', array(), true);
-
-			if ($lang->isRTL())
-			{
-				JHtml::_('stylesheet', 'media/mootree_rtl.css', array(), true);
-			}
-		}
-
 		if (DIRECTORY_SEPARATOR == '\\')
 		{
 			$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_PODCASTMEDIA_BASE);
@@ -175,34 +153,28 @@ class PodcastMediaViewMedia extends JViewLegacy
 		$user = JFactory::getUser();
 
 		// Set the titlebar text
-		JToolBarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
+		JToolbarHelper::title(JText::_('COM_PODCASTMEDIA'), 'podcastmanager.png');
 
 		// Add a upload button
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		if ($user->authorise('core.create', 'com_podcastmanager'))
 		{
-			if ($user->authorise('core.create', 'com_podcastmanager'))
-			{
-				$title = JText::_('JTOOLBAR_UPLOAD');
-				$dhtml = '<button data-toggle="collapse" data-target="#collapseUpload" class="btn btn-small btn-success">
-							<i class="icon-plus icon-white" title="' . $title . '"></i>
-							' . $title . '</button>';
-				$bar->appendButton('Custom', $dhtml, 'upload');
-				JToolBarHelper::divider();
-			}
+			$title = JText::_('JTOOLBAR_UPLOAD');
+			$dhtml = '<button data-toggle="collapse" data-target="#collapseUpload" class="btn btn-small btn-success">
+						<i class="icon-plus icon-white" title="' . $title . '"></i>
+						' . $title . '</button>';
+			$bar->appendButton('Custom', $dhtml, 'upload');
+			JToolbarHelper::divider();
 		}
 
 		// Add a create folder button
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		if ($user->authorise('core.create', 'com_podcastmanager'))
 		{
-			if ($user->authorise('core.create', 'com_podcastmanager'))
-			{
-				$title = JText::_('COM_PODCASTMEDIA_CREATE_FOLDER');
-				$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn btn-small">
-							<i class="icon-folder" title="' . $title . '"></i>
-							' . $title . '</button>';
-				$bar->appendButton('Custom', $dhtml, 'folder');
-				JToolBarHelper::divider();
-			}
+			$title = JText::_('COM_PODCASTMEDIA_CREATE_FOLDER');
+			$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn btn-small">
+						<i class="icon-folder" title="' . $title . '"></i>
+						' . $title . '</button>';
+			$bar->appendButton('Custom', $dhtml, 'folder');
+			JToolbarHelper::divider();
 		}
 
 		// Add a delete button
@@ -210,34 +182,22 @@ class PodcastMediaViewMedia extends JViewLegacy
 		{
 			$title = JText::_('JTOOLBAR_DELETE');
 
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn btn-small">
-							<i class="icon-remove" title="' . $title . '"></i>
-							' . $title . '</button>';
-			}
-			else
-			{
-				$dhtml = '<a href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="toolbar">
-							<span class="icon-32-delete" title="' . $title . '"></span>
-							' . $title . '</a>';
-			}
+			$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn btn-small">
+						<i class="icon-remove" title="' . $title . '"></i>
+						' . $title . '</button>';
 
 			$bar->appendButton('Custom', $dhtml, 'delete');
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
 		}
 
 		// Add a back button
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_podcastmanager');
-			JToolBarHelper::divider();
-		}
+		JToolbarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_podcastmanager');
+		JToolbarHelper::divider();
 
 		if ($user->authorise('core.admin', 'com_podcastmanager'))
 		{
-			JToolBarHelper::preferences('com_podcastmedia');
-			JToolBarHelper::divider();
+			JToolbarHelper::preferences('com_podcastmedia');
+			JToolbarHelper::divider();
 		}
 	}
 

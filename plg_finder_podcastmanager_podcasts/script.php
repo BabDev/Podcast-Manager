@@ -24,8 +24,8 @@ class PlgFinderPodcastManager_PodcastsInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string            $type    The action being performed
-	 * @param   JInstallerPlugin  $parent  The function calling this method
+	 * @param   string                   $type    The action being performed
+	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
 	 * @return  boolean  True on success, false on error
 	 *

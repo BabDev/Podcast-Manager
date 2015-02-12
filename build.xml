@@ -35,13 +35,10 @@
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 				<include name="script.php" />
-				<include name="strapped/**" />
 			</fileset>
 		</zip>
 		<echo message="Building Hathor Overrides package" />
 		<zip destfile="files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
-		<echo message="Building Isis Overrides package" />
-		<zip destfile="files_podcastmanager_strapped_${version}.zip" basedir="packaging/strapped" />
 	</target>
 
 	<!-- Build a package for release -->
@@ -54,13 +51,10 @@
 				<include name="packages/**" />
 				<include name="pkg_podcastmanager.xml" />
 				<include name="script.php" />
-				<include name="strapped/**" />
 			</fileset>
 		</zip>
 		<echo message="Building Hathor Overrides package" />
 		<zip destfile="releases/files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
-		<echo message="Building Isis Overrides package" />
-		<zip destfile="releases/files_podcastmanager_strapped_${version}.zip" basedir="packaging/strapped" />
 		<echo message="Committing version" />
 		<git command="commit">
 			<args>
@@ -177,13 +171,6 @@
 			<copy todir="packaging/language">
 				<fileset dir="language" />
 			</copy>
-
-		<echo message="Copy Strapped layout files" />
-			<copy todir="packaging/strapped">
-				<fileset dir="files_podcastmanager_strapped" />
-			</copy>
-			<replace file="packaging/strapped/podcastmanager_strapped.xml" token="##DATE##" value="${build.date}" />
-			<replace file="packaging/strapped/podcastmanager_strapped.xml" token="##VERSION##" value="${version}" />
 
 		<echo message="Create files_podcastmanager_hathor package" />
 			<copy todir="packaging/files_podcastmanager_hathor">

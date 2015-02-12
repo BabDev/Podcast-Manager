@@ -95,13 +95,21 @@ class Com_PodcastManagerInstallerScript
 		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
 		// Get the component's ID from the database
 		$option = 'com_podcastmedia';
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('extension_id'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote($option));
 		$db->setQuery($query);
-		$component_id = $db->loadResult();
+
+		try
+		{
+			$component_id = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			// TODO - Error handling
+		}
 
 		// Add the record
 		$table = JTable::getInstance('menu');
@@ -125,29 +133,46 @@ class Com_PodcastManagerInstallerScript
 			// Do nothing ;-)
 		}
 
-		// Deal with UCM support in 3.1+
-		if (version_compare(JVERSION, '3.1', 'ge'))
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__content_types'));
+		$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+		$db->setQuery($query);
+
+		try
 		{
-			// Remove the data in the core content tables
-			$db = JFactory::getDbo();
-
-			$query = $db->getQuery(true);
-			$query->delete($db->quoteName('#__content_types'));
-			$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-			$db->setQuery($query);
 			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			// TODO - Error handling
+		}
 
-			$query->clear();
-			$query->delete($db->quoteName('#__contentitem_tag_map'));
-			$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-			$db->setQuery($query);
-			$db->execute();
+		$query->clear();
+		$query->delete($db->quoteName('#__contentitem_tag_map'));
+		$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+		$db->setQuery($query);
 
-			$query->clear();
-			$query->delete($db->quoteName('#__ucm_content'));
-			$query->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-			$db->setQuery($query);
+		try
+		{
 			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			// TODO - Error handling
+		}
+
+		$query->clear();
+		$query->delete($db->quoteName('#__ucm_content'));
+		$query->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			// TODO - Error handling
 		}
 	}
 
@@ -175,7 +200,7 @@ class Com_PodcastManagerInstallerScript
 			}
 		}
 
-		// Deal with UCM support in 3.1+
+		// Deal with UCM support
 		include_once JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php';
 
 		PodcastManagerHelper::insertUcmRecords();
@@ -200,7 +225,15 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadColumn();
+
+		try
+		{
+			$ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (!empty($ids))
 		{
@@ -210,7 +243,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__assets'));
 				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 
@@ -220,7 +261,15 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadColumn();
+
+		try
+		{
+			$ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (!empty($ids))
 		{
@@ -230,7 +279,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__extensions'));
 				$query->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 
@@ -242,7 +299,15 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
 		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
-		$ids = $db->loadColumn();
+
+		try
+		{
+			$ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (!empty($ids))
 		{
@@ -252,7 +317,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__menu'));
 				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 	}
@@ -276,7 +349,15 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadColumn();
+
+		try
+		{
+			$ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (count($ids) > 1)
 		{
@@ -291,7 +372,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__extensions'));
 				$query->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 
@@ -301,7 +390,15 @@ class Com_PodcastManagerInstallerScript
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
-		$ids = $db->loadObjectList();
+
+		try
+		{
+			$ids = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (count($ids) > 1)
 		{
@@ -316,7 +413,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__assets'));
 				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 
@@ -328,7 +433,15 @@ class Com_PodcastManagerInstallerScript
 		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
 		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 		$db->setQuery($query);
-		$ids = $db->loadColumn();
+
+		try
+		{
+			$ids = $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			$ids = array();
+		}
 
 		if (!empty($ids))
 		{
@@ -338,7 +451,15 @@ class Com_PodcastManagerInstallerScript
 				$query->delete($db->quoteName('#__menu'));
 				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
 				$db->setQuery($query);
-				$db->query();
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					// TODO - Error handling
+				}
 			}
 		}
 	}
@@ -361,23 +482,23 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Get the record from the database
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 		$db->setQuery($query);
 
-		if (!$db->loadObject())
+		try
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$manifest = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 			$version = 'Error';
 
 			return $version;
-		}
-		else
-		{
-			$manifest = $db->loadObject();
 		}
 
 		// Decode the JSON

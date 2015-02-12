@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.helper');
-
 /**
  * Routing helper class.
  *

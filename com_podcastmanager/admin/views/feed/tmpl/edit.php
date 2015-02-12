@@ -79,17 +79,13 @@ JHtml::_('behavior.keepalive');
 					<li><?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?></li>
 
-					<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
-						<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
-							<li><?php echo $field->label; ?>
-								<?php echo $field->input; ?></li>
-						<?php endforeach ?>
-					<?php endif; ?>
+					<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+						<li><?php echo $field->label; ?>
+							<?php echo $field->input; ?></li>
+					<?php endforeach ?>
 
-					<?php if (version_compare(JVERSION, '3.2', 'ge')) : ?>
-						<li><?php echo $this->form->getLabel('version_note'); ?>
-						<?php echo $this->form->getInput('version_note'); ?></li>
-					<?php endif; ?>
+					<li><?php echo $this->form->getLabel('version_note'); ?>
+					<?php echo $this->form->getInput('version_note'); ?></li>
 
 					<li><?php echo $this->form->getLabel('id'); ?>
 					<?php echo $this->form->getInput('id'); ?></li>

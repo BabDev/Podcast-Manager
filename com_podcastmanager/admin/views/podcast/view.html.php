@@ -72,24 +72,15 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		}
 
 		// Ensure jQuery is loaded for the metadata parser
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
-
-			// Ensure jQuery.noConflict() is set, just in case ;-)
-			JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
-		}
-		else
-		{
-			JHtml::_('jquery.framework');
-		}
+		JHtml::_('jquery.framework');
 
 		// Add the component media
 		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
 		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
 
 		$this->addToolbar();
-		parent::display($tpl);
+
+		return parent::display($tpl);
 	}
 
 	/**
@@ -110,7 +101,7 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo = PodcastManagerHelper::getActions($this->state->get('filter.feedname'), $this->item->id);
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_' . ($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
+		JToolbarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_' . ($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 
 		// Set the actions for new and existing records.
 		if ($isNew)
@@ -118,12 +109,12 @@ class PodcastManagerViewPodcast extends JViewLegacy
 			// For new records, check the create permission.
 			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{
-				JToolBarHelper::apply('podcast.apply');
-				JToolBarHelper::save('podcast.save');
-				JToolBarHelper::save2new('podcast.save2new');
+				JToolbarHelper::apply('podcast.apply');
+				JToolbarHelper::save('podcast.save');
+				JToolbarHelper::save2new('podcast.save2new');
 			}
 
-			JToolBarHelper::cancel('podcast.cancel');
+			JToolbarHelper::cancel('podcast.cancel');
 		}
 		else
 		{
@@ -133,29 +124,29 @@ class PodcastManagerViewPodcast extends JViewLegacy
 				|| ($canDo->get('core.edit.own')
 				|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0) && $this->item->created_by == $userId)))
 			{
-				JToolBarHelper::apply('podcast.apply');
-				JToolBarHelper::save('podcast.save');
+				JToolbarHelper::apply('podcast.apply');
+				JToolbarHelper::save('podcast.save');
 
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 				{
-					JToolBarHelper::save2new('podcast.save2new');
+					JToolbarHelper::save2new('podcast.save2new');
 				}
 			}
 
 			// If an existing item, can save as a copy
 			if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 			{
-				JToolBarHelper::save2copy('podcast.save2copy');
+				JToolbarHelper::save2copy('podcast.save2copy');
 			}
 
-			// Add versions toolbar for CMS 3.2+
-			if (version_compare(JVERSION, '3.2', 'ge') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
+			// Add versions toolbar
+			if ($this->state->params->get('save_history', 0) && $canDo->get('core.edit'))
 			{
 				JToolbarHelper::versions('com_podcastmanager.podcast', $this->item->id);
 			}
 
-			JToolBarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('podcast.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 }

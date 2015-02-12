@@ -81,9 +81,17 @@
 		<field name="mime" type="text" class="inputbox"
 			label="COM_PODCASTMANAGER_FIELD_MIMETYPE_LABEL" description="COM_PODCASTMANAGER_FIELD_MIMETYPE_DESCRIPTION"
 			size="30" default="audio/mpeg" />
+		<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
+			class="inputbox" size="45" labelclass="control-label" />
+		<field id="contenthistory" name="contenthistory" type="contenthistory" data-typeAlias="com_podcastmanager.podcast" label="JTOOLBAR_VERSIONS" />
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
 			<option value="*">JALL</option>
 		</field>
 	</fieldset>
+	<fields name="metadata">
+		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+			<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" />
+		</fieldset>
+	</fields>
 </form>

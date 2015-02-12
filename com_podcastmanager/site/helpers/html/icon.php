@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * Icon helper class.
  *
@@ -26,16 +28,14 @@ abstract class JHtmlIcon
 	/**
 	 * Method to create an edit icon for a feed
 	 *
-	 * @param   object     $feed    The feed object
-	 * @param   JRegistry  $params  The item parameters
-	 * @param   boolean    $legacy  True to use 2.5 style icon, false to use 3.0 font face
-	 * @param   boolean    $force   Force to use font face in 2.5
+	 * @param   object    $feed    The feed object
+	 * @param   Registry  $params  The item parameters
 	 *
-	 * @return  mixed  The formatted HTML for the edit icon
+	 * @return  string|boolean  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function feedEdit($feed, $params, $legacy = false, $force = false)
+	public static function feedEdit($feed, $params)
 	{
 		$uri = JUri::getInstance();
 
@@ -69,37 +69,25 @@ abstract class JHtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		if (!$legacy && (version_compare(JVERSION, '3.0', 'ge') || $force))
-		{
-			$icon = $feed->published ? 'edit' : 'eye-close';
-			$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_FEED') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
-		}
-		else
-		{
-			$icon = $feed->published ? 'edit.png' : 'edit_unpublished.png';
-			$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
-		}
+		$icon = $feed->published ? 'edit' : 'eye-close';
+		$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_FEED') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
 
 		$button = JHtml::_('link', JRoute::_($url), $text);
 
-		$output = '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
-
-		return $output;
+		return '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
 	}
 
 	/**
 	 * Method to create an edit icon for a podcast
 	 *
-	 * @param   object     $podcast  The podcast object
-	 * @param   JRegistry  $params   The item parameters
-	 * @param   boolean    $legacy   True to use 2.5 style icon, false to use 3.0 font face
-	 * @param   boolean    $force    Force to use font face in 2.5
+	 * @param   object    $podcast  The podcast object
+	 * @param   Registry  $params   The item parameters
 	 *
-	 * @return  string  The formatted HTML for the edit icon
+	 * @return  string|boolean  The formatted HTML for the edit icon
 	 *
 	 * @since   1.8
 	 */
-	public static function podcastEdit($podcast, $params, $legacy = false, $force = false)
+	public static function podcastEdit($podcast, $params)
 	{
 		$uri = JUri::getInstance();
 
@@ -133,21 +121,11 @@ abstract class JHtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
-		if (!$legacy && (version_compare(JVERSION, '3.0', 'ge') || $force))
-		{
-			$icon = $podcast->published ? 'edit' : 'eye-close';
-			$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_PODCAST') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
-		}
-		else
-		{
-			$icon = $podcast->published ? 'edit.png' : 'edit_unpublished.png';
-			$text = JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
-		}
+		$icon = $podcast->published ? 'edit' : 'eye-close';
+		$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_PODCAST') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
 
 		$button = JHtml::_('link', JRoute::_($url), $text);
 
-		$output = '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
-
-		return $output;
+		return '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
 	}
 }

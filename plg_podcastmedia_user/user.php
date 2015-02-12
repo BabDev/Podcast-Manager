@@ -24,18 +24,12 @@ defined('_JEXEC') or die;
 class PlgPodcastMediaUser extends JPlugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
-	 *
-	 * @since	2.0
+	 * @var    boolean
+	 * @since  3.0
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	protected $autoloadLanguage = true;
 
 	/**
 	 * Appends the user name to the default path

@@ -24,14 +24,6 @@ defined('_JEXEC') or die;
 class PodcastManagerViewCpanel extends JViewLegacy
 {
 	/**
-	 * Container for Joomla! 3 migration errors
-	 *
-	 * @var    array
-	 * @since  2.2
-	 */
-	protected $migrationErrors = array();
-
-	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse
@@ -48,12 +40,6 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			JError::raiseError(500, implode("\n", $errors));
 
 			return false;
-		}
-
-		// Check for migration errors for Joomla! 3
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->migrationErrors = $this->get('migrationErrors');
 		}
 
 		// Add the component media
@@ -75,11 +61,11 @@ class PodcastManagerViewCpanel extends JViewLegacy
 	{
 		$canDo = PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER'), 'podcastmanager.png');
+		JToolbarHelper::title(JText::_('COM_PODCASTMANAGER'), 'podcastmanager.png');
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_podcastmanager');
+			JToolbarHelper::preferences('com_podcastmanager');
 		}
 	}
 
@@ -127,15 +113,7 @@ class PodcastManagerViewCpanel extends JViewLegacy
 				$button['link'] = JRoute::_('index.php?option=com_podcastmanager&view=' . $view);
 			}
 
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$button['image'] = $classes[$view];
-			}
-			else
-			{
-				$button['image'] = $icons[$view];
-			}
-
+			$button['image'] = $classes[$view];
 			$button['text'] = JText::_('COM_PODCASTMANAGER_SUBMENU_' . strtoupper($view));
 
 			$buttons[] = $button;

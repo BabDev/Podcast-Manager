@@ -97,8 +97,15 @@
 			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">
 			<option value="*">JALL</option>
 		</field>
+		<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
+			class="inputbox" size="45" labelclass="control-label" />
 		<field id="rules" name="rules" type="rules" label="JFIELD_RULES_LABEL"
 			translate_label="false" filter="rules" validate="rules" class="inputbox span12 small"
 			component="com_podcastmanager" section="feed" />
 	</fieldset>
+	<fields name="metadata">
+		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+			<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" />
+		</fieldset>
+	</fields>
 </form>

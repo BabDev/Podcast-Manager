@@ -104,17 +104,13 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 
 			$this->addToolbar();
 
-			// Add the sidebar for J! 3.0
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$this->sidebar = JHtmlSidebar::render();
-			}
+			$this->sidebar = JHtmlSidebar::render();
 		}
 
 		// Add the HTML Helper
 		JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -128,82 +124,74 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	{
 		$canDo = PodcastManagerHelper::getActions($this->state->get('filter.feedname'));
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
+		JToolbarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCASTS_TITLE'), 'podcastmanager.png');
 
 		if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 		{
-			JToolBarHelper::addNew('podcast.add');
+			JToolbarHelper::addNew('podcast.add');
 		}
 
 		if ($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
 			|| $canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
-			JToolBarHelper::editList('podcast.edit');
+			JToolbarHelper::editList('podcast.edit');
 		}
 
 		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('podcasts.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('podcasts.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('podcasts.checkin');
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
+			JToolbarHelper::publish('podcasts.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('podcasts.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::checkin('podcasts.checkin');
+			JToolbarHelper::divider();
 		}
 
 		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete')
 			|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
-			JToolBarHelper::deleteList('', 'podcasts.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			JToolbarHelper::deleteList('', 'podcasts.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::divider();
 		}
 		elseif ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
-			JToolBarHelper::trash('podcasts.trash');
-			JToolBarHelper::divider();
+			JToolbarHelper::trash('podcasts.trash');
+			JToolbarHelper::divider();
 		}
 
-		// Add a batch button in J! 3.0
-		if (version_compare(JVERSION, '3.0', 'ge') && $canDo->get('core.edit'))
-		{
-			$bar = JToolBar::getInstance('toolbar');
-			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = '<button data-toggle="modal" data-target="#collapseModal" class="btn btn-small">'
-					. '<i class="icon-checkbox-partial" title="' . $title . '"></i>'
-					. $title . '</button>';
-			$bar->appendButton('Custom', $dhtml, 'batch');
-		}
+		$bar = JToolBar::getInstance('toolbar');
+		$title = JText::_('JTOOLBAR_BATCH');
+		$dhtml = '<button data-toggle="modal" data-target="#collapseModal" class="btn btn-small">'
+				. '<i class="icon-checkbox-partial" title="' . $title . '"></i>'
+				. $title . '</button>';
+		$bar->appendButton('Custom', $dhtml, 'batch');
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_podcastmanager');
+			JToolbarHelper::preferences('com_podcastmanager');
 		}
 
-		// Section below for 3.0 compatibility
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
+		JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
 
-			JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
+		JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'),
-				'filter_published',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_published',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'),
-				'filter_feedname',
-				JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'))
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'),
+			'filter_feedname',
+			JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'))
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'),
-				'filter_language',
-				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-			);
-		}
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_LANGUAGE'),
+			'filter_language',
+			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+		);
 	}
 
 	/**

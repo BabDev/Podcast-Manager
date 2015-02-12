@@ -123,7 +123,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 			// Set the text object to prevent errors with other plugins
 			$item->text = '';
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			// Process the content plugins.
 			JPluginHelper::importPlugin('content');
@@ -148,12 +148,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Add external behaviors
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
-		// Add the Bootstrap CSS in J! 2.5 (assume 3.0 templates style the table on their own or use Bootstrap)
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			JHtml::_('stylesheet', 'podcastmanager/bootstrap.min.css', false, true, false);
-		}
 
 		return parent::display($tpl);
 	}
@@ -205,15 +199,15 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $app->get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$this->document->setTitle($title);

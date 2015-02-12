@@ -24,8 +24,8 @@ class Mod_PodcastManagerFeedInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string            $type    The action being performed
-	 * @param   JInstallerModule  $parent  The class calling this method
+	 * @param   string                   $type    The action being performed
+	 * @param   JInstallerAdapterModule  $parent  The function calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *

@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Feed edit controller class.
  *
@@ -72,7 +70,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 		$user = JFactory::getUser();
-		$userId = $user->get('id');
+		$userId = $user->id;
 
 		// Check general edit permission first.
 		if ($user->authorise('core.edit', 'com_podcastmanager'))
@@ -148,10 +146,9 @@ class PodcastManagerControllerForm extends JControllerForm
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
-		$input = $app->input;
 		$model = $this->getModel();
 		$table = $model->getTable();
-		$cid		= $input->post->get('cid', array());
+		$cid = $this->input->post->get('cid', array());
 		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
@@ -167,7 +164,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		}
 
 		// Get the previous record id (if any) and the current record id.
-		$recordId = (int) (count($cid) ? $cid[0] : $input->get($urlVar, '', 'int'));
+		$recordId = (int) (count($cid) ? $cid[0] : $this->input->get($urlVar, '', 'int'));
 		$checkin = property_exists($table, 'checked_out');
 
 		// Access check.
@@ -214,9 +211,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	public function getModel($name = 'Form', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 
 	/**
@@ -231,9 +226,8 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
-		$input = JFactory::getApplication()->input;
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId = $input->get('Itemid', '', 'int');
+		$itemId = $this->input->get('Itemid', '', 'int');
 		$return = $this->getReturnPage();
 
 		if ($itemId)
@@ -258,30 +252,27 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		$input = JFactory::getApplication()->input;
-		$return = $input->get('return', null, 'base64');
+		$return = $this->input->get('return', null, 'base64');
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
 		{
 			return JUri::base();
 		}
-		else
-		{
-			return base64_decode($return);
-		}
+
+		return base64_decode($return);
 	}
 
 	/**
 	 * Function that allows child controller access to model data after the data has been saved.
 	 *
-	 * @param   JModel  &$model     The data model object.
-	 * @param   array   $validData  The validated data.
+	 * @param   JModelLegacy  $model      The data model object.
+	 * @param   array         $validData  The validated data.
 	 *
 	 * @return  void
 	 *
 	 * @since   1.8
 	 */
-	protected function postSaveHook(JModel &$model, $validData = array())
+	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
 		$task = $this->getTask();
 

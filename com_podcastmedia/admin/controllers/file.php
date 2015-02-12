@@ -69,10 +69,9 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get some data from the request
-		$input        = JFactory::getApplication()->input;
-		$files        = $input->files->get('Filedata', '', 'array');
-		$this->folder = $input->get('folder', '', 'path');
-		$return       = $input->post->get('return-url', null, 'base64');
+		$files        = $this->input->files->get('Filedata', '', 'array');
+		$this->folder = $this->input->get('folder', '', 'path');
+		$return       = $this->input->post->get('return-url', null, 'base64');
 
 		// Set the redirect
 		if ($return)
@@ -138,7 +137,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		foreach ($files as &$file)
 		{
@@ -200,14 +199,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 	public function delete()
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-		$app = JFactory::getApplication();
-		$input = $app->input;
 		$user = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl   = $input->get('tmpl', '', 'cmd');
-		$paths  = $input->get('rm', array(), 'array');
-		$folder = $input->get('folder', '', 'path');
+		$tmpl   = $this->input->get('tmpl', '', 'cmd');
+		$paths  = $this->input->get('rm', array(), 'array');
+		$folder = $this->input->get('folder', '', 'path');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
 
@@ -242,7 +239,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher	= JEventDispatcher::getInstance();
 
 		// Initialise variables.
 		$ret = true;

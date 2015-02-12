@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * Feed management controller class.
  *
@@ -36,10 +34,8 @@ class PodcastManagerControllerFeeds extends JControllerAdmin
 	 *
 	 * @since   1.7
 	 */
-	public function &getModel($name = 'Feed', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Feed', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 }

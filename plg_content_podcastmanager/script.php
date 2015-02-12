@@ -24,8 +24,8 @@ class PlgContentPodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string            $type    The action being performed
-	 * @param   JInstallerPlugin  $parent  The function calling this method
+	 * @param   string                   $type    The action being performed
+	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
@@ -65,7 +65,7 @@ class PlgContentPodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during update
 	 *
-	 * @param   JInstallerPlugin  $parent  The class calling this method
+	 * @param   JInstallerAdapterPlugin  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -100,16 +100,20 @@ class PlgContentPodcastManagerInstallerScript
 	 */
 	protected function activateButton()
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__extensions'));
 		$query->set($db->quoteName('enabled') . ' = 1');
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_content_podcastmanager'));
+		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-plg_content_podcastmanager'));
 		$db->setQuery($query);
 
-		if (!$db->query())
+		try
 		{
-			JError::raiseNotice(1, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseNotice(1, JText::_('PLG_EDITORS-PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
 		}
 	}
 
@@ -123,7 +127,7 @@ class PlgContentPodcastManagerInstallerScript
 	private function _getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
@@ -131,25 +135,23 @@ class PlgContentPodcastManagerInstallerScript
 		$query->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
 		$db->setQuery($query);
 
-		if (!$db->loadObject())
+		try
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$manifest = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 			$version = 'Error';
 
 			return $version;
-		}
-		else
-		{
-			$manifest = $db->loadObject();
 		}
 
 		// Decode the JSON
 		$record = json_decode($manifest->manifest_cache);
 
 		// Get the version
-		$version = $record->version;
-
-		return $version;
+		return $record->version;
 	}
 
 	/**

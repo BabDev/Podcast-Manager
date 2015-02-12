@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.helper');
-
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
@@ -28,6 +26,14 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  */
 class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 * @since  3.0
+	 */
+	protected $autoloadLanguage = true;
+
 	/**
 	 * The plugin identifier.
 	 *
@@ -75,20 +81,6 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 * @since  2.0
 	 */
 	protected $state_field = 'published';
-
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
-	 *
-	 * @since   2.0
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
 
 	/**
 	 * Method to remove the link information for items that have been deleted.
@@ -189,18 +181,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
-		/*
-		 * Index the item.
-		 * The indexer is abstract in 3.0, and called statically in 2.5.
-		 */
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->indexer->index($item);
-		}
-		else
-		{
-			FinderIndexer::index($item);
-		}
+		$this->indexer->index($item);
 	}
 
 	/**

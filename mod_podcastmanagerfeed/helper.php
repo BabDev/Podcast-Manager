@@ -31,7 +31,7 @@ abstract class ModPodcastManagerFeedHelper
 	/**
 	 * Function to get the list of items
 	 *
-	 * @param   JRegistry  &$params  The module params
+	 * @param   \Joomla\Registry\Registry  &$params  The module params
 	 *
 	 * @return  array  An array of items
 	 *
@@ -82,7 +82,7 @@ abstract class ModPodcastManagerFeedHelper
 		// If we're displaying the media player, and the plugin is enabled, then render it here
 		if ($params->get('show_item_player', '0') == 1 && JPluginHelper::isEnabled('content', 'podcastmanager'))
 		{
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			// Get the Podcast Manager Content plugin
 			JPluginHelper::importPlugin('content', 'podcastmanager');

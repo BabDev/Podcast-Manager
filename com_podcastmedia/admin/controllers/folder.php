@@ -37,13 +37,12 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		$input = JFactory::getApplication()->input;
 		$user  = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl   = $input->get('tmpl', '', 'cmd');
-		$paths  = $input->get('rm', array(), 'array');
-		$folder = $input->get('folder', '', 'path');
+		$tmpl   = $this->input->get('tmpl', '', 'cmd');
+		$paths  = $this->input->get('rm', array(), 'array');
+		$folder = $this->input->get('folder', '', 'path');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
 
@@ -78,7 +77,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		if (count($paths))
 		{
 			JPluginHelper::importPlugin('content');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			foreach ($paths as $path)
 			{
@@ -181,16 +180,12 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$user = JFactory::getUser();
+		$folder = $this->input->get('foldername', '', 'cmd');
 
-		$input       = JFactory::getApplication()->input;
-		$folder      = $input->get('foldername', '', 'cmd');
+		$folderCheck = (string) $this->input->get('foldername', null, 'raw');
+		$parent      = $this->input->get('folderbase', '', 'path');
 
-		// TODO: Once support for <3.1 is ended
-		// $folderCheck = (string) $this->input->get('foldername', null, 'raw');
-		$folderCheck = JRequest::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
-		$parent      = $input->get('folderbase', '', 'path');
-
-		$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $parent . '&tmpl=' . $input->get('tmpl', 'index', 'cmd'));
+		$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $parent . '&tmpl=' . $this->input->get('tmpl', 'index', 'cmd'));
 
 		if (strlen($folder) > 0)
 		{
@@ -205,7 +200,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 			// Set FTP credentials, if given
 			JClientHelper::setCredentialsFromRequest('ftp');
 
-			$input->set('folder', $parent);
+			$this->input->set('folder', $parent);
 
 			if (($folderCheck !== null) && ($folder !== $folderCheck))
 			{
@@ -221,7 +216,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				// Trigger the onContentBeforeSave event.
 				$object_file = new JObject(array('filepath' => $path));
 				JPluginHelper::importPlugin('content');
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.folder', &$object_file));
 
 				if (in_array(false, $result, true))
@@ -240,15 +235,13 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				}
 
 				JFolder::create($object_file->filepath);
-				$data = '<!DOCTYPE html><title></title>';
-				JFile::write($object_file->filepath . '/' . 'index.html', $data);
 
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 
-			$input->set('folder', ($parent) ? $parent . '/' . $folder : $folder);
+			$this->input->set('folder', ($parent) ? $parent . '/' . $folder : $folder);
 		}
 	}
 }

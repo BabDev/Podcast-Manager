@@ -44,12 +44,11 @@ class PodcastManagerController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		$input = JFactory::getApplication('administrator')->input;
 		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
 
-		$view = $input->get('view', $this->default_view, 'word');
-		$layout = $input->get('layout', $this->default_view, 'word');
-		$id = $input->get('id', null, 'int');
+		$view = $this->input->get('view', $this->default_view, 'word');
+		$layout = $this->input->get('layout', $this->default_view, 'word');
+		$id = $this->input->get('id', null, 'int');
 
 		// Check for edit form.
 		if ($view == 'feed' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.feed', $id))
@@ -86,8 +85,7 @@ class PodcastManagerController extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$errors         = array();
-		$input          = JFactory::getApplication('administrator')->input;
-		$migrationTasks = json_decode(base64_decode($input->getBase64('migrationTasks')), true);
+		$migrationTasks = json_decode(base64_decode($this->input->getBase64('migrationTasks')), true);
 
 		if (count($migrationTasks))
 		{
@@ -113,57 +111,6 @@ class PodcastManagerController extends JControllerLegacy
 								$e->getMessage()
 							);
 						}
-
-						break;
-
-					case 'noLayouts' :
-						// To build the package URL, we'll need to get the extension's version
-						$manifest = JApplicationHelper::parseXMLInstallFile(JPATH_ADMINISTRATOR . '/components/com_podcastmanager/podcastmanager.xml');
-						$version  = $manifest['version'];
-						$url      = 'https://github.com/BabDev/Podcast-Manager/releases/download/' . $version . '/files_podcastmanager_strapped_' . $version . '.zip';
-
-						// Download the package at the URL given.
-						$file = JInstallerHelper::downloadPackage($url);
-
-						// Was the package downloaded?
-						if (!$file)
-						{
-							$errors[] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_DOWNLOADING_PACKAGE');
-
-							continue;
-						}
-
-						$tmpPath = JFactory::getConfig()->get('tmp_path');
-
-						// Unpack the downloaded package file.
-						$package = JInstallerHelper::unpack($tmpPath . '/' . $file, true);
-
-						// Was the package unpacked?
-						if (!$package || !$package['type'])
-						{
-							JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
-							$errors[] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_EXTRACTING_PACKAGE');
-
-							continue;
-						}
-
-						// Get an installer instance.
-						$installer = new JInstaller;
-
-						// Install the package.
-						if (!$installer->install($package['dir']))
-						{
-							// There was an error installing the package.
-							$errors[] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_INSTALLING_PACKAGE');
-						}
-
-						// Cleanup the install files.
-						if (!is_file($package['packagefile']))
-						{
-							$package['packagefile'] = JFactory::getConfig()->get('tmp_path') . '/' . $package['packagefile'];
-						}
-
-						JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
 
 						break;
 

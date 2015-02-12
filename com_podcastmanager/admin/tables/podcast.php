@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * Podcast table interaction class.
  *
@@ -24,38 +26,18 @@ defined('_JEXEC') or die;
 class PodcastManagerTablePodcast extends JTable
 {
 	/**
-	 * Helper object for storing and deleting tag information.
-	 *
-	 * @var    JHelperTags
-	 * @since  2.1
-	 */
-	protected $tagsHelper;
-
-	/**
 	 * The class constructor.
 	 *
-	 * @param   JDatabase  &$db  JDatabase connector object.
+	 * @param   JDatabaseDriver  $db  JDatabaseDriver connector object.
 	 *
 	 * @since   1.6
 	 */
-	public function __construct(&$db)
+	public function __construct(JDatabaseDriver $db)
 	{
 		parent::__construct('#__podcastmanager', 'id', $db);
 
-		// Tags support in CMS 3.1+
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$this->tagsHelper = new JHelperTags;
-			$this->tagsHelper->typeAlias = 'com_podcastmanager.podcast';
-		}
-
-		// Content History support in CMS 3.2+
-		if (version_compare(JVERSION, '3.2', 'ge'))
-		{
-			JObserverMapper::addObserverClassToClass(
-				'JTableObserverContenthistory', 'PodcastManagerTablePodcast', array('typeAlias' => 'com_podcastmanager.podcast')
-			);
-		}
+		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_podcastmanager.podcast'));
+		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_podcastmanager.podcast'));
 	}
 
 	/**
@@ -143,10 +125,8 @@ class PodcastManagerTablePodcast extends JTable
 		{
 			return $assetId;
 		}
-		else
-		{
-			return parent::_getAssetParentId($table, $id);
-		}
+
+		return parent::_getAssetParentId($table, $id);
 	}
 
 	/**
@@ -166,7 +146,7 @@ class PodcastManagerTablePodcast extends JTable
 		// Bind the metadata.
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
@@ -192,7 +172,7 @@ class PodcastManagerTablePodcast extends JTable
 			$this->alias = $this->title;
 		}
 
-		$this->alias = JApplication::stringURLSafe($this->alias);
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
@@ -200,32 +180,6 @@ class PodcastManagerTablePodcast extends JTable
 		}
 
 		return true;
-	}
-
-	/**
-	 * Override parent delete method to delete tags information.
-	 *
-	 * @param   integer  $pk  Primary key to delete.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   2.1
-	 */
-	public function delete($pk = null)
-	{
-		$result = parent::delete($pk);
-
-		// Tags support in CMS 3.1+
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$tagResult = $this->tagsHelper->deleteTagData($this, $pk);
-		}
-		else
-		{
-			$tagResult = true;
-		}
-
-		return $result && $tagResult;
 	}
 
 	/**
@@ -245,8 +199,8 @@ class PodcastManagerTablePodcast extends JTable
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified = $date->toSQL();
-			$this->modified_by = $user->get('id');
+			$this->modified = $date->toSql();
+			$this->modified_by = $user->id;
 		}
 		else
 		{
@@ -254,12 +208,12 @@ class PodcastManagerTablePodcast extends JTable
 			// so we don't touch it if it is set.
 			if (!intval($this->created))
 			{
-				$this->created = $date->toSQL();
+				$this->created = $date->toSql();
 			}
 
 			if (empty($this->created_by))
 			{
-				$this->created_by = $user->get('id');
+				$this->created_by = $user->id;
 			}
 
 			// Get the boilerplate info
@@ -291,24 +245,6 @@ class PodcastManagerTablePodcast extends JTable
 			}
 		}
 
-		// Tags support in CMS 3.1+
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$this->tagsHelper->preStoreProcess($this);
-		}
-
-		$result = parent::store($updateNulls);
-
-		// Tags support in CMS 3.1+
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$tagResult = $this->tagsHelper->postStoreProcess($this);
-		}
-		else
-		{
-			$tagResult = true;
-		}
-
-		return $result && $tagResult;
+		return parent::store($updateNulls);
 	}
 }

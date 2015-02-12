@@ -36,20 +36,16 @@ class PodcastManagerModelCpanel extends JModelLegacy
 		$contentTypesPresent = true;
 		$errors              = array();
 
-		// First, make sure the #__content_types table is actually present (3.1+)
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$tableList = $db->getTableList();
+		$tableList = $db->getTableList();
 
-			if (!in_array($db->replacePrefix('#__content_types'), $tableList))
-			{
-				$errors['noTypes']   = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_CONTENT_TYPES_TABLE');
-				$contentTypesPresent = false;
-			}
+		if (!in_array($db->replacePrefix('#__content_types'), $tableList))
+		{
+			$errors['noTypes']   = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_CONTENT_TYPES_TABLE');
+			$contentTypesPresent = false;
 		}
 
 		// Now check for rows if we have content types
-		if (version_compare(JVERSION, '3.1', 'ge') && $contentTypesPresent)
+		if ($contentTypesPresent)
 		{
 			$feedTypeId = $db->setQuery(
 				$db->getQuery(true)
@@ -73,31 +69,6 @@ class PodcastManagerModelCpanel extends JModelLegacy
 			if (!$podcastTypeId)
 			{
 				$errors['noPodcastType'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_PODCAST_TYPE');
-			}
-		}
-
-		// Check to ensure the Isis overrides are installed
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			// This check is done in two steps; first query the database for the record
-			try
-			{
-				/** @var JTableUpdate $table */
-				$table = $this->getTable('Update', 'JTable');
-				$extensionId = $table->find(array('element' => 'podcastmanager_strapped', 'type' => 'file'));
-			}
-			catch (RuntimeException $e)
-			{
-				// The check failed, just set a false flag and move to step two
-				$extensionId = false;
-			}
-
-			// Step 2 - Check to make sure the cpanel override exists
-			$overrideExists = file_exists(JPATH_ADMINISTRATOR . '/templates/isis/html/com_podcastmanager/cpanel/default.php');
-
-			if (!$extensionId && !$overrideExists)
-			{
-				$errors['noLayouts'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_LAYOUTS');
 			}
 		}
 

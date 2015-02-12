@@ -78,16 +78,6 @@ class PodcastMediaViewMedialist extends JViewLegacy
 
 		$document = JFactory::getDocument();
 
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			$document->addStyleSheet('../media/media/css/medialist-' . $style . '.css');
-
-			if ($lang->isRTL())
-			{
-				$document->addStyleSheet('../media/media/css/medialist-' . $style . '_rtl.css');
-			}
-		}
-
 		$document->addScriptDeclaration(
 		"window.addEvent('domready', function() {
 			window.parent.document.updateUploader();

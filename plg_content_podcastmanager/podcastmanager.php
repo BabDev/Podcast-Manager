@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\String;
+
 JLoader::register('PodcastManagerPlayer', JPATH_PLUGINS . '/content/podcastmanager/player.php');
 
 /**
@@ -26,18 +28,28 @@ JLoader::register('PodcastManagerPlayer', JPATH_PLUGINS . '/content/podcastmanag
 class PlgContentPodcastManager extends JPlugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
-	 *
-	 * @since   1.8
+	 * @var    boolean
+	 * @since  3.0
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	protected $autoloadLanguage = true;
+
+	/**
+	 * Application object
+	 *
+	 * @var    JApplicationCms
+	 * @since  3.0
+	 */
+	protected $app;
+
+	/**
+	 * Database driver
+	 *
+	 * @var    JDatabaseDriver
+	 * @since  3.0
+	 */
+	protected $db;
 
 	/**
 	 * Plugin that loads a podcast player within content
@@ -56,7 +68,7 @@ class PlgContentPodcastManager extends JPlugin
 		static $log;
 
 		// Check if we're in the site app, otherwise, do nothing
-		if (!JFactory::getApplication()->isSite())
+		if (!$this->app->isSite())
 		{
 			return true;
 		}
@@ -193,36 +205,30 @@ class PlgContentPodcastManager extends JPlugin
 					}
 
 					// Query the DB for the title string, returning the filename
-					$db    = JFactory::getDbo();
-					$query = $db->getQuery(true);
+					$query = $this->db->getQuery(true);
 
 					// Common query fields regardless of method
-					$query->select($db->quoteName(array('filename', 'id')));
-					$query->from($db->quoteName('#__podcastmanager'));
+					$query->select($this->db->quoteName(array('filename', 'id')));
+					$query->from($this->db->quoteName('#__podcastmanager'));
 
 					// If the title is a string, use the "classic" lookup method
 					if (is_string($podtitle))
 					{
-						$query->where($db->quoteName('title') . ' = ' . $db->quote($podtitle));
+						$query->where($this->db->quoteName('title') . ' = ' . $this->db->quote($podtitle));
 					}
 
 					// If an integer, we need to also get the title of the podcast, as well as search on the ID
 					elseif (is_int($podtitle))
 					{
-						$query->select($db->quoteName('title'));
-						$query->where($db->quoteName('id') . ' = ' . (int) $podtitle);
+						$query->select($this->db->quoteName('title'));
+						$query->where($this->db->quoteName('id') . ' = ' . (int) $podtitle);
 					}
 
-					$db->setQuery($query);
+					$this->db->setQuery($query);
 
-					if (!$db->loadObject())
+					try
 					{
-						// Write the DB error to the log
-						JLog::add((JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle) . '  ' . $db->stderr(true)), JLog::ERROR);
-					}
-					else
-					{
-						$dbResult             = $db->loadObject();
+						$dbResult             = $this->db->loadObject();
 						$podfilepath          = $dbResult->filename;
 						$options['podcastID'] = (int) $dbResult->id;
 
@@ -232,13 +238,23 @@ class PlgContentPodcastManager extends JPlugin
 							$podtitle = $dbResult->title;
 						}
 					}
+					catch (RuntimeException $e)
+					{
+						// Write the DB error to the log
+						JLog::add(
+							JText::sprintf(
+								'PLG_CONTENT_PODCASTMANAGER_ERROR_PULLING_DATABASE', $podtitle, $e->getMessage()
+							),
+							JLog::ERROR
+						);
+					}
 				}
 
 				// If the document isn't HTML, remove the marker
 				if (JFactory::getDocument()->getType() != 'html')
 				{
 					// Remove the {podcast marker
-					$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+					$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
 				}
 				elseif (isset($podfilepath))
 				{
@@ -250,7 +266,7 @@ class PlgContentPodcastManager extends JPlugin
 						// Fix for K2 Item
 						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
 						{
-							$string = JString::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+							$string = String::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
 						}
 						else
 						{
@@ -260,7 +276,7 @@ class PlgContentPodcastManager extends JPlugin
 						try
 						{
 							// Replace the {podcast marker with the player
-							$article->text = JString::str_ireplace($string, $player->generate(), $article->text);
+							$article->text = String::str_ireplace($string, $player->generate(), $article->text);
 						}
 						catch (RuntimeException $e)
 						{
@@ -268,7 +284,7 @@ class PlgContentPodcastManager extends JPlugin
 							JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_FILETYPE', $podfilepath), JLog::INFO);
 
 							// Remove the {podcast marker
-							$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+							$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
 						}
 					}
 					catch (RuntimeException $e)
@@ -277,7 +293,7 @@ class PlgContentPodcastManager extends JPlugin
 						JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_PLAYER', $options['playerType']), JLog::INFO);
 
 						// Remove the {podcast marker
-						$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+						$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
 					}
 				}
 				else
@@ -286,7 +302,7 @@ class PlgContentPodcastManager extends JPlugin
 					JLog::add(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_NO_FILEPATH'), JLog::INFO);
 
 					// Remove the {podcast marker
-					$article->text = JString::str_ireplace($matches[0][$i], '', $article->text);
+					$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
 				}
 
 				$i++;

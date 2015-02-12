@@ -34,8 +34,7 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 	 */
 	public function getMetadata()
 	{
-		$filename = JFactory::getApplication()->input->post->get('filename', '', 'string');
-
+		$filename = $this->input->post->getString('filename', '');
 		$response = array();
 
 		try

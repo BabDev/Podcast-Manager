@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
-
 /**
  * Feed management model class.
  *
@@ -31,7 +29,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @since   1.7
-	 * @see     JController
+	 * @see     JControllerLegacy
 	 */
 	public function __construct($config = array())
 	{
@@ -94,11 +92,14 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$query->group('p.feedname');
 		$db->setQuery($query);
-		$countPublished = $db->loadAssocList('feedname', 'count_published');
 
-		if ($db->getErrorNum())
+		try
 		{
-			$this->setError($db->getErrorMsg());
+			$countPublished = $db->loadAssocList('feedname', 'count_published');
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
 
 			return false;
 		}
@@ -108,11 +109,14 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published') . ' = 0');
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
-		$countUnpublished = $db->loadAssocList('feedname', 'count_published');
 
-		if ($db->getErrorNum())
+		try
 		{
-			$this->setError($db->getErrorMsg());
+			$countUnpublished = $db->loadAssocList('feedname', 'count_published');
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
 
 			return false;
 		}
@@ -122,11 +126,14 @@ class PodcastManagerModelFeeds extends JModelList
 		$query->where($db->quoteName('p.published') . ' = -2');
 		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 		$db->setQuery($query);
-		$countTrashed = $db->loadAssocList('feedname', 'count_published');
 
-		if ($db->getErrorNum())
+		try
 		{
-			$this->setError($db->getErrorMsg());
+			$countTrashed = $db->loadAssocList('feedname', 'count_published');
+		}
+		catch (RuntimeException $e)
+		{
+			$this->setError($e->getMessage());
 
 			return false;
 		}

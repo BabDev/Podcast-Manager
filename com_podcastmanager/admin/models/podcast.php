@@ -14,7 +14,8 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modeladmin');
+use Joomla\Registry\Registry;
+use Joomla\String\String;
 
 /**
  * Podcast edit model class.
@@ -180,9 +181,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Check that the user has create permission for the component
-		$user = JFactory::getUser();
-
-		if (!$user->authorise('core.create', 'com_podcastmanager'))
+		if (!JFactory::getUser()->authorise('core.create', 'com_podcastmanager'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 
@@ -243,7 +242,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			}
 
 			// Get the new item ID
-			$newId = $table->get('id');
+			$newId = $table->id;
 
 			// Add the new ID to the array
 			$newIds[$i]	= $newId;
@@ -382,9 +381,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		{
 			if ($record->published == -2)
 			{
-				$user = JFactory::getUser();
-
-				return $user->authorise('core.delete', 'com_podcastmanager.podcast.' . (int) $record->id);
+				return JFactory::getUser()->authorise('core.delete', 'com_podcastmanager.podcast.' . (int) $record->id);
 			}
 		}
 	}
@@ -409,10 +406,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// Default to component settings if no feed to check.
-		else
-		{
-			return $user->authorise('core.edit.state', 'com_podcastmanager');
-		}
+		return $user->authorise('core.edit.state', 'com_podcastmanager');
 	}
 
 	/**
@@ -448,8 +442,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 		while ($table->load(array('alias' => $alias, 'feedname' => $category_id)))
 		{
-			$title = JString::increment($title);
-			$alias = JString::increment($alias, 'dash');
+			$title = String::increment($title);
+			$alias = String::increment($alias, 'dash');
 		}
 
 		return array($title, $alias);
@@ -505,19 +499,15 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		if ($item = parent::getItem($pk))
 		{
 			// Convert the metadata field to an array.
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->metadata);
 			$item->metadata = $registry->toArray();
 
-			// Tags support in CMS 3.1+
-			if (version_compare(JVERSION, '3.1', 'ge'))
+			if (!empty($item->id))
 			{
-				if (!empty($item->id))
-				{
-					$item->tags = new JHelperTags;
-					$item->tags->getTagIds($item->id, 'com_podcastmanager.podcast');
-					$item->metadata['tags'] = $item->tags;
-				}
+				$item->tags = new JHelperTags;
+				$item->tags->getTagIds($item->id, 'com_podcastmanager.podcast');
+				$item->metadata['tags'] = $item->tags;
 			}
 		}
 
@@ -579,46 +569,6 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	}
 
 	/**
-	 * Method to allow derived classes to preprocess the form.
-	 *
-	 * @param   JForm   $form   A JForm object.
-	 * @param   mixed   $data   The data expected for the form.
-	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
-	 *
-	 * @return  void
-	 *
-	 * @see     JFormField
-	 * @since   2.1
-	 * @throws  Exception if there is an error in the form event.
-	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'content')
-	{
-		// Add tags for CMS 3.1 and later
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$form->setField(
-				new SimpleXMLElement(
-					'<fields name="metadata"><fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">'
-					. '<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" /></fieldset></fields>'
-				)
-			);
-		}
-
-		// Add version note for CMS 3.2 and later
-		if (version_compare(JVERSION, '3.2', 'ge'))
-		{
-			$form->setField(
-				new SimpleXMLElement(
-					'<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"'
-					. ' class="inputbox" size="45" labelclass="control-label" />'
-				)
-			);
-		}
-
-		parent::preprocessForm($form, $data, $group);
-	}
-
-	/**
 	 * Method to validate the form data.
 	 *
 	 * @param   JForm   $form   The form to validate against.
@@ -634,15 +584,6 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	public function validate($form, $data, $group = null)
 	{
 		$data = parent::validate($form, $data, $group);
-
-		// Tags B/C break at 3.1.2
-		if (version_compare(JVERSION, '3.1.2', 'ge'))
-		{
-			if (isset($data['metadata']['tags']))
-			{
-				$data['tags'] = $data['metadata']['tags'];
-			}
-		}
 
 		// If there's a space in the filename, notify the user but allow saving
 		if (strpos($table->filename, ' ') !== false)

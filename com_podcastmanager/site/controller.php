@@ -59,16 +59,15 @@ class PodcastManagerController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = array())
 	{
 		// Initialise variables.
-		$input = JFactory::getApplication()->input;
 		$cachable = true;
 		$user = JFactory::getUser();
 
 		// Set the default view name and format from the Request.
-		$id = $input->get('p_id', '', 'int');
-		$vName = $input->get('view', 'feed', 'cmd');
-		$input->set('view', $vName);
+		$id = $this->input->get('p_id', '', 'int');
+		$vName = $this->input->get('view', 'feed', 'cmd');
+		$this->input->set('view', $vName);
 
-		if ($user->get('id') || ($_SERVER['REQUEST_METHOD'] == 'POST' && $vName = 'feed'))
+		if ($user->get('id') || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
 		{
 			$cachable = false;
 		}

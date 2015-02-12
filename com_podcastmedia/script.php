@@ -80,32 +80,30 @@ class Com_PodcastMediaInstallerScript
 	private function _getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('manifest_cache'));
 		$query->from($db->quoteName('#__extensions'));
 		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmedia'));
 		$db->setQuery($query);
 
-		if (!$db->loadObject())
+		try
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$manifest = $db->loadObject();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 			$version = 'Error';
 
 			return $version;
-		}
-		else
-		{
-			$manifest = $db->loadObject();
 		}
 
 		// Decode the JSON
 		$record = json_decode($manifest->manifest_cache);
 
 		// Get the version
-		$version = $record->version;
-
-		return $version;
+		return $record->version;
 	}
 
 	/**
@@ -117,15 +115,19 @@ class Com_PodcastMediaInstallerScript
 	 */
 	private function _removeMenu()
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->delete($db->quoteName('#__menu'));
 		$query->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));
 		$db->setQuery($query);
 
-		if (!$db->query())
+		try
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
 		}
 	}
 }

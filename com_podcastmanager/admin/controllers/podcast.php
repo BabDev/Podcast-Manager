@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Podcast edit controller class.
  *
@@ -47,15 +45,13 @@ class PodcastManagerControllerPodcast extends JControllerForm
 			$allow = $user->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
 		}
 
-		if ($allow === null)
-		{
-			// In the absence of better information, revert to the component permissions.
-			return parent::allowAdd();
-		}
-		else
+		if ($allow !== null)
 		{
 			return $allow;
 		}
+
+		// In the absence of better information, revert to the component permissions.
+		return parent::allowAdd();
 	}
 
 	/**

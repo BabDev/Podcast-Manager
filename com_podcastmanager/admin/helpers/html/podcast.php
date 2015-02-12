@@ -12,7 +12,7 @@
  * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
  */
 
-defined('JPATH_LIBRARIES') or die;
+defined('_JEXEC') or die;
 
 /**
  * HTML Utility class for Podcast Manager

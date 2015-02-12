@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
 
 /**
@@ -52,7 +54,7 @@ class PodcastManagerPlayer
 	/**
 	 * Podcast Manager component parameters
 	 *
-	 * @var    JRegistry
+	 * @var    Registry
 	 * @since  1.6
 	 */
 	protected $podmanparams = null;
@@ -60,7 +62,7 @@ class PodcastManagerPlayer
 	/**
 	 * Podcast Manager Content Plugin parameters
 	 *
-	 * @var    JRegistry
+	 * @var    Registry
 	 * @since  2.0
 	 */
 	protected $pluginParams = null;
@@ -106,11 +108,11 @@ class PodcastManagerPlayer
 	/**
 	 * The class constructor
 	 *
-	 * @param   JRegistry  $podmanparams  The Podcast Manager parameters
-	 * @param   string     $podfilepath   The path to the file being processed
-	 * @param   string     $podtitle      The title of the podcast being processed
-	 * @param   array      $options       An array of options
-	 * @param   JRegistry  $pluginParams  The Podcast Manager Content Plugin parameters
+	 * @param   Registry  $podmanparams  The Podcast Manager parameters
+	 * @param   string    $podfilepath   The path to the file being processed
+	 * @param   string    $podtitle      The title of the podcast being processed
+	 * @param   array     $options       An array of options
+	 * @param   Registry  $pluginParams  The Podcast Manager Content Plugin parameters
 	 *
 	 * @since   1.6
 	 * @throws  RuntimeException
@@ -122,15 +124,12 @@ class PodcastManagerPlayer
 		$this->options = $options;
 		$this->pluginParams = $pluginParams;
 
-		if (in_array($this->options['playerType'], $this->validTypes))
-		{
-			$this->playerType = $this->options['playerType'];
-		}
-		else
+		if (!in_array($this->options['playerType'], $this->validTypes))
 		{
 			throw new RuntimeException('Invalid Player', 500);
 		}
 
+		$this->playerType = $this->options['playerType'];
 		$this->fileURL = $this->determineURL($podfilepath);
 		$this->podtitle = $podtitle;
 	}
@@ -245,68 +244,25 @@ class PodcastManagerPlayer
 		// Set the element's ID
 		$ID = 'player-' . $this->options['podcastID'];
 
-		// Process audio file
 		if (in_array($extension, $validAudio))
 		{
 			$player = '<audio src="' . $this->fileURL . '" id="' . $ID . '" height="' . $audioheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none"></audio>';
 		}
-
-		// Process video file
 		elseif (in_array($extension, $validVideo))
 		{
 			$player = '<video src="' . $this->fileURL . '" id="' . $ID . '" height="' . $videoheight . '" width="' . $width . '" style="' . $style . '" controls="controls" preload="none"></video>';
 		}
-
-		// Invalid file type
 		else
 		{
 			throw new RuntimeException('Invalid File Type', 500);
 		}
 
-		/*
-		 * Check if we should load jQuery
-		 * First, set our default value based on the version of Joomla!
-		 * Default enabled for 2.5, disabled for 3.x (due to core inclusion)
-		 */
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			$default = '1';
-		}
-		else
-		{
-			$default = '0';
-		}
-
-		if ($this->pluginParams->get('loadJQuery', $default) == '1')
-		{
-			// Load jQuery via JHtml in 3.x, use Google API in 2.5 (use the same version of jQuery as shipped in latest CMS 3.x)
-			if (version_compare(JVERSION, '3.0', 'lt'))
-			{
-				JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
-
-				// Ensure jQuery.noConflict() is set, just in case ;-)
-				JHtml::_('script', 'mediaelements/jquery-noconflict.js', false, true);
-			}
-			else
-			{
-				JHtml::_('jquery.framework');
-			}
-		}
-
-		// Set the default file names
-		$jsFile = 'mediaelement-and-player.min.js';
-		$cssFile = 'mediaelementplayer.min.css';
-
-		// Use the non-minimized files if JDEBUG is set (must set manually for 2.5)
-		if (version_compare(JVERSION, '3.0', 'lt') && JDEBUG)
-		{
-			$jsFile = 'mediaelement-and-player.js';
-			$cssFile = 'mediaelementplayer.css';
-		}
+		// There is a jQuery dependency, make sure it's loaded
+		JHtml::_('jquery.framework');
 
 		// And finally, load in MediaElement.JS
-		JHtml::_('script', 'mediaelements/' . $jsFile, false, true);
-		JHtml::_('stylesheet', 'mediaelements/' . $cssFile, false, true, false);
+		JHtml::_('script', 'mediaelements/mediaelement-and-player.min.js', false, true);
+		JHtml::_('stylesheet', 'mediaelements/mediaelementplayer.min.css', false, true, false);
 		$player .= "<br /><script>
 				var player = new MediaElementPlayer('#" . $ID . "');
 			</script>";

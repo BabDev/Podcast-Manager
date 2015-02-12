@@ -58,17 +58,16 @@ class JFormFieldFeedName extends JFormFieldList
 		// Get the options.
 		$db->setQuery($query);
 
-		$options = $db->loadObjectList();
-
-		// Check for a database error.
-		if ($db->getErrorNum())
+		try
 		{
-			JError::raiseWarning(500, $db->getErrorMsg());
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
 		}
 
 		// Merge any additional options in the XML definition.
-		$options = array_merge($options, parent::getOptions());
-
-		return $options;
+		return array_merge($options, parent::getOptions());
 	}
 }

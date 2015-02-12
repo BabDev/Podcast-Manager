@@ -24,10 +24,7 @@ $published	= $this->state->get('filter.published');
 	<legend><?php echo JText::_('COM_PODCASTMANAGER_BATCH_OPTIONS');?></legend>
 	<p><?php echo JText::_('COM_PODCASTMANAGER_BATCH_TIP'); ?></p>
 	<?php echo JHtml::_('batch.language'); ?>
-
-	<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
 	<?php echo JHtml::_('batch.tag'); ?>
-	<?php endif; ?>
 
 	<?php if ($published >= 0) : ?>
 	<label id="batch-choose-action-lbl" for="batch-choose-action">

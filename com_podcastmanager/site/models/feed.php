@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
-
 /**
  * Feed list model class.
  *
@@ -39,7 +37,7 @@ class PodcastManagerModelFeed extends JModelList
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @since   1.8
-	 * @see     JController
+	 * @see     JControllerLegacy
 	 */
 	public function __construct($config = array())
 	{
@@ -77,10 +75,8 @@ class PodcastManagerModelFeed extends JModelList
 
 			return $db->loadObject();
 		}
-		else
-		{
-			return new stdClass;
-		}
+
+		return new stdClass;
 	}
 
 	/**

@@ -12,7 +12,7 @@
  * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
  */
 
-defined('JPATH_BASE') or die;
+defined('_JEXEC') or die;
 
 JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
 
@@ -56,7 +56,7 @@ class JFormFieldPodcastMedia extends JFormField
 
 		if ($asset == '')
 		{
-			$asset = JFactory::getApplication('administrator')->input->get('option', '', 'cmd');
+			$asset = JFactory::getApplication('administrator')->input->getCmd('option', '');
 		}
 
 		$link = (string) $this->element['link'];
@@ -95,18 +95,9 @@ class JFormFieldPodcastMedia extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// The text field.
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$html[] = '<div class="input-prepend input-append">';
-			$html[] = '	<input type="text" class="input-medium" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
-		}
-		else
-		{
-			$html[] = '<div class="fltlft">';
-			$html[] = '	<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
-		}
+		$html[] = '<div class="input-prepend input-append">';
+		$html[] = '	<input type="text" class="input-medium" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+			. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $attr . ' />';
 
 		// Check if only one podcastmedia plugin is enabled
 		$count = PodcastManagerHelper::countMediaPlugins();
@@ -114,7 +105,7 @@ class JFormFieldPodcastMedia extends JFormField
 		if ($count == 1)
 		{
 			JPluginHelper::importPlugin('podcastmedia');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$results = $dispatcher->trigger('onPathFind');
 			$directory = $results['0'];
 		}
@@ -152,49 +143,20 @@ class JFormFieldPodcastMedia extends JFormField
 		}
 
 		// The button.
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$html[] = '<a class="modal btn" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
-				. ($this->element['readonly'] ? ''
-				: ($link ? $link
-					: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
-					. $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
-				. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-			$html[] = '<i class="icon-picture"></i> ';
-			$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a><a class="btn" rel="tooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
-			$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
-			$html[] = 'return false;';
-			$html[] = '">';
-			$html[] = '<i class="icon-remove"></i></a>';
-			$html[] = '<a class="btn" title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '" href="#" onclick="parseMetadata()">';
-			$html[] = '<i class="icon-loop"></i> ' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
-		}
-		else
-		{
-			$html[] = '<div class="button2-left">';
-			$html[] = '	<div class="blank">';
-			$html[] = '		<a class="modal" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="' . ($this->element['readonly'] ? ''
+		$html[] = '<a class="modal btn" title="' . JText::_('JLIB_FORM_BUTTON_SELECT') . '"' . ' href="'
+			. ($this->element['readonly'] ? ''
 			: ($link ? $link
-			: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author=' . $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"' . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
-			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_SELECT') . '</a>';
-			$html[] = '	</div>';
-			$html[] = '</div>';
-
-			$html[] = '<div class="button2-left">';
-			$html[] = '	<div class="blank">';
-			$html[] = '		<a title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#"' . ' onclick="document.getElementById(\'' . $this->id . '\').value=\'\'; document.getElementById(\'' . $this->id . '\').onchange();">';
-			$html[] = '			' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '</a>';
-			$html[] = '	</div>';
-			$html[] = '</div>';
-
-			$html[] = '<div class="button2-left">';
-			$html[] = '	<div class="blank">';
-			$html[] = '		<a title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '"' . ' href="#"' . ' onclick="parseMetadata();">';
-			$html[] = '			' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
-			$html[] = '	</div>';
-			$html[] = '</div>';
-		}
-
+				: 'index.php?option=com_podcastmedia&amp;view=audio&amp;tmpl=component&amp;asset=' . $asset . '&amp;author='
+				. $this->form->getValue($authorField)) . '&amp;fieldid=' . $this->id . '&amp;folder=' . $folder) . '"'
+			. ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+		$html[] = '<i class="icon-picture"></i> ';
+		$html[] = JText::_('JLIB_FORM_BUTTON_SELECT') . '</a><a class="btn" rel="tooltip" title="' . JText::_('JLIB_FORM_BUTTON_CLEAR') . '"' . ' href="#" onclick="';
+		$html[] = 'jInsertFieldValue(\'\', \'' . $this->id . '\');';
+		$html[] = 'return false;';
+		$html[] = '">';
+		$html[] = '<i class="icon-remove"></i></a>';
+		$html[] = '<a class="btn" title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '" href="#" onclick="parseMetadata()">';
+		$html[] = '<i class="icon-loop"></i> ' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
 		$html[] = '</div>';
 
 		return implode("\n", $html);

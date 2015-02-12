@@ -24,8 +24,8 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string            $type    The action being performed
-	 * @param   JInstallerPlugin  $parent  The function calling this method
+	 * @param   string                   $type    The action being performed
+	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
 	 * @return  mixed  Boolean false on failure, void otherwise
 	 *
@@ -71,14 +71,18 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	 */
 	protected function activateButton()
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__extensions'));
 		$query->set($db->quoteName('enabled') . ' = 1');
 		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-xtd_podcastmanager'));
 		$db->setQuery($query);
 
-		if (!$db->query())
+		try
+		{
+			$db->execute();
+		}
+		catch (RuntimeException $e)
 		{
 			JError::raiseNotice(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
 		}

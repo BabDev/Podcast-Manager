@@ -30,8 +30,8 @@ class Pkg_PodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string             $type    The action being performed
-	 * @param   JInstallerPackage  $parent  The class calling this method
+	 * @param   string                    $type    The action being performed
+	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -69,7 +69,7 @@ class Pkg_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during uninstall
 	 *
-	 * @param   JInstallerPackage  $parent  The class calling this method
+	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -77,75 +77,12 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function uninstall($parent)
 	{
-		// If in CMS 3, uninstall the Isis layouts
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			/*
-			 * Since the adapter doesn't remove folders with content, we have to remove the content here
-			 * And, lucky us, the file scriptfile isn't copied!
-			 */
-
-			// Import dependencies
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
-
-			// First, the array of folders we need to get the children for
-			$folders = array('html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager');
-
-			// Set up our base path
-			$base = JPATH_ADMINISTRATOR . '/templates/isis/';
-
-			// Process our parent folders
-			foreach ($folders as $folder)
-			{
-				// Set up our full path to the folder
-				$path = $base . $folder;
-
-				// Get the list of child folders
-				$children = JFolder::folders($path);
-
-				if (count($children))
-				{
-					// Process the child folders and remove their files
-					foreach ($children as $child)
-					{
-						// Set the path for the child
-						$cPath = $path . '/' . $child;
-
-						// Get the list of files
-						$files = JFolder::files($cPath);
-
-						// Now, remove the files
-						foreach ($files as $file)
-						{
-							JFile::delete($cPath . '/' . $file);
-						}
-					}
-				}
-			}
-
-			// We need to get the extension ID for our Strapped layouts first
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('extension_id'));
-			$query->from($db->quoteName('#__extensions'));
-			$query->where($db->quoteName('name') . ' = ' . $db->quote('files_podcastmanager_strapped'));
-			$db->setQuery($query);
-			$id = $db->loadResult();
-
-			// Instantiate a new installer instance and uninstall the layouts if present
-			if ($id)
-			{
-				$installer = new JInstaller;
-				$installer->uninstall('file', $id);
-			}
-		}
 	}
 
 	/**
 	 * Function to perform changes during update
 	 *
-	 * @param   JInstallerPackage  $parent  The class calling this method
+	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -153,20 +90,14 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		// If in CMS 3, install the Strapped layouts
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$installer = new JInstaller;
-			$installer->update(__DIR__ . '/strapped');
-		}
 	}
 
 	/**
 	 * Function to act after the installation process runs
 	 *
-	 * @param   string             $type     The action being performed
-	 * @param   JInstallerPackage  $parent   The class calling this method
-	 * @param   array              $results  The results of each installer action
+	 * @param   string                    $type     The action being performed
+	 * @param   JInstallerAdapterPackage  $parent   The class calling this method
+	 * @param   array                     $results  The results of each installer action
 	 *
 	 * @return	void
 	 *
@@ -174,13 +105,6 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function postflight($type, $parent, $results)
 	{
-		// If in CMS 3, install the Strapped layouts
-		if (version_compare(JVERSION, '3.0', 'ge') && $type == 'install')
-		{
-			$installer = new JInstaller;
-			$strapped = $installer->install(__DIR__ . '/strapped');
-		}
-
 		// Determine whether each extension is enabled or not
 		$enabled = array();
 		$db = JFactory::getDbo();
@@ -194,10 +118,18 @@ class Pkg_PodcastManagerInstallerScript
 			$query->clear('where');
 			$query->where($db->quoteName('name') . ' = ' . $db->quote($extension));
 			$db->setQuery($query);
-			$enabled[$extension] = $db->loadResult();
+
+			try
+			{
+				$enabled[$extension] = $db->loadResult();
+			}
+			catch (RuntimeException $e)
+			{
+				$enabled[$extension] = 2;
+			}
 		}
 		?>
-		<table class="adminlist table table-striped">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th class="title"><?php echo JText::_('PKG_PODCASTMANAGER_EXTENSION'); ?></th>
@@ -238,26 +170,14 @@ class Pkg_PodcastManagerInstallerScript
 					<td><strong>
 						<?php if ($enabled[$extension] == 1) :
 							echo JText::_('JYES');
+						elseif ($enabled[$extension] == 2) :
+							echo JText::_('PKG_PODCASTMANAGER_NA');
 						else :
 							echo JText::_('JNO');
 						endif; ?></strong>
 					</td>
 				</tr>
-				<?php endforeach;
-				if (version_compare(JVERSION, '3.0', 'ge')) : ?>
-				<tr class="row0">
-					<td class="key"><?php echo JText::_('PKG_PODCASTMANAGER_STRAPPED'); ?></td>
-					<td><strong><?php echo JText::_('COM_INSTALLER_TYPE_FILE'); ?></strong></td>
-					<td><strong>
-						<?php if ($strapped == true) :
-							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-						else :
-							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-						endif; ?></strong>
-					</td>
-					<td><strong><?php echo JText::_('PKG_PODCASTMANAGER_NA'); ?></strong></td>
-				</tr>
-				<?php endif; ?>
+				<?php endforeach;?>
 			</tbody>
 		</table>
 		<?php

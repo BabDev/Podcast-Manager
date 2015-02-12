@@ -81,7 +81,7 @@ JHtml::_('behavior.formvalidation');
 				<button type="button" onclick="Joomla.submitbutton('form.cancel')">
 					<?php echo JText::_('JCANCEL') ?>
 				</button>
-				<?php if (version_compare(JVERSION, '3.2', 'ge') && $this->params->get('save_history', 0)) : ?>
+				<?php if ($this->params->get('save_history', 0)) : ?>
 				<div class="btn-group">
 					<?php echo $this->form->getInput('contenthistory'); ?>
 				</div>
@@ -164,20 +164,16 @@ JHtml::_('behavior.formvalidation');
 			<?php echo $this->form->getLabel('language'); ?>
 			<?php echo $this->form->getInput('language'); ?>
 			</div>
-			<?php if (version_compare(JVERSION, '3.1', 'ge')) : ?>
-				<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
-					<div class="formelm-area">
-						<?php echo $field->label; ?>
-						<?php echo $field->input; ?>
-					</div>
-				<?php endforeach ?>
-			<?php endif; ?>
-			<?php if (version_compare(JVERSION, '3.2', 'ge')) : ?>
+			<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
 				<div class="formelm-area">
-					<?php echo $this->form->getLabel('version_note'); ?>
-					<?php echo $this->form->getInput('version_note'); ?>
+					<?php echo $field->label; ?>
+					<?php echo $field->input; ?>
 				</div>
-			<?php endif; ?>
+			<?php endforeach ?>
+			<div class="formelm-area">
+				<?php echo $this->form->getLabel('version_note'); ?>
+				<?php echo $this->form->getInput('version_note'); ?>
+			</div>
 		</fieldset>
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />

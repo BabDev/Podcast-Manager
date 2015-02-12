@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelform');
-
 /**
  * Podcast edit model class.
  *
@@ -196,53 +194,6 @@ class PodcastManagerModelPodcast extends JModelForm
 	}
 
 	/**
-	 * Method to allow derived classes to preprocess the form.
-	 *
-	 * @param   JForm   $form   A JForm object.
-	 * @param   mixed   $data   The data expected for the form.
-	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
-	 *
-	 * @return  void
-	 *
-	 * @see     JFormField
-	 * @since   2.2
-	 * @throws  Exception if there is an error in the form event.
-	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'content')
-	{
-		// Add tags for CMS 3.1 and later
-		if (version_compare(JVERSION, '3.1', 'ge'))
-		{
-			$form->setField(
-				new SimpleXMLElement(
-					'<fields name="metadata"><fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">'
-					. '<field name="tags" type="tag" label="JTAG" description="JTAG_DESC" class="inputbox" multiple="true" /></fieldset></fields>'
-				)
-			);
-		}
-
-		// Add version note for CMS 3.2 and later
-		if (version_compare(JVERSION, '3.2', 'ge'))
-		{
-			$form->setField(
-				new SimpleXMLElement(
-					'<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"'
-					. ' class="inputbox" size="45" labelclass="control-label" />'
-				)
-			);
-
-			$form->setField(
-				new SimpleXMLElement(
-					'<field id="contenthistory" name="contenthistory" type="contenthistory" data-typeAlias="com_podcastmanager.podcast" label="JTOOLBAR_VERSIONS" />
-					'
-				)
-			);
-		}
-
-		parent::preprocessForm($form, $data, $group);
-	}
-
-	/**
 	 * Method to save the form data.
 	 *
 	 * @param   array  $data  The form data.
@@ -254,7 +205,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	public function save($data)
 	{
 		// Initialise variables;
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
@@ -330,34 +281,5 @@ class PodcastManagerModelPodcast extends JModelForm
 		$this->setState($this->getName() . '.new', $isNew);
 
 		return true;
-	}
-
-	/**
-	 * Method to validate the form data.
-	 *
-	 * @param   JForm   $form   The form to validate against.
-	 * @param   array   $data   The data to validate.
-	 * @param   string  $group  The name of the field group to validate.
-	 *
-	 * @return  mixed  Array of filtered data if valid, false otherwise.
-	 *
-	 * @see     JFormRule
-	 * @see     JFilterInput
-	 * @since   2.2
-	 */
-	public function validate($form, $data, $group = null)
-	{
-		$data = parent::validate($form, $data, $group);
-
-		// Tags B/C break at 3.1.2
-		if (version_compare(JVERSION, '3.1.2', 'ge'))
-		{
-			if (isset($data['metadata']['tags']))
-			{
-				$data['tags'] = $data['metadata']['tags'];
-			}
-		}
-
-		return $data;
 	}
 }

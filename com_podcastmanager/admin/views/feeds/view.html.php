@@ -100,13 +100,9 @@ class PodcastManagerViewFeeds extends JViewLegacy
 
 		$this->addToolbar();
 
-		// Add the sidebar for J! 3.0
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -120,63 +116,59 @@ class PodcastManagerViewFeeds extends JViewLegacy
 	{
 		$canDo = PodcastManagerHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');
+		JToolbarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_FEEDS_TITLE'), 'podcastmanager.png');
 
 		if ($canDo->get('core.create') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.create')) > 0))
 		{
-			JToolBarHelper::addNew('feed.add');
+			JToolbarHelper::addNew('feed.add');
 		}
 
 		if ($canDo->get('core.edit') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit')) > 0)
 			|| $canDo->get('core.edit.own') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.own')) > 0))
 		{
-			JToolBarHelper::editList('feed.edit');
+			JToolbarHelper::editList('feed.edit');
 		}
 
 		if ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('feeds.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('feeds.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('feeds.checkin');
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
+			JToolbarHelper::publish('feeds.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('feeds.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::checkin('feeds.checkin');
+			JToolbarHelper::divider();
 		}
 
 		if ($this->state->get('filter.published') == -2 && ($canDo->get('core.delete')
 			|| (count(PodcastManagerHelper::getAuthorisedFeeds('core.delete')) > 0)))
 		{
-			JToolBarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			JToolbarHelper::deleteList('', 'feeds.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::divider();
 		}
 		elseif ($canDo->get('core.edit.state') || (count(PodcastManagerHelper::getAuthorisedFeeds('core.edit.state')) > 0))
 		{
-			JToolBarHelper::trash('feeds.trash');
-			JToolBarHelper::divider();
+			JToolbarHelper::trash('feeds.trash');
+			JToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_podcastmanager');
+			JToolbarHelper::preferences('com_podcastmanager');
 		}
 
-		// Section below for 3.0 compatibility
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
+		JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'),
-				'filter_published',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_published',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'),
-				'filter_language',
-				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-			);
-		}
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_LANGUAGE'),
+			'filter_language',
+			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+		);
 	}
 
 	/**
