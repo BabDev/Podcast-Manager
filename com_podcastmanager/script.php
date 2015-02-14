@@ -67,18 +67,6 @@ class Com_PodcastManagerInstallerScript
 
 			return;
 		}
-
-		// If coming from 1.x, remove language files in administrator/language and language
-		if (version_compare($version, '2.0', 'lt'))
-		{
-			$this->removeLanguageFiles();
-		}
-
-		// If coming from versions earlier than 2.1, remove the component media folders
-		if (version_compare($version, '2.1', 'lt'))
-		{
-			$this->removeMediaFolders();
-		}
 	}
 
 	/**
@@ -508,74 +496,5 @@ class Com_PodcastManagerInstallerScript
 		$version = $record->version;
 
 		return $version;
-	}
-
-	/**
-	 * Function to remove language files from the system language folders due to changing to
-	 * component language files for 2.0
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0
-	 */
-	private function removeLanguageFiles()
-	{
-		jimport('joomla.filesystem.file');
-
-		$adminBase = JPATH_ADMINISTRATOR . '/language/en-GB/';
-		$siteBase = JPATH_SITE . '/language/en-GB/';
-
-		// The language files for pre-2.0
-		$adminFiles = array(
-			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.com_podcastmedia.sys.ini',
-			'en-GB.plg_content_podcastmanager.ini', 'en-GB.plg_content_podcastmanager.sys.ini', 'en-GB.plg_editors-xtd_podcastmanager.ini',
-			'en-GB.plg_editors-xtd_podcastmanager.sys.ini'
-		);
-		$siteFiles = array(
-			'en-GB.com_podcastmanager.ini', 'en-GB.com_podcastmanager.sys.ini', 'en-GB.com_podcastmedia.ini', 'en-GB.mod_podcastmanager.ini',
-			'en-GB.mod_podcastmanager.sys.ini', 'en-GB.mod_podcastmanagerfeed.ini', 'en-GB.mod_podcastmanagerfeed.sys.ini'
-		);
-
-		// Remove the admin files
-		foreach ($adminFiles as $adminFile)
-		{
-			if (is_file($adminBase . $adminFile))
-			{
-				JFile::delete($adminBase . $adminFile);
-			}
-		}
-
-		// Remove the site files
-		foreach ($siteFiles as $siteFile)
-		{
-			if (is_file($siteBase . $siteFile))
-			{
-				JFile::delete($siteBase . $siteFile);
-			}
-		}
-	}
-
-	/**
-	 * Function to remove media folders from the component due to moving to the /media folder
-	 *
-	 * @return  void
-	 *
-	 * @since   2.1
-	 */
-	private function removeMediaFolders()
-	{
-		jimport('joomla.filesystem.folder');
-
-		// Build the folder array
-		$folders = array(JPATH_ADMINISTRATOR . '/components/com_podcastmanager/media', JPATH_SITE . '/components/com_podcastmanager/media');
-
-		// Remove the admin files
-		foreach ($folders as $folder)
-		{
-			if (is_dir($folder))
-			{
-				JFolder::delete($folder);
-			}
-		}
 	}
 }

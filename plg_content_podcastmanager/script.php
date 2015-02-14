@@ -83,12 +83,6 @@ class PlgContentPodcastManagerInstallerScript
 
 			return;
 		}
-
-		// If coming from 1.x, remove old media folders
-		if (version_compare($version, '2.0', 'lt'))
-		{
-			$this->_removeMediaFolders();
-		}
 	}
 
 	/**

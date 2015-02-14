@@ -65,12 +65,6 @@ class Mod_PodcastManagerInstallerScript
 
 			return;
 		}
-
-		// If coming from versions earlier than 2.1, remove the module media folder
-		if (version_compare($version, '2.1', 'lt'))
-		{
-			$this->_removeMediaFolder();
-		}
 	}
 
 	/**

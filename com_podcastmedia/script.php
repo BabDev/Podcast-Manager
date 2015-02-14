@@ -42,17 +42,6 @@ class Com_PodcastMediaInstallerScript
 
 			return;
 		}
-
-		// If coming from 1.x, remove old site controller
-		if (version_compare($version, '2.0', 'lt'))
-		{
-			jimport('joomla.filesystem.file');
-
-			if (is_file(JPATH_SITE . '/components/com_podcastmedia/controller.php'))
-			{
-				JFile::delete(JPATH_SITE . '/components/com_podcastmedia/controller.php');
-			}
-		}
 	}
 
 	/**
