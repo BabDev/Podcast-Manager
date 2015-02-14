@@ -10,29 +10,29 @@
 * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
 */
 
-(function() {
+(function($) {
 var AudioManager = this.AudioManager = {
 	initialize: function()
 	{
 		o = this._getUriObject(window.self.location.href);
-		q = new Hash(this._getQueryObject(o.query));
-		this.editor = decodeURIComponent(q.get('e_name'));
+		q = this._getQueryObject(o.query);
+		this.editor = decodeURIComponent(q['e_name']);
 
 		// Setup audio listing objects
-		this.folderlist = document.id('folderlist');
+		this.folderlist = document.getElementById('folderlist');
 
 		this.frame		= window.frames['audioframe'];
 		this.frameurl	= this.frame.location.href;
 
 		// Setup audio listing frame
-		this.audioframe = document.id('audioframe');
+		this.audioframe = document.getElementById('audioframe');
 		this.audioframe.manager = this;
-		this.audioframe.addEvent('load', function(){ AudioManager.onloadaudioview(); });
+		$(this.audioframe).on('load', function(){ AudioManager.onloadaudioview(); });
 
 		// Setup folder up button
-		this.upbutton = document.id('upbutton');
-		this.upbutton.removeEvents('click');
-		this.upbutton.addEvent('click', function(){ AudioManager.upFolder(); });
+		this.upbutton = document.getElementById('upbutton');
+		$(this.upbutton).off('click');
+		$(this.upbutton).on('click', function(){ AudioManager.upFolder(); });
 	},
 
 	onloadaudioview: function()
@@ -43,27 +43,31 @@ var AudioManager = this.AudioManager = {
 		var folder = this.getAudioFolder();
 		for(var i = 0; i < this.folderlist.length; i++)
 		{
-			if(folder == this.folderlist.options[i].value) {
+			if (folder == this.folderlist.options[i].value) {
 				this.folderlist.selectedIndex = i;
+				if (this.folderlist.className.test(/\bchzn-done\b/)) {
+					$(this.folderlist).trigger('liszt:updated');
+				}
 				break;
 			}
 		}
 
-		a = this._getUriObject(document.id('uploadForm').getProperty('action'));
-		q = new Hash(this._getQueryObject(a.query));
-		q.set('folder', folder);
+		a = this._getUriObject($('#uploadForm').attr('action'));
+		q = this._getQueryObject(a.query);
+		q['folder'] = folder;
 		var query = [];
-		q.each(function(v, k){
-			if ($chk(v)) {
-				this.push(k+'='+v);
+		for (var k in q) {
+			var v = q[k];
+			if (q.hasOwnProperty(k) && v !== null) {
+				query.push(k+'='+v);
 			}
-		}, query);
+		}
 		a.query = query.join('&');
 		var portString = '';
 		if (typeof(a.port) !== 'undefined' && a.port != 80) {
 			portString = ':'+a.port;
 		}
-		document.id('uploadForm').setProperty('action', a.scheme+'://'+a.domain+portString+a.path+'?'+a.query);
+		$('#uploadForm').attr('action', a.scheme+'://'+a.domain+portString+a.path+'?'+a.query);
 	},
 
 	getAudioFolder: function()
@@ -78,8 +82,11 @@ var AudioManager = this.AudioManager = {
 	{
 		for(var i = 0; i < this.folderlist.length; i++)
 		{
-			if(folder == this.folderlist.options[i].value) {
+			if (folder == this.folderlist.options[i].value) {
 				this.folderlist.selectedIndex = i;
+				if (this.folderlist.className.test(/\bchzn-done\b/)) {
+					$(this.folderlist).trigger('liszt:updated');
+				}
 				break;
 			}
 		}
@@ -87,7 +94,7 @@ var AudioManager = this.AudioManager = {
 	},
 
 	getFolder: function() {
-		return this.folderlist.get('value');
+		return this.folderlist.value;
 	},
 
 	upFolder: function()
@@ -125,15 +132,15 @@ var AudioManager = this.AudioManager = {
 
 	populateFields: function(file)
 	{
-		document.id("f_url").value = audio_base_path+file;
+		$("#f_url").val(audio_base_path+file);
 	},
 
 	showMessage: function(text)
 	{
-		var message  = document.id('message');
-		var messages = document.id('messages');
+		var message  = document.getElementById('message');
+		var messages = document.getElementById('messages');
 
-		if(message.firstChild)
+		if (message.firstChild)
 			message.removeChild(message.firstChild);
 
 		message.appendChild(document.createTextNode(text));
@@ -176,7 +183,7 @@ var AudioManager = this.AudioManager = {
 	_getQueryObject: function(q) {
 		var vars = q.split(/[&;]/);
 		var rs = {};
-		if (vars.length) vars.each(function(val) {
+		if (vars.length) vars.forEach(function(val) {
 			var keys = val.split('=');
 			if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
 		});
@@ -184,14 +191,18 @@ var AudioManager = this.AudioManager = {
 	},
 
 	_getUriObject: function(u){
-		var bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
+		var bitsAssociate = {}, bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
+		['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'].forEach(function(key, index) {
+			bitsAssociate[key] = bits[index];
+		});
+
 		return (bits)
-			? bits.associate(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'])
+			? bitsAssociate
 			: null;
 	}
 };
-})(document.id);
+})(jQuery);
 
-window.addEvent('domready', function(){
+jQuery(function(){
 	AudioManager.initialize();
 });

@@ -18,6 +18,7 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
 ?>
 
 <script type="text/javascript">
@@ -30,144 +31,282 @@ JHtml::_('behavior.keepalive');
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feed&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></legend>
-				<ul class="adminformlist">
-					<li><?php echo $this->form->getLabel('name'); ?>
-					<?php echo $this->form->getInput('name'); ?></li>
+	<div class="row-fluid">
+		<!-- Begin Content -->
+		<div class="span9 form-horizontal">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_VIEW_FEED_FIELDSET_FEED');?></a></li>
+				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
+				<li><a href="#itunes" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS');?></a></li>
+				<?php if ($this->canDo->get('core.admin'))
+				{ ?>
+				<li><a href="#permissions" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_RULES');?></a></li>
+				<?php } ?>
+			</ul>
 
-					<li><?php echo $this->form->getLabel('alias'); ?>
-					<?php echo $this->form->getInput('alias'); ?></li>
+			<div class="tab-content">
+				<!-- Begin Tabs -->
+				<div class="tab-pane active" id="general">
+					<fieldset class="adminform">
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('name'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('name'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('subtitle'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('subtitle'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('description'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('description'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('bp_position'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('bp_position'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('boilerplate'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('boilerplate'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('copyright'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('copyright'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('author'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('author'); ?>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('image'); ?>
+							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('image'); ?>
+							</div>
+						</div>
+					</fieldset>
+				</div>
 
-					<li><?php echo $this->form->getLabel('subtitle'); ?>
-					<?php echo $this->form->getInput('subtitle'); ?></li>
+				<div class="tab-pane" id="publishing">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('alias'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('alias'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('created'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('created'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('created_by'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('created_by'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('publish_up'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('publish_up'); ?>
+						</div>
+					</div>
+					<?php if ($this->item->modified_by)
+					{ ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('modified_by'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('modified_by'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('modified'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('modified'); ?>
+						</div>
+					</div>
+					<?php } ?>
+				</div>
 
-					<li><?php echo $this->form->getLabel('description'); ?>
-					<?php echo $this->form->getInput('description'); ?></li>
+				<div class="tab-pane" id="itunes">
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('block'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('block'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('explicit'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('explicit'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('category1'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('category1'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('category2'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('category2'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('category3'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('category3'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('ownername'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('ownername'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('owneremail'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('owneremail'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('keywords'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('keywords'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $this->form->getLabel('newFeed'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('newFeed'); ?>
+						</div>
+					</div>
+				</div>
 
-					<li><?php echo $this->form->getLabel('bp_position'); ?>
-					<?php echo $this->form->getInput('bp_position'); ?></li>
-
-					<li><?php echo $this->form->getLabel('boilerplate'); ?>
-					<?php echo $this->form->getInput('boilerplate'); ?></li>
-
-					<li><?php echo $this->form->getLabel('published'); ?>
-					<?php echo $this->form->getInput('published'); ?></li>
-
-					<li><?php echo $this->form->getLabel('copyright'); ?>
-					<?php echo $this->form->getInput('copyright'); ?></li>
-
-					<li><?php echo $this->form->getLabel('author'); ?>
-					<?php echo $this->form->getInput('author'); ?></li>
-
-					<li><?php echo $this->form->getLabel('image'); ?>
-					<?php echo $this->form->getInput('image'); ?></li>
-
-					<?php if ($this->canDo->get('core.admin')) : ?>
-					<li><span class="faux-label"><?php echo JText::_('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
-					<div class="button2-left">
-						<div class="blank">
-		      				<button type="button" onclick="document.location.href='#access-rules';">
-		      				<?php echo JText::_('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
-		      				</button>
-		      			</div>
-		      		</div>
-		    		</li>
-					<?php endif; ?>
-
-					<li><?php echo $this->form->getLabel('language'); ?>
-					<?php echo $this->form->getInput('language'); ?></li>
-
-					<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
-						<li><?php echo $field->label; ?>
-							<?php echo $field->input; ?></li>
-					<?php endforeach ?>
-
-					<li><?php echo $this->form->getLabel('version_note'); ?>
-					<?php echo $this->form->getInput('version_note'); ?></li>
-
-					<li><?php echo $this->form->getLabel('id'); ?>
-					<?php echo $this->form->getInput('id'); ?></li>
-				</ul>
-		</fieldset>
-	</div>
-
-	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'podcastmanager-feed-sliders-' . $this->item->id); ?>
-			<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
-			<fieldset class="panelform">
-				<ul class="adminformlist">
-					<li><?php echo $this->form->getLabel('created'); ?>
-					<?php echo $this->form->getInput('created'); ?></li>
-
-					<li><?php echo $this->form->getLabel('created_by'); ?>
-					<?php echo $this->form->getInput('created_by'); ?></li>
-
-					<li><?php echo $this->form->getLabel('publish_up'); ?>
-					<?php echo $this->form->getInput('publish_up'); ?></li>
-
-					<?php if ($this->item->modified_by) : ?>
-					<li><?php echo $this->form->getLabel('modified_by'); ?>
-					<?php echo $this->form->getInput('modified_by'); ?></li>
-
-					<li><?php echo $this->form->getLabel('modified'); ?>
-					<?php echo $this->form->getInput('modified'); ?></li>
-					<?php endif; ?>
-				</ul>
+			<?php if ($this->canDo->get('core.admin'))
+			{ ?>
+				<div class="tab-pane" id="permissions">
+					<fieldset>
+						<?php echo $this->form->getInput('rules'); ?>
+					</fieldset>
+				</div>
+			<?php } ?>
+				<!-- End Tabs -->
+			</div>
+			<input type="hidden" name="task" value="" />
+			<?php echo JHtml::_('form.token'); ?>
+		</div>
+		<!-- End Content -->
+		<!-- Begin Sidebar -->
+		<div class="span3">
+			<h4><?php echo JText::_('JDETAILS');?></h4>
+			<hr />
+			<fieldset class="form-vertical">
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('published'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('published'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('language'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('language'); ?>
+					</div>
+				</div>
+				<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $field->label; ?>
+					</div>
+					<div class="controls">
+						<?php echo $field->input; ?>
+					</div>
+				</div>
+				<?php endforeach ?>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('version_note'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('version_note'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('id'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('id'); ?>
+					</div>
+				</div>
 			</fieldset>
-
-			<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_ITUNES_OPTIONS'), 'itunes-options'); ?>
-			<fieldset class="panelform">
-				<ul class="adminformlist">
-					<li><?php echo $this->form->getLabel('block'); ?>
-					<?php echo $this->form->getInput('block'); ?></li>
-
-					<li><?php echo $this->form->getLabel('explicit'); ?>
-					<?php echo $this->form->getInput('explicit'); ?></li>
-
-					<li><?php echo $this->form->getLabel('category1'); ?>
-					<?php echo $this->form->getInput('category1'); ?></li>
-
-					<li><?php echo $this->form->getLabel('category2'); ?>
-					<?php echo $this->form->getInput('category2'); ?></li>
-
-					<li><?php echo $this->form->getLabel('category3'); ?>
-					<?php echo $this->form->getInput('category3'); ?></li>
-
-					<li><?php echo $this->form->getLabel('ownername'); ?>
-					<?php echo $this->form->getInput('ownername'); ?></li>
-
-					<li><?php echo $this->form->getLabel('owneremail'); ?>
-					<?php echo $this->form->getInput('owneremail'); ?></li>
-
-					<li><?php echo $this->form->getLabel('keywords'); ?>
-					<?php echo $this->form->getInput('keywords'); ?></li>
-
-					<li><?php echo $this->form->getLabel('newFeed'); ?>
-					<?php echo $this->form->getInput('newFeed'); ?></li>
-				</ul>
-			</fieldset>
-
-		<?php echo JHtml::_('sliders.end'); ?>
-	</div>
-
-	<?php if ($this->canDo->get('core.admin')) : ?>
-	<div class="width-100 fltlft">
-		<?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
-
-		<?php echo JHtml::_('sliders.panel', JText::_('COM_PODCASTMANAGER_FIELDSET_RULES'), 'access-rules'); ?>
-		<fieldset class="panelform">
-			<?php echo $this->form->getLabel('rules'); ?>
-			<?php echo $this->form->getInput('rules'); ?>
-		</fieldset>
-
-		<?php echo JHtml::_('sliders.end'); ?>
-	</div>
-	<?php endif; ?>
-	<div>
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		</div>
+	<!-- End Sidebar -->
 	</div>
 </form>
-<div class="clr"></div>

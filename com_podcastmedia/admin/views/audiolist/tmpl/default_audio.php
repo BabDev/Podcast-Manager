@@ -15,7 +15,7 @@
 defined('_JEXEC') or die;
 
 $params = new JRegistry;
-$dispatcher	= JEventDispatcher::getInstance();
+$dispatcher	= JDispatcher::getInstance();
 $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
 ?>
 <tr>

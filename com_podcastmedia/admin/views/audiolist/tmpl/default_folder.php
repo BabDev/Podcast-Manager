@@ -19,7 +19,7 @@ $input = JFactory::getApplication()->input;
 <tr>
 	<td class="imgTotal">
 		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->get('asset', '', 'cmd'); ?>&amp;author=<?php echo $input->get('author', '', 'cmd'); ?>">
-			<?php echo JHtml::_('image', 'media/folder_sm.png', $this->_tmp_folder->name, array('width' => 16, 'height' => 16), true); ?>
+			<i class="icon-folder-2"></i>
 		</a>
 	</td>
 	<td class="description">

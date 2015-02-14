@@ -15,7 +15,7 @@
 defined('_JEXEC') or die;
 ?>
 <div class="manager">
-	<table width="100%" cellspacing="0">
+	<table class="table table-striped table-condensed">
 		<thead>
 			<tr>
 				<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>

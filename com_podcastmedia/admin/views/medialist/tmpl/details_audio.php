@@ -20,12 +20,12 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 ?>
 <tr>
 	<td>
-		<a class="img-preview" href="<?php echo COM_PODCASTMEDIA_BASEURL . '/' . $this->_tmp_audio->path_relative; ?>" title="<?php echo $this->_tmp_audio->name; ?>">
+		<a href="<?php echo COM_PODCASTMEDIA_BASEURL . '/' . $this->_tmp_audio->path_relative; ?>" title="<?php echo $this->_tmp_audio->name; ?>">
 			<?php echo JHtml::_('image', $this->_tmp_audio->icon_16, $this->_tmp_audio->name, null, true, true) ? JHtml::_('image', $this->_tmp_audio->icon_16, $this->_tmp_audio->title, null, true) : JHtml::_('image', 'media/con_info.png', $this->_tmp_audio->name, null, true); ?>
 		</a>
 	</td>
 	<td class="description">
-		<a href="<?php echo COM_PODCASTMEDIA_BASEURL . '/' . $this->_tmp_audio->path_relative; ?>" title="<?php echo $this->_tmp_audio->name; ?>" rel="preview">
+		<a href="<?php echo COM_PODCASTMEDIA_BASEURL . '/' . $this->_tmp_audio->path_relative; ?>" title="<?php echo $this->_tmp_audio->name; ?>">
 			<?php echo $this->escape($this->_tmp_audio->title); ?>
 		</a>
 	</td>
@@ -36,7 +36,7 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 { ?>
 	<td>
 		<a class="delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_audio->name; ?>" rel="<?php echo $this->_tmp_audio->name; ?>">
-			<?php echo JHtml::_('image', 'media/remove.png', JText::_('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?>
+			<i class="icon-remove" rel="tooltip" title="<?php echo JText::_('JACTION_DELETE');?>"></i>
 		</a>
 		<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_audio->name; ?>" />
 	</td>

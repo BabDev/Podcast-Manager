@@ -17,7 +17,7 @@ $user = JFactory::getUser();
 ?>
 <form target="_parent" action="index.php?option=com_podcastmedia&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
 	<div class="manager">
-		<table width="100%" cellspacing="0">
+		<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
 					<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
