@@ -123,6 +123,19 @@ class PodcastManagerModelPodcasts extends JModelList
 			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
+		// Filter by a single tag.
+		$tagId = $this->getState('filter.tag');
+
+		if (is_numeric($tagId))
+		{
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+				->join(
+					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast')
+				);
+		}
+
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
@@ -199,6 +212,9 @@ class PodcastManagerModelPodcasts extends JModelList
 
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
+
+		$tag = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '');
+		$this->setState('filter.tag', $tag);
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_podcastmanager');

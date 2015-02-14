@@ -170,47 +170,5 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		{
 			JToolbarHelper::preferences('com_podcastmanager');
 		}
-
-		JHtml::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/helpers/html');
-
-		JHtmlSidebar::setAction('index.php?option=com_podcastmanager&view=feeds');
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions', $this->states), 'value', 'text', $this->state->get('filter.published'), true)
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('COM_PODCASTMANAGER_SELECT_FEEDNAME'),
-			'filter_feedname',
-			JHtml::_('select.options', JHtml::_('podcast.feeds'), 'value', 'text', $this->state->get('filter.feedname'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_LANGUAGE'),
-			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-		);
-	}
-
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since   3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'a.published' => JText::_('JSTATUS'),
-			'a.title' => JText::_('JGLOBAL_TITLE'),
-			'a.feedname' => JText::_('COM_PODCASTMANAGER_HEADING_FEEDNAME'),
-			'a.created' => JText::_('JDATE'),
-			'a.publish_up' => JText::_('COM_PODCASTMANAGER_HEADING_PUBLISH_DATE'),
-			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' => JText::_('JGRID_HEADING_ID')
-		);
 	}
 }

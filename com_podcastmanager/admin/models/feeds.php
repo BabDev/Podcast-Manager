@@ -193,6 +193,13 @@ class PodcastManagerModelFeeds extends JModelList
 			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
+		// Filter by search in name
+		if ($search = trim($this->getState('filter.search')))
+		{
+			$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
+			$query->where('(a.name LIKE ' . $search . ')');
+		}
+
 		// Handle the list ordering.
 		$ordering = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
@@ -225,6 +232,9 @@ class PodcastManagerModelFeeds extends JModelList
 
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
+
+		$search = $this->getUserStateFromRequest($this->context . '.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_podcastmanager');

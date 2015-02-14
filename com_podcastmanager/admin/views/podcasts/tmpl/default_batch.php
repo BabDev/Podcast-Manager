@@ -22,36 +22,42 @@ $published	= $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">x</button>
+		<button type="button" class="close" data-dismiss="modal">&#215;</button>
 		<h3><?php echo JText::_('COM_PODCASTMANAGER_BATCH_OPTIONS');?></h3>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body modal-batch">
 		<p><?php echo JText::_('COM_PODCASTMANAGER_BATCH_TIP'); ?></p>
-		<div class="control-group">
-			<div class="controls">
-				<?php echo JHtml::_('batch.language'); ?>
+		<div class="row-fluid">
+			<div class="control-group span6">
+				<div class="controls">
+					<?php echo JHtml::_('batch.language'); ?>
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<?php echo JHtml::_('batch.tag');?>
+			<div class="control-group span6">
+				<div class="controls">
+					<?php echo JHtml::_('batch.tag'); ?>
+				</div>
 			</div>
 		</div>
 		<?php if ($published >= 0) : ?>
-		<div class="control-group">
-			<label id="batch-choose-action-lbl" for="batch-feed-id" class="control-label">
-				<?php echo JText::_('COM_PODCASTMANAGER_BATCH_FEED_LABEL'); ?>
-			</label>
-			<div id="batch-choose-action" class="combo controls">
-				<select name="batch[feed_id]" class="inputbox" id="batch-feed-id">
-					<option value=""><?php echo JText::_('JSELECT') ?></option>
-					<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'));?>
-				</select>
+			<div class="row-fluid">
+				<div class="control-group span12">
+					<div class="controls">
+						<label id="batch-choose-action-lbl" for="batch-feed-id" class="control-label">
+							<?php echo JText::_('COM_PODCASTMANAGER_BATCH_FEED_LABEL'); ?>
+						</label>
+						<div id="batch-choose-action" class="combo controls">
+							<select name="batch[feed_id]" class="inputbox" id="batch-feed-id">
+								<option value=""><?php echo JText::_('JSELECT') ?></option>
+								<?php echo JHtml::_('select.options', JHtml::_('podcast.feeds'));?>
+							</select>
+						</div>
+						<div id="batch-move-copy" class="control-group radio">
+							<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="control-group radio">
-			<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
-		</div>
 		<?php endif; ?>
 	</div>
 	<div class="modal-footer">
