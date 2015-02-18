@@ -28,6 +28,22 @@ class Pkg_PodcastManagerInstallerScript
 	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv', 'sqlazure');
 
 	/**
+	 * Minimum supported Joomla! version
+	 *
+	 * @var    string
+	 * @since  3.0
+	 */
+	protected $minimumJoomlaVersion = '3.4';
+
+	/**
+	 * Minimum supported PHP version
+	 *
+	 * @var    string
+	 * @since  3.0
+	 */
+	protected $minimumPHPVersion = '5.3';
+
+	/**
 	 * Function to act prior to installation process begins
 	 *
 	 * @param   string                    $type    The action being performed
@@ -40,17 +56,21 @@ class Pkg_PodcastManagerInstallerScript
 	public function preflight($type, $parent)
 	{
 		// Requires PHP 5.3
-		if (version_compare(PHP_VERSION, '5.3', 'lt'))
+		if (version_compare(PHP_VERSION, $this->minimumPHPVersion, 'lt'))
 		{
-			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION'));
+			JError::raiseNotice(
+				null, JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION', $this->minimumPHPVersion)
+			);
 
 			return false;
 		}
 
-		// Requires Joomla! 3.4.0
-		if (version_compare(JVERSION, '3.4.0', 'lt'))
+		// Requires Joomla! 3.4
+		if (version_compare(JVERSION, $this->minimumJoomlaVersion, 'lt'))
 		{
-			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION'));
+			JError::raiseNotice(
+				null, JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION', $this->minimumJoomlaVersion)
+			);
 
 			return false;
 		}
