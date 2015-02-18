@@ -13,7 +13,6 @@
 	<scriptfile>script.php</scriptfile>
 	<files folder="site">
 		<filename>controller.php</filename>
-		<filename>index.html</filename>
 		<filename>podcastmanager.php</filename>
 		<filename>router.php</filename>
 		<folder>controllers</folder>
@@ -47,14 +46,12 @@
 		<folder>css</folder>
 		<folder>images</folder>
 		<folder>js</folder>
-		<filename>index.html</filename>
 	</media>
 	<administration>
 		<files folder="admin">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
-			<filename>index.html</filename>
 			<filename>podcastmanager.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>

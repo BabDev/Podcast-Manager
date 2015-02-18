@@ -184,7 +184,6 @@ class Com_PodcastManagerInstallerScript
 			if (!is_dir(JPATH_ROOT . '/media/com_podcastmanager'))
 			{
 				JFolder::create(JPATH_ROOT . '/media/com_podcastmanager');
-				JFile::copy(JPATH_ROOT . '/media/index.html', JPATH_ROOT . '/media/com_podcastmanager/index.html');
 			}
 		}
 

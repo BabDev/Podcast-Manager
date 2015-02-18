@@ -12,14 +12,12 @@
 	<description>COM_PODCASTMEDIA_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<files folder="site">
-		<filename>index.html</filename>
 		<filename>podcastmedia.php</filename>
 	</files>
 	<administration>
 		<files folder="admin">
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
-			<filename>index.html</filename>
 			<filename>podcastmedia.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>

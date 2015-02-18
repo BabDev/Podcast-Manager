@@ -11,7 +11,6 @@
 	<description>PLG_PODCASTMEDIA_USER_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="user">user.php</filename>
-		<filename>index.html</filename>
 		<folder>language</folder>
 	</files>
 </extension>

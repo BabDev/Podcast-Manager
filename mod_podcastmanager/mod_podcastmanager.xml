@@ -14,11 +14,9 @@
 		<folder>language</folder>
 		<folder>tmpl</folder>
 		<filename module="mod_podcastmanager">mod_podcastmanager.php</filename>
-		<filename>index.html</filename>
 	</files>
 	<media destination="mod_podcastmanager" folder="media">
 		<folder>images</folder>
-		<filename>index.html</filename>
 	</media>
 	<config>
 		<fields name="params">
