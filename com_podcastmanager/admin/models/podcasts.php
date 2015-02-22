@@ -45,7 +45,8 @@ class PodcastManagerModelPodcasts extends JModelList
 				'feedname', 'a.feedname',
 				'published', 'a.published',
 				'created', 'a.created',
-				'language', 'a.language'
+				'language', 'a.language',
+				'publish_up', 'a.publish_up'
 			);
 		}
 
