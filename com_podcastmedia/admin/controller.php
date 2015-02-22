@@ -73,13 +73,7 @@ class PodcastMediaController extends JControllerLegacy
 		$vType = JFactory::getDocument()->getType();
 
 		// Get/Create the view
-		$view = $this->getView($vName, $vType);
-
-		// Add the template path for requests coming from the site app
-		if ($app->isSite())
-		{
-			$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR . '/views/' . strtolower($vName) . '/tmpl');
-		}
+		$view = $this->getView($vName, $vType, '', array('base_path' => JPATH_COMPONENT_ADMINISTRATOR));
 
 		// Get/Create the model
 		if ($model = $this->getModel($mName))
