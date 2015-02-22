@@ -3,7 +3,7 @@
 	<fieldset
 		addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
 		<field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
-			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
+			description="JGLOBAL_FIELD_ID_DESC" size="10" default="0" readonly="true" />
 		<field name="asset_id" type="hidden" filter="unset" />
 		<field name="name" type="text" class="inputbox" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_NAME_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_NAME_DESCRIPTION"
@@ -14,19 +14,16 @@
 		<field name="description" type="textarea" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_DESCRIPTION_DESCRIPTION"
 			rows="3" cols="40" />
-        <field name="bp_position" type="list" class="inputbox" filter="intval"
-               label="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_DESCRIPTION"
-               size="1" default="0">
-            <option
-                    value="0">JNONE</option>
-            <option
-                    value="1">COM_PODCASTMANAGER_OPTION_TOP</option>
-            <option
-                    value="2">COM_PODCASTMANAGER_OPTION_BOTTOM</option>
-        </field>
-        <field name="boilerplate" type="textarea" filter="safehtml"
-               label="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_DESCRIPTION"
-               rows="3" cols="40" />
+		<field name="bp_position" type="list" class="inputbox" filter="intval"
+			label="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BP_POSITION_DESCRIPTION"
+			size="1" default="0">
+			<option value="0">JNONE</option>
+			<option value="1">COM_PODCASTMANAGER_OPTION_TOP</option>
+			<option value="2">COM_PODCASTMANAGER_OPTION_BOTTOM</option>
+		</field>
+		<field name="boilerplate" type="textarea" filter="safehtml"
+			label="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_DESCRIPTION"
+			rows="3" cols="40" />
 		<field name="copyright" type="text" class="inputbox" filter="safehtml"
 			label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION"
 			size="30" />
@@ -53,30 +50,22 @@
 			label="COM_PODCASTMANAGER_FIELD_ITCATEGORY3_LABEL" description="COM_PODCASTMANAGER_FIELD_ITCATEGORY3_DESCRIPTION"
 			size="1" />
 		<field name="published" type="list" class="inputbox" filter="intval"
-               label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
+			label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION"
 			size="1" default="1">
-			<option
-				value="1">JPUBLISHED</option>
-			<option
-				value="0">JUNPUBLISHED</option>
-			<option
-				value="-2">JTRASH</option>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="-2">JTRASH</option>
 		</field>
 		<field name="block" type="radio" default="0" filter="intval"
-               label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" >
-			<option
-				value="0">JNO</option>
-			<option
-				value="1">JYES</option>
+			label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		<field name="explicit" type="radio" default="0" filter="intval"
-               label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" >
-			<option
-				value="0">JNO</option>
-			<option
-				value="1">JYES</option>
-			<option
-				value="2">COM_PODCASTMANAGER_FIELD_ITEXPLICIT_OPTION_CLEAN</option>
+			label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+			<option value="2">COM_PODCASTMANAGER_FIELD_ITEXPLICIT_OPTION_CLEAN</option>
 		</field>
 		<field name="created" type="calendar" label="COM_PODCASTMANAGER_FIELD_CREATED_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION" class="inputbox" size="22"
@@ -95,7 +84,7 @@
 			label="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_LABEL" description="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_DESCRIPTION"
 			class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 		<field name="version_note" type="text" label="JGLOBAL_FIELD_VERSION_NOTE_LABEL" description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
-			class="inputbox" size="45" labelclass="control-label" />
+			class="span12" size="45" />
 		<field id="contenthistory" name="contenthistory" type="contenthistory" data-typeAlias="com_podcastmanager.feed" label="JTOOLBAR_VERSIONS" />
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
 			description="COM_PODCASTMANAGER_FIELD_LANGUAGE_DESCRIPTION" class="inputbox">

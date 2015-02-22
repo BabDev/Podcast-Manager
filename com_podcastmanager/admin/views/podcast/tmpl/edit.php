@@ -14,242 +14,58 @@
 
 defined('_JEXEC') or die;
 
-// Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
+
+JFactory::getDocument()->addScriptDeclaration('
+	Joomla.submitbutton = function(task) {
+		if (task == "podcast.cancel" || document.formvalidator.isValid(document.getElementById("item-form"))) {
+			Joomla.submitform(task, document.getElementById("item-form"));
+		}
+	};
+');
 ?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.id('item-form'))) {
-			Joomla.submitform(task, document.getElementById('item-form'));
-		}
-	}
-</script>
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-	<div class="row-fluid">
-		<!-- Begin Content -->
-		<div class="span9 form-horizontal">
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA');?></a></li>
-				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
-			</ul>
+	<div class="form-horizontal">
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
-			<div class="tab-content">
-				<!-- Begin Tabs -->
-				<div class="tab-pane active" id="general">
-					<fieldset class="adminform">
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('filename'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('filename'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('title'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('title'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('feedname'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('feedname'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('mime'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('mime'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itSummary'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itSummary'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itImage'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itImage'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itAuthor'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itAuthor'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itBlock'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itBlock'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itDuration'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itDuration'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itExplicit'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itExplicit'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itKeywords'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itKeywords'); ?>
-							</div>
-						</div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('itSubtitle'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('itSubtitle'); ?>
-							</div>
-						</div>
-					</fieldset>
-				</div>
-
-				<div class="tab-pane" id="publishing">
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('alias'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('alias'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('created'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('created'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('created_by'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('created_by'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('publish_up'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('publish_up'); ?>
-						</div>
-					</div>
-					<?php if ($this->item->modified_by)
-					{ ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('modified_by'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('modified_by'); ?>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('modified'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('modified'); ?>
-						</div>
-					</div>
-					<?php } ?>
-				</div>
-				<!-- End Tabs -->
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_FIELDSET_METADATA', true)); ?>
+		<div class="row-fluid">
+			<div class="span9">
+				<fieldset class="adminform">
+					<?php echo $this->form->renderField('filename'); ?>
+					<?php echo $this->form->renderField('feedname'); ?>
+					<?php echo $this->form->renderField('mime'); ?>
+					<?php echo $this->form->renderField('itSummary'); ?>
+					<?php echo $this->form->renderField('itImage'); ?>
+					<?php echo $this->form->renderField('itAuthor'); ?>
+					<?php echo $this->form->renderField('itBlock'); ?>
+					<?php echo $this->form->renderField('itDuration'); ?>
+					<?php echo $this->form->renderField('itExplicit'); ?>
+					<?php echo $this->form->renderField('itKeywords'); ?>
+					<?php echo $this->form->renderField('itSubtitle'); ?>
+				</fieldset>
 			</div>
-			<input type="hidden" name="task" value="" />
-			<?php echo JHtml::_('form.token'); ?>
+			<div class="span3">
+				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+			</div>
 		</div>
-		<!-- End Content -->
-		<!-- Begin Sidebar -->
-		<div class="span3">
-			<h4><?php echo JText::_('JDETAILS');?></h4>
-			<hr />
-			<fieldset class="form-vertical">
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('published'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('published'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('language'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('language'); ?>
-					</div>
-				</div>
-				<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $field->label; ?>
-					</div>
-					<div class="controls">
-						<?php echo $field->input; ?>
-					</div>
-				</div>
-				<?php endforeach ?>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('version_note'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('version_note'); ?>
-					</div>
-				</div>
-				<div class="control-group">
-					<div class="control-label">
-						<?php echo $this->form->getLabel('id'); ?>
-					</div>
-					<div class="controls">
-						<?php echo $this->form->getInput('id'); ?>
-					</div>
-				</div>
-			</fieldset>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
+		<div class="row-fluid form-horizontal-desktop">
+			<div class="span6">
+				<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
+			</div>
 		</div>
-	<!-- End Sidebar -->
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+
+		<input type="hidden" name="task" value="" />
+		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

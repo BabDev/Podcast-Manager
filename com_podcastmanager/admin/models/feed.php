@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Registry\Registry;
-
 /**
  * Feed edit model class.
  *
@@ -148,11 +146,6 @@ class PodcastManagerModelFeed extends JModelAdmin
 	{
 		if ($item = parent::getItem($pk))
 		{
-			// Convert the metadata field to an array.
-			$registry = new Registry;
-			$registry->loadString($item->metadata);
-			$item->metadata = $registry->toArray();
-
 			if (!empty($item->id))
 			{
 				$item->tags = new JHelperTags;
