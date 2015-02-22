@@ -78,7 +78,7 @@ class PodcastManagerTablePodcast extends JTable
 	 *
 	 * @since   2.0
 	 */
-	protected function _getAssetParentId($table = null, $id = null)
+	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;

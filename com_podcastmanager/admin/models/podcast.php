@@ -553,13 +553,13 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
-	 * @param   JTable  &$table  A JTable object.
+	 * @param   JTable  $table  A JTable object.
 	 *
 	 * @return  void
 	 *
 	 * @since   1.6
 	 */
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		// Set the publish date to now
 		if ($table->published == 1 && intval($table->publish_up) == 0)
