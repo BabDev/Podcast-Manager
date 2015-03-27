@@ -645,7 +645,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		}
 
 		// If there's a space in the filename, notify the user but allow saving
-		if (strpos($table->filename, ' ') !== false)
+		if (strpos($data['filename'], ' ') !== false)
 		{
 			JFactory::getApplication()->enqueueMessage(
 				JText::_('COM_PODCASTMANAGER_SPACE_IN_FILENAME'),
