@@ -31,18 +31,18 @@ class PodcastManagerModelFeeds extends JModelList
 	 * @since   1.7
 	 * @see     JControllerLegacy
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'published', 'a.published',
 				'language', 'a.language'
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -72,7 +72,7 @@ class PodcastManagerModelFeeds extends JModelList
 		// If empty or an error, just return.
 		if (empty($items))
 		{
-			return array();
+			return [];
 		}
 
 		// Getting the following metric by joins is WAY TOO SLOW.
@@ -85,17 +85,16 @@ class PodcastManagerModelFeeds extends JModelList
 		$feedNames = implode(',', array_map(array($db, 'quote'), $feedNames));
 
 		// Get the published feed counts.
-		$query = $db->getQuery(true);
-		$query->select('p.feedname, COUNT(DISTINCT p.id) AS count_published');
-		$query->from($db->quoteName('#__podcastmanager', 'p'));
-		$query->where($db->quoteName('p.published') . ' = 1');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
-		$query->group('p.feedname');
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select('p.feedname, COUNT(DISTINCT p.id) AS count_published')
+			->from($db->quoteName('#__podcastmanager', 'p'))
+			->where($db->quoteName('p.published') . ' = 1')
+			->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')')
+			->group('p.feedname');
 
 		try
 		{
-			$countPublished = $db->loadAssocList('feedname', 'count_published');
+			$countPublished = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
 		catch (RuntimeException $e)
 		{
@@ -105,14 +104,13 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Get the unpublished feed counts.
-		$query->clear('where');
-		$query->where($db->quoteName('p.published') . ' = 0');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
-		$db->setQuery($query);
+		$query->clear('where')
+			->where($db->quoteName('p.published') . ' = 0')
+			->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 
 		try
 		{
-			$countUnpublished = $db->loadAssocList('feedname', 'count_published');
+			$countUnpublished = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
 		catch (RuntimeException $e)
 		{
@@ -122,14 +120,13 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Get the trashed feed counts.
-		$query->clear('where');
-		$query->where($db->quoteName('p.published') . ' = -2');
-		$query->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
-		$db->setQuery($query);
+		$query->clear('where')
+			->where($db->quoteName('p.published') . ' = -2')
+			->where($db->quoteName('p.feedname') . ' IN (' . $feedNames . ')');
 
 		try
 		{
-			$countTrashed = $db->loadAssocList('feedname', 'count_published');
+			$countTrashed = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
 		catch (RuntimeException $e)
 		{

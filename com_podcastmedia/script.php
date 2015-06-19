@@ -33,7 +33,7 @@ class Com_PodcastMediaInstallerScript
 	public function update($parent)
 	{
 		// Get the pre-update version
-		$version = $this->_getVersion();
+		$version = $this->getVersion();
 
 		// If in error, throw a message
 		if ($version == 'Error')
@@ -56,7 +56,7 @@ class Com_PodcastMediaInstallerScript
 	 */
 	public function postflight($type, $parent)
 	{
-		$this->_removeMenu();
+		$this->removeMenu();
 	}
 
 	/**
@@ -66,26 +66,24 @@ class Com_PodcastMediaInstallerScript
 	 *
 	 * @since   2.0
 	 */
-	private function _getVersion()
+	private function getVersion()
 	{
 		// Get the record from the database
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmedia'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmedia'));
 
 		try
 		{
-			$manifest = $db->loadObject();
+			$manifest = $db->setQuery($query)->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-			$version = 'Error';
 
-			return $version;
+			return 'Error';
 		}
 
 		// Decode the JSON
@@ -102,17 +100,16 @@ class Com_PodcastMediaInstallerScript
 	 *
 	 * @since   1.6
 	 */
-	private function _removeMenu()
+	private function removeMenu()
 	{
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->delete($db->quoteName('#__menu'));
-		$query->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__menu'))
+			->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{

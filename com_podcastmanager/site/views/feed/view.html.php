@@ -127,7 +127,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 			// Process the content plugins.
 			JPluginHelper::importPlugin('content');
-			$dispatcher->trigger('onContentPrepare', array('com_podcastmanager.feed', &$item, &$this->params));
+			$dispatcher->trigger('onContentPrepare', ['com_podcastmanager.feed', &$item, &$this->params]);
 		}
 
 		// Escape strings for HTML output
@@ -185,7 +185,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		if (isset($this->feed->id) && $menu && ($menu->query['option'] != 'com_podcastmanager' || $id != $this->feed->id))
 		{
 			$this->params->set('page_subheading', $this->feed->name);
-			$path = array(array('title' => $this->feed->name, 'link' => ''));
+			$path = [['title' => $this->feed->name, 'link' => '']];
 
 			$path = array_reverse($path);
 
@@ -236,7 +236,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		if (isset($this->feed->id) && $this->params->get('show_feed_link', 1) == 1)
 		{
 			$link	= '&format=raw&layout=default&feedname=' . $this->feed->id;
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			$attribs = ['type' => 'application/rss+xml', 'title' => 'RSS 2.0'];
 			$this->document->addHeadLink(JRoute::_($link), 'alternate', 'rel', $attribs);
 		}
 	}

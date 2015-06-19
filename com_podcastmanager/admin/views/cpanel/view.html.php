@@ -79,10 +79,10 @@ class PodcastManagerViewCpanel extends JViewLegacy
 	protected function getButtons()
 	{
 		// Initialize the array of button options
-		$buttons = array();
+		$buttons = [];
 
 		// Set the array of views
-		$views = array('feeds', 'podcasts', 'files');
+		$views = ['feeds', 'podcasts', 'files'];
 
 		// Set the icons
 		$iconBase = JUri::root() . 'media/podcastmanager/images/icons/';
@@ -93,16 +93,16 @@ class PodcastManagerViewCpanel extends JViewLegacy
 		);
 
 		// Set the BS classes
-		$classes = array(
+		$classes = [
 			'feeds' => 'feed',
 			'podcasts' => 'broadcast',
 			'files' => 'pictures'
-		);
+		];
 
 		// Build the buttons array
 		foreach ($views as $view)
 		{
-			$button = array();
+			$button = [];
 
 			if ($view == 'files')
 			{

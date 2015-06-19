@@ -67,28 +67,25 @@ class PodcastMediaViewMedialist extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Do not allow cache
-		JResponse::allowCache(false);
+		JFactory::getApplication()->allowCache(false);
 
 		$params = JComponentHelper::getParams('com_podcastmedia');
 		$style = $params->get('layout', 'thumbs');
 
-		$lang = JFactory::getLanguage();
-
 		JHtml::_('behavior.framework', true);
 
-		$document = JFactory::getDocument();
-
-		$document->addScriptDeclaration(
-		"window.addEvent('domready', function() {
-			window.parent.document.updateUploader();
-			$$('a.img-preview').each(function(el) {
-				el.addEvent('click', function(e) {
-					new Event(e).stop();
-					window.top.document.preview.fromElement(el);
+		$js = <<< JS
+			window.addEvent('domready', function() {
+				window.parent.document.updateUploader();
+				$$('a.img-preview').each(function(el) {
+					el.addEvent('click', function(e) {
+						new Event(e).stop();
+						window.top.document.preview.fromElement(el);
+					});
 				});
 			});
-		});"
-		);
+JS;
+		JFactory::getDocument()->addScriptDeclaration($js);
 
 		$this->baseURL = JUri::root();
 		$this->audio = $this->get('Audio');

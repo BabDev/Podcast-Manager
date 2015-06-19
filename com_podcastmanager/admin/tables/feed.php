@@ -36,8 +36,8 @@ class PodcastManagerTableFeed extends JTable
 	{
 		parent::__construct('#__podcastmanager_feeds', 'id', $db);
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_podcastmanager.feed'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_podcastmanager.feed'));
+		JTableObserverTags::createObserver($this, ['typeAlias' => 'com_podcastmanager.feed']);
+		JTableObserverContenthistory::createObserver($this, ['typeAlias' => 'com_podcastmanager.feed']);
 	}
 
 	/**
@@ -88,10 +88,10 @@ class PodcastManagerTableFeed extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the component.
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__assets'));
-			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
+			$query = $db->getQuery(true)
+				->select($db->quoteName('id'))
+				->from($db->quoteName('#__assets'))
+				->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);

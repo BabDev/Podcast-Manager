@@ -81,7 +81,7 @@ class PodcastManagerPlayer
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $options = array();
+	protected $options = [];
 
 	/**
 	 * An array of valid player types
@@ -89,7 +89,7 @@ class PodcastManagerPlayer
 	 * @var    array
 	 * @since  1.6
 	 */
-	protected $validTypes = array('custom', 'link', 'player');
+	protected $validTypes = ['custom', 'link', 'player'];
 
 	/**
 	 * An array of valid file types
@@ -97,13 +97,13 @@ class PodcastManagerPlayer
 	 * @var    array
 	 * @since  1.6
 	 */
-	protected $fileTypes = array(
+	protected $fileTypes = [
 		'm4a' => 'audio/x-m4a',
 		'm4v' => 'video/x-m4v',
 		'mov' => 'video/quicktime',
 		'mp3' => 'audio/mpeg',
 		'mp4' => 'video/mp4'
-	);
+	];
 
 	/**
 	 * The class constructor
@@ -235,8 +235,8 @@ class PodcastManagerPlayer
 		$style       = $this->options['style'];
 
 		// Valid extensions to determine correct player
-		$validAudio = array('m4a', 'mp3');
-		$validVideo = array('m4v', 'mov', 'mp4');
+		$validAudio = ['m4a', 'mp3'];
+		$validVideo = ['m4v', 'mov', 'mp4'];
 
 		// Get the file's extension
 		$extension = strtolower(substr($this->fileURL, -3, 3));
@@ -263,9 +263,7 @@ class PodcastManagerPlayer
 		// And finally, load in MediaElement.JS
 		JHtml::_('script', 'mediaelements/mediaelement-and-player.min.js', false, true);
 		JHtml::_('stylesheet', 'mediaelements/mediaelementplayer.min.css', false, true, false);
-		$player .= "<br /><script>
-				var player = new MediaElementPlayer('#" . $ID . "');
-			</script>";
+		$player .= "<br /><script>var player = new MediaElementPlayer('#$ID');</script>";
 
 		return $player;
 	}

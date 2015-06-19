@@ -36,8 +36,8 @@ class PodcastManagerTablePodcast extends JTable
 	{
 		parent::__construct('#__podcastmanager', 'id', $db);
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_podcastmanager.podcast'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_podcastmanager.podcast'));
+		JTableObserverTags::createObserver($this, ['typeAlias' => 'com_podcastmanager.podcast']);
+		JTableObserverContenthistory::createObserver($this, ['typeAlias' => 'com_podcastmanager.podcast']);
 	}
 
 	/**
@@ -88,10 +88,10 @@ class PodcastManagerTablePodcast extends JTable
 		if ($this->feedname > 0)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('asset_id'));
-			$query->from($db->quoteName('#__podcastmanager_feeds'));
-			$query->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
+			$query = $db->getQuery(true)
+				->select($db->quoteName('asset_id'))
+				->from($db->quoteName('#__podcastmanager_feeds'))
+				->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -106,10 +106,10 @@ class PodcastManagerTablePodcast extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the component.
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'));
-			$query->from($db->quoteName('#__assets'));
-			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
+			$query = $db->getQuery(true)
+				->select($db->quoteName('id'))
+				->from($db->quoteName('#__assets'))
+				->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
@@ -220,12 +220,12 @@ class PodcastManagerTablePodcast extends JTable
 			if ($this->feedname !== 0)
 			{
 				$db = $this->getDbo();
-				$query = $db->getQuery(true);
-				$query->select($db->quoteName(array('bp_position', 'boilerplate')));
-				$query->from($db->quoteName('#__podcastmanager_feeds'));
-				$query->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
-				$db->setQuery($query);
-				$result = $db->loadObjectList();
+				$query = $db->getQuery(true)
+					->select($db->quoteName(['bp_position', 'boilerplate']))
+					->from($db->quoteName('#__podcastmanager_feeds'))
+					->where($db->quoteName('id') . ' = ' . (int) $this->feedname);
+
+				$result = $db->setQuery($query)->loadObjectList();
 
 				$BP = $result['0'];
 

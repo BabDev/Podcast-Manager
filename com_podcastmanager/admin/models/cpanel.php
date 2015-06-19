@@ -34,7 +34,7 @@ class PodcastManagerModelCpanel extends JModelLegacy
 	{
 		$db                  = $this->getDbo();
 		$contentTypesPresent = true;
-		$errors              = array();
+		$errors              = [];
 
 		$tableList = $db->getTableList();
 

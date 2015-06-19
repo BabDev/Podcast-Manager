@@ -48,15 +48,15 @@ class PlgButtonPodcastManager extends JPlugin
 		 * PodcastManagerSelectPodcast creates the plugin syntax, sends it to the editor,
 		 * and closes the modal.
 		 */
-		$js = "
+		$js = <<< JS
 		function PodcastManagerSelectPodcast(id, object) {
-			var tag = '{podcast id='+id+'}';
-			jInsertEditorText(tag, '" . $name . "');
+			var tag = '{podcast id=' + id + '}';
+			jInsertEditorText(tag, '$name');
 			SqueezeBox.close();
-		}";
+		}
+JS;
 
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration($js);
+		JFactory::getDocument()->addScriptDeclaration($js);
 
 		JHtml::_('behavior.modal');
 

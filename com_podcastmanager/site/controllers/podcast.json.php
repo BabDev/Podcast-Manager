@@ -35,7 +35,7 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 	public function getMetadata()
 	{
 		$filename = $this->input->post->getString('filename', '');
-		$response = array();
+		$response = [];
 
 		try
 		{
@@ -48,7 +48,7 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 		catch (RuntimeException $e)
 		{
 			$response['error'] = true;
-			$response['messages'] = array('warning' => array($e->getMessage()));
+			$response['messages'] = ['warning' => [$e->getMessage()]];
 		}
 
 		echo json_encode($response);

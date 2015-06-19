@@ -56,7 +56,7 @@ class Mod_PodcastManagerInstallerScript
 	public function update($parent)
 	{
 		// Get the pre-update version
-		$version = $this->_getVersion();
+		$version = $this->getVersion();
 
 		// If in error, throw a message about the language files
 		if ($version == 'Error')
@@ -74,26 +74,24 @@ class Mod_PodcastManagerInstallerScript
 	 *
 	 * @since   2.1
 	 */
-	private function _getVersion()
+	private function getVersion()
 	{
 		// Get the record from the database
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('mod_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('mod_podcastmanager'));
 
 		try
 		{
-			$manifest = $db->loadObject();
+			$manifest = $db->setQuery($query)->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-			$version = 'Error';
 
-			return $version;
+			return 'Error';
 		}
 
 		// Decode the JSON
@@ -101,22 +99,5 @@ class Mod_PodcastManagerInstallerScript
 
 		// Get the version
 		return $record->version;
-	}
-
-	/**
-	 * Function to remove the module's media folder due to moving to the /media folder
-	 *
-	 * @return  void
-	 *
-	 * @since   2.1
-	 */
-	private function _removeMediaFolder()
-	{
-		jimport('joomla.filesystem.folder');
-
-		if (is_dir(JPATH_SITE . '/modules/mod_podcastmanager/media'))
-		{
-			JFolder::delete(JPATH_SITE . '/modules/mod_podcastmanager/media');
-		}
 	}
 }

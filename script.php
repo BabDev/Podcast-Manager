@@ -25,7 +25,7 @@ class Pkg_PodcastManagerInstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $dbSupport = array('mysql', 'mysqli', 'postgresql', 'sqlsrv', 'sqlazure');
+	protected $dbSupport = ['mysql', 'mysqli', 'pdomysql', 'postgresql', 'sqlsrv', 'sqlazure'];
 
 	/**
 	 * Minimum supported Joomla! version
@@ -41,7 +41,7 @@ class Pkg_PodcastManagerInstallerScript
 	 * @var    string
 	 * @since  3.0
 	 */
-	protected $minimumPHPVersion = '5.3';
+	protected $minimumPHPVersion = '5.4';
 
 	/**
 	 * Function to act prior to installation process begins
@@ -55,7 +55,7 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Requires PHP 5.3
+		// PHP Version Check
 		if (version_compare(PHP_VERSION, $this->minimumPHPVersion, 'lt'))
 		{
 			JError::raiseNotice(
@@ -65,7 +65,7 @@ class Pkg_PodcastManagerInstallerScript
 			return false;
 		}
 
-		// Requires Joomla! 3.4
+		// Joomla! Version Check
 		if (version_compare(JVERSION, $this->minimumJoomlaVersion, 'lt'))
 		{
 			JError::raiseNotice(
@@ -144,20 +144,19 @@ class Pkg_PodcastManagerInstallerScript
 		// Determine whether each extension is enabled or not
 		$enabled = array();
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('enabled'));
-		$query->from($db->quoteName('#__extensions'));
+		$query = $db->getQuery(true)
+			->select($db->quoteName('enabled'))
+			->from($db->quoteName('#__extensions'));
 
 		foreach ($results as $result)
 		{
 			$extension = (string) $result['name'];
-			$query->clear('where');
-			$query->where($db->quoteName('name') . ' = ' . $db->quote($extension));
-			$db->setQuery($query);
+			$query->clear('where')
+				->where($db->quoteName('name') . ' = ' . $db->quote($extension));
 
 			try
 			{
-				$enabled[$extension] = $db->loadResult();
+				$enabled[$extension] = $db->setQuery($query)->loadResult();
 			}
 			catch (RuntimeException $e)
 			{
@@ -238,15 +237,14 @@ class Pkg_PodcastManagerInstallerScript
 
 		// Get the record from the database
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('pkg_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('pkg_podcastmanager'));
 
 		try
 		{
-			$manifest = $db->loadObject();
+			$manifest = $db->setQuery($query)->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
@@ -321,15 +319,14 @@ class Pkg_PodcastManagerInstallerScript
 
 		// We need to get the extension ID for our Strapped layouts first
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('extension_id'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('files_podcastmanager_strapped'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('files_podcastmanager_strapped'));
 
 		try
 		{
-			$id = $db->loadResult();
+			$id = $db->setQuery($query)->loadResult();
 
 			// Instantiate a new installer instance and uninstall the layouts if present
 			if ($id)

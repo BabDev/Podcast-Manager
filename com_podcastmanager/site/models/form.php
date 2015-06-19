@@ -49,10 +49,10 @@ class PodcastManagerModelForm extends JModelForm
 	 *
 	 * @since   1.8
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_podcastmanager.form', 'form', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_podcastmanager.form', 'form', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -133,7 +133,7 @@ class PodcastManagerModelForm extends JModelForm
 	 *
 	 * @since   1.8
 	 */
-	public function getTable($name = 'Feed', $prefix = 'PodcastManagerTable', $options = array())
+	public function getTable($name = 'Feed', $prefix = 'PodcastManagerTable', $options = [])
 	{
 		return JTable::getInstance($name, $prefix, $options);
 	}
@@ -148,7 +148,7 @@ class PodcastManagerModelForm extends JModelForm
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_podcastmanager.form.data', array());
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.form.data', []);
 
 		if (empty($data))
 		{
@@ -171,10 +171,10 @@ class PodcastManagerModelForm extends JModelForm
 		$input = $app->input;
 
 		// Load state from the request.
-		$pk = $input->get('feedname', '', 'int');
+		$pk = $input->getUint('feedname', '');
 		$this->setState('feed.id', $pk);
 
-		$return = $input->get('return', null, 'base64');
+		$return = $input->getBase64('return', null);
 
 		if (!JUri::isInternal(base64_decode($return)))
 		{
@@ -187,7 +187,7 @@ class PodcastManagerModelForm extends JModelForm
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
-		$this->setState('layout', $input->get('layout', '', 'cmd'));
+		$this->setState('layout', $input->getCmd('layout', ''));
 	}
 
 	/**
@@ -238,7 +238,7 @@ class PodcastManagerModelForm extends JModelForm
 			}
 
 			// Trigger the onContentBeforeSave event.
-			$result = $dispatcher->trigger('onContentBeforeSave', array($this->option . '.' . $this->name, &$table, $isNew));
+			$result = $dispatcher->trigger('onContentBeforeSave', [$this->option . '.' . $this->name, &$table, $isNew]);
 
 			if (in_array(false, $result, true))
 			{
@@ -259,7 +259,7 @@ class PodcastManagerModelForm extends JModelForm
 			$this->cleanCache();
 
 			// Trigger the onContentAfterSave event.
-			$dispatcher->trigger('onContentAfterSave', array($this->option . '.' . $this->name, &$table, $isNew));
+			$dispatcher->trigger('onContentAfterSave', [$this->option . '.' . $this->name, &$table, $isNew]);
 		}
 		catch (Exception $e)
 		{

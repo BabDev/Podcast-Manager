@@ -4,7 +4,7 @@ Podcast Manager
 
 Compatibility
 ===============
-*Podcast Manager* is currently compatible with Joomla! 3.4.0 or newer and requires PHP 5.3 or later.
+*Podcast Manager* is currently compatible with Joomla! 3.4.0 or newer and requires PHP 5.4 or later.
 
 Requirements
 ===============

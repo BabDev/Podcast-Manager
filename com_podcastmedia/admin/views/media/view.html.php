@@ -85,15 +85,12 @@ class PodcastMediaViewMedia extends JViewLegacy
 		$medmanparams = JComponentHelper::getParams('com_media');
 		$params = JComponentHelper::getParams('com_podcastmedia');
 
-		$lang = JFactory::getLanguage();
-
 		$style = $params->get('layout', 'thumbs');
 
-		$document = JFactory::getDocument();
-
 		JHtml::_('behavior.framework', true);
-
 		JHtml::_('behavior.modal');
+
+		$document = JFactory::getDocument();
 		$document->addScriptDeclaration(
 			"window.addEvent('domready', function() {
 				document.preview = SqueezeBox;
@@ -112,10 +109,10 @@ class PodcastMediaViewMedia extends JViewLegacy
 			$base = COM_PODCASTMEDIA_BASE;
 		}
 
-		$js = "
-			var basepath = '" . $base . "';
-			var viewstyle = '" . $style . "';
-		";
+		$js = <<< JS
+			var basepath = '"$base"';
+			var viewstyle = '"$style"';
+JS;
 		$document->addScriptDeclaration($js);
 
 		/*

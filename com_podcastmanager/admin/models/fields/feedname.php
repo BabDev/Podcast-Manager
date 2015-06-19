@@ -43,24 +43,20 @@ class JFormFieldFeedName extends JFormFieldList
 	protected function getOptions()
 	{
 		// Initialize variables.
-		$options = array();
+		$options = [];
 
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select($db->quoteName(array('a.id', 'a.name'), array('value', 'text')));
-		$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
-		$query->where($db->quoteName('a.name') . ' != ' . $db->quote(''));
-		$query->where($db->quoteName('a.published') . ' != -2');
-		$query->group('a.id, a.name, a.published');
-		$query->order('a.id ASC');
-
-		// Get the options.
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName(['a.id', 'a.name'], ['value', 'text']))
+			->from($db->quoteName('#__podcastmanager_feeds', 'a'))
+			->where($db->quoteName('a.name') . ' != ' . $db->quote(''))
+			->where($db->quoteName('a.published') . ' != -2')
+			->group('a.id, a.name, a.published')
+			->order('a.id ASC');
 
 		try
 		{
-			$options = $db->loadObjectList();
+			$options = $db->setQuery($query)->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{

@@ -69,9 +69,9 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get some data from the request
-		$files        = $this->input->files->get('Filedata', '', 'array');
-		$this->folder = $this->input->get('folder', '', 'path');
-		$return       = $this->input->post->get('return-url', null, 'base64');
+		$files        = $this->input->files->get('Filedata', [], 'array');
+		$this->folder = $this->input->getPath('folder', '');
+		$return       = $this->input->post->getBase64('return-url', null);
 
 		// Set the redirect
 		if ($return)
@@ -154,7 +154,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 			// Trigger the onContentBeforeSave event.
 			$object_file = new JObject($file);
-			$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.file', &$object_file));
+			$result = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.file', &$object_file]);
 
 			if (in_array(false, $result, true))
 			{
@@ -181,7 +181,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			else
 			{
 				// Trigger the onContentAfterSave event.
-				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.file', &$object_file, true));
+				$dispatcher->trigger('onContentAfterSave', ['com_podcastmedia.file', &$object_file, true]);
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 		}
@@ -202,9 +202,9 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		$user = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl   = $this->input->get('tmpl', '', 'cmd');
-		$paths  = $this->input->get('rm', array(), 'array');
-		$folder = $this->input->get('folder', '', 'path');
+		$tmpl   = $this->input->getCmd('tmpl', '');
+		$paths  = $this->input->get('rm', [], 'array');
+		$folder = $this->input->getPath('folder', '');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
 
@@ -260,13 +260,13 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				continue;
 			}
 
-			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
+			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
 			$object_file = new JObject(array('filepath' => $fullPath));
 
 			if (is_file($object_file->filepath))
 			{
 				// Trigger the onContentBeforeDelete event.
-				$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
+				$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.file', &$object_file]);
 
 				if (in_array(false, $result, true))
 				{
@@ -285,17 +285,17 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				$ret &= JFile::delete($object_file->filepath);
 
 				// Trigger the onContentAfterDelete event.
-				$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
+				$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.file', &$object_file]);
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 			elseif (is_dir($object_file->filepath))
 			{
-				$contents = JFolder::files($object_file->filepath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'));
+				$contents = JFolder::files($object_file->filepath, '.', true, false, ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html']);
 
 				if (empty($contents))
 				{
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
+					$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.folder', &$object_file]);
 
 					if (in_array(false, $result, true))
 					{
@@ -314,7 +314,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 					$ret &= JFolder::delete($object_file->filepath);
 
 					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
+					$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.folder', &$object_file]);
 					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 				}
 				else

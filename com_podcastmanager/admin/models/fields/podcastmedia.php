@@ -56,7 +56,7 @@ class JFormFieldPodcastMedia extends JFormField
 
 		if ($asset == '')
 		{
-			$asset = JFactory::getApplication('administrator')->input->getCmd('option', '');
+			$asset = JFactory::getApplication()->input->getCmd('option', '');
 		}
 
 		$link = (string) $this->element['link'];
@@ -67,24 +67,26 @@ class JFormFieldPodcastMedia extends JFormField
 			JHtml::_('behavior.modal');
 
 			// Build the script.
-			$script = array();
-			$script[] = '	function jInsertFieldValue(value, id) {';
-			$script[] = '		var old_id = document.id(id).value;';
-			$script[] = '		if (old_id != id) {';
-			$script[] = '			var elem = document.id(id)';
-			$script[] = '			elem.value = value;';
-			$script[] = '			elem.onchange();';
-			$script[] = '		}';
-			$script[] = '	}';
+			$script = <<< JS
+			function jInsertFieldValue(value, id) {
+				var old_id = document.id(id).value;
+
+				if (old_id != id) {
+					var elem = document.id(id);
+					elem.value = value;
+					elem.onchange();
+				}
+			}
+JS;
 
 			// Add the script to the document head.
-			JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+			JFactory::getDocument()->addScriptDeclaration($script);
 
 			self::$initialised = true;
 		}
 
 		// Initialize variables.
-		$html = array();
+		$html = [];
 		$attr = '';
 
 		// Initialize some field attributes.

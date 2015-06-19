@@ -42,7 +42,7 @@ class PodcastMediaModelList extends JModelLegacy
 
 		if (!$set)
 		{
-			$folder = JFactory::getApplication()->input->get('folder', '', 'path');
+			$folder = JFactory::getApplication()->input->getPath('folder', '');
 			$this->setState('folder', $folder);
 
 			$parent = str_replace("\\", "/", dirname($folder));
@@ -126,8 +126,8 @@ class PodcastMediaModelList extends JModelLegacy
 
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_PODCASTMEDIA_BASE . '/');
 
-		$folders = array();
-		$audio = array();
+		$folders = [];
+		$audio = [];
 
 		// Get the list of files and folders from the given folder
 		$fileList = JFolder::files($basePath);
@@ -183,7 +183,7 @@ class PodcastMediaModelList extends JModelLegacy
 			}
 		}
 
-		$list = array('folders' => $folders, 'audio' => $audio);
+		$list = ['folders' => $folders, 'audio' => $audio];
 
 		return $list;
 	}

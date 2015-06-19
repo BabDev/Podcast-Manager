@@ -107,10 +107,10 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 *
 	 * @since   1.7
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_podcastmanager.feed', 'feed', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_podcastmanager.feed', 'feed', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -168,7 +168,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 *
 	 * @since   1.7
 	 */
-	public function getTable($type = 'Feed', $prefix = 'PodcastManagerTable', $config = array())
+	public function getTable($type = 'Feed', $prefix = 'PodcastManagerTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -183,7 +183,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.feed.data', array());
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.feed.data', []);
 
 		if (empty($data))
 		{

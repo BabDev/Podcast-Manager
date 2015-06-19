@@ -27,7 +27,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	 * @param   string                   $type    The action being performed
 	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean
 	 *
 	 * @since   1.7
 	 */
@@ -72,15 +72,14 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	protected function activateButton()
 	{
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__extensions'));
-		$query->set($db->quoteName('enabled') . ' = 1');
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-xtd_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__extensions'))
+			->set($db->quoteName('enabled') . ' = 1')
+			->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-xtd_podcastmanager'));
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{

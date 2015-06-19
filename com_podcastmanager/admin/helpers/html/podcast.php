@@ -29,7 +29,7 @@ abstract class JHtmlPodcast
 	 * @var    array
 	 * @since  1.8
 	 */
-	protected static $items = array();
+	protected static $items = [];
 
 	/**
 	 * Returns a list of feeds.
@@ -48,10 +48,9 @@ abstract class JHtmlPodcast
 		{
 			$config = (array) $config;
 			$db = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select($db->quoteName(array('a.id', 'a.name')));
-			$query->from($db->quoteName('#__podcastmanager_feeds', 'a'));
+			$query = $db->getQuery(true)
+				->select($db->quoteName(['a.id', 'a.name']))
+				->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 
 			// Filter on the published state
 			if (isset($config['filter.published']))
@@ -73,7 +72,7 @@ abstract class JHtmlPodcast
 			$items = $db->loadObjectList();
 
 			// Assemble the list options.
-			static::$items[$hash] = array();
+			static::$items[$hash] = [];
 
 			foreach ($items as &$item)
 			{

@@ -43,7 +43,7 @@ class JFormFieldItunesCategory extends JFormFieldList
 	public function getOptions()
 	{
 		// Set the options
-		return array(
+		return [
 			JHtml::_('select.option', '', JText::_('JNONE')),
 			JHtml::_('select.option', 'Arts > Design', 'Arts &gt; Design'),
 			JHtml::_('select.option', 'Arts > Fashion & Beauty', 'Arts &gt; Fashion &amp; Beauty'),
@@ -111,6 +111,6 @@ class JFormFieldItunesCategory extends JFormFieldList
 			JHtml::_('select.option', 'Technology > Podcasting', 'Technology &gt; Podcasting'),
 			JHtml::_('select.option', 'Technology > Software How-To', 'Technology &gt; Software How-To'),
 			JHtml::_('select.option', 'TV & Film', 'TV &amp; Film')
-		);
+		];
 	}
 }

@@ -61,13 +61,12 @@ abstract class PodcastManagerHelper
 	public static function countMediaPlugins()
 	{
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('COUNT(extension_id)');
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'));
-		$query->where($db->quoteName('enabled') . ' = 1');
-		$db->setQuery($query);
-		$count = $db->loadResult();
+		$query = $db->getQuery(true)
+			->select('COUNT(extension_id)')
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'))
+			->where($db->quoteName('enabled') . ' = 1');
+		$count = $db->setQuery($query)->loadResult();
 
 		return (int) $count;
 	}
@@ -108,17 +107,16 @@ abstract class PodcastManagerHelper
 		}
 
 		$data = new stdClass;
-		$data->messages = array();
+		$data->messages = [];
 
 		// Instantiate getID3 and get the metadata
-		$getID3 = new getID3;
-		$getID3->setOption(array('encoding' => 'UTF-8'));
+		$getID3 = (new getID3)->setOption(['encoding' => 'UTF-8']);
 		$fileInfo = $getID3->analyze($filename);
 
 		// Check if there's an error from getID3
 		if (isset($fileInfo['error']))
 		{
-			$data->messages['error'] = array();
+			$data->messages['error'] = [];
 
 			foreach ($fileInfo['error'] as $error)
 			{
@@ -129,7 +127,7 @@ abstract class PodcastManagerHelper
 		// Check if there's a warning from getID3
 		if (isset($fileInfo['warning']))
 		{
-			$data->messages['warning'] = array();
+			$data->messages['warning'] = [];
 
 			foreach ($fileInfo['warning'] as $warning)
 			{
@@ -235,14 +233,14 @@ abstract class PodcastManagerHelper
 	{
 		$user = JFactory::getUser();
 		$db = JFactory::getDbo();
-		$query	= $db->getQuery(true);
-		$query->select($db->quoteName(array('f.id', 'a.name'), array('id', 'asset_name')));
-		$query->from($db->quoteName('#__podcastmanager_feeds', 'f'));
-		$query->innerJoin($db->quoteName('#__assets', 'a') . ' ON f.asset_id = a.id');
-		$query->where($db->quoteName('f.published') . ' = 1');
-		$db->setQuery($query);
-		$allFeeds = $db->loadObjectList('id');
-		$allowedFeeds = array();
+		$query	= $db->getQuery(true)
+			->select($db->quoteName(['f.id', 'a.name'], ['id', 'asset_name']))
+			->from($db->quoteName('#__podcastmanager_feeds', 'f'))
+			->innerJoin($db->quoteName('#__assets', 'a') . ' ON f.asset_id = a.id')
+			->where($db->quoteName('f.published') . ' = 1');
+
+		$allFeeds = $db->setQuery($query)->loadObjectList('id');
+		$allowedFeeds = [];
 
 		foreach ($allFeeds as $feed)
 		{
@@ -350,15 +348,14 @@ abstract class PodcastManagerHelper
 		$db = JFactory::getDbo();
 
 		// Get the type ID for a Podcast Manager feed
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('type_id'));
-		$query->from($db->quoteName('#__content_types'));
-		$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('type_id'))
+			->from($db->quoteName('#__content_types'))
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'));
 
 		try
 		{
-			$feedTypeId = $db->loadResult();
+			$feedTypeId = $db->setQuery($query)->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -366,13 +363,12 @@ abstract class PodcastManagerHelper
 		}
 
 		// Get the type ID for a Podcast Manager podcast
-		$query->clear('where');
-		$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'));
-		$db->setQuery($query);
+		$query->clear('where')
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'));
 
 		try
 		{
-			$podcastTypeId = $db->loadResult();
+			$podcastTypeId = $db->setQuery($query)->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -433,11 +429,11 @@ abstract class PodcastManagerHelper
 				$db->quoteName('content_history_options')
 			);
 
-			// Insert the data.
-			$query->clear();
-			$query->insert($db->quoteName('#__content_types'));
-			$query->columns($columnsArray);
-			$query->values(
+			// Insert the data. @TODO - Break the columns into objects for better management
+			$query->clear()
+				->insert($db->quoteName('#__content_types'))
+				->columns($columnsArray)
+				->values(
 				$db->quote('Podcast Manager Feed') . ', '
 				. $db->quote('com_podcastmanager.feed') . ', '
 				. $db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
@@ -446,11 +442,10 @@ abstract class PodcastManagerHelper
 				. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute') . ', '
 				. $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/feed.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":[],"displayLookup":[{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}')
 			);
-			$db->setQuery($query);
 
 			try
 			{
-				$db->execute();
+				$db->setQuery($query)->execute();
 			}
 			catch (RuntimeException $e)
 			{
@@ -509,10 +504,10 @@ abstract class PodcastManagerHelper
 			);
 
 			// Insert the link.
-			$query->clear();
-			$query->insert($db->quoteName('#__content_types'));
-			$query->columns($columnsArray);
-			$query->values(
+			$query->clear()
+				->insert($db->quoteName('#__content_types'))
+				->columns($columnsArray)
+				->values(
 				$db->quote('Podcast Manager Podcast') . ', '
 				. $db->quote('com_podcastmanager.podcast') . ', '
 				. $db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
@@ -521,11 +516,10 @@ abstract class PodcastManagerHelper
 				. $db->quote('PodcastManagerHelperRoute::getPodcastRoute') . ', '
 				. $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/podcast.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":["publish_up"],"displayLookup":[{"sourceColumn":"feedname","targetTable":"#__podcastmanager_feeds","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}')
 			);
-			$db->setQuery($query);
 
 			try
 			{
-				$db->execute();
+				$db->setQuery($query)->execute();
 			}
 			catch (RuntimeException $e)
 			{

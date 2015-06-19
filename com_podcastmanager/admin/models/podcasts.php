@@ -31,11 +31,11 @@ class PodcastManagerModelPodcasts extends JModelList
 	 * @since   1.6
 	 * @see     JControllerLegacy
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'title', 'a.title',
 				'checked_out', 'a.checked_out',
@@ -45,7 +45,7 @@ class PodcastManagerModelPodcasts extends JModelList
 				'created', 'a.created',
 				'language', 'a.language',
 				'publish_up', 'a.publish_up'
-			);
+			];
 		}
 
 		parent::__construct($config);

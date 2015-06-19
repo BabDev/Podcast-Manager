@@ -174,7 +174,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$table = $model->getTable();
-		$cid = $this->input->post->get('cid', array());
+		$cid = $this->input->post->get('cid', []);
 		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
@@ -194,7 +194,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		$checkin = property_exists($table, 'checked_out');
 
 		// Access check.
-		if (!$this->allowEdit(array($key => $recordId), $key))
+		if (!$this->allowEdit([$key => $recordId], $key))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
 			$this->setMessage($this->getError(), 'error');
@@ -231,7 +231,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  object  The model.
+	 * @return  JModelLegacy  The model.
 	 *
 	 * @since   1.8
 	 */
@@ -298,7 +298,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 *
 	 * @since   1.8
 	 */
-	protected function postSaveHook(JModelLegacy $model, $validData = array())
+	protected function postSaveHook(JModelLegacy $model, $validData = [])
 	{
 		$task = $this->getTask();
 

@@ -42,7 +42,7 @@ class PodcastManagerController extends JControllerLegacy
 	 *
 	 * @since   1.6
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = [])
 	{
 		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
 
@@ -84,7 +84,7 @@ class PodcastManagerController extends JControllerLegacy
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		$errors         = array();
+		$errors         = [];
 		$migrationTasks = json_decode(base64_decode($this->input->getBase64('migrationTasks')), true);
 
 		if (count($migrationTasks))
@@ -107,7 +107,7 @@ class PodcastManagerController extends JControllerLegacy
 						{
 							$errors[] = JText::sprintf(
 								'COM_PODCASTMANAGER_MIGRATION_ERROR_INSERTING_UCM_RECORDS',
-								strtolower(str_replace(array('no', 'Type'), '', $task)),
+								strtolower(str_replace(['no', 'Type'], '', $task)),
 								$e->getMessage()
 							);
 						}

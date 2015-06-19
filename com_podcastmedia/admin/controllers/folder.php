@@ -40,9 +40,9 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		$user  = JFactory::getUser();
 
 		// Get some data from the request
-		$tmpl   = $this->input->get('tmpl', '', 'cmd');
-		$paths  = $this->input->get('rm', array(), 'array');
-		$folder = $this->input->get('folder', '', 'path');
+		$tmpl   = $this->input->getCmd('tmpl', '');
+		$paths  = $this->input->get('rm', [], 'array');
+		$folder = $this->input->getPath('folder', '');
 
 		$redirect = 'index.php?option=com_podcastmedia&folder=' . $folder;
 
@@ -94,13 +94,13 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 					continue;
 				}
 
-				$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $folder, $path)));
+				$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
 				$object_file = new JObject(array('filepath' => $fullPath));
 
 				if (is_file($object_file->filepath))
 				{
 					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.file', &$object_file));
+					$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.file', &$object_file]);
 
 					if (in_array(false, $result, true))
 					{
@@ -119,15 +119,15 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 					$ret &= JFile::delete($object_file->filepath);
 
 					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.file', &$object_file));
+					$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.file', &$object_file]);
 					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 				}
 				elseif (is_dir($object_file->filepath))
 				{
-					if (count(JFolder::files($object_file->filepath, '.', true, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX'), array('index.html', '^\..*', '.*~'))) == 0)
+					if (count(JFolder::files($object_file->filepath, '.', true, false, ['.svn', 'CVS', '.DS_Store', '__MACOSX'], ['index.html', '^\..*', '.*~'])) == 0)
 					{
 						// Trigger the onContentBeforeDelete event.
-						$result = $dispatcher->trigger('onContentBeforeDelete', array('com_podcastmedia.folder', &$object_file));
+						$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.folder', &$object_file]);
 
 						if (in_array(false, $result, true))
 						{
@@ -146,7 +146,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 						$ret &= !JFolder::delete($object_file->filepath);
 
 						// Trigger the onContentAfterDelete event.
-						$dispatcher->trigger('onContentAfterDelete', array('com_podcastmedia.folder', &$object_file));
+						$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.folder', &$object_file]);
 						$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 					}
 					else
@@ -180,12 +180,12 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$user = JFactory::getUser();
-		$folder = $this->input->get('foldername', '', 'cmd');
+		$folder = $this->input->getCmd('foldername', '');
 
-		$folderCheck = (string) $this->input->get('foldername', null, 'raw');
-		$parent      = $this->input->get('folderbase', '', 'path');
+		$folderCheck = (string) $this->input->getRaw('foldername', null);
+		$parent      = $this->input->getPath('folderbase', '');
 
-		$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $parent . '&tmpl=' . $this->input->get('tmpl', 'index', 'cmd'));
+		$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $parent . '&tmpl=' . $this->input->getCmd('tmpl', 'index'));
 
 		if (strlen($folder) > 0)
 		{
@@ -209,15 +209,15 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				return false;
 			}
 
-			$path = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $parent, $folder)));
+			$path = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $parent, $folder]));
 
 			if (!is_dir($path) && !is_file($path))
 			{
 				// Trigger the onContentBeforeSave event.
-				$object_file = new JObject(array('filepath' => $path));
+				$object_file = new JObject(['filepath' => $path]);
 				JPluginHelper::importPlugin('content');
 				$dispatcher = JEventDispatcher::getInstance();
-				$result = $dispatcher->trigger('onContentBeforeSave', array('com_podcastmedia.folder', &$object_file));
+				$result = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.folder', &$object_file]);
 
 				if (in_array(false, $result, true))
 				{
@@ -237,7 +237,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				JFolder::create($object_file->filepath);
 
 				// Trigger the onContentAfterSave event.
-				$dispatcher->trigger('onContentAfterSave', array('com_podcastmedia.folder', &$object_file, true));
+				$dispatcher->trigger('onContentAfterSave', ['com_podcastmedia.folder', &$object_file, true]);
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_CREATE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 

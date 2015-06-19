@@ -39,15 +39,15 @@ class PodcastManagerModelFeed extends JModelList
 	 * @since   1.8
 	 * @see     JControllerLegacy
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'title', 'a.title',
 				'publish_up', 'a.publish_up',
 				'itAuthor', 'a.itAuthor'
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -71,9 +71,7 @@ class PodcastManagerModelFeed extends JModelList
 				->from($db->quoteName('#__podcastmanager_feeds'))
 				->where($db->quoteName('id') . ' = ' . (int) $this->getState('feed.id'));
 
-			$db->setQuery($query);
-
-			return $db->loadObject();
+			return $db->setQuery($query)->loadObject();
 		}
 
 		return new stdClass;
@@ -174,14 +172,14 @@ class PodcastManagerModelFeed extends JModelList
 		$app    = JFactory::getApplication();
 		$input  = $app->input;
 		$params = JComponentHelper::getParams('com_podcastmanager');
-		$itemid = $input->get('feedname', 0, 'uint') . ':' . $input->get('Itemid', 0, 'uint');
-		$format = strtolower($input->get('format', 'html', 'word'));
+		$itemid = $input->getUint('feedname', 0) . ':' . $input->getUint('Itemid', 0);
+		$format = strtolower($input->getWord('format', 'html'));
 
 		// List state information
-		$feed = $input->get('feedname', 0, 'uint');
+		$feed = $input->getUint('feedname', 0);
 		$this->setState('feed.id', $feed);
 
-		$limitstart = $input->get('limitstart', 0, 'uint');
+		$limitstart = $input->getUint('limitstart', 0);
 		$this->setState('list.start', $limitstart);
 
 		$orderCol = $app->getUserStateFromRequest(
@@ -196,7 +194,7 @@ class PodcastManagerModelFeed extends JModelList
 		 * Assign our default limit based on request format; RAW is the RSS feed and as such should default to
 		 * displaying all items, otherwise we default to the app configuration
 		 */
-		$defaultLimit = ($format == 'raw') ? '*' : $app->getCfg('list_limit', 20);
+		$defaultLimit = ($format == 'raw') ? '*' : $app->get('list_limit', 20);
 
 		$limit = $app->getUserStateFromRequest(
 			'com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', $defaultLimit, 'uint'
@@ -211,7 +209,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		$this->setState('list.ordering', $orderCol);
 
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC')))
+		if (!in_array(strtoupper($listOrder), ['ASC', 'DESC']))
 		{
 			$listOrder = 'DESC';
 		}
@@ -230,7 +228,7 @@ class PodcastManagerModelFeed extends JModelList
 		}
 
 		// Optional filter text
-		$this->setState('list.filter', $input->get('filter-search', '', 'string'));
+		$this->setState('list.filter', $input->getString('filter-search', ''));
 
 		// Language
 		$this->setState('filter.language', $app->getLanguageFilter());

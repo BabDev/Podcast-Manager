@@ -439,13 +439,13 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		// Alter the title & alias
 		$table = $this->getTable();
 
-		while ($table->load(array('alias' => $alias, 'feedname' => $category_id)))
+		while ($table->load(['alias' => $alias, 'feedname' => $category_id]))
 		{
 			$title = String::increment($title);
 			$alias = String::increment($alias, 'dash');
 		}
 
-		return array($title, $alias);
+		return [$title, $alias];
 	}
 
 	/**
@@ -458,10 +458,10 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_podcastmanager.podcast', 'podcast', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -519,7 +519,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = array())
+	public function getTable($type = 'Podcast', $prefix = 'PodcastManagerTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -534,7 +534,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', array());
+		$data = JFactory::getApplication()->getUserState('com_podcastmanager.edit.podcast.data', []);
 
 		if (empty($data))
 		{

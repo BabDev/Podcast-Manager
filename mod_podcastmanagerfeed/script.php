@@ -27,7 +27,7 @@ class Mod_PodcastManagerFeedInstallerScript
 	 * @param   string                   $type    The action being performed
 	 * @param   JInstallerAdapterModule  $parent  The function calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean
 	 *
 	 * @since   1.8
 	 */

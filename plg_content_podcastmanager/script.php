@@ -27,7 +27,7 @@ class PlgContentPodcastManagerInstallerScript
 	 * @param   string                   $type    The action being performed
 	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean
 	 *
 	 * @since   1.7
 	 */
@@ -74,7 +74,7 @@ class PlgContentPodcastManagerInstallerScript
 	public function update($parent)
 	{
 		// Get the pre-update version
-		$version = $this->_getVersion();
+		$version = $this->getVersion();
 
 		// If in error, throw a message about the language files
 		if ($version == 'Error')
@@ -95,15 +95,15 @@ class PlgContentPodcastManagerInstallerScript
 	protected function activateButton()
 	{
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__extensions'));
-		$query->set($db->quoteName('enabled') . ' = 1');
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('plg_editors-plg_content_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__extensions'))
+			->set($db->quoteName('enabled') . ' = 1')
+			->where($db->quoteName('name') . ' = ' . $db->quote('plg_content_podcastmanager'));
+		$db;
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -118,27 +118,25 @@ class PlgContentPodcastManagerInstallerScript
 	 *
 	 * @since   2.0
 	 */
-	private function _getVersion()
+	private function getVersion()
 	{
 		// Get the record from the database
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('podcastmanager'), 'AND');
-		$query->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('podcastmanager'), 'AND')
+			->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
 
 		try
 		{
-			$manifest = $db->loadObject();
+			$manifest = $db->setQuery($query)->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-			$version = 'Error';
 
-			return $version;
+			return 'Error';
 		}
 
 		// Decode the JSON
@@ -146,31 +144,5 @@ class PlgContentPodcastManagerInstallerScript
 
 		// Get the version
 		return $record->version;
-	}
-
-	/**
-	 * Function to remove old media folders for players removed in 2.0
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0
-	 */
-	private function _removeMediaFolders()
-	{
-		jimport('joomla.filesystem.folder');
-
-		$base = JPATH_SITE . '/plugins/content/podcastmanager/';
-
-		// The folders to remove
-		$folders = array('podcast', 'soundmanager');
-
-		// Remove the folders
-		foreach ($folders as $folder)
-		{
-			if (is_dir($base . $folder))
-			{
-				JFolder::delete($base . $folder);
-			}
-		}
 	}
 }

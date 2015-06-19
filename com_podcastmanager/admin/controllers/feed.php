@@ -38,7 +38,7 @@ class PodcastManagerControllerFeed extends JControllerForm
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 		$user = JFactory::getUser();
-		$userId = $user->get('id');
+		$userId = $user->id;
 
 		// Check general edit permission first.
 		if ($user->authorise('core.edit', 'com_podcastmanager'))

@@ -40,10 +40,10 @@ class PodcastMediaModelManager extends JModelLegacy
 		if (!$set)
 		{
 			$input = JFactory::getApplication()->input;
-			$folder = $input->get('folder', '', 'path');
+			$folder = $input->getPath('folder', '');
 			$this->setState('folder', $folder);
 
-			$fieldid = $input->get('fieldid', '', 'cmd');
+			$fieldid = $input->getCmd('fieldid', '');
 			$this->setState('field.id', $fieldid);
 
 			$parent = str_replace("\\", "/", dirname($folder));
@@ -100,10 +100,10 @@ class PodcastMediaModelManager extends JModelLegacy
 			sort($options);
 		}
 
-		// Get asset and author id (use integer filter)
+		// Get asset and author id
 		$input = JFactory::getApplication()->input;
-		$asset = $input->get('asset', 0, 'integer');
-		$author = $input->get('author', 0, 'integer');
+		$asset = $input->getInt('asset', 0);
+		$author = $input->getInt('author', 0);
 
 		// Create the drop-down folder select list
 		$list = JHtml::_(
@@ -151,7 +151,7 @@ class PodcastMediaModelManager extends JModelLegacy
 			$relative = str_replace($mediaBase, '', $folder);
 			$absolute = $folder;
 			$path = explode('/', $relative);
-			$node = (object) array('name' => $name, 'relative' => $relative, 'absolute' => $absolute);
+			$node = (object) ['name' => $name, 'relative' => $relative, 'absolute' => $absolute];
 
 			$tmp = &$tree;
 
@@ -159,13 +159,13 @@ class PodcastMediaModelManager extends JModelLegacy
 			{
 				if (!isset($tmp['children']))
 				{
-					$tmp['children'] = array();
+					$tmp['children'] = [];
 				}
 
 				if ($i == $n - 1)
 				{
 					// We need to place the node
-					$tmp['children'][$relative] = array('data' => $node, 'children' => array());
+					$tmp['children'][$relative] = ['data' => $node, 'children' => []];
 					break;
 				}
 
@@ -176,7 +176,7 @@ class PodcastMediaModelManager extends JModelLegacy
 			}
 		}
 
-		$tree['data'] = (object) array('name' => JText::_('COM_PODCASTMEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
+		$tree['data'] = (object) ['name' => JText::_('COM_PODCASTMEDIA_MEDIA'), 'relative' => '', 'absolute' => $base];
 
 		return $tree;
 	}

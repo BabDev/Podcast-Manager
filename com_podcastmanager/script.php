@@ -24,8 +24,8 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string               $type    The action being performed
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   string                      $type    The action being performed
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -34,7 +34,7 @@ class Com_PodcastManagerInstallerScript
 	public function preflight($type, $parent)
 	{
 		// Bugfix for "Can not build admin menus"
-		if (in_array($type, array('install', 'discover_install')))
+		if (in_array($type, ['install', 'discover_install']))
 		{
 			$this->bugfixDBFunctionReturnedNoError();
 		}
@@ -49,7 +49,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during update
 	 *
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -72,7 +72,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes during uninstall
 	 *
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -84,15 +84,14 @@ class Com_PodcastManagerInstallerScript
 		// Get the component's ID from the database
 		$option = 'com_podcastmedia';
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('extension_id'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote($option));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote($option));
 
 		try
 		{
-			$component_id = $db->loadResult();
+			$component_id = $db->setQuery($query)->loadResult();
 		}
 		catch (RuntimeException $e)
 		{
@@ -102,18 +101,19 @@ class Com_PodcastManagerInstallerScript
 		// Add the record
 		$table = JTable::getInstance('menu');
 
-		$data = array();
-		$data['menutype'] = 'main';
-		$data['client_id'] = 1;
-		$data['title'] = $option;
-		$data['alias'] = $option;
-		$data['link'] = 'index.php?option=' . $option;
-		$data['type'] = 'component';
-		$data['published'] = 0;
-		$data['parent_id'] = 1;
-		$data['component_id'] = $component_id;
-		$data['img'] = 'class:component';
-		$data['home'] = 0;
+		$data = [
+			'menutype' => 'main',
+			'client_id' => 1,
+			'title' => $option,
+			'alias' => $option,
+			'link' => 'index.php?option=' . $option,
+			'type' => 'component',
+			'published' => 0,
+			'parent_id' => 1,
+			'component_id' => $component_id,
+			'img' => 'class:component',
+			'home' => 0
+		];
 
 		// All the table processing without error checks since we're hacking to prevent an error message
 		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store())
@@ -121,42 +121,39 @@ class Com_PodcastManagerInstallerScript
 			// Do nothing ;-)
 		}
 
-		$query = $db->getQuery(true);
-		$query->delete($db->quoteName('#__content_types'));
-		$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__content_types'))
+			->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{
 			// TODO - Error handling
 		}
 
-		$query->clear();
-		$query->delete($db->quoteName('#__contentitem_tag_map'));
-		$query->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-		$db->setQuery($query);
+		$query->clear()
+			->delete($db->quoteName('#__contentitem_tag_map'))
+			->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{
 			// TODO - Error handling
 		}
 
-		$query->clear();
-		$query->delete($db->quoteName('#__ucm_content'));
-		$query->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
-		$db->setQuery($query);
+		$query->clear()
+			->delete($db->quoteName('#__ucm_content'))
+			->where($db->quoteName('core_type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
 
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (RuntimeException $e)
 		{
@@ -167,8 +164,8 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Function to perform changes when component is initially installed
 	 *
-	 * @param   string               $type    The action being performed
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   string                      $type    The action being performed
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -207,33 +204,31 @@ class Com_PodcastManagerInstallerScript
 		$db = JFactory::getDbo();
 
 		// Fix broken #__assets records
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__assets'));
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__assets'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 		try
 		{
-			$ids = $db->loadColumn();
+			$ids = $db->setQuery($query)->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__assets'));
-				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__assets'))
+					->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -243,33 +238,31 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Fix broken #__extensions records
-		$query->clear();
-		$query->select($db->quoteName('extension_id'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
+		$query->clear()
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 
 		try
 		{
-			$ids = $db->loadColumn();
+			$ids = $db->setQuery($query)->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__extensions'));
-				$query->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__extensions'))
+					->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -279,35 +272,33 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Fix broken #__menu records
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('type') . ' = ' . $db->quote('component'));
-		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
-		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
-		$db->setQuery($query);
+		$query->clear()
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__menu'))
+			->where($db->quoteName('type') . ' = ' . $db->quote('component'))
+			->where($db->quoteName('menutype') . ' = ' . $db->quote('main'))
+			->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 
 		try
 		{
-			$ids = $db->loadColumn();
+			$ids = $db->setQuery($query)->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__menu'));
-				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__menu'))
+					->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -331,19 +322,18 @@ class Com_PodcastManagerInstallerScript
 		$db = JFactory::getDbo();
 
 		// If there are multiple #__extensions record, keep one of them
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('extension_id'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 
 		try
 		{
-			$ids = $db->loadColumn();
+			$ids = $db->setQuery($query)->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (count($ids) > 1)
@@ -355,14 +345,13 @@ class Com_PodcastManagerInstallerScript
 
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__extensions'));
-				$query->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__extensions'))
+					->where($db->quoteName('extension_id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -372,19 +361,18 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// If there are multiple assets records, delete all except the oldest one
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__assets'));
-		$query->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
+		$query->clear()
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__assets'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('com_podcastmanager'));
 
 		try
 		{
-			$ids = $db->loadObjectList();
+			$ids = $db->setQuery($query)->loadObjectList();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (count($ids) > 1)
@@ -396,14 +384,13 @@ class Com_PodcastManagerInstallerScript
 
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__assets'));
-				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__assets'))
+					->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -413,35 +400,33 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Remove #__menu records for good measure!
-		$query->clear();
-		$query->select($db->quoteName('id'));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('type') . ' = ' . $db->quote('component'));
-		$query->where($db->quoteName('menutype') . ' = ' . $db->quote('main'));
-		$query->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
-		$db->setQuery($query);
+		$query->clear()
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__menu'))
+			->where($db->quoteName('type') . ' = ' . $db->quote('component'))
+			->where($db->quoteName('menutype') . ' = ' . $db->quote('main'))
+			->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
 
 		try
 		{
-			$ids = $db->loadColumn();
+			$ids = $db->setQuery($query)->loadColumn();
 		}
 		catch (RuntimeException $e)
 		{
-			$ids = array();
+			$ids = [];
 		}
 
 		if (!empty($ids))
 		{
 			foreach ($ids as $id)
 			{
-				$query->clear();
-				$query->delete($db->quoteName('#__menu'));
-				$query->where($db->quoteName('id') . ' = ' . $db->quote($id));
-				$db->setQuery($query);
+				$query->clear()
+					->delete($db->quoteName('#__menu'))
+					->where($db->quoteName('id') . ' = ' . $db->quote($id));
 
 				try
 				{
-					$db->execute();
+					$db->setQuery($query)->execute();
 				}
 				catch (RuntimeException $e)
 				{
@@ -470,30 +455,26 @@ class Com_PodcastManagerInstallerScript
 
 		// Get the record from the database
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('manifest_cache'));
-		$query->from($db->quoteName('#__extensions'));
-		$query->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
-		$db->setQuery($query);
+		$query = $db->getQuery(true)
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
 
 		try
 		{
-			$manifest = $db->loadObject();
+			$manifest = $db->setQuery($query)->loadObject();
 		}
 		catch (RuntimeException $e)
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-			$version = 'Error';
 
-			return $version;
+			return 'Error';
 		}
 
 		// Decode the JSON
 		$record = json_decode($manifest->manifest_cache);
 
 		// Get the version
-		$version = $record->version;
-
-		return $version;
+		return $record->version;
 	}
 }

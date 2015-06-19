@@ -31,14 +31,14 @@ class PodcastManagerController extends JControllerLegacy
 	 * @since   1.6
 	 * @see     JControllerLegacy
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		$input = JFactory::getApplication()->input;
 
 		// Frontpage Editor podcast proxying:
-		if ($input->get('view', '', 'cmd') === 'podcasts' && $input->get('layout', '', 'cmd') === 'modal')
+		if ($input->getCmd('view', '') === 'podcasts' && $input->getCmd('layout', '') === 'modal')
 		{
-			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
+			JHtml::_('stylesheet', 'system/adminlist.css', [], true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 
@@ -63,16 +63,16 @@ class PodcastManagerController extends JControllerLegacy
 		$user = JFactory::getUser();
 
 		// Set the default view name and format from the Request.
-		$id = $this->input->get('p_id', '', 'int');
-		$vName = $this->input->get('view', 'feed', 'cmd');
+		$id = $this->input->getUint('p_id', '');
+		$vName = $this->input->getCmd('view', 'feed');
 		$this->input->set('view', $vName);
 
-		if ($user->get('id') || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
+		if ($user->id || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
 		{
 			$cachable = false;
 		}
 
-		$safeurlparams = array(
+		$safeurlparams = [
 			'id' => 'INT',
 			'feedname' => 'INT',
 			'limit' => 'INT',
@@ -80,7 +80,7 @@ class PodcastManagerController extends JControllerLegacy
 			'filter_order' => 'CMD',
 			'filter_order_Dir' => 'CMD',
 			'lang' => 'CMD'
-		);
+		];
 
 		// Check for edit form.
 		if ($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))

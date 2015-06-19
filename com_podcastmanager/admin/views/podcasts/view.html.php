@@ -69,7 +69,7 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $states = array('published' => true, 'unpublished' => true, 'archived' => false, 'trashed' => true, 'all' => true);
+	protected $states = ['published' => true, 'unpublished' => true, 'archived' => false, 'trashed' => true, 'all' => true];
 
 	/**
 	 * Display the view

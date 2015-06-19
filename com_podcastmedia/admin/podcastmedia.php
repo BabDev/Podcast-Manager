@@ -17,8 +17,8 @@ defined('_JEXEC') or die;
 // Access check.
 $input = JFactory::getApplication()->input;
 $user = JFactory::getUser();
-$asset = $input->get('asset', '', 'cmd');
-$author = $input->get('author', '', 'cmd');
+$asset = $input->getInt('asset', '');
+$author = $input->getInt('author', '');
 
 if (!$user->authorise('core.manage', 'com_podcastmanager')
 	&& (!$asset or (!$user->authorise('core.edit', $asset)
@@ -35,14 +35,14 @@ $podmedparams = JComponentHelper::getParams('com_podcastmedia');
 JLoader::register('PodcastMediaHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php');
 
 // Set the path definitions
-$popup_upload = $input->get('pop_up', null, 'cmd');
+$popup_upload = $input->getCmd('pop_up', null);
 $path         = 'file_path';
 
-$view = $input->get('view', '', 'cmd');
+$view = $input->getCmd('view', '');
 
 define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
 define('COM_PODCASTMEDIA_BASEURL', JUri::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
 
-$controller = JControllerLegacy::getInstance('PodcastMedia', array('base_path' => JPATH_COMPONENT_ADMINISTRATOR));
-$controller->execute($input->get('task', '', 'cmd'));
+$controller = JControllerLegacy::getInstance('PodcastMedia', ['base_path' => JPATH_COMPONENT_ADMINISTRATOR]);
+$controller->execute($input->getCmd('task', ''));
 $controller->redirect();

@@ -44,7 +44,7 @@ class JFormFieldModal_Podcast extends JFormField
 		JHtml::_('behavior.modal', 'a.modal');
 
 		// Build the script.
-		$script = array();
+		$script = [];
 		$script[] = '	function PodcastManagerSelectPodcast_' . $this->id . '(id, title, filename, object) {';
 		$script[] = '		document.id("' . $this->id . '_id").value = id;';
 		$script[] = '		document.id("' . $this->id . '_name").value = title;';
@@ -54,11 +54,6 @@ class JFormFieldModal_Podcast extends JFormField
 		// Add the script to the document head.
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
-		// Setup variables for display.
-		$html = array();
-
-		$html[] = '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" />';
-
-		return implode("\n", $html);
+		return '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" />';
 	}
 }

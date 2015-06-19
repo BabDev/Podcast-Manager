@@ -33,24 +33,22 @@ class PodcastMediaController extends JControllerLegacy
 	 *
 	 * @since   1.6
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = [])
 	{
 		JPluginHelper::importPlugin('content');
-		$app    = JFactory::getApplication();
-		$input  = $app->input;
 		$params = JComponentHelper::getParams('com_podcastmedia');
-		$vName  = $input->get('view', 'media', 'cmd');
+		$vName  = $this->input->getCmd('view', 'media');
 
 		switch ($vName)
 		{
 			case 'audio':
-				$vLayout = $input->get('layout', 'default', 'cmd');
+				$vLayout = $this->input->getCmd('layout', 'default');
 				$mName   = 'manager';
 
 				break;
 
 			case 'audiolist':
-				$vLayout = $input->get('layout', 'default', 'cmd');
+				$vLayout = $this->input->getCmd('layout', 'default');
 				$mName   = 'list';
 
 				break;
@@ -64,7 +62,7 @@ class PodcastMediaController extends JControllerLegacy
 			case 'media':
 			default:
 				$vName   = 'media';
-				$vLayout = $input->get('layout', 'default', 'cmd');
+				$vLayout = $this->input->getCmd('layout', 'default');
 				$mName   = 'manager';
 
 				break;
@@ -73,7 +71,7 @@ class PodcastMediaController extends JControllerLegacy
 		$vType = JFactory::getDocument()->getType();
 
 		// Get/Create the view
-		$view = $this->getView($vName, $vType, '', array('base_path' => JPATH_COMPONENT_ADMINISTRATOR));
+		$view = $this->getView($vName, $vType, '', ['base_path' => JPATH_COMPONENT_ADMINISTRATOR]);
 
 		// Get/Create the model
 		if ($model = $this->getModel($mName))

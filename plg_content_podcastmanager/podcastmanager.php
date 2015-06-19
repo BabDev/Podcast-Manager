@@ -79,14 +79,16 @@ class PlgContentPodcastManager extends JPlugin
 		{
 			if ($log == null)
 			{
-				$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
-				$options['text_file'] = 'podcastmanager.php';
+				$options = [
+					'format' => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
+					'text_file' => 'podcastmanager.php'
+				];
 				$log = JLog::addLogger($options);
 			}
 		}
 
 		// Handle instances coming from Podcast Manager extensions
-		$podManContexts = array('com_podcastmanager.feed', 'mod_podcastmanagerfeed.module');
+		$podManContexts = ['com_podcastmanager.feed', 'mod_podcastmanagerfeed.module'];
 
 		if (in_array($context, $podManContexts))
 		{
@@ -208,7 +210,7 @@ class PlgContentPodcastManager extends JPlugin
 					$query = $this->db->getQuery(true);
 
 					// Common query fields regardless of method
-					$query->select($this->db->quoteName(array('filename', 'id')));
+					$query->select($this->db->quoteName(['filename', 'id']));
 					$query->from($this->db->quoteName('#__podcastmanager'));
 
 					// If the title is a string, use the "classic" lookup method
@@ -224,11 +226,9 @@ class PlgContentPodcastManager extends JPlugin
 						$query->where($this->db->quoteName('id') . ' = ' . (int) $podtitle);
 					}
 
-					$this->db->setQuery($query);
-
 					try
 					{
-						$dbResult             = $this->db->loadObject();
+						$dbResult             = $this->db->setQuery($query)->loadObject();
 						$podfilepath          = $dbResult->filename;
 						$options['podcastID'] = (int) $dbResult->id;
 

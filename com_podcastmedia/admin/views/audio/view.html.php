@@ -92,11 +92,11 @@ class PodcastMediaViewAudio extends JViewLegacy
 		JHtml::_('behavior.framework', true);
 		JHtml::_('jquery.framework');
 		JHtml::_('script', 'podcastmanager/popup-audiomanager.js', false, true);
-		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
+		JHtml::_('stylesheet', 'media/popup-imagemanager.css', [], true);
 
 		if ($lang->isRTL())
 		{
-			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
+			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', [], true);
 		}
 
 		return parent::display($tpl);

@@ -96,11 +96,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$input = JFactory::getApplication('administrator')->input;
-		$input->set('hidemainmenu', true);
+		JFactory::getApplication('administrator')->input->set('hidemainmenu', true);
 
-		$user = JFactory::getUser();
-		$userId = $user->get('id');
+		$userId = JFactory::getUser()->id;
 		$isNew = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo = PodcastManagerHelper::getActions($this->item->id);

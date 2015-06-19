@@ -40,10 +40,10 @@ abstract class ModPodcastManagerFeedHelper
 	public static function getList(&$params)
 	{
 		// Get an instance of the generic feed model
-		$model = JModelLegacy::getInstance('Feed', 'PodcastManagerModel', array('ignore_request' => true));
+		$model = JModelLegacy::getInstance('Feed', 'PodcastManagerModel', ['ignore_request' => true]);
 
 		// Set application parameters in model
-		$app       = JFactory::getApplication('site');
+		$app       = JFactory::getApplication();
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 
@@ -97,7 +97,7 @@ abstract class ModPodcastManagerFeedHelper
 				$item->player = '{podcast ' . $item->title . '}';
 
 				// Trigger the plugin
-				$dispatcher->trigger('onContentPrepare', array('mod_podcastmanagerfeed.module', &$item, &$params));
+				$dispatcher->trigger('onContentPrepare', ['mod_podcastmanagerfeed.module', &$item, &$params]);
 			}
 		}
 

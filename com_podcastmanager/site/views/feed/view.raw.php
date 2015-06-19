@@ -62,8 +62,10 @@ class PodcastManagerViewFeed extends JViewLegacy
 		{
 			if ($log == null)
 			{
-				$options['format'] = '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}';
-				$options['text_file'] = 'podcastmanager.php';
+				$options = [
+					'format' => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
+					'text_file' => 'podcastmanager.php'
+				];
 				$log = JLog::addLogger($options);
 			}
 		}
@@ -77,8 +79,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		$feed  = $this->get('Feed');
 		$feedurl = JRoute::_('index.php?option=com_podcastmanager&format=raw&feedname=' . $feed->id);
 
-		$document = JFactory::getDocument();
-		$document->setMimeEncoding('application/rss+xml');
+		JFactory::getDocument()->setMimeEncoding('application/rss+xml');
 
 		$xw = new xmlWriter;
 		$xw->openMemory();
@@ -170,9 +171,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 			$xw->endElement();
 		}
 
-		$this->_setCategories($xw, $feed);
+		$this->setCategories($xw, $feed);
 
-		$this->_setItems($xw, $items);
+		$this->setItems($xw, $items);
 
 		// End channel element
 		$xw->endElement();
@@ -193,9 +194,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 *
 	 * @since   1.6
 	 */
-	private function _setCategories(&$xw, $feed)
+	private function setCategories(&$xw, $feed)
 	{
-		$cats = array('category1', 'category2', 'category3');
+		$cats = ['category1', 'category2', 'category3'];
 		$i = 1;
 
 		foreach ($cats as $cat)
@@ -230,7 +231,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 *
 	 * @since   1.6
 	 */
-	private function _setItems(&$xw, $items)
+	private function setItems(&$xw, $items)
 	{
 		foreach ($items as $item)
 		{

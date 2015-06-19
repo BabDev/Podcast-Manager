@@ -65,7 +65,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 *
 	 * @since   2.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
@@ -148,7 +148,7 @@ class PodcastManagerControllerForm extends JControllerForm
 		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$table = $model->getTable();
-		$cid = $this->input->post->get('cid', array());
+		$cid = $this->input->post->get('cid', []);
 		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
@@ -205,7 +205,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return  object  The model.
+	 * @return  JModelLegacy  The model.
 	 *
 	 * @since   1.8
 	 */
