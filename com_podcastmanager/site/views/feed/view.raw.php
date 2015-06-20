@@ -77,7 +77,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Get the data from the model
 		$items = $this->get('Items');
 		$feed  = $this->get('Feed');
-		$feedurl = JRoute::_('index.php?option=com_podcastmanager&format=raw&feedname=' . $feed->id);
+
+		// The last param has to be 3 so that both 2.5 and 3.x detect we want the site domain prepended since using 0 as specified in docs does not work
+		$feedurl = JRoute::_('index.php?option=com_podcastmanager&format=raw&feedname=' . $feed->id, false, 3);
 
 		JFactory::getDocument()->setMimeEncoding('application/rss+xml');
 
