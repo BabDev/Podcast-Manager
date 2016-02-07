@@ -33,7 +33,7 @@ class Pkg_PodcastManagerInstallerScript
 	 * @var    string
 	 * @since  3.0
 	 */
-	protected $minimumJoomlaVersion = '3.4';
+	protected $minimumJoomlaVersion = '3.5';
 
 	/**
 	 * Minimum supported PHP version
@@ -249,9 +249,8 @@ class Pkg_PodcastManagerInstallerScript
 		catch (RuntimeException $e)
 		{
 			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-			$version = 'Error';
 
-			return $version;
+			return 'Error';
 		}
 
 		// Decode the JSON
