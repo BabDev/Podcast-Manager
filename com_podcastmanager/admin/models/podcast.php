@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\String\String;
+use Joomla\String\StringHelper;
 
 /**
  * Podcast edit model class.
@@ -441,8 +441,8 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 		while ($table->load(['alias' => $alias, 'feedname' => $category_id]))
 		{
-			$title = String::increment($title);
-			$alias = String::increment($alias, 'dash');
+			$title = StringHelper::increment($title);
+			$alias = StringHelper::increment($alias, 'dash');
 		}
 
 		return [$title, $alias];

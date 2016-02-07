@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\String\String;
+use Joomla\String\StringHelper;
 
 JLoader::register('PodcastManagerPlayer', JPATH_PLUGINS . '/content/podcastmanager/player.php');
 
@@ -254,7 +254,7 @@ class PlgContentPodcastManager extends JPlugin
 				if (JFactory::getDocument()->getType() != 'html')
 				{
 					// Remove the {podcast marker
-					$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
+					$article->text = StringHelper::str_ireplace($matches[0][$i], '', $article->text);
 				}
 				elseif (isset($podfilepath))
 				{
@@ -266,7 +266,7 @@ class PlgContentPodcastManager extends JPlugin
 						// Fix for K2 Item
 						if ($context == 'com_k2.item' && strpos($matches[0][$i], '{K2Splitter'))
 						{
-							$string = String::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
+							$string = StringHelper::str_ireplace($matches[0][$i], '{K2Splitter}', substr($matches[0][$i], 0, -16));
 						}
 						else
 						{
@@ -276,7 +276,7 @@ class PlgContentPodcastManager extends JPlugin
 						try
 						{
 							// Replace the {podcast marker with the player
-							$article->text = String::str_ireplace($string, $player->generate(), $article->text);
+							$article->text = StringHelper::str_ireplace($string, $player->generate(), $article->text);
 						}
 						catch (RuntimeException $e)
 						{
@@ -284,7 +284,7 @@ class PlgContentPodcastManager extends JPlugin
 							JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_FILETYPE', $podfilepath), JLog::INFO);
 
 							// Remove the {podcast marker
-							$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
+							$article->text = StringHelper::str_ireplace($matches[0][$i], '', $article->text);
 						}
 					}
 					catch (RuntimeException $e)
@@ -293,7 +293,7 @@ class PlgContentPodcastManager extends JPlugin
 						JLog::add(JText::sprintf('PLG_CONTENT_PODCASTMANAGER_ERROR_INVALID_PLAYER', $options['playerType']), JLog::INFO);
 
 						// Remove the {podcast marker
-						$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
+						$article->text = StringHelper::str_ireplace($matches[0][$i], '', $article->text);
 					}
 				}
 				else
@@ -302,7 +302,7 @@ class PlgContentPodcastManager extends JPlugin
 					JLog::add(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_NO_FILEPATH'), JLog::INFO);
 
 					// Remove the {podcast marker
-					$article->text = String::str_ireplace($matches[0][$i], '', $article->text);
+					$article->text = StringHelper::str_ireplace($matches[0][$i], '', $article->text);
 				}
 
 				$i++;
