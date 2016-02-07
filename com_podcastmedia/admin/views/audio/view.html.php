@@ -75,7 +75,7 @@ class PodcastMediaViewAudio extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$medmanparams = JComponentHelper::getParams('com_media');
-		$lang = JFactory::getLanguage();
+		$lang         = JFactory::getLanguage();
 
 		/*
 		 * Display form for FTP credentials?
@@ -83,11 +83,11 @@ class PodcastMediaViewAudio extends JViewLegacy
 		 */
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$this->session = JFactory::getSession();
+		$this->session      = JFactory::getSession();
 		$this->medmanparams = $medmanparams;
-		$this->state = $this->get('state');
-		$this->folderList = $this->get('folderList');
-		$this->require_ftp = $ftp;
+		$this->state        = $this->get('state');
+		$this->folderList   = $this->get('folderList');
+		$this->require_ftp  = $ftp;
 
 		JHtml::_('behavior.framework', true);
 		JHtml::_('jquery.framework');

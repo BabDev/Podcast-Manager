@@ -18,6 +18,6 @@ JLoader::register('PodcastManagerHelperRoute', JPATH_COMPONENT . '/helpers/route
 
 $input = JFactory::getApplication()->input;
 
-$controller	= JControllerLegacy::getInstance('PodcastManager');
+$controller = JControllerLegacy::getInstance('PodcastManager');
 $controller->execute($input->get('task', '', 'cmd'));
 $controller->redirect();

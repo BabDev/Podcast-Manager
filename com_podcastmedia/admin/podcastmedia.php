@@ -15,9 +15,9 @@
 defined('_JEXEC') or die;
 
 // Access check.
-$input = JFactory::getApplication()->input;
-$user = JFactory::getUser();
-$asset = $input->getInt('asset', '');
+$input  = JFactory::getApplication()->input;
+$user   = JFactory::getUser();
+$asset  = $input->getInt('asset', '');
 $author = $input->getInt('author', '');
 
 if (!$user->authorise('core.manage', 'com_podcastmanager')

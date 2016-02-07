@@ -77,7 +77,7 @@ class Mod_PodcastManagerInstallerScript
 	private function getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))

@@ -117,11 +117,11 @@ class PodcastManagerPlayer
 	 * @since   1.6
 	 * @throws  RuntimeException
 	 */
-	public function __construct($podmanparams, $podfilepath, $podtitle, $options, $pluginParams)
+	public function __construct(Registry $podmanparams, $podfilepath, $podtitle, array $options, Registry $pluginParams)
 	{
 		$this->podmanparams = $podmanparams;
-		$this->podfilepath = $podfilepath;
-		$this->options = $options;
+		$this->podfilepath  = $podfilepath;
+		$this->options      = $options;
 		$this->pluginParams = $pluginParams;
 
 		if (!in_array($this->options['playerType'], $this->validTypes))
@@ -130,8 +130,8 @@ class PodcastManagerPlayer
 		}
 
 		$this->playerType = $this->options['playerType'];
-		$this->fileURL = $this->determineURL($podfilepath);
-		$this->podtitle = $podtitle;
+		$this->fileURL    = $this->determineURL($podfilepath);
+		$this->podtitle   = $podtitle;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
-	 * @param   object  $podfilepath  The filename of the podcast file.
+	 * @param   object $podfilepath The filename of the podcast file.
 	 *
 	 * @return  string  The URL to the file
 	 *
@@ -187,9 +187,7 @@ class PodcastManagerPlayer
 		}
 
 		// Process the URL through the helper to get the stat tracking details if applicable
-		$filename = PodcastManagerHelper::getMediaUrl($filename);
-
-		return $filename;
+		return PodcastManagerHelper::getMediaUrl($filename);
 	}
 
 	/**

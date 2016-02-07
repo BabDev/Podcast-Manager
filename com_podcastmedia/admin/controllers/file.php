@@ -90,7 +90,8 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		if ($_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024)
 			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024
 			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024
-			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024)
+			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024
+		)
 		{
 			JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
 
@@ -101,7 +102,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		foreach ($files as &$file)
 		{
 			$file['name']     = JFile::makeSafe(str_replace(' ', '_', $file['name']));
-			$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, array(COM_PODCASTMEDIA_BASE, $this->folder, $file['name'])));
+			$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $this->folder, $file['name']]));
 
 			if ($file['error'] == 1)
 			{
@@ -154,7 +155,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 			// Trigger the onContentBeforeSave event.
 			$object_file = new JObject($file);
-			$result = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.file', &$object_file]);
+			$result      = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.file', &$object_file]);
 
 			if (in_array(false, $result, true))
 			{
@@ -239,7 +240,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 		// Set FTP credentials, if given
 		JClientHelper::setCredentialsFromRequest('ftp');
 		JPluginHelper::importPlugin('content');
-		$dispatcher	= JEventDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Initialise variables.
 		$ret = true;
@@ -260,8 +261,8 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				continue;
 			}
 
-			$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
-			$object_file = new JObject(array('filepath' => $fullPath));
+			$fullPath    = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
+			$object_file = new JObject(['filepath' => $fullPath]);
 
 			if (is_file($object_file->filepath))
 			{

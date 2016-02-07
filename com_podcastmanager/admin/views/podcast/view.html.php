@@ -59,8 +59,8 @@ class PodcastManagerViewPodcast extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+		$this->form  = $this->get('Form');
+		$this->item  = $this->get('Item');
 		$this->state = $this->get('State');
 
 		// Check for errors.
@@ -94,10 +94,10 @@ class PodcastManagerViewPodcast extends JViewLegacy
 	{
 		JFactory::getApplication('administrator')->input->set('hidemainmenu', true);
 
-		$userId = JFactory::getUser()->get('id');
-		$isNew = ($this->item->id == 0);
+		$userId     = JFactory::getUser()->get('id');
+		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo = PodcastManagerHelper::getActions($this->state->get('filter.feedname'), $this->item->id);
+		$canDo      = PodcastManagerHelper::getActions($this->state->get('filter.feedname'), $this->item->id);
 
 		JToolbarHelper::title(JText::_('COM_PODCASTMANAGER_VIEW_PODCAST_' . ($isNew ? 'ADD_PODCAST' : 'EDIT_PODCAST')), 'podcastmanager.png');
 

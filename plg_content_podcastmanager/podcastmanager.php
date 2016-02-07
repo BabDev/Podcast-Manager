@@ -65,8 +65,6 @@ class PlgContentPodcastManager extends JPlugin
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
-		static $log;
-
 		// Check if we're in the site app, otherwise, do nothing
 		if (!$this->app->isSite())
 		{
@@ -77,14 +75,12 @@ class PlgContentPodcastManager extends JPlugin
 
 		if ($podmanparams->get('enableLogging', '0') == '1')
 		{
-			if ($log == null)
-			{
-				$options = [
-					'format' => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
+			JLog::addLogger(
+				[
+					'format'    => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
 					'text_file' => 'podcastmanager.php'
-				];
-				$log = JLog::addLogger($options);
-			}
+				]
+			);
 		}
 
 		// Handle instances coming from Podcast Manager extensions
@@ -99,7 +95,7 @@ class PlgContentPodcastManager extends JPlugin
 			}
 
 			$article->text = $article->player;
-			$feedView = $context;
+			$feedView      = $context;
 		}
 
 		// Special handling for com_tags if needed
@@ -138,7 +134,7 @@ class PlgContentPodcastManager extends JPlugin
 			foreach ($podcast as $episode)
 			{
 				// Initialize the options array
-				$options = array();
+				$options = [];
 
 				// Set the default player type and size from the component params
 				$options['playerType']  = $podmanparams->get('linkhandling', 'player');
@@ -156,12 +152,10 @@ class PlgContentPodcastManager extends JPlugin
 				}
 				else
 				{
-					// Retrieve the title from the object and prepare it for a DB query
-					// 9 offset for {podcast marker, -1 offset for closing }
+					// Retrieve the title from the object and prepare it for a DB query; 9 offset for {podcast marker, -1 offset for closing }
 					$podtitle = substr($episode, 9, -1);
 
-					// Fix for K2 Item when {podcast marker is last text in an item with no readmore
-					// -17 offset removes '}</p>{K2Splitter'
+					// Fix for K2 Item when {podcast marker is last text in an item with no readmore; -17 offset removes '}</p>{K2Splitter'
 					if ($context == 'com_k2.item' && strpos($episode, '{K2Splitter'))
 					{
 						$podtitle = substr($episode, 9, -17);

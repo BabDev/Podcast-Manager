@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 // Load the com_podcastmedia language file
 $lang = JFactory::getLanguage();
 $lang->load('com_podcastmedia', JPATH_COMPONENT_ADMINISTRATOR, null, false, true)
-||	$lang->load('com_podcastmedia', JPATH_COMPONENT_ADMINISTRATOR, $lang->getDefault(), false, true);
+|| $lang->load('com_podcastmedia', JPATH_COMPONENT_ADMINISTRATOR, $lang->getDefault(), false, true);
 
 // Hand processing over to the admin base file
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/podcastmedia.php';

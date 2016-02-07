@@ -83,8 +83,8 @@ class Com_PodcastManagerInstallerScript
 		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
 		// Get the component's ID from the database
 		$option = 'com_podcastmedia';
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
+		$db     = JFactory::getDbo();
+		$query  = $db->getQuery(true)
 			->select($db->quoteName('extension_id'))
 			->from($db->quoteName('#__extensions'))
 			->where($db->quoteName('element') . ' = ' . $db->quote($option));
@@ -102,17 +102,17 @@ class Com_PodcastManagerInstallerScript
 		$table = JTable::getInstance('menu');
 
 		$data = [
-			'menutype' => 'main',
-			'client_id' => 1,
-			'title' => $option,
-			'alias' => $option,
-			'link' => 'index.php?option=' . $option,
-			'type' => 'component',
-			'published' => 0,
-			'parent_id' => 1,
+			'menutype'     => 'main',
+			'client_id'    => 1,
+			'title'        => $option,
+			'alias'        => $option,
+			'link'         => 'index.php?option=' . $option,
+			'type'         => 'component',
+			'published'    => 0,
+			'parent_id'    => 1,
 			'component_id' => $component_id,
-			'img' => 'class:component',
-			'home' => 0
+			'img'          => 'class:component',
+			'home'         => 0
 		];
 
 		// All the table processing without error checks since we're hacking to prevent an error message
@@ -193,7 +193,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Joomla! 1.6+ bugfix for "DB function returned no error"
 	 *
-	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
+	 * @author  Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
 	 *
 	 * @return  void
 	 *
@@ -311,7 +311,7 @@ class Com_PodcastManagerInstallerScript
 	/**
 	 * Joomla! 1.6+ bugfix for "Can not build admin menus"
 	 *
-	 * @author	Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
+	 * @author  Nicholas K. Dionysopoulos (https://www.akeebabackup.com)
 	 *
 	 * @return  void
 	 *
@@ -454,7 +454,7 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Get the record from the database
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))

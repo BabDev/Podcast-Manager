@@ -107,8 +107,7 @@ JS;
 		if ($count == 1)
 		{
 			JPluginHelper::importPlugin('podcastmedia');
-			$dispatcher = JEventDispatcher::getInstance();
-			$results = $dispatcher->trigger('onPathFind');
+			$results   = JEventDispatcher::getInstance()->trigger('onPathFind');
 			$directory = $results['0'];
 		}
 		elseif ($count > 1)

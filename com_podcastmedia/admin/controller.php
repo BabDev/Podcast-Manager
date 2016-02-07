@@ -29,14 +29,13 @@ class PodcastMediaController extends JControllerLegacy
 	 * @param   boolean  $cachable   If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  $this
 	 *
 	 * @since   1.6
 	 */
 	public function display($cachable = false, $urlparams = [])
 	{
 		JPluginHelper::importPlugin('content');
-		$params = JComponentHelper::getParams('com_podcastmedia');
 		$vName  = $this->input->getCmd('view', 'media');
 
 		switch ($vName)
@@ -54,7 +53,7 @@ class PodcastMediaController extends JControllerLegacy
 				break;
 
 			case 'medialist':
-				$vLayout = $params->get('layout', 'thumbs');
+				$vLayout = JComponentHelper::getParams('com_podcastmedia')->get('layout', 'thumbs');
 				$mName   = 'list';
 
 				break;

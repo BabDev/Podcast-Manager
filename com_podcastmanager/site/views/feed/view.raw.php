@@ -52,22 +52,18 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		static $log;
-
 		// Get the component params
 		$params = JComponentHelper::getParams('com_podcastmanager');
 
 		// Enable logging
 		if ($params->get('enableLogging', '0') == '1')
 		{
-			if ($log == null)
-			{
-				$options = [
-					'format' => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
+			JLog::addLogger(
+				[
+					'format'    => '{DATE}\t{TIME}\t{LEVEL}\t{CODE}\t{MESSAGE}',
 					'text_file' => 'podcastmanager.php'
-				];
-				$log = JLog::addLogger($options);
-			}
+				]
+			);
 		}
 
 		// Store the values for the tracking service
@@ -196,10 +192,10 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 *
 	 * @since   1.6
 	 */
-	private function setCategories(&$xw, $feed)
+	private function setCategories(XMLWriter &$xw, $feed)
 	{
 		$cats = ['category1', 'category2', 'category3'];
-		$i = 1;
+		$i    = 1;
 
 		foreach ($cats as $cat)
 		{
@@ -233,7 +229,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 	 *
 	 * @since   1.6
 	 */
-	private function setItems(&$xw, $items)
+	private function setItems(XMLWriter &$xw, $items)
 	{
 		foreach ($items as $item)
 		{
@@ -318,7 +314,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 				$xw->writeElement('guid', $filename);
 
-				$itBlock = $item->itBlock;
+				$itBlock    = $item->itBlock;
 				$itExplicit = $item->itExplicit;
 
 				if ($itBlock == 1)

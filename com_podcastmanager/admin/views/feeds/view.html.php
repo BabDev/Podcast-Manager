@@ -61,7 +61,7 @@ class PodcastManagerViewFeeds extends JViewLegacy
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $states = array('published' => true, 'unpublished' => true, 'archived' => false, 'trashed' => true, 'all' => true);
+	protected $states = ['published' => true, 'unpublished' => true, 'archived' => false, 'trashed' => true, 'all' => true];
 
 	/**
 	 * Display the view
@@ -77,9 +77,9 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		// Load the submenu.
 		PodcastManagerHelper::addSubmenu('feeds');
 
-		$this->items = $this->get('Items');
+		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
+		$this->state      = $this->get('State');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

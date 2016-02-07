@@ -36,40 +36,29 @@ class PodcastManagerModelCpanel extends JModelLegacy
 		$contentTypesPresent = true;
 		$errors              = [];
 
-		$tableList = $db->getTableList();
+		// Now check for rows if we have content types
+		$feedTypeId = $db->setQuery(
+			$db->getQuery(true)
+				->select($db->quoteName('type_id'))
+				->from($db->quoteName('#__content_types'))
+				->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'))
+		)->loadResult();
 
-		if (!in_array($db->replacePrefix('#__content_types'), $tableList))
+		$podcastTypeId = $db->setQuery(
+			$db->getQuery(true)
+				->select($db->quoteName('type_id'))
+				->from($db->quoteName('#__content_types'))
+				->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'))
+		)->loadResult();
+
+		if (!$feedTypeId)
 		{
-			$errors['noTypes']   = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_CONTENT_TYPES_TABLE');
-			$contentTypesPresent = false;
+			$errors['noFeedType'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_FEED_TYPE');
 		}
 
-		// Now check for rows if we have content types
-		if ($contentTypesPresent)
+		if (!$podcastTypeId)
 		{
-			$feedTypeId = $db->setQuery(
-				$db->getQuery(true)
-					->select($db->quoteName('type_id'))
-					->from($db->quoteName('#__content_types'))
-					->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.feed'))
-			)->loadResult();
-
-			$podcastTypeId = $db->setQuery(
-				$db->getQuery(true)
-					->select($db->quoteName('type_id'))
-					->from($db->quoteName('#__content_types'))
-					->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_podcastmanager.podcast'))
-			)->loadResult();
-
-			if (!$feedTypeId)
-			{
-				$errors['noFeedType'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_FEED_TYPE');
-			}
-
-			if (!$podcastTypeId)
-			{
-				$errors['noPodcastType'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_PODCAST_TYPE');
-			}
+			$errors['noPodcastType'] = JText::_('COM_PODCASTMANAGER_MIGRATION_ERROR_NO_PODCAST_TYPE');
 		}
 
 		return $errors;

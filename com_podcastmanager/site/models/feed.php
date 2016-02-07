@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\StringHelper;
+
 /**
  * Feed list model class.
  *
@@ -65,7 +67,7 @@ class PodcastManagerModelFeed extends JModelList
 		// Only query if state->feed.id is valid
 		if ($this->getState('feed.id') > 0)
 		{
-			$db = $this->getDbo();
+			$db    = $this->getDbo();
 			$query = $db->getQuery(true)
 				->select('*')
 				->from($db->quoteName('#__podcastmanager_feeds'))
@@ -87,7 +89,7 @@ class PodcastManagerModelFeed extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
 		// Select required fields
@@ -115,7 +117,7 @@ class PodcastManagerModelFeed extends JModelList
 
 		// Filter by start date.
 		$nullDate = $db->quote($db->getNullDate());
-		$nowDate = $db->quote(JFactory::getDate()->toSql());
+		$nowDate  = $db->quote(JFactory::getDate()->toSql());
 
 		if ($this->getState('filter.publish_date'))
 		{
@@ -135,17 +137,18 @@ class PodcastManagerModelFeed extends JModelList
 		if ((is_object($params)) && ($params->get('filter_field') != 'hide'))
 		{
 			// Clean filter variable
-			$filter = $db->quote('%' . $db->escape(JString::strtolower($filter), true) . '%', false);
+			$filter = $db->quote('%' . $db->escape(StringHelper::strtolower($filter), true) . '%', false);
 
 			// Check the author, title, and publish_up fields
-			$query->where('(' . $db->quoteName('a.itAuthor') . ' LIKE ' . $filter
+			$query->where(
+				'(' . $db->quoteName('a.itAuthor') . ' LIKE ' . $filter
 				. ' OR ' . $db->quoteName('a.title') . ' LIKE ' . $filter
 				. ' OR ' . $db->quoteName('a.publish_up') . ' LIKE ' . $filter . ')'
 			);
 		}
 
 		// Handle the list ordering.
-		$ordering = $this->getState('list.ordering', 'a.publish_up');
+		$ordering  = $this->getState('list.ordering', 'a.publish_up');
 		$direction = $this->getState('list.direction', 'DESC');
 
 		if (!empty($ordering))
@@ -171,16 +174,12 @@ class PodcastManagerModelFeed extends JModelList
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$input  = $app->input;
-		$params = JComponentHelper::getParams('com_podcastmanager');
 		$itemid = $input->getUint('feedname', 0) . ':' . $input->getUint('Itemid', 0);
-		$format = strtolower($input->getWord('format', 'html'));
 
 		// List state information
-		$feed = $input->getUint('feedname', 0);
-		$this->setState('feed.id', $feed);
+		$this->setState('feed.id', $input->getUint('feedname', 0));
 
-		$limitstart = $input->getUint('limitstart', 0);
-		$this->setState('list.start', $limitstart);
+		$this->setState('list.start', $input->getUint('limitstart', 0));
 
 		$orderCol = $app->getUserStateFromRequest(
 			'com_podcastmanager.feed.list.' . $itemid . '.filter_order', 'filter_order', '', 'string'
@@ -194,7 +193,7 @@ class PodcastManagerModelFeed extends JModelList
 		 * Assign our default limit based on request format; RAW is the RSS feed and as such should default to
 		 * displaying all items, otherwise we default to the app configuration
 		 */
-		$defaultLimit = ($format == 'raw') ? '*' : $app->get('list_limit', 20);
+		$defaultLimit = (strtolower($input->getWord('format', 'html')) == 'raw') ? '*' : $app->get('list_limit', 20);
 
 		$limit = $app->getUserStateFromRequest(
 			'com_podcastmanager.feed.list.' . $itemid . '.limit', 'limit', $defaultLimit, 'uint'
@@ -234,6 +233,6 @@ class PodcastManagerModelFeed extends JModelList
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the parameters.
-		$this->setState('params', $params);
+		$this->setState('params', JComponentHelper::getParams('com_podcastmanager'));
 	}
 }

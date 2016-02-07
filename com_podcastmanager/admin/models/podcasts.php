@@ -61,7 +61,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -138,7 +138,7 @@ class PodcastManagerModelPodcasts extends JModelList
 		}
 
 		// Handle the list ordering.
-		$ordering = $this->getState('list.ordering');
+		$ordering  = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
 
 		if (!empty($ordering))
@@ -185,41 +185,33 @@ class PodcastManagerModelPodcasts extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Initialise variables.
-		$input = JFactory::getApplication('administrator')->input;
-
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
 
-		$feedname = $input->get('feedname', '', 'var');
+		$feedname = JFactory::getApplication()->input->getUint('feedname', 0);
 
 		if ($feedname)
 		{
-			if ($feedname != $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', ''))
+			if ($feedname != $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', '', 'uint'))
 			{
 				$this->setState($this->context . '.filter.feedname', $feedname);
 			}
 		}
 		else
 		{
-			$feedname = $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', '');
+			$feedname = $this->getUserStateFromRequest($this->context . '.filter.feedname', 'filter_feedname', '', 'uint');
 		}
 
 		$this->setState('filter.feedname', $feedname);
 
-		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
+		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', ''));
 
-		$tag = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '');
-		$this->setState('filter.tag', $tag);
+		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', ''));
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_podcastmanager');
-		$this->setState('params', $params);
+		$this->setState('params', JComponentHelper::getParams('com_podcastmanager'));
 
 		// List state information.
 		parent::populateState('a.created', 'desc');

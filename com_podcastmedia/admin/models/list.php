@@ -127,10 +127,10 @@ class PodcastMediaModelList extends JModelLegacy
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_PODCASTMEDIA_BASE . '/');
 
 		$folders = [];
-		$audio = [];
+		$audio   = [];
 
 		// Get the list of files and folders from the given folder
-		$fileList = JFolder::files($basePath);
+		$fileList   = JFolder::files($basePath);
 		$folderList = JFolder::folders($basePath);
 
 		// Iterate over the files if they exist
@@ -140,12 +140,12 @@ class PodcastMediaModelList extends JModelLegacy
 			{
 				if (is_file($basePath . '/' . $file) && substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html')
 				{
-					$tmp = new stdClass;
-					$tmp->name = $file;
-					$tmp->title = $file;
-					$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $file));
+					$tmp                = new stdClass;
+					$tmp->name          = $file;
+					$tmp->title         = $file;
+					$tmp->path          = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $file));
 					$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-					$tmp->size = filesize($tmp->path);
+					$tmp->size          = filesize($tmp->path);
 
 					$ext = strtolower(JFile::getExt($file));
 
@@ -159,7 +159,7 @@ class PodcastMediaModelList extends JModelLegacy
 						case 'm4v':
 							$tmp->icon_32 = "media/mime-icon-32/" . $ext . ".png";
 							$tmp->icon_16 = "media/mime-icon-16/" . $ext . ".png";
-							$audio[] = $tmp;
+							$audio[]      = $tmp;
 							break;
 					}
 				}
@@ -171,13 +171,13 @@ class PodcastMediaModelList extends JModelLegacy
 		{
 			foreach ($folderList as $folder)
 			{
-				$tmp = new stdClass;
-				$tmp->name = basename($folder);
-				$tmp->path = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
+				$tmp                = new stdClass;
+				$tmp->name          = basename($folder);
+				$tmp->path          = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-				$count = PodcastMediaHelper::countFiles($tmp->path);
-				$tmp->files = $count[0];
-				$tmp->folders = $count[1];
+				$count              = PodcastMediaHelper::countFiles($tmp->path);
+				$tmp->files         = $count[0];
+				$tmp->folders       = $count[1];
 
 				$folders[] = $tmp;
 			}

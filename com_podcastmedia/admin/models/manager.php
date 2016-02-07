@@ -39,7 +39,7 @@ class PodcastMediaModelManager extends JModelLegacy
 
 		if (!$set)
 		{
-			$input = JFactory::getApplication()->input;
+			$input  = JFactory::getApplication()->input;
 			$folder = $input->getPath('folder', '');
 			$this->setState('folder', $folder);
 
@@ -73,24 +73,23 @@ class PodcastMediaModelManager extends JModelLegacy
 		}
 
 		// Corrections for Windows paths
-		$base = str_replace(DIRECTORY_SEPARATOR, '/', $base);
+		$base                   = str_replace(DIRECTORY_SEPARATOR, '/', $base);
 		$comPodcastMediaBaseUni = str_replace(DIRECTORY_SEPARATOR, '/', COM_PODCASTMEDIA_BASE);
 
 		// Get the list of folders
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
 
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_PODCASTMEDIA_INSERT_IMAGE'));
+		JFactory::getDocument()->setTitle(JText::_('COM_PODCASTMEDIA_INSERT_IMAGE'));
 
 		// Build the array of select options for the folder list
 		$options[] = JHtml::_('select.option', "", "/");
 
 		foreach ($folders as $folder)
 		{
-			$folder = str_replace($comPodcastMediaBaseUni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
-			$value = substr($folder, 1);
-			$text = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
+			$folder    = str_replace($comPodcastMediaBaseUni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
+			$value     = substr($folder, 1);
+			$text      = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
 			$options[] = JHtml::_('select.option', $value, $text);
 		}
 
@@ -101,8 +100,8 @@ class PodcastMediaModelManager extends JModelLegacy
 		}
 
 		// Get asset and author id
-		$input = JFactory::getApplication()->input;
-		$asset = $input->getInt('asset', 0);
+		$input  = JFactory::getApplication()->input;
+		$asset  = $input->getInt('asset', 0);
 		$author = $input->getInt('author', 0);
 
 		// Create the drop-down folder select list
@@ -122,7 +121,7 @@ class PodcastMediaModelManager extends JModelLegacy
 	/**
 	 * Creates a tree of folders
 	 *
-	 * @param   string  $base  The base file path
+	 * @param   string $base The base file path
 	 *
 	 * @return  array  An array containing the folders and their children
 	 *
@@ -142,16 +141,16 @@ class PodcastMediaModelManager extends JModelLegacy
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
 
-		$tree = array();
+		$tree = [];
 
 		foreach ($folders as $folder)
 		{
-			$folder = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
-			$name = substr($folder, strrpos($folder, '/') + 1);
+			$folder   = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
+			$name     = substr($folder, strrpos($folder, '/') + 1);
 			$relative = str_replace($mediaBase, '', $folder);
 			$absolute = $folder;
-			$path = explode('/', $relative);
-			$node = (object) ['name' => $name, 'relative' => $relative, 'absolute' => $absolute];
+			$path     = explode('/', $relative);
+			$node     = (object) ['name' => $name, 'relative' => $relative, 'absolute' => $absolute];
 
 			$tmp = &$tree;
 

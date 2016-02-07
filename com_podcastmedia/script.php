@@ -1,16 +1,16 @@
 <?php
 /**
-* Podcast Manager for Joomla!
-*
-* @package     PodcastManager
-* @subpackage  com_podcastmedia
-*
-* @copyright   Copyright (C) 2011-2015 Michael Babker. All rights reserved.
-* @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package     PodcastManager
+ * @subpackage  com_podcastmedia
+ *
+ * @copyright   Copyright (C) 2011-2015 Michael Babker. All rights reserved.
+ * @license     GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
 /**
  * Installation class to perform additional changes during install/uninstall/update
@@ -24,7 +24,7 @@ class Com_PodcastMediaInstallerScript
 	/**
 	 * Function to perform changes during update
 	 *
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -47,8 +47,8 @@ class Com_PodcastMediaInstallerScript
 	/**
 	 * Function to perform changes when component is initially installed
 	 *
-	 * @param   string               $type    The action being performed
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   string                      $type    The action being performed
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -69,7 +69,7 @@ class Com_PodcastMediaInstallerScript
 	private function getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))
@@ -102,7 +102,7 @@ class Com_PodcastMediaInstallerScript
 	 */
 	private function removeMenu()
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__menu'))
 			->where($db->quoteName('title') . ' = ' . $db->quote('com_podcastmedia'));

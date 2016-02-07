@@ -86,11 +86,11 @@ class PodcastManagerViewForm extends JViewLegacy
 		$this->user = JFactory::getUser();
 
 		// Get model data.
-		$this->state = $this->get('State');
-		$this->item = $this->get('Item');
-		$this->form = $this->get('Form');
+		$this->state       = $this->get('State');
+		$this->item        = $this->get('Item');
+		$this->form        = $this->get('Form');
 		$this->return_page = $this->get('ReturnPage');
-		$this->params = $this->state->params;
+		$this->params      = $this->state->params;
 
 		// Add the component media
 		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
@@ -142,12 +142,10 @@ class PodcastManagerViewForm extends JViewLegacy
 	protected function prepareDocument()
 	{
 		$app = JFactory::getApplication();
-		$menus = $app->getMenu();
-		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
+		$menu = $app->getMenu()->getActive();
 
 		if (empty($this->item->id))
 		{

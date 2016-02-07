@@ -21,8 +21,8 @@ $params->def('text', '');
 $params->def('urischeme', 'http');
 $params->def('plainlink', 1);
 
-$plainlink  = $params->get('otherlink', '');
-$feed       = $params->get('feedname', '');
+$plainlink = $params->get('otherlink', '');
+$feed      = $params->get('feedname', '');
 
 if (!$plainlink)
 {
@@ -37,7 +37,7 @@ if ($params->get('urischeme') == 'http')
 }
 else
 {
-	$link = str_replace(array('http:', 'https:'), $params->get('urischeme') . ':', $plainlink);
+	$link = str_replace(['http:', 'https:'], $params->get('urischeme') . ':', $plainlink);
 }
 
 require JModuleHelper::getLayoutPath('mod_podcastmanager', $params->get('layout', 'default'));

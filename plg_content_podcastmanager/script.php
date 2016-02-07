@@ -51,7 +51,7 @@ class PlgContentPodcastManagerInstallerScript
 	/**
 	 * Function to perform changes when plugin is initially installed
 	 *
-	 * @param   string  $parent  The function calling this method
+	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
 	 * @return  void
 	 *
@@ -94,7 +94,7 @@ class PlgContentPodcastManagerInstallerScript
 	 */
 	protected function activateButton()
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__extensions'))
 			->set($db->quoteName('enabled') . ' = 1')
@@ -121,7 +121,7 @@ class PlgContentPodcastManagerInstallerScript
 	private function getVersion()
 	{
 		// Get the record from the database
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))

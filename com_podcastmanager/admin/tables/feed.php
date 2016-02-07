@@ -76,13 +76,13 @@ class PodcastManagerTableFeed extends JTable
 	 *
 	 * @return  integer  The parent id
 	 *
-	 * @since   11.1
+	 * @since   2.0
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db = $this->getDbo();
+		$db      = $this->getDbo();
 
 		// Feeds are nested directly underneath the component.
 		if ($assetId === null)
@@ -115,8 +115,7 @@ class PodcastManagerTableFeed extends JTable
 	 * Overloaded bind function.
 	 *
 	 * @param   array   $array   Named array
-	 * @param   string  $ignore  An optional array or space separated list of properties
-	 *                           to ignore while binding.
+	 * @param   string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  mixed  Null if operation was satisfactory, otherwise returns an error
 	 *
@@ -188,7 +187,7 @@ class PodcastManagerTableFeed extends JTable
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified = $date->toSql();
+			$this->modified    = $date->toSql();
 			$this->modified_by = $user->id;
 		}
 		else

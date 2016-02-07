@@ -82,7 +82,7 @@ class PodcastManagerTablePodcast extends JTable
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db = $this->getDbo();
+		$db      = $this->getDbo();
 
 		// This is a podcast in a feed.
 		if ($this->feedname > 0)
@@ -133,8 +133,7 @@ class PodcastManagerTablePodcast extends JTable
 	 * Overloaded bind function.
 	 *
 	 * @param   array   $array   Named array
-	 * @param   string  $ignore  An optional array or space separated list of properties
-	 *                           to ignore while binding.
+	 * @param   string  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  mixed  Null if operation was satisfactory, otherwise returns an error
 	 *
@@ -199,7 +198,7 @@ class PodcastManagerTablePodcast extends JTable
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified = $date->toSql();
+			$this->modified    = $date->toSql();
 			$this->modified_by = $user->id;
 		}
 		else
@@ -219,7 +218,7 @@ class PodcastManagerTablePodcast extends JTable
 			// Get the boilerplate info
 			if ($this->feedname !== 0)
 			{
-				$db = $this->getDbo();
+				$db    = $this->getDbo();
 				$query = $db->getQuery(true)
 					->select($db->quoteName(['bp_position', 'boilerplate']))
 					->from($db->quoteName('#__podcastmanager_feeds'))

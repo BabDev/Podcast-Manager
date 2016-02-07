@@ -69,8 +69,8 @@ class PodcastManagerControllerForm extends JControllerForm
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user = JFactory::getUser();
-		$userId = $user->id;
+		$user     = JFactory::getUser();
+		$userId   = $user->id;
 
 		// Check general edit permission first.
 		if ($user->authorise('core.edit', 'com_podcastmanager'))
@@ -135,8 +135,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * Method to edit an existing record.
 	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
-	 *                           (sometimes required to avoid router collisions).
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
 	 * @return  boolean  True if access level check and checkout passes, false otherwise.
 	 *
@@ -145,10 +144,9 @@ class PodcastManagerControllerForm extends JControllerForm
 	public function edit($key = null, $urlVar = 'feedname')
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication();
-		$model = $this->getModel();
-		$table = $model->getTable();
-		$cid = $this->input->post->get('cid', []);
+		$model   = $this->getModel();
+		$table   = $model->getTable();
+		$cid     = $this->input->post->get('cid', []);
 		$context = "$this->option.edit.$this->context";
 
 		// Determine the name of the primary key for the data.
@@ -165,14 +163,18 @@ class PodcastManagerControllerForm extends JControllerForm
 
 		// Get the previous record id (if any) and the current record id.
 		$recordId = (int) (count($cid) ? $cid[0] : $this->input->get($urlVar, '', 'int'));
-		$checkin = property_exists($table, 'checked_out');
+		$checkin  = property_exists($table, 'checked_out');
 
 		// Access check.
-		if (!$this->allowEdit(array($key => $recordId), $key))
+		if (!$this->allowEdit([$key => $recordId], $key))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(), false));
+			$this->setRedirect(
+				JRoute::_(
+					'index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(), false
+				)
+			);
 
 			return false;
 		}
@@ -183,19 +185,21 @@ class PodcastManagerControllerForm extends JControllerForm
 			// Check-out failed, display a notice but allow the user to see the record.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKOUT_FAILED', $model->getError()));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($recordId, $urlVar));
+			$this->setRedirect(
+				'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($recordId, $urlVar)
+			);
 
 			return false;
 		}
-		else
-		{
-			// Check-out succeeded, push the new record id into the session.
-			$this->holdEditId($context, $recordId);
-			$app->setUserState($context . '.data', null);
-			$this->setRedirect('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($recordId, $urlVar));
 
-			return true;
-		}
+		// Check-out succeeded, push the new record id into the session.
+		$this->holdEditId($context, $recordId);
+		JFactory::getApplication()->setUserState($context . '.data', null);
+		$this->setRedirect(
+			'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($recordId, $urlVar)
+		);
+
+		return true;
 	}
 
 	/**
@@ -209,7 +213,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 *
 	 * @since   1.8
 	 */
-	public function getModel($name = 'Form', $prefix = 'PodcastManagerModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Form', $prefix = 'PodcastManagerModel', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
@@ -227,7 +231,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId = $this->input->get('Itemid', '', 'int');
+		$itemId = $this->input->getUint('Itemid', 0);
 		$return = $this->getReturnPage();
 
 		if ($itemId)
@@ -252,7 +256,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		$return = $this->input->get('return', null, 'base64');
+		$return = $this->input->getBase64('return', null);
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
 		{
@@ -272,11 +276,9 @@ class PodcastManagerControllerForm extends JControllerForm
 	 *
 	 * @since   1.8
 	 */
-	protected function postSaveHook(JModelLegacy $model, $validData = array())
+	protected function postSaveHook(JModelLegacy $model, $validData = [])
 	{
-		$task = $this->getTask();
-
-		if ($task == 'save')
+		if ($this->getTask() == 'save')
 		{
 			$this->setRedirect(JRoute::_('index.php?option=com_podcastmanager&view=feed&feedname=' . $validData['feedname'], false));
 		}
@@ -286,8 +288,7 @@ class PodcastManagerControllerForm extends JControllerForm
 	 * Method to save a record.
 	 *
 	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
-	 *                           (sometimes required to avoid router collisions).
+	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
 	 * @return  boolean  True if successful, false otherwise.
 	 *

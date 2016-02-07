@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Podcast edit controller class.
  *
@@ -32,22 +34,15 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 *
 	 * @since   2.0
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
-		$user = JFactory::getUser();
-		$feedId = JArrayHelper::getValue($data, 'feedname', JFactory::getApplication()->input->get('filter_feedname', '', 'int'), 'int');
-		$allow = null;
+		$feedId = ArrayHelper::getValue($data, 'feedname', $this->input->get('filter_feedname', '', 'int'), 'int');
 
 		if ($feedId)
 		{
 			// If the feed has been passed in the data or URL check it.
-			$allow = $user->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
-		}
-
-		if ($allow !== null)
-		{
-			return $allow;
+			return JFactory::getUser()->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
 		}
 
 		// In the absence of better information, revert to the component permissions.
@@ -64,12 +59,12 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 *
 	 * @since   2.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user = JFactory::getUser();
-		$userId = $user->get('id');
+		$user     = JFactory::getUser();
+		$userId   = $user->get('id');
 
 		// Check feed edit permission.
 		if ($user->authorise('core.edit', 'com_podcastmanager.podcast.' . $recordId))

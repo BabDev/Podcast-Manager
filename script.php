@@ -87,19 +87,6 @@ class Pkg_PodcastManagerInstallerScript
 	}
 
 	/**
-	 * Function to perform changes during uninstall
-	 *
-	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
-	 *
-	 * @return  void
-	 *
-	 * @since   2.1
-	 */
-	public function uninstall($parent)
-	{
-	}
-
-	/**
 	 * Function to perform changes during update
 	 *
 	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
@@ -142,9 +129,9 @@ class Pkg_PodcastManagerInstallerScript
 	public function postflight($type, $parent, $results)
 	{
 		// Determine whether each extension is enabled or not
-		$enabled = array();
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
+		$enabled = [];
+		$db      = JFactory::getDbo();
+		$query   = $db->getQuery(true)
 			->select($db->quoteName('enabled'))
 			->from($db->quoteName('#__extensions'));
 
@@ -236,7 +223,7 @@ class Pkg_PodcastManagerInstallerScript
 		}
 
 		// Get the record from the database
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))
@@ -280,7 +267,7 @@ class Pkg_PodcastManagerInstallerScript
 		jimport('joomla.filesystem.file');
 
 		// First, the array of folders we need to get the children for
-		$folders = array('html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager');
+		$folders = ['html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager'];
 
 		// Set up our base path
 		$base = JPATH_ADMINISTRATOR . '/templates/isis/';
@@ -317,7 +304,7 @@ class Pkg_PodcastManagerInstallerScript
 		$failed = false;
 
 		// We need to get the extension ID for our Strapped layouts first
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('extension_id'))
 			->from($db->quoteName('#__extensions'))

@@ -12,18 +12,16 @@ defined('_JEXEC') or die();
  */
 class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
-	var $_extensionName			= 'pkg_podcastmanager';
-	var $_extensionTitle		= 'Podcast Manager';
-	var $_requiresAuthorization	= false;
-	var $_updateURL				= 'https://www.babdev.com/index.php?option=com_ars&view=update&format=ini&id=3';
-	var $_versionStrategy		= 'different';
-	var $_xmlFilename			= 'pkg_podcastmanager.xml';
+	protected $_extensionName = 'pkg_podcastmanager';
+	protected $_extensionTitle = 'Podcast Manager';
+	protected $_requiresAuthorization = false;
+	protected $_updateURL = 'https://www.babdev.com/index.php?option=com_ars&view=update&format=ini&id=3';
+	protected $_versionStrategy = 'different';
+	protected $_xmlFilename = 'pkg_podcastmanager.xml';
 
-	function __construct()
+	public function __construct()
 	{
-		jimport('joomla.application.component.helper');
-		$podmanparams			= JComponentHelper::getParams('com_podcastmanager');
-		$this->_minStability	= $podmanparams->get('minstability', 'alpha');
+		$this->_minStability = JComponentHelper::getParams('com_podcastmanager')->get('minstability', 'alpha');
 		parent::__construct();
 	}
 }

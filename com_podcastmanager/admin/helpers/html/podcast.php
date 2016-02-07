@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * HTML Utility class for Podcast Manager
  *
@@ -40,15 +42,15 @@ abstract class JHtmlPodcast
 	 *
 	 * @since   1.8
 	 */
-	public static function feeds($config = array('filter.published' => array(0, 1)))
+	public static function feeds($config = ['filter.published' => [0, 1]])
 	{
 		$hash = md5('com_podcastmanager.' . serialize($config));
 
 		if (!isset(static::$items[$hash]))
 		{
 			$config = (array) $config;
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
+			$db     = JFactory::getDbo();
+			$query  = $db->getQuery(true)
 				->select($db->quoteName(['a.id', 'a.name']))
 				->from($db->quoteName('#__podcastmanager_feeds', 'a'));
 
@@ -61,8 +63,7 @@ abstract class JHtmlPodcast
 				}
 				elseif (is_array($config['filter.published']))
 				{
-					JArrayHelper::toInteger($config['filter.published']);
-					$query->where($db->quoteName('a.published') . ' IN (' . implode(',', $config['filter.published']) . ')');
+					$query->where($db->quoteName('a.published') . ' IN (' . implode(',', ArrayHelper::toInteger($config['filter.published'])) . ')');
 				}
 			}
 

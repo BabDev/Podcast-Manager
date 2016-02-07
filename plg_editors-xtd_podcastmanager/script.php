@@ -51,7 +51,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	/**
 	 * Function to perform changes when plugin is initially installed
 	 *
-	 * @param   string  $parent  The function calling this method
+	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
 	 * @return  void
 	 *
@@ -71,7 +71,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	 */
 	protected function activateButton()
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__extensions'))
 			->set($db->quoteName('enabled') . ' = 1')

@@ -163,7 +163,7 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 
 		// Set the route to the Feed HTML view since there is not a single podcast view
 		$item->route = PodcastManagerHelperRoute::getFeedHtmlRoute($item->feedname);
-		$item->path = FinderIndexerHelper::getContentPath($item->route);
+		$item->path  = FinderIndexerHelper::getContentPath($item->route);
 
 		// Set the language.
 		$item->language = FinderIndexerHelper::getDefaultLanguage();
@@ -204,7 +204,7 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	/**
 	 * Method to get the SQL query used to retrieve the list of content items.
 	 *
-	 * @param   mixed  $sql  A JDatabaseQuery object or null.
+	 * @param   JDatabaseQuery  $sql  A JDatabaseQuery object or null.
 	 *
 	 * @return  JDatabaseQuery  A database object.
 	 *
@@ -255,7 +255,7 @@ class PlgFinderPodcastManager_Podcasts extends FinderIndexerAdapter
 	 *
 	 * @since   2.0
 	 */
-	protected  function getStateQuery()
+	protected function getStateQuery()
 	{
 		$sql = $this->db->getQuery(true);
 		$sql->select($this->db->quoteName('a.id'));

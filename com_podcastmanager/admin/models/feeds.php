@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Feed management model class.
  *
@@ -78,11 +80,11 @@ class PodcastManagerModelFeeds extends JModelList
 		// Getting the following metric by joins is WAY TOO SLOW.
 
 		// Get the feeds in the list.
-		$db = $this->getDbo();
-		$feedNames = JArrayHelper::getColumn($items, 'id');
+		$db        = $this->getDbo();
+		$feedNames = ArrayHelper::getColumn($items, 'id');
 
 		// Quote the strings.
-		$feedNames = implode(',', array_map(array($db, 'quote'), $feedNames));
+		$feedNames = implode(',', array_map([$db, 'quote'], $feedNames));
 
 		// Get the published feed counts.
 		$query = $db->getQuery(true)
@@ -138,9 +140,9 @@ class PodcastManagerModelFeeds extends JModelList
 		// Inject the values back into the array.
 		foreach ($items as $item)
 		{
-			$item->count_published = isset($countPublished[$item->id]) ? $countPublished[$item->id] : 0;
+			$item->count_published   = isset($countPublished[$item->id]) ? $countPublished[$item->id] : 0;
 			$item->count_unpublished = isset($countUnpublished[$item->id]) ? $countUnpublished[$item->id] : 0;
-			$item->count_trashed = isset($countTrashed[$item->id]) ? $countTrashed[$item->id] : 0;
+			$item->count_trashed     = isset($countTrashed[$item->id]) ? $countTrashed[$item->id] : 0;
 		}
 
 		// Add the items to the internal cache.
@@ -159,7 +161,7 @@ class PodcastManagerModelFeeds extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
 		// Select the needed fields from the table.
@@ -198,7 +200,7 @@ class PodcastManagerModelFeeds extends JModelList
 		}
 
 		// Handle the list ordering.
-		$ordering = $this->getState('list.ordering');
+		$ordering  = $this->getState('list.ordering');
 		$direction = $this->getState('list.direction');
 
 		if (!empty($ordering))
@@ -224,18 +226,14 @@ class PodcastManagerModelFeeds extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Load the filter state.
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.published', $published);
+		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
 
-		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
+		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', ''));
 
-		$search = $this->getUserStateFromRequest($this->context . '.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.search', 'filter_search'));
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_podcastmanager');
-		$this->setState('params', $params);
+		$this->setState('params', JComponentHelper::getParams('com_podcastmanager'));
 
 		// List state information.
 		parent::populateState('a.id', 'asc');

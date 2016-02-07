@@ -35,10 +35,9 @@ class PodcastManagerController extends JControllerLegacy
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
-	 *                               for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  PodcastManagerController  Instance of $this to support chaining.
+	 * @return  $this
 	 *
 	 * @since   1.6
 	 */
@@ -46,9 +45,9 @@ class PodcastManagerController extends JControllerLegacy
 	{
 		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
 
-		$view = $this->input->get('view', $this->default_view, 'word');
+		$view   = $this->input->get('view', $this->default_view, 'word');
 		$layout = $this->input->get('layout', $this->default_view, 'word');
-		$id = $this->input->get('id', null, 'int');
+		$id     = $this->input->get('id', null, 'int');
 
 		// Check for edit form.
 		if ($view == 'feed' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.feed', $id))
@@ -60,7 +59,8 @@ class PodcastManagerController extends JControllerLegacy
 
 			return false;
 		}
-		elseif ($view == 'podcast' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))
+
+		if ($view == 'podcast' && $layout == 'edit' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
 			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));

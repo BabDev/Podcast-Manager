@@ -44,8 +44,8 @@ class PodcastManagerRouter extends JComponentRouterBase
 			$menuItem = $menu->getItem($query['Itemid']);
 		}
 
-		$mView	= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-		$mId	= (empty($menuItem->query['feedname'])) ? null : $menuItem->query['feedname'];
+		$mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+		$mId   = (empty($menuItem->query['feedname'])) ? null : $menuItem->query['feedname'];
 
 		if (isset($query['view']))
 		{
@@ -112,7 +112,7 @@ class PodcastManagerRouter extends JComponentRouterBase
 	/**
 	 * Parse the segments of a URL.
 	 *
-	 * @param   array &$segments The segments of the URL to parse.
+	 * @param   array  &$segments  The segments of the URL to parse.
 	 *
 	 * @return  array  The URL attributes to be used by the application.
 	 *
@@ -128,7 +128,7 @@ class PodcastManagerRouter extends JComponentRouterBase
 			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
 		}
 
-		$app  = JFactory::getApplication();
+		$app   = JFactory::getApplication();
 		$input = $app->input;
 
 		// Get the active menu item.

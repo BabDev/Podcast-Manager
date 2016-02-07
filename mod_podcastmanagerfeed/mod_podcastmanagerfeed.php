@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 JLoader::register('ModPodcastManagerFeedHelper', __DIR__ . '/helper.php');
 
-$list = ModPodcastManagerFeedHelper::getList($params);
+$list            = ModPodcastManagerFeedHelper::getList($params);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
 require JModuleHelper::getLayoutPath('mod_podcastmanagerfeed', $params->get('layout', 'default'));

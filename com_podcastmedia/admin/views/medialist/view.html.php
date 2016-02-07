@@ -70,7 +70,7 @@ class PodcastMediaViewMedialist extends JViewLegacy
 		JFactory::getApplication()->allowCache(false);
 
 		$params = JComponentHelper::getParams('com_podcastmedia');
-		$style = $params->get('layout', 'thumbs');
+		$style  = $params->get('layout', 'thumbs');
 
 		JHtml::_('behavior.framework', true);
 
@@ -88,9 +88,9 @@ JS;
 		JFactory::getDocument()->addScriptDeclaration($js);
 
 		$this->baseURL = JUri::root();
-		$this->audio = $this->get('Audio');
+		$this->audio   = $this->get('Audio');
 		$this->folders = $this->get('Folders');
-		$this->state = $this->get('State');
+		$this->state   = $this->get('State');
 
 		return parent::display($tpl);
 	}

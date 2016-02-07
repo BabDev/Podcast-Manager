@@ -64,7 +64,7 @@ abstract class PodcastManagerHelperRoute
 
 		// Set some vars for further processing
 		static::$format = 'html';
-		static::$type = 'feed';
+		static::$type   = 'feed';
 
 		if ($id < 1)
 		{
@@ -108,7 +108,7 @@ abstract class PodcastManagerHelperRoute
 
 		// Set some vars for further processing
 		static::$format = 'raw';
-		static::$type = 'feed';
+		static::$type   = 'feed';
 
 		if ($id < 1)
 		{
@@ -222,18 +222,14 @@ abstract class PodcastManagerHelperRoute
 	 */
 	protected static function findItem($needles = null)
 	{
-		$app = JFactory::getApplication();
-		$menus = $app->getMenu('site');
+		$menus = JFactory::getApplication()->getMenu('site');
 
 		// Prepare the reverse lookup array.
 		if (static::$lookup === null)
 		{
 			static::$lookup = [];
 
-			$component = JComponentHelper::getComponent('com_podcastmanager');
-			$items = $menus->getItems('component_id', $component->id);
-
-			foreach ($items as $item)
+			foreach ($menus->getItems('component_id', JComponentHelper::getComponent('com_podcastmanager')->id) as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
 				{

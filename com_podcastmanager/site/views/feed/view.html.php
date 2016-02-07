@@ -96,12 +96,12 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		// Initialise the params and user objects
 		$this->params = $app->getParams();
-		$this->user = JFactory::getUser();
+		$this->user   = JFactory::getUser();
 
 		// Get some data from the models
-		$this->state = $this->get('State');
-		$this->items = $this->get('Items');
-		$this->feed = $this->get('Feed');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->feed       = $this->get('Feed');
 		$this->pagination = $this->get('Pagination');
 
 		// Items shortcut
@@ -118,7 +118,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Prepare the content (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			$item = &$items[$i];
+			$item         = &$items[$i];
 			$item->player = '{podcast ' . $item->title . '}';
 
 			// Set the text object to prevent errors with other plugins
@@ -164,12 +164,9 @@ class PodcastManagerViewFeed extends JViewLegacy
 	protected function prepareDocument($feed)
 	{
 		$app = JFactory::getApplication();
-		$menus = $app->getMenu();
-		$pathway = $app->getPathway();
 
-		// Because the application sets a default page title,
-		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
+		// Because the application sets a default page title, we need to get it from the menu item itself
+		$menu = $app->getMenu()->getActive();
 
 		if ($menu)
 		{
@@ -188,6 +185,8 @@ class PodcastManagerViewFeed extends JViewLegacy
 			$path = [['title' => $this->feed->name, 'link' => '']];
 
 			$path = array_reverse($path);
+
+			$pathway = $app->getPathway();
 
 			foreach ($path as $item)
 			{
@@ -235,7 +234,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		// Add alternative feed link
 		if (isset($this->feed->id) && $this->params->get('show_feed_link', 1) == 1)
 		{
-			$link	= '&format=raw&layout=default&feedname=' . $this->feed->id;
+			$link    = '&format=raw&layout=default&feedname=' . $this->feed->id;
 			$attribs = ['type' => 'application/rss+xml', 'title' => 'RSS 2.0'];
 			$this->document->addHeadLink(JRoute::_($link), 'alternate', 'rel', $attribs);
 		}

@@ -15,6 +15,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Podcast edit model class.
@@ -56,7 +57,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		$pks = ArrayHelper::toInteger($pks);
 
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -75,7 +76,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 
 		if (!empty($commands))
 		{
-			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = ArrayHelper::getValue($commands, 'move_copy', 'c');
 
 			if ($cmd == 'c')
 			{
@@ -147,7 +148,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 		$feedId = (int) $value;
 
 		$table = $this->getTable();
-		$i = 0;
+		$i     = 0;
 
 		// Check that the feed exists
 		if ($feedId != '0')
@@ -214,7 +215,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			}
 
 			// Alter the title & alias
-			$data = $this->generateNewTitle($feedId, $table->alias, $table->title);
+			$data         = $this->generateNewTitle($feedId, $table->alias, $table->title);
 			$table->title = 'Copy of ' . $table->title;
 			$table->alias = $data['1'];
 
@@ -244,7 +245,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 			$newId = $table->id;
 
 			// Add the new ID to the array
-			$newIds[$i]	= $newId;
+			$newIds[$i] = $newId;
 			$i++;
 		}
 
@@ -430,9 +431,9 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @param   string   $alias        The alias.
 	 * @param   string   $title        The title.
 	 *
-	 * @return	array  Contains the modified title and alias.
+	 * @return  array  Contains the modified title and alias.
 	 *
-	 * @since	2.1
+	 * @since   2.1
 	 */
 	protected function generateNewTitle($category_id, $alias, $title)
 	{
@@ -454,7 +455,7 @@ class PodcastManagerModelPodcast extends JModelAdmin
 	 * @param   array    $data      Data for the form.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  JForm|boolean  A JForm object on success, false on failure
 	 *
 	 * @since   1.6
 	 */

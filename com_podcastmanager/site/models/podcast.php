@@ -14,6 +14,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Podcast edit model class.
  *
@@ -45,7 +47,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	 * @param   array    $data      Data for the form.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return  mixed  A JForm object on success, false on failure
+	 * @return  JForm|boolean  A JForm object on success, false on failure
 	 *
 	 * @since   1.8
 	 */
@@ -65,7 +67,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	/**
 	 * Method to get an object.
 	 *
-	 * @param   integer  $id  The id of the object to get.
+	 * @param   integer $id The id of the object to get.
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 *
@@ -98,8 +100,7 @@ class PodcastManagerModelPodcast extends JModelForm
 				}
 
 				// Convert the JTable to a clean JObject.
-				$properties = $table->getProperties(1);
-				$this->item = JArrayHelper::toObject($properties, 'JObject');
+				$this->item = ArrayHelper::toObject($table->getProperties(1), 'JObject');
 			}
 			elseif ($error = $table->getError())
 			{
@@ -167,15 +168,13 @@ class PodcastManagerModelPodcast extends JModelForm
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication();
+		$app   = JFactory::getApplication();
 		$input = $app->input;
 
 		// Load state from the request.
-		$pk = $input->getUint('p_id', '');
-		$this->setState('podcast.id', $pk);
+		$this->setState('podcast.id', $input->getUint('p_id', 0));
 
-		$feedId = $input->getUint('feedname', '');
-		$this->setState('podcast.feedname', $feedId);
+		$this->setState('podcast.feedname', $input->getUint('feedname', 0));
 
 		$return = $input->getBase64('return', null);
 
@@ -187,8 +186,7 @@ class PodcastManagerModelPodcast extends JModelForm
 		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
-		$params = $app->getParams();
-		$this->setState('params', $params);
+		$this->setState('params', $app->getParams());
 
 		$this->setState('layout', $input->getCmd('layout', ''));
 	}
@@ -206,10 +204,10 @@ class PodcastManagerModelPodcast extends JModelForm
 	{
 		// Initialise variables;
 		$dispatcher = JEventDispatcher::getInstance();
-		$table = $this->getTable();
-		$key = $table->getKeyName();
-		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
-		$isNew = true;
+		$table      = $this->getTable();
+		$key        = $table->getKeyName();
+		$pk         = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		$isNew      = true;
 
 		// Include the content plugins for the on save events.
 		JPluginHelper::importPlugin('content');

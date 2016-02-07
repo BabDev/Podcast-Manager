@@ -83,7 +83,7 @@ class PodcastMediaViewMedia extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$medmanparams = JComponentHelper::getParams('com_media');
-		$params = JComponentHelper::getParams('com_podcastmedia');
+		$params       = JComponentHelper::getParams('com_podcastmedia');
 
 		$style = $params->get('layout', 'thumbs');
 
@@ -121,12 +121,12 @@ JS;
 		 */
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$this->session = JFactory::getSession();
+		$this->session      = JFactory::getSession();
 		$this->medmanparams = $medmanparams;
-		$this->state = $this->get('state');
-		$this->require_ftp = $ftp;
-		$this->folders_id = ' id="media-tree"';
-		$this->folders = $this->get('folderTree');
+		$this->state        = $this->get('state');
+		$this->require_ftp  = $ftp;
+		$this->folders_id   = ' id="media-tree"';
+		$this->folders      = $this->get('folderTree');
 
 		// Set the toolbar
 		$this->addToolbar();
@@ -146,7 +146,7 @@ JS;
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar  = JToolBar::getInstance('toolbar');
 		$user = JFactory::getUser();
 
 		// Set the titlebar text
@@ -210,13 +210,13 @@ JS;
 	protected function getFolderLevel($folder)
 	{
 		$this->folders_id = null;
-		$txt = null;
+		$txt              = null;
 
 		if (isset($folder['children']) && count($folder['children']))
 		{
-			$tmp = $this->folders;
+			$tmp           = $this->folders;
 			$this->folders = $folder;
-			$txt = $this->loadTemplate('folders');
+			$txt           = $this->loadTemplate('folders');
 			$this->folders = $tmp;
 		}
 

@@ -45,7 +45,7 @@ class JFormFieldFeedName extends JFormFieldList
 		// Initialize variables.
 		$options = [];
 
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName(['a.id', 'a.name'], ['value', 'text']))
 			->from($db->quoteName('#__podcastmanager_feeds', 'a'))

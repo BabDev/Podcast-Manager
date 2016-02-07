@@ -159,9 +159,9 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 		}
 
 		// Build the necessary route and path information.
-		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
+		$item->url   = $this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = PodcastManagerHelperRoute::getFeedHtmlRoute($item->id);
-		$item->path = FinderIndexerHelper::getContentPath($item->route);
+		$item->path  = FinderIndexerHelper::getContentPath($item->route);
 
 		// Set the language.
 		$item->language = FinderIndexerHelper::getDefaultLanguage();
@@ -202,7 +202,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	/**
 	 * Method to get the SQL query used to retrieve the list of content items.
 	 *
-	 * @param   mixed  $sql  A JDatabaseQuery object or null.
+	 * @param   JDatabaseQuery  $sql  A JDatabaseQuery object or null.
 	 *
 	 * @return  JDatabaseQuery  A database object.
 	 *

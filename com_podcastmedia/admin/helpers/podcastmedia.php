@@ -21,23 +21,8 @@ defined('_JEXEC') or die;
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-abstract class PodcastMediaHelper
+class PodcastMediaHelper extends JHelperMedia
 {
-	/**
-	 * Gets the icon type
-	 *
-	 * @param   string  $fileName  The filename
-	 *
-	 * @return  string  The file's extension
-	 *
-	 * @since   1.6
-	 */
-	public static function getTypeIcon($fileName)
-	{
-		// Get file extension
-		return strtolower(substr($fileName, strrpos($fileName, '.') + 1));
-	}
-
 	/**
 	 * Checks if the file can be uploaded
 	 *
@@ -71,7 +56,7 @@ abstract class PodcastMediaHelper
 		$format = strtolower(JFile::getExt($file['name']));
 
 		$allowable = explode(',', 'mp3,m4a,mov,mp4,m4v');
-		$ignored = explode(',', $medmanparams->get('ignore_extensions'));
+		$ignored   = explode(',', $medmanparams->get('ignore_extensions'));
 
 		if ($format == '' || $format == false || (!in_array($format, $allowable) && !in_array($format, $ignored)))
 		{
@@ -89,9 +74,6 @@ abstract class PodcastMediaHelper
 			return false;
 		}
 
-		$user = JFactory::getUser();
-		$imginfo = null;
-
 		if ($medmanparams->get('restrict_uploads', 1))
 		{
 			if (!in_array($format, $ignored))
@@ -104,7 +86,7 @@ abstract class PodcastMediaHelper
 				{
 					// We have fileinfo
 					$finfo = finfo_open(FILEINFO_MIME);
-					$type = finfo_file($finfo, $file['tmp_name']);
+					$type  = finfo_file($finfo, $file['tmp_name']);
 
 					if (strlen($type) && !in_array($type, $allowed_mime) && in_array($type, $illegal_mime))
 					{
@@ -131,7 +113,7 @@ abstract class PodcastMediaHelper
 					}
 					else
 					{
-						if (!$user->authorise('core.manage', 'com_podcastmanager'))
+						if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager'))
 						{
 							$err = 'COM_PODCASTMEDIA_ERROR_WARNNOTADMIN';
 
@@ -166,43 +148,5 @@ abstract class PodcastMediaHelper
 		}
 
 		return true;
-	}
-
-	/**
-	 * Count the number of files in a directory
-	 *
-	 * @param   string  $dir  Path to the directory to be counted
-	 *
-	 * @return  array  An array containing the number of files and folders
-	 *
-	 * @since   1.6
-	 */
-	public static function countFiles($dir)
-	{
-		$total_file = 0;
-		$total_dir = 0;
-
-		if (is_dir($dir))
-		{
-			$d = dir($dir);
-
-			while (false !== ($entry = $d->read()))
-			{
-				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false
-					&& strpos($entry, '.php') === false)
-				{
-					$total_file++;
-				}
-
-				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry))
-				{
-					$total_dir++;
-				}
-			}
-
-			$d->close();
-		}
-
-		return array($total_file, $total_dir);
 	}
 }

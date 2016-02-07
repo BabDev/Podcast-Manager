@@ -86,17 +86,17 @@ class PodcastManagerViewCpanel extends JViewLegacy
 
 		// Set the icons
 		$iconBase = JUri::root() . 'media/podcastmanager/images/icons/';
-		$icons = array(
-			'feeds' => $iconBase . 'feeds.png',
+		$icons    = [
+			'feeds'    => $iconBase . 'feeds.png',
 			'podcasts' => $iconBase . 'podcasts.png',
-			'files' => $iconBase . 'files.png'
-		);
+			'files'    => $iconBase . 'files.png'
+		];
 
 		// Set the BS classes
 		$classes = [
-			'feeds' => 'feed',
+			'feeds'    => 'feed',
 			'podcasts' => 'broadcast',
-			'files' => 'pictures'
+			'files'    => 'pictures'
 		];
 
 		// Build the buttons array
@@ -114,7 +114,7 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			}
 
 			$button['image'] = $classes[$view];
-			$button['text'] = JText::_('COM_PODCASTMANAGER_SUBMENU_' . strtoupper($view));
+			$button['text']  = JText::_('COM_PODCASTMANAGER_SUBMENU_' . strtoupper($view));
 
 			$buttons[] = $button;
 		}

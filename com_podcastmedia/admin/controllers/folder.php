@@ -37,8 +37,6 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		$user  = JFactory::getUser();
-
 		// Get some data from the request
 		$tmpl   = $this->input->getCmd('tmpl', '');
 		$paths  = $this->input->get('rm', [], 'array');
@@ -60,7 +58,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 			return true;
 		}
 
-		if (!$user->authorise('core.delete', 'com_podcastmanager'))
+		if (!JFactory::getUser()->authorise('core.delete', 'com_podcastmanager'))
 		{
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
@@ -94,8 +92,8 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 					continue;
 				}
 
-				$fullPath = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
-				$object_file = new JObject(array('filepath' => $fullPath));
+				$fullPath    = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $folder, $path]));
+				$object_file = new JObject(['filepath' => $fullPath]);
 
 				if (is_file($object_file->filepath))
 				{
@@ -179,7 +177,6 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		$user = JFactory::getUser();
 		$folder = $this->input->getCmd('foldername', '');
 
 		$folderCheck = (string) $this->input->getRaw('foldername', null);
@@ -189,7 +186,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 
 		if (strlen($folder) > 0)
 		{
-			if (!$user->authorise('core.create', 'com_podcastmanager'))
+			if (!JFactory::getUser()->authorise('core.create', 'com_podcastmanager'))
 			{
 				// User is not authorised to delete
 				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
@@ -217,7 +214,7 @@ class PodcastMediaControllerFolder extends JControllerLegacy
 				$object_file = new JObject(['filepath' => $path]);
 				JPluginHelper::importPlugin('content');
 				$dispatcher = JEventDispatcher::getInstance();
-				$result = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.folder', &$object_file]);
+				$result     = $dispatcher->trigger('onContentBeforeSave', ['com_podcastmedia.folder', &$object_file]);
 
 				if (in_array(false, $result, true))
 				{

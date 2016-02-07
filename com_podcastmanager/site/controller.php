@@ -49,37 +49,32 @@ class PodcastManagerController extends JControllerLegacy
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
-	 *                               for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  $this
 	 *
 	 * @since   1.6
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = true, $urlparams = [])
 	{
-		// Initialise variables.
-		$cachable = true;
-		$user = JFactory::getUser();
-
 		// Set the default view name and format from the Request.
-		$id = $this->input->getUint('p_id', '');
+		$id    = $this->input->getUint('p_id', '');
 		$vName = $this->input->getCmd('view', 'feed');
 		$this->input->set('view', $vName);
 
-		if ($user->id || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
+		if (JFactory::getUser()->id || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
 		{
 			$cachable = false;
 		}
 
 		$safeurlparams = [
-			'id' => 'INT',
-			'feedname' => 'INT',
-			'limit' => 'INT',
-			'limitstart' => 'INT',
-			'filter_order' => 'CMD',
+			'id'               => 'INT',
+			'feedname'         => 'INT',
+			'limit'            => 'INT',
+			'limitstart'       => 'INT',
+			'filter_order'     => 'CMD',
 			'filter_order_Dir' => 'CMD',
-			'lang' => 'CMD'
+			'lang'             => 'CMD'
 		];
 
 		// Check for edit form.

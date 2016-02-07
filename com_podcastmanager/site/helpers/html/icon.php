@@ -61,7 +61,7 @@ abstract class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date = JHtml::_('date', $feed->created);
+		$date   = JHtml::_('date', $feed->created);
 		$author = $feed->author;
 
 		$overlib .= '&lt;br /&gt;';
@@ -113,7 +113,7 @@ abstract class JHtmlIcon
 			$overlib = JText::_('JPUBLISHED');
 		}
 
-		$date = JHtml::_('date', $podcast->created);
+		$date   = JHtml::_('date', $podcast->created);
 		$author = $podcast->itAuthor;
 
 		$overlib .= '&lt;br /&gt;';
