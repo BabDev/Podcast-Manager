@@ -18,6 +18,35 @@
 Version History
 ===============
 
+1.9.11: [2015-12-24] James Heinrich
+    * bugfix (G:64): update constructor syntax for PHP 7
+    * bugfix (G:62): infinite loop in large PNG files
+    * bugfix (G:61): ID3v2 remove BOM from frame descriptions
+    * bugfix (G:60): missing "break" in module.audio-video.quicktime.php
+    * bugfix (G:59): .gitignore comments
+    * bugfix (G:58): inconsistency in relation to module.tag.id3v2.php
+    * bugfix (G:57): comparing instead of assign
+    * bugfix (G:56): unsupported MIME type "audio/x-wave"
+    * bugfix (G:55): readme.md variable reference
+    * bugfix (G:54): QuickTime false 1000fps
+    * bugfix (G:53): Quicktime / ID3v2 multiple genres
+    * bugfix (G:52): sys_get_temp_dir in GetDataImageSize
+    * bugfix (#1903): Quicktime meta atom not parsed
+    * demo.joinmp3.php enhancements
+    * m4b (audiobook) chapters not parsed correctly
+    * sqlite3 caching not working
+
+1.9.10: [2015-09-14] James Heinrich
+    * bugfix (G:49): Declaration of getID3_cached_sqlite3
+    * bugfix (#1892): extension.cache.mysql
+    * bugfix (#1891): duplicate default clause [Quicktime]
+    * bugfix (G:41): incorrect MP3 playtime
+    * bugfix: iconv problems on musl with //TRANSLIT
+    * Add arguments to analyze() for original filesize (and filename)
+    * ID3v2 simplify handling of multiple genres
+    * Corrected merging of multiple genres for ID3v2
+    * getid3_lib::GetDataImageSize return false on error
+
 1.9.9: [2014-12-18] James Heinrich
     Â» Added basic support for OggOpus
     Â» Add ID3v2 CHAP + CTOC support
