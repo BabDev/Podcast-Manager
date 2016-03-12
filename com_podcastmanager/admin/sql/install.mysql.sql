@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `filename` varchar(255) default NULL,
   `feedname` int(11) NOT NULL,
   `title` varchar(255) NOT NULL default '',
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL default '0',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` integer unsigned NOT NULL default '0',
@@ -25,13 +25,13 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager` (
   `language` char(7) NOT NULL,
 	`metadata` text NOT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `id` int(11) NOT NULL auto_increment,
   `asset_id` int(11) UNSIGNED NOT NULL default '0',
   `name` varchar(255) default NULL,
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
+  `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
   `subtitle` varchar(255) NOT NULL default '',
   `description` varchar(5120) NOT NULL default '',
   `boilerplate` varchar(5120) NOT NULL default '',
@@ -58,4 +58,4 @@ CREATE TABLE IF NOT EXISTS `#__podcastmanager_feeds` (
   `language` char(7) NOT NULL,
 	`metadata` text NOT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
