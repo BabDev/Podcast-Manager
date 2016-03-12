@@ -44,10 +44,10 @@ class LiveUpdateController extends JControllerLegacy
 		$updateInfo = LiveUpdate::getUpdateInformation();
 		if ($updateInfo->stability != 'stable')
 		{
-			$skipNag = JRequest::getBool('skipnag', false);
+			$skipNag = $this->input->getBool('skipnag', false);
 			if (!$skipNag)
 			{
-				$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=nagscreen');
+				$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=nagscreen');
 				$this->redirect();
 			}
 		}
@@ -61,7 +61,7 @@ class LiveUpdateController extends JControllerLegacy
 		else
 		{
 			// No FTP credentials required; proceed with the download
-			$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=download');
+			$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=download');
 			$this->redirect();
 		}
 	}
@@ -89,7 +89,7 @@ class LiveUpdateController extends JControllerLegacy
 			if ($config->requiresAuthorization())
 			{
 				$msg = JText::_('LIVEUPDATE_DOWNLOAD_FAILED_WRONGDOWNLOADID');
-				$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
+				$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
 
 				return;
 			}
@@ -99,14 +99,14 @@ class LiveUpdateController extends JControllerLegacy
 		{
 			// Download failed
 			$msg = JText::_('LIVEUPDATE_DOWNLOAD_FAILED');
-			$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
+			$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
 		}
 		else
 		{
 			// Download successful. Let's extract the package.
-			$url = 'index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=extract';
-			$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
-			$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
+			$url = 'index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=extract';
+			$user = $this->input->get->getRaw('username', null);
+			$pass = $this->input->get->getRaw('password', null);
 			if ($user)
 			{
 				$url .= '&username=' . urlencode($user) . '&password=' . urlencode($pass);
@@ -125,14 +125,14 @@ class LiveUpdateController extends JControllerLegacy
 		{
 			// Download failed
 			$msg = JText::_('LIVEUPDATE_EXTRACT_FAILED');
-			$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
+			$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=overview', $msg, 'error');
 		}
 		else
 		{
 			// Extract successful. Let's install the package.
-			$url = 'index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=install';
-			$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
-			$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
+			$url = 'index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=install';
+			$user = $this->input->get->getRaw('username', null);
+			$pass = $this->input->get->getRaw('password', null);
 			if ($user)
 			{
 				$url .= '&username=' . urlencode($user) . '&password=' . urlencode($pass);
@@ -176,7 +176,7 @@ class LiveUpdateController extends JControllerLegacy
 		{
 			// Installation failed
 			$model->cleanup();
-			$this->setRedirect('index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=overview');
+			$this->setRedirect('index.php?option=' . $this->input->getCmd('option', '') . '&view=' . $this->input->getCmd('view', 'liveupdate') . '&task=overview');
 			$this->redirect();
 		}
 		else
@@ -209,7 +209,7 @@ class LiveUpdateController extends JControllerLegacy
 	 */
 	public final function display($cachable = false, $urlparams = false)
 	{
-		$viewLayout = JRequest::getCmd('layout', 'default');
+		$viewLayout = $this->input->getCmd('layout', 'default');
 
 		$view = $this->getThisView();
 
@@ -278,8 +278,8 @@ class LiveUpdateController extends JControllerLegacy
 	{
 		// Determine wether FTP credentials have been passed along with the current request
 		JLoader::import('joomla.client.helper');
-		$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
-		$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
+		$user = $this->input->get->getRaw('username', null);
+		$pass = $this->input->get->getRaw('password', null);
 		if ($user != '' && $pass != '')
 		{
 			// Add credentials to the session

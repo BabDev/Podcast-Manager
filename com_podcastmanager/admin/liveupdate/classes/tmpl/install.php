@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die();
 
+$input = JFactory::getApplication()->input;
 $state = $this->get('State');
 $message1 = $state->get('message');
 $message2 = $state->get('extmessage');
@@ -32,4 +33,4 @@ $message2 = $state->get('extmessage');
 
 <iframe style="width: 0px; height: 0px; border: none;" frameborder="0" marginheight="0" marginwidth="0" height="0"
 		width="0"
-		src="index.php?option=<?php echo JRequest::getCmd('option', '') ?>&view=<?php echo JRequest::getCmd('view', '') ?>&task=cleanup"></iframe>
+		src="index.php?option=<?php echo $input->getCmd('option', '') ?>&view=<?php echo $input->getCmd('view', '') ?>&task=cleanup"></iframe>

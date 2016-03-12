@@ -16,6 +16,8 @@ class LiveUpdateView extends JViewLegacy
 {
 	public function display($tpl = null)
 	{
+		$input = JFactory::getApplication()->input;
+
 		// Load the CSS
 		$config = LiveUpdateConfig::getInstance();
 		$this->config = $config;
@@ -23,18 +25,18 @@ class LiveUpdateView extends JViewLegacy
 		{
 			// No custom CSS overrides were set; include our own
 			$document = JFactory::getDocument();
-			$url = JURI::base() . '/components/' . JRequest::getCmd('option', '') . '/liveupdate/assets/liveupdate.css';
+			$url = JURI::base() . '/components/' . $input->getCmd('option', '') . '/liveupdate/assets/liveupdate.css';
 			$document->addStyleSheet($url, 'text/css');
 		}
 
-		$requeryURL = rtrim(JURI::base(), '/') . '/index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&force=1';
+		$requeryURL = rtrim(JURI::base(), '/') . '/index.php?option=' . $input->getCmd('option', '') . '&view=' . $input->getCmd('view', 'liveupdate') . '&force=1';
 		$this->requeryURL = $requeryURL;
 
 		$model = $this->getModel();
 
 		$extInfo = (object)$config->getExtensionInformation();
 		JToolBarHelper::title($extInfo->title . ' &ndash; ' . JText::_('LIVEUPDATE_TASK_OVERVIEW'), 'liveupdate');
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=' . JRequest::getCmd('option', ''));
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=' . $input->getCmd('option', ''));
 
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
@@ -46,11 +48,11 @@ CSS;
 			JFactory::getDocument()->addStyleDeclaration($j3css);
 		}
 
-		switch (JRequest::getCmd('task', 'default'))
+		switch ($input->getCmd('task', 'default'))
 		{
 			case 'startupdate':
 				$this->setLayout('startupdate');
-				$this->url = 'index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=download';
+				$this->url = 'index.php?option=' . $input->getCmd('option', '') . '&view=' . $input->getCmd('view', 'liveupdate') . '&task=download';
 				break;
 
 			case 'install':
@@ -76,16 +78,16 @@ CSS;
 			case 'nagscreen':
 				$this->setLayout('nagscreen');
 				$this->updateInfo = LiveUpdate::getUpdateInformation();
-				$this->runUpdateURL = 'index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=startupdate&skipnag=1';
+				$this->runUpdateURL = 'index.php?option=' . $input->getCmd('option', '') . '&view=' . $input->getCmd('view', 'liveupdate') . '&task=startupdate&skipnag=1';
 				break;
 
 			case 'overview':
 			default:
 				$this->setLayout('overview');
 
-				$force = JRequest::getInt('force', 0);
+				$force = $input->getInt('force', 0);
 				$this->updateInfo = LiveUpdate::getUpdateInformation($force);
-				$this->runUpdateURL = 'index.php?option=' . JRequest::getCmd('option', '') . '&view=' . JRequest::getCmd('view', 'liveupdate') . '&task=startupdate';
+				$this->runUpdateURL = 'index.php?option=' . $input->getCmd('option', '') . '&view=' . $input->getCmd('view', 'liveupdate') . '&task=startupdate';
 
 				$needsAuth = !($config->getAuthorization()) && ($config->requiresAuthorization());
 				$this->needsAuth = $needsAuth;

@@ -60,7 +60,7 @@ class LiveUpdate
 		// Load the controller and let it run the show
 		require_once dirname(__FILE__).'/classes/controller.php';
 		$controller = new LiveUpdateController();
-		$controller->execute(JRequest::getCmd('task','overview'));
+		$controller->execute(JFactory::getApplication()->input->getCmd('task','overview'));
 		$controller->redirect();
 	}
 
@@ -93,9 +93,9 @@ class LiveUpdate
 		$button = array();
 
 		$defaultConfig = array(
-			'option'			=> JRequest::getCmd('option',''),
+			'option'			=> JFactory::getApplication()->input->getCmd('option',''),
 			'view'				=> 'liveupdate',
-			'mediaurl'			=> JURI::base().'components/'.JRequest::getCmd('option','').'/liveupdate/assets/'
+			'mediaurl'			=> JURI::base().'components/'.JFactory::getApplication()->input->getCmd('option','').'/liveupdate/assets/'
 		);
 		$c = array_merge($defaultConfig, $config);
 
