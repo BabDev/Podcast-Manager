@@ -11,23 +11,32 @@
  * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
  */
 
-function parseMetadata () {
-	var fileName = jQuery('input[id=jform_filename]').val();
+// Only define the PodcastManager namespace if not defined.
+PodcastManager = window.PodcastManager || {};
 
-	jQuery.post(
-		'index.php?option=com_podcastmanager&task=podcast.getMetadata&format=json',
-		{ filename: fileName },
-		function(r) {
-			if (r.success) {
-				Joomla.removeMessages();
-				Joomla.renderMessages(r.messages);
+(function (PodcastManager, document) {
+    "use strict";
 
-				jQuery.each(r.data, function(key, value) {
-					jQuery('input[id=jform_' + key + ']').val(value);
-				});
-			} else {
-				Joomla.renderMessages({message: [r.message], error: ['warning']});
-			}
-		}
-	);
-}
+    /**
+     * Parse the metadata for a podcast
+     */
+    PodcastManager.parseMetadata = function () {
+        var fileName = jQuery('input[id=jform_filename]').val();
+
+        jQuery.post(
+            'index.php?option=com_podcastmanager&task=podcast.getMetadata&format=json',
+            {filename: fileName},
+            function (r) {
+                if (r.success) {
+                    Joomla.renderMessages(r.messages);
+
+                    jQuery.each(r.data, function (key, value) {
+                        jQuery('input[id=jform_' + key + ']').val(value);
+                    });
+                } else {
+                    Joomla.renderMessages({message: [r.message], error: ['warning']});
+                }
+            }
+        );
+    };
+}(PodcastManager, document));

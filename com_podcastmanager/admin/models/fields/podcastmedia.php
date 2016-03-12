@@ -156,7 +156,7 @@ JS;
 		$html[] = 'return false;';
 		$html[] = '">';
 		$html[] = '<i class="icon-remove"></i></a>';
-		$html[] = '<a class="btn" title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '" href="#" onclick="parseMetadata()">';
+		$html[] = '<a class="btn" title="' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '" href="#" onclick="PodcastManager.parseMetadata()">';
 		$html[] = '<i class="icon-loop"></i> ' . JText::_('COM_PODCASTMANAGER_PARSE_METADATA') . '</a>';
 		$html[] = '</div>';
 
