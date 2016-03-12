@@ -17,8 +17,7 @@ defined('_JEXEC') or die;
 // Site addresses to be processed outside JText
 $babdev		= '<a href="https://www.babdev.com/extensions/podcast-manager" target="_blank">https://www.babdev.com/extensions/podcast-manager</a>';
 $getid3		= '<b><a href="http://www.getid3.org" target="_blank">getID3</a></b>';
-$liveupdate	= '<b><a href="https://www.akeebabackup.com/software/akeeba-live-update.html" target="_blank">Akeeba Live Update</a></b>';
-$mejs		= '<b><a href="http://mediaelementjs.com" target="_blank">MediaElement.JS</a></b>';
+$liveupdate	= '<b><a href="https://www.akeebabackup.com/documentation/arsdocumentation/live-update.html" target="_blank">Akeeba Live Update</a></b>';
 $transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-manager" target="_blank">https://opentranslators.transifex.net/projects/p/podcast-manager</a>';
 
 $buttons = $this->getButtons();
@@ -110,7 +109,6 @@ JHtml::_('behavior.framework');
 					<ul>
 						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_LIVEUPDATE', $liveupdate);?></li>
 						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_GETID3', $getid3);?></li>
-						<li><?php echo JText::sprintf('COM_PODCASTMANAGER_INFO_CREDITS_MEDIAELEMENT', $mejs);?></li>
 					</ul>
 				</div>
 			</div>

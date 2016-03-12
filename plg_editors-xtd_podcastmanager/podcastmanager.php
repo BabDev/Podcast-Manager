@@ -58,8 +58,6 @@ JS;
 
 		JFactory::getDocument()->addScriptDeclaration($js);
 
-		JHtml::_('behavior.modal');
-
 		/*
 		 * Use the modal view to select the podcast.
 		 * Currently uses broadcast class for the image.
