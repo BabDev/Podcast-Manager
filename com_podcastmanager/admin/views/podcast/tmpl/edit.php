@@ -14,17 +14,19 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
-JFactory::getDocument()->addScriptDeclaration('
-	Joomla.submitbutton = function(task) {
-		if (task == "podcast.cancel" || document.formvalidator.isValid(document.getElementById("item-form"))) {
-			Joomla.submitform(task, document.getElementById("item-form"));
-		}
-	};
-');
+$js = <<< JS
+Joomla.submitbutton = function(task) {
+	if (task == 'podcast.cancel' || document.formvalidator.isValid(document.getElementById('item-form'))) {
+		Joomla.submitform(task, document.getElementById('item-form'));
+	}
+};
+JS;
+
+JFactory::getDocument()->addScriptDeclaration($js);
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">

@@ -20,7 +20,7 @@ JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user      = JFactory::getUser();
-$userId    = $user->get('id');
+$userId    = $user->id;
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 
@@ -30,15 +30,17 @@ $protocol = $uri->getScheme();
 $domain   = $uri->getHost();
 $base     = $protocol . '://' . $domain;
 
-JFactory::getDocument()->addScriptDeclaration("
-	Joomla.submitbutton = function(task) {
-		if (task != 'feeds.delete' || confirm('" . JText::_('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE', true) . "')) {
-			Joomla.submitform(task);
-		}
-	};
-");
+$js = <<< JS
+Joomla.submitbutton = function(task) {
+	if (task != 'feeds.delete' || confirm(Joomla.JText._('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE'))) {
+		Joomla.submitform(task);
+	}
+};
+JS;
+
+JFactory::getDocument()->addScriptDeclaration($js);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feeds');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=feeds'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
 	</div>
@@ -46,14 +48,14 @@ JFactory::getDocument()->addScriptDeclaration("
 		<div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
 				<label for="filter_search" class="element-invisible"><?php echo JText::_('COM_PODCASTMANAGER_FILTER_FEEDS_SEARCH_DESCRIPTION');?></label>
-				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_FEEDS_SEARCH_DESCRIPTION'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('COM_PODCASTMANAGER_FILTER_FEEDS_SEARCH_DESCRIPTION'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('COM_PODCASTMANAGER_FILTER_FEEDS_SEARCH_DESCRIPTION'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::_('tooltipText', 'COM_PODCASTMANAGER_FILTER_FEEDS_SEARCH_DESCRIPTION'); ?>" />
 			</div>
 			<div class="btn-group pull-left">
-				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
-				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::_('tooltipText', 'JSEARCH_FILTER_CLEAR'); ?>" onclick="document.getElementById('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
 			</div>
 			<div class="btn-group pull-right hidden-phone">
-				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 				<?php echo $this->pagination->getLimitBox(); ?>
 			</div>
 		</div>
@@ -103,7 +105,7 @@ JFactory::getDocument()->addScriptDeclaration("
 				<?php foreach ($this->items as $i => $item) :
 					$canCreate	= $user->authorise('core.create',     'com_podcastmanager.feed.' . $item->id);
 					$canEdit	= $user->authorise('core.edit',       'com_podcastmanager.feed.' . $item->id);
-					$canCheckin	= $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+					$canCheckin	= $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
 					$canEditOwn	= $user->authorise('core.edit.own',   'com_podcastmanager.feed.' . $item->id) && $item->created_by == $userId;
 					$canChange	= $user->authorise('core.edit.state', 'com_podcastmanager.feed.' . $item->id) && $canCheckin;
 					$rssRoute   = PodcastManagerHelperRoute::getFeedRssRoute($item->id);
@@ -116,10 +118,10 @@ JFactory::getDocument()->addScriptDeclaration("
 							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'feeds.', $canChange); ?>
 						</td>
 						<td>
-							<?php if ($item->checked_out) :
-								echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin);
-							endif;
-							if ($canEdit || $canEditOwn) : ?>
+							<?php if ($item->checked_out) : ?>
+								<?php echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'feeds.', $canCheckin); ?>
+							<?php endif; ?>
+							<?php if ($canEdit || $canEditOwn) : ?>
 								<a href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=feed.edit&id=' . $item->id); ?>">
 									<?php echo $this->escape($item->name); ?>
 								</a>
@@ -149,11 +151,11 @@ JFactory::getDocument()->addScriptDeclaration("
 							</a>
 						</td>
 						<td class="center hidden-phone">
-							<?php if ($item->language == '*') :
-								echo JText::alt('JALL', 'language');
-							else :
-								echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-							endif; ?>
+							<?php if ($item->language == '*') : ?>
+								<?php echo JText::alt('JALL', 'language'); ?>
+							<?php else : ?>
+								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+							<?php endif; ?>
 						</td>
 						<td class="center">
 							<?php echo $item->id; ?>

@@ -24,6 +24,14 @@ defined('_JEXEC') or die;
 class PodcastManagerViewPodcasts extends JViewLegacy
 {
 	/**
+	 * The active search tools filters
+	 *
+	 * @var    array
+	 * @since  3.0
+	 */
+	public $activeFilters;
+
+	/**
 	 * Form instance containing the search tools filter form
 	 *
 	 * @var    JForm
@@ -89,10 +97,11 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		}
 
 		// Initialise variables
-		$this->items      = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state      = $this->get('State');
-		$this->filterForm = $this->get('FilterForm');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

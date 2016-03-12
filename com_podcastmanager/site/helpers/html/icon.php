@@ -49,7 +49,23 @@ abstract class JHtmlIcon
 			return true;
 		}
 
-		JHtml::_('behavior.tooltip');
+		JHtml::_('bootstrap.tooltip');
+
+		// Show checked_out icon if the feed is checked out by a different user
+		if (property_exists($feed, 'checked_out') && property_exists($feed, 'checked_out_time') && $feed->checked_out > 0
+			&& $feed->checked_out != JFactory::getUser()->id)
+		{
+			$date    = JHtml::_('date', $podcast->checked_out_time);
+			$tooltip = JText::_('JLIB_HTML_CHECKED_OUT') . ' :: '
+				. JText::sprintf('COM_PODCASTMANAGER_CHECKED_OUT_BY', JFactory::getUser($article->checked_out)->name)
+				. ' <br /> ' . $date;
+
+			$text = '<span class="hasTooltip icon-lock" title="' . JHtml::_('tooltipText', $tooltip . '', 0) . '"></span> '
+				. JText::_('JLIB_HTML_CHECKED_OUT');
+
+			return JHtml::_('link', '#', $text);
+		}
+
 		$url = PodcastManagerHelperRoute::getFeedEditRoute($feed->id, base64_encode($uri));
 
 		if ($feed->published == 0)
@@ -70,11 +86,11 @@ abstract class JHtmlIcon
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
 		$icon = $feed->published ? 'edit' : 'eye-close';
-		$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_FEED') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
 
-		$button = JHtml::_('link', JRoute::_($url), $text);
+		$text = '<span class="hasTooltip icon-' . $icon . ' tip" title="'
+			. JHtml::_('tooltipText', JText::_('COM_PODCASTMANAGER_EDIT_FEED'), $overlib, 0, 0) . '"></span>' . JText::_('JGLOBAL_EDIT');
 
-		return '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
+		return JHtml::_('link', JRoute::_($url), $text);
 	}
 
 	/**
@@ -101,7 +117,23 @@ abstract class JHtmlIcon
 			return true;
 		}
 
-		JHtml::_('behavior.tooltip');
+		JHtml::_('bootstrap.tooltip');
+
+		// Show checked_out icon if the feed is checked out by a different user
+		if (property_exists($podcast, 'checked_out') && property_exists($podcast, 'checked_out_time') && $podcast->checked_out > 0
+			&& $podcast->checked_out != JFactory::getUser()->id)
+		{
+			$date    = JHtml::_('date', $podcast->checked_out_time);
+			$tooltip = JText::_('JLIB_HTML_CHECKED_OUT') . ' :: '
+				. JText::sprintf('COM_PODCASTMANAGER_CHECKED_OUT_BY', JFactory::getUser($article->checked_out)->name)
+				. ' <br /> ' . $date;
+
+			$text = '<span class="hasTooltip icon-lock" title="' . JHtml::_('tooltipText', $tooltip . '', 0) . '"></span> '
+				. JText::_('JLIB_HTML_CHECKED_OUT');
+
+			return JHtml::_('link', '#', $text);
+		}
+
 		$url = PodcastManagerHelperRoute::getPodcastEditRoute($podcast->id, base64_encode($uri));
 
 		if ($podcast->published == 0)
@@ -114,7 +146,7 @@ abstract class JHtmlIcon
 		}
 
 		$date   = JHtml::_('date', $podcast->created);
-		$author = $podcast->itAuthor;
+		$author = $podcast->author;
 
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;
@@ -122,10 +154,10 @@ abstract class JHtmlIcon
 		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
 
 		$icon = $podcast->published ? 'edit' : 'eye-close';
-		$text = '<span class="hasTip icon-' . $icon . ' tip" title="' . JText::_('COM_PODCASTMANAGER_EDIT_PODCAST') . ' :: ' . $overlib . '"></span>&#160;' . JText::_('JGLOBAL_EDIT') . '&#160;';
 
-		$button = JHtml::_('link', JRoute::_($url), $text);
+		$text = '<span class="hasTooltip icon-' . $icon . ' tip" title="'
+			. JHtml::_('tooltipText', JText::_('COM_PODCASTMANAGER_EDIT_PODCAST'), $overlib, 0, 0) . '"></span>' . JText::_('JGLOBAL_EDIT');
 
-		return '<span class="hasTip" title="' . JText::_('JGLOBAL_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
+		return JHtml::_('link', JRoute::_($url), $text);
 	}
 }

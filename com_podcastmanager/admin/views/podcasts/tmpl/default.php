@@ -24,13 +24,15 @@ $userId		= $user->id;
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 
-JFactory::getDocument()->addScriptDeclaration("
-	Joomla.submitbutton = function(task) {
-		if (task != 'podcasts.unpublish' || confirm('" . JText::_('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH', true) . "')) {
-			Joomla.submitform(task);
-		}
-	};
-");
+$js = <<< JS
+Joomla.submitbutton = function(task) {
+	if (task != 'podcasts.unpublish' || confirm(Joomla.JText._('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH'))) {
+		Joomla.submitform(task);
+	}
+};
+JS;
+
+JFactory::getDocument()->addScriptDeclaration($js);
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-sidebar-container" class="span2">
@@ -38,7 +40,7 @@ JFactory::getDocument()->addScriptDeclaration("
 	</div>
 	<div id="j-main-container" class="span10">
 		<?php // Search tools bar
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+		echo JLayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
 				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
@@ -89,15 +91,10 @@ JFactory::getDocument()->addScriptDeclaration("
 							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'podcasts.', $canChange); ?>
 						</td>
 						<td>
-							<?php if ($item->checked_out) :
-								echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin);
-							endif;
-							if ($item->language == '*') :
-								$language = JText::alt('JALL', 'language');
-							else :
-								$language = $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-							endif;
-							if ($canEdit || $canEditOwn) : ?>
+							<?php if ($item->checked_out) : ?>
+								<?php echo JHtml::_('jgrid.checkedout', $i, $item->checked_out, $item->checked_out_time, 'podcasts.', $canCheckin); ?>
+							<?php endif; ?>
+							<?php if ($canEdit || $canEditOwn) : ?>
 								<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_podcastmanager&task=podcast.edit&id=' . (int) $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 									<?php echo $this->escape($item->title); ?>
 								</a>
@@ -118,11 +115,11 @@ JFactory::getDocument()->addScriptDeclaration("
 							<?php echo JHtml::_('date', $item->publish_up, JText::_('DATE_FORMAT_LC4')); ?>
 						</td>
 						<td class="small hidden-phone">
-							<?php if ($item->language == '*') :
-								echo JText::alt('JALL', 'language');
-							else :
-								echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED');
-							endif; ?>
+							<?php if ($item->language == '*') : ?>
+								<?php echo JText::alt('JALL', 'language'); ?>
+							<?php else : ?>
+								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+							<?php endif; ?>
 						</td>
 						<td class="center hidden-phone">
 							<?php echo $item->id; ?>

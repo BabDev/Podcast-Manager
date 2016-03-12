@@ -16,13 +16,13 @@ defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
 JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.formvalidation');
 ?>
 
 <script type="text/javascript">
 	Joomla.submitbutton = function(task) {
-		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
 			Joomla.submitform(task);
 		} else {
 			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');

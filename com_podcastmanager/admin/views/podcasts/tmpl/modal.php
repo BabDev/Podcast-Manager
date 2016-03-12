@@ -22,11 +22,11 @@ if ($app->isSite())
 	JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 }
 
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.framework', true);
 JHtml::_('formbehavior.chosen', 'select');
 
-$function = $app->input->getCmd('function', 'PodcastManagerSelectPodcast', 'cmd');
+$function = $app->input->getCmd('function', 'PodcastManagerSelectPodcast');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
 ?>

@@ -5,7 +5,7 @@
 			name="save_history"
 			type="radio"
 			class="btn-group btn-group-yesno"
-			default="1"
+			default="0"
 			label="JGLOBAL_SAVE_HISTORY_OPTIONS_LABEL"
 			description="JGLOBAL_SAVE_HISTORY_OPTIONS_DESC">
 			<option value="0">JNO</option>
@@ -13,14 +13,15 @@
 		</field>
 		<field
 			name="history_limit"
-			type="text"
+			type="number"
 			filter="integer"
+			default="5"
 			label="JGLOBAL_HISTORY_LIMIT_OPTIONS_LABEL"
-			description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC"
-			default="5" />
+			description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC" />
 		<field
 			name="linkhandling"
 			type="list"
+			validate="options"
 			default="player"
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_LINKHANDLING_DESCRIPTION">
@@ -38,25 +39,29 @@
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_CUSTOMCODE_DESCRIPTION" />
 		<field
 			name="playerwidth"
-			type="text"
+			type="number"
+			filter="integer"
 			default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERWIDTH_DESCRIPTION" />
 		<field
 			name="playerheight"
-			type="text"
+			type="number"
+			filter="integer"
 			default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERHEIGHT_DESCRIPTION" />
 		<field
 			name="videoheight"
-			type="text"
+			type="number"
+			filter="integer"
 			default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_VIDEOHEIGHT_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_VIDEOHEIGHT_DESCRIPTION" />
 		<field
 			name="playerstyle"
-			type="text"
+			type="number"
+			filter="integer"
 			default=""
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERSTYLE_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_PLAYERSTYLE_DESCRIPTION" />
@@ -69,6 +74,7 @@
 		<field
 			name="tracking"
 			type="list"
+			validate="options"
 			default="none"
 			label="COM_PODCASTMANAGER_CONFIG_TRACKING_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_TRACKING_DESCRIPTION" >
@@ -85,6 +91,7 @@
 		<field
 			name="minstability"
 			type="list"
+			validate="options"
 			default="alpha"
 			label="COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_MINSTABILITY_LABEL"
 			description="COM_PODCASTMANAGER_CONFIG_LIVEUPDATE_MINSTABILITY_DESCRIPTION" >
@@ -100,10 +107,8 @@
 			label="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_LABEL"
 			class="btn-group"
 			description="COM_PODCASTMANAGER_CONFIG_FIELD_ENABLELOGGING_DESCRIPTION">
-			<option
-				value="0">JNO</option>
-			<option
-				value="1">JYES</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">

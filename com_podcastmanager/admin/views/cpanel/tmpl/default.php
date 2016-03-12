@@ -21,8 +21,6 @@ $liveupdate	= '<b><a href="https://www.akeebabackup.com/documentation/arsdocumen
 $transifex	= '<a href="https://opentranslators.transifex.net/projects/p/podcast-manager" target="_blank">https://opentranslators.transifex.net/projects/p/podcast-manager</a>';
 
 $buttons = $this->getButtons();
-
-JHtml::_('behavior.framework');
 ?>
 <div class="row-fluid">
 	<!-- Begin Sidebar -->
