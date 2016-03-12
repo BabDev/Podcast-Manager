@@ -1,9 +1,8 @@
 <?php
-
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 defined('_JEXEC') or die();
 
@@ -11,8 +10,8 @@ defined('_JEXEC') or die();
  * Live Update Component Storage Class
  * Allows to store the update data to a component's parameters. This is the most reliable method.
  * Its configuration options are:
- * component	string	The name of the component which will store our data. If not specified the extension name will be used.
- * key			string	The name of the component parameter where the serialized data will be stored. If not specified "liveupdate" will be used.
+ * component    string    The name of the component which will store our data. If not specified the extension name will be used.
+ * key            string    The name of the component parameter where the serialized data will be stored. If not specified "liveupdate" will be used.
  */
 class LiveUpdateStorageComponent extends LiveUpdateStorage
 {
@@ -46,15 +45,15 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		}
 
 		// Not using JComponentHelper to avoid conflicts ;)
-		$db			 = JFactory::getDbo();
-		$sql		 = $db->getQuery(true)
+		$db = JFactory::getDbo();
+		$sql = $db->getQuery(true)
 			->select($db->qn('params'))
 			->from($db->qn('#__extensions'))
 			->where($db->qn('type') . ' = ' . $db->q('component'))
 			->where($db->qn('element') . ' = ' . $db->q($this->component));
 		$db->setQuery($sql);
-		$rawparams	 = $db->loadResult();
-		$params		 = new JRegistry();
+		$rawparams = $db->loadResult();
+		$params = new JRegistry();
 		$params->loadString($rawparams, 'JSON');
 
 		$data = $params->get($this->key, '');
@@ -83,14 +82,14 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 			->where($db->qn('type') . ' = ' . $db->q('component'))
 			->where($db->qn('element') . ' = ' . $db->q($this->component));
 		$db->setQuery($sql);
-		$rawparams	 = $db->loadResult();
-		$params		 = new JRegistry();
+		$rawparams = $db->loadResult();
+		$params = new JRegistry();
 		$params->loadString($rawparams, 'JSON');
 
 		$params->set($this->key, $data);
 
-		$data	 = $params->toString('JSON');
-		$sql	 = $db->getQuery(true)
+		$data = $params->toString('JSON');
+		$sql = $db->getQuery(true)
 			->update($db->qn('#__extensions'))
 			->set($db->qn('params') . ' = ' . $db->q($data))
 			->where($db->qn('type') . ' = ' . $db->q('component'))
@@ -99,5 +98,4 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		$db->setQuery($sql);
 		$db->execute();
 	}
-
 }

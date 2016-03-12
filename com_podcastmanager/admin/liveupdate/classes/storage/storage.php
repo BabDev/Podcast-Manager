@@ -1,14 +1,15 @@
 <?php
 
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 defined('_JEXEC') or die();
 
 /**
  * Abstract class for the update parameters storage
+ *
  * @author nicholas
  *
  */
@@ -27,8 +28,8 @@ abstract class LiveUpdateStorage
 	/**
 	 * Singleton implementation
 	 *
-	 * @param   string  $type    Storage tyme (file, component)
-	 * @param   array   $config  Configuration array
+	 * @param   string $type   Storage tyme (file, component)
+	 * @param   array  $config Configuration array
 	 *
 	 * @return  LiveUpdateStorage
 	 */
@@ -46,7 +47,7 @@ abstract class LiveUpdateStorage
 				require_once __DIR__ . '/' . strtolower($type) . '.php';
 			}
 
-			$object	= new $className($config);
+			$object = new $className($config);
 			$object->load($config);
 
 			$instances[$sig] = $object;
@@ -58,8 +59,8 @@ abstract class LiveUpdateStorage
 	/**
 	 * Set a value to the storage registry. Automatically encodes updatedata.
 	 *
-	 * @param   string  $key    The key to set
-	 * @param   mixed   $value  The value of the key to set
+	 * @param   string $key   The key to set
+	 * @param   mixed  $value The value of the key to set
 	 *
 	 * @return  void
 	 */
@@ -83,8 +84,8 @@ abstract class LiveUpdateStorage
 	/**
 	 * Read a value from the storage registry
 	 *
-	 * @param   string  $key      The key to read
-	 * @param   mixed   $default  The default value of the key, if the key is not present
+	 * @param   string $key     The key to read
+	 * @param   mixed  $default The default value of the key, if the key is not present
 	 *
 	 * @return  mixed  The value of the key
 	 */

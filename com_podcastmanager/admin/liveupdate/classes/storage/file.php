@@ -1,16 +1,16 @@
 <?php
 
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 defined('_JEXEC') or die();
 
 /**
  * Live Update File Storage Class
  * Allows to store the update data to files on disk. Its configuration options are:
- * path			string	The absolute path to the directory where the update data will be stored as INI files
+ * path            string    The absolute path to the directory where the update data will be stored as INI files
  *
  */
 class LiveUpdateStorageFile extends LiveUpdateStorage
@@ -29,14 +29,14 @@ class LiveUpdateStorageFile extends LiveUpdateStorage
 
 		if (array_key_exists('path', $config))
 		{
-			$path	= $config['path'];
+			$path = $config['path'];
 		}
 		else
 		{
-			$path	= JPATH_CACHE;
+			$path = JPATH_CACHE;
 		}
-		$extname	= $config['extensionName'];
-		$filename	= "$path/$extname.updates.php";
+		$extname = $config['extensionName'];
+		$filename = "$path/$extname.updates.php";
 
 		// Kill old files
 		$filenameKill = "$path/$extname.updates.ini";
@@ -45,8 +45,8 @@ class LiveUpdateStorageFile extends LiveUpdateStorage
 			JFile::delete($filenameKill);
 		}
 
-		$this->filename	 = $filename;
-		$this->extname	 = $extname;
+		$this->filename = $filename;
+		$this->extname = $extname;
 
 		$this->registry = new JRegistry('update');
 
@@ -73,8 +73,7 @@ class LiveUpdateStorageFile extends LiveUpdateStorage
 		$options = array(
 			'class' => 'LiveUpdate' . ucwords($this->extname) . 'Cache'
 		);
-		$data	 = $this->registry->toString('PHP', $options);
+		$data = $this->registry->toString('PHP', $options);
 		JFile::write($this->filename, $data);
 	}
-
 }

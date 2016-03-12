@@ -1,8 +1,8 @@
 <?php
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 
 defined('_JEXEC') or die();
@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 /**
  * This is the base class inherited by the config.php file in LiveUpdate's root.
  * You may override it non-final members to customise its behaviour.
+ *
  * @author Nicholas K. Dionysopoulos <nicholas@akeebabackup.com>
  *
  */
@@ -23,6 +24,7 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	 * The filename of the XML manifest of your extension. Leave blank to use extensionname.xml. For example,
 	 * if the extension is com_foobar, it will look for com_foobar.xml and foobar.xml in the component's
 	 * directory.
+	 *
 	 * @var string
 	 * */
 	protected $_xmlFilename = '';
@@ -35,6 +37,7 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	 * How to determine if a new version is available. 'different' = if the version number is different,
 	 * the remote version is newer, 'vcompare' = use version compare between the two versions, 'newest' =
 	 * compare the release dates to find the newest. I suggest using 'different' on most cases.
+	 *
 	 * @var string
 	 */
 	protected $_versionStrategy = 'different';
@@ -64,13 +67,15 @@ abstract class LiveUpdateAbstractConfig extends JObject
 
 	/**
 	 * Singleton implementation
+	 *
 	 * @return LiveUpdateConfig An instance of the Live Update configuration class
 	 */
 	public static function &getInstance()
 	{
 		static $instance = null;
 
-		if(!is_object($instance)) {
+		if (!is_object($instance))
+		{
 			$instance = new LiveUpdateConfig();
 		}
 
@@ -114,16 +119,48 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	 * Gets the authorization string to append to the download URL. It returns either the
 	 * download ID or username/password pair. Please override the class constructor, not
 	 * this method, if you want to fetch these values.
+	 *
+	 * @return  string
 	 */
 	public final function getAuthorization()
 	{
-		if(!empty($this->_downloadID)) {
-			return "dlid=".urlencode($this->_downloadID);
+		if (!empty($this->_downloadID))
+		{
+			return "dlid=" . urlencode($this->_downloadID);
 		}
-		if(!empty($this->_username) && !empty($this->_password)) {
-			return "username=".urlencode($this->_username)."&password=".urlencode($this->_password);
+		if (!empty($this->_username) && !empty($this->_password))
+		{
+			return "username=" . urlencode($this->_username) . "&password=" . urlencode($this->_password);
 		}
+
 		return "";
+	}
+
+	/**
+	 * Gets the authorisation parameters to append to the download URL. It returns either
+	 * the download ID or the username/password pair. It is returned in array format.
+	 *
+	 * @return  array
+	 */
+	public final function getAuthorizationParameters()
+	{
+		$ret = array();
+
+		if (!empty($this->_downloadID))
+		{
+			$ret = array(
+				'dlid' => $this->_downloadID
+			);
+		}
+		if (!empty($this->_username) && !empty($this->_password))
+		{
+			$ret = array(
+				'username' => $this->_username,
+				'password' => $this->_password,
+			);
+		}
+
+		return $ret;
 	}
 
 	public final function requiresAuthorization()
@@ -133,22 +170,24 @@ abstract class LiveUpdateAbstractConfig extends JObject
 
 	/**
 	 * Returns all the information we have about the extension and its update preferences
+	 *
 	 * @return array The extension information
 	 */
 	public final function getExtensionInformation()
 	{
 		return array(
-			'name'			=> $this->_extensionName,
-			'title'			=> $this->_extensionTitle,
-			'version'		=> $this->_currentVersion,
-			'date'			=> $this->_currentReleaseDate,
-			'updateurl'		=> $this->_updateURL,
-			'requireauth'	=> $this->_requiresAuthorization
+			'name'        => $this->_extensionName,
+			'title'       => $this->_extensionTitle,
+			'version'     => $this->_currentVersion,
+			'date'        => $this->_currentReleaseDate,
+			'updateurl'   => $this->_updateURL,
+			'requireauth' => $this->_requiresAuthorization
 		);
 	}
 
 	/**
 	 * Returns the information regarding the storage adapter
+	 *
 	 * @return array
 	 */
 	public final function getStorageAdapterPreferences()
@@ -157,8 +196,8 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		$config['extensionName'] = $this->_extensionName;
 
 		return array(
-			'adapter'		=> $this->_storageAdapter,
-			'config'		=> $config
+			'adapter' => $this->_storageAdapter,
+			'config'  => $config
 		);
 	}
 
@@ -173,11 +212,17 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	 */
 	private function populateExtensionInfo()
 	{
-		require_once dirname(__FILE__).'/xmlslurp.php';
+		require_once dirname(__FILE__) . '/xmlslurp.php';
 		$xmlslurp = new LiveUpdateXMLSlurp();
 		$data = $xmlslurp->getInfo($this->_extensionName, $this->_xmlFilename);
-		if(empty($this->_currentVersion)) $this->_currentVersion = $data['version'];
-		if(empty($this->_currentReleaseDate)) $this->_currentReleaseDate = $data['date'];
+		if (empty($this->_currentVersion))
+		{
+			$this->_currentVersion = $data['version'];
+		}
+		if (empty($this->_currentReleaseDate))
+		{
+			$this->_currentReleaseDate = $data['date'];
+		}
 	}
 
 	/**
@@ -185,36 +230,45 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	 */
 	protected function populateAuthorization()
 	{
-		if(!$this->_requiresAuthorization) return;
-		
-		// Do we already have authorizaton information?
-		if( (!empty($this->_username) && !empty($this->_password)) || !empty($this->_downloadID) ) {
+		if (!$this->_requiresAuthorization)
+		{
 			return;
 		}
 
-		if(substr($this->_extensionName,0,3) != 'com') return;
+		// Do we already have authorizaton information?
+		if ((!empty($this->_username) && !empty($this->_password)) || !empty($this->_downloadID))
+		{
+			return;
+		}
+
+		if (substr($this->_extensionName, 0, 3) != 'com')
+		{
+			return;
+		}
 
 		// Not using JComponentHelper to avoid conflicts ;)
 		$db = JFactory::getDbo();
 		$sql = $db->getQuery(true)
 			->select($db->qn('params'))
 			->from($db->qn('#__extensions'))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q($this->_extensionName));
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q($this->_extensionName));
 		$db->setQuery($sql);
 		$rawparams = $db->loadResult();
 		$params = new JRegistry();
 		$params->loadString($rawparams, 'JSON');
 
-		$this->_username	= $params->get('username','');
-		$this->_password	= $params->get('password','');
-		$this->_downloadID	= $params->get('downloadid','');
+		$this->_username = $params->get('username', '');
+		$this->_password = $params->get('password', '');
+		$this->_downloadID = $params->get('downloadid', '');
 	}
 
 	public function applyCACert(&$ch)
 	{
-		if(!empty($this->_cacerts)) {
-			if(file_exists($this->_cacerts)) {
+		if (!empty($this->_cacerts))
+		{
+			if (file_exists($this->_cacerts))
+			{
 				@curl_setopt($ch, CURLOPT_CAINFO, $this->_cacerts);
 			}
 		}

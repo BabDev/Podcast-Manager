@@ -1,8 +1,8 @@
 <?php
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 
 defined('_JEXEC') or die();
@@ -13,23 +13,39 @@ defined('_JEXEC') or die();
  */
 class LiveUpdateFetch extends JObject
 {
+	/** @var   int   How many hours to cache the update results? */
 	private $cacheTTL = 24;
 
+	/** @var   LiveUpdateStorage  The live update cache storage handler */
 	private $storage = null;
 
 	/**
 	 * One-stop-shop function which fetches update information and tells you
 	 * if there are updates available or not, or if updates are not supported.
 	 *
-	 * @return int 0 = no updates, 1 = updates available, -1 = updates not supported, -2 = fetching updates crashes the server
+	 * Return values:
+	 * 0 = no updates
+	 * 1 = updates available
+	 * -1 = updates not supported
+	 * -2 = fetching updates crashes the server
+	 *
+	 * @param   boolean  Should I forcibly reload the updates?
+	 *
+	 * @return  integer  See description
 	 */
 	public function hasUpdates($force = false)
 	{
 		$updateInfo = $this->getUpdateInformation($force);
 
-		if($updateInfo->stuck) return -2;
+		if ($updateInfo->stuck)
+		{
+			return -2;
+		}
 
-		if(!$updateInfo->supported) return -1;
+		if (!$updateInfo->supported)
+		{
+			return -1;
+		}
 
 		$config = LiveUpdateConfig::getInstance();
 		$extInfo = $config->getExtensionInformation();
@@ -38,7 +54,8 @@ class LiveUpdateFetch extends JObject
 		$minStability = $config->getMinimumStability();
 		$stability = strtolower($updateInfo->stability);
 
-		switch($minStability) {
+		switch ($minStability)
+		{
 			case 'alpha':
 			default:
 				// Reports any stability level as an available update
@@ -46,32 +63,51 @@ class LiveUpdateFetch extends JObject
 
 			case 'beta':
 				// Do not report alphas as available updates
-				if(in_array($stability, array('alpha'))) return 0;
+				if (in_array($stability, array('alpha')))
+				{
+					return 0;
+				}
 				break;
 
 			case 'rc':
 				// Do not report alphas and betas as available updates
-				if(in_array($stability, array('alpha','beta'))) return 0;
+				if (in_array($stability, array('alpha', 'beta')))
+				{
+					return 0;
+				}
 				break;
 
 			case 'stable':
 				// Do not report alphas, betas and rcs as available updates
-				if(in_array($stability, array('alpha','beta','rc'))) return 0;
+				if (in_array($stability, array('alpha', 'beta', 'rc')))
+				{
+					return 0;
+				}
 				break;
 		}
 
-		if(empty($updateInfo->version) && empty($updateInfo->date)) return 0;
+		if (empty($updateInfo->version) && empty($updateInfo->date))
+		{
+			return 0;
+		}
 
 		// Use the version strategy to determine the availability of an update
-		switch($config->getVersionStrategy()) {
+		switch ($config->getVersionStrategy())
+		{
 			case 'newest':
 				JLoader::import('joomla.utilities.date');
-				if(empty($extInfo)) {
+				if (empty($extInfo))
+				{
 					$mine = new JDate('2000-01-01 00:00:00');
-				} else {
-					try {
+				}
+				else
+				{
+					try
+					{
 						$mine = new JDate($extInfo['date']);
-					} catch(Exception $e) {
+					}
+					catch (Exception $e)
+					{
 						$mine = new JDate('2000-01-01 00:00:00');
 					}
 				}
@@ -83,18 +119,30 @@ class LiveUpdateFetch extends JObject
 
 			case 'vcompare':
 				$mine = $extInfo['version'];
-				if(empty($mine)) $mine = '0.0.0';
+				if (empty($mine))
+				{
+					$mine = '0.0.0';
+				}
 				$theirs = $updateInfo->version;
-				if(empty($theirs)) $theirs = '0.0.0';
+				if (empty($theirs))
+				{
+					$theirs = '0.0.0';
+				}
 
 				return (version_compare($theirs, $mine, 'gt')) ? 1 : 0;
 				break;
 
 			case 'different':
 				$mine = $extInfo['version'];
-				if(empty($mine)) $mine = '0.0.0';
+				if (empty($mine))
+				{
+					$mine = '0.0.0';
+				}
 				$theirs = $updateInfo->version;
-				if(empty($theirs)) $theirs = '0.0.0';
+				if (empty($theirs))
+				{
+					$theirs = '0.0.0';
+				}
 
 				return ($theirs != $mine) ? 1 : 0;
 				break;
@@ -105,9 +153,9 @@ class LiveUpdateFetch extends JObject
 	 * Get the latest version (update) information, either from the cache or
 	 * from the update server.
 	 *
-	 * @param $force bool Set to true to force fetching fresh data from the server
+	 * @param   boolean $force Set to true to force fetching fresh data from the server
 	 *
-	 * @return stdClass The update information, in object format
+	 * @return  stdClass  The update information, in object format
 	 */
 	public function getUpdateInformation($force = false)
 	{
@@ -116,11 +164,12 @@ class LiveUpdateFetch extends JObject
 
 		// Get an instance of the storage class
 		$storageOptions = $config->getStorageAdapterPreferences();
-		require_once dirname(__FILE__).'/storage/storage.php';
+		require_once dirname(__FILE__) . '/storage/storage.php';
 		$this->storage = LiveUpdateStorage::getInstance($storageOptions['adapter'], $storageOptions['config']);
 
 		// If we are requested to forcibly reload the information, clear old data first
-		if($force) {
+		if ($force)
+		{
 			$this->storage->set('lastcheck', null);
 			$this->storage->set('updatedata', null);
 			$this->storage->save();
@@ -135,7 +184,8 @@ class LiveUpdateFetch extends JObject
 			$cachedData = null;
 		}
 
-		if(empty($cachedData)) {
+		if (empty($cachedData))
+		{
 			$lastCheck = 0;
 		}
 
@@ -144,15 +194,19 @@ class LiveUpdateFetch extends JObject
 		$maxDifference = $this->cacheTTL * 3600;
 		$difference = abs($now - $lastCheck);
 
-		if(!($force) && ($difference <= $maxDifference)) {
+		if (!($force) && ($difference <= $maxDifference))
+		{
 			// The cache is fresh enough; return cached data
 			return $cachedData;
-		} else {
+		}
+		else
+		{
 			// The cache is stale; fetch new data, cache it and return it to the caller
 			$data = $this->getUpdateData($force);
 			$this->storage->set('lastcheck', $now);
 			$this->storage->set('updatedata', $data);
 			$this->storage->save();
+
 			return $data;
 		}
 	}
@@ -162,28 +216,32 @@ class LiveUpdateFetch extends JObject
 	 * that the download process gets stuck and ends up in a WSOD.
 	 *
 	 * @param bool $force Set to true to force fetching new data no matter if the process is marked as stuck
+	 *
 	 * @return stdClass
 	 */
 	private function getUpdateData($force = false)
 	{
 		$ret = array(
-			'supported'		=> false,
-			'stuck'			=> true,
-			'version'		=> '',
-			'date'			=> '',
-			'stability'		=> '',
-			'downloadURL'	=> '',
-			'infoURL'		=> '',
-			'releasenotes'	=> ''
+			'supported'    => false,
+			'stuck'        => true,
+			'version'      => '',
+			'date'         => '',
+			'stability'    => '',
+			'downloadURL'  => '',
+			'infoURL'      => '',
+			'releasenotes' => ''
 		);
 
 		// If the process is marked as "stuck", we won't bother fetching data again; well,
 		// unless you really force me to, by setting $force = true.
-		if( ($this->storage->get('stuck',0) != 0) && !$force) return (object)$ret;
+		if (($this->storage->get('stuck', 0) != 0) && !$force)
+		{
+			return (object)$ret;
+		}
 
 		$ret['stuck'] = false;
 
-		require_once dirname(__FILE__).'/download.php';
+		require_once dirname(__FILE__) . '/download.php';
 
 		// First we mark Live Updates as getting stuck. This way, if fetching the update
 		// fails with a server error, reloading the page will not result to a White Screen
@@ -202,7 +260,10 @@ class LiveUpdateFetch extends JObject
 		$this->storage->save();
 
 		// If we didn't get anything, assume Live Update is not supported (communication error)
-		if(empty($rawData) || ($rawData == false)) return (object)$ret;
+		if (empty($rawData) || ($rawData == false))
+		{
+			return (object)$ret;
+		}
 
 		// TODO Detect the content type of the returned update stream. For now, I will pretend it's an INI file.
 
@@ -214,6 +275,7 @@ class LiveUpdateFetch extends JObject
 
 	/**
 	 * Fetches update information from the server using cURL
+	 *
 	 * @return string The raw server data
 	 */
 	private function fetchCURL()
@@ -237,12 +299,14 @@ class LiveUpdateFetch extends JObject
 		@curl_setopt($process, CURLOPT_MAXREDIRS, 20);
 		$inidata = curl_exec($process);
 		curl_close($process);
+
 		return $inidata;
 	}
 
 	/**
 	 * Fetches update information from the server using file_get_contents, which internally
 	 * uses URL fopen() wrappers.
+	 *
 	 * @return string The raw server data
 	 */
 	private function fetchFOPEN()
@@ -256,92 +320,117 @@ class LiveUpdateFetch extends JObject
 
 	/**
 	 * Parses the raw INI data into an array of update information
+	 *
 	 * @param string $rawData The raw INI data
+	 *
 	 * @return array The parsed data
 	 */
 	private function parseINI($rawData)
 	{
 		$ret = array(
-			'version'		=> '',
-			'date'			=> '',
-			'stability'		=> '',
-			'downloadURL'	=> '',
-			'infoURL'		=> '',
-			'releasenotes'	=> ''
+			'version'      => '',
+			'date'         => '',
+			'stability'    => '',
+			'downloadURL'  => '',
+			'infoURL'      => '',
+			'releasenotes' => ''
 		);
 
 		// Get the magic string
 		$magicPos = strpos($rawData, '; Live Update provision file');
 
-		if($magicPos === false) {
+		if ($magicPos === false)
+		{
 			// That's not an INI file :(
 			return $ret;
 		}
 
-		if($magicPos !== 0) {
+		if ($magicPos !== 0)
+		{
 			$rawData = substr($rawData, $magicPos);
 		}
 
-		require_once dirname(__FILE__).'/inihelper.php';
+		require_once dirname(__FILE__) . '/inihelper.php';
 		$iniData = LiveUpdateINIHelper::parse_ini_file($rawData, false, true);
 
 		// Get the supported platforms
 		$supportedPlatform = false;
-		$versionParts = explode('.',JVERSION);
-		$currentPlatform = $versionParts[0].'.'.$versionParts[1];
+		$versionParts = explode('.', JVERSION);
+		$currentPlatform = $versionParts[0] . '.' . $versionParts[1];
 
-		if(array_key_exists('platforms', $iniData)) {
+		if (array_key_exists('platforms', $iniData))
+		{
 			$rawPlatforms = explode(',', $iniData['platforms']);
-			foreach($rawPlatforms as $platform) {
+			foreach ($rawPlatforms as $platform)
+			{
 				$platform = trim($platform);
-				if(substr($platform,0,7) != 'joomla/') {
+				if (substr($platform, 0, 7) != 'joomla/')
+				{
 					continue;
 				}
 				$platform = substr($platform, 7);
-				if($currentPlatform == $platform) {
+				if ($currentPlatform == $platform)
+				{
 					$supportedPlatform = true;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			// Lies, damn lies
 			$supportedPlatform = true;
 		}
 
-		if(!$supportedPlatform) {
+		if (!$supportedPlatform)
+		{
 			return $ret;
 		}
 
 		$ret['version'] = array_key_exists('version', $iniData) ? $iniData['version'] : '';
 		$ret['date'] = array_key_exists('date', $iniData) ? $iniData['date'] : '';
-		$config = LiveUpdateConfig::getInstance();
-		$auth = $config->getAuthorization();
-		if(!array_key_exists('link', $iniData)) $iniData['link'] = '';
-		$glue = strpos($iniData['link'],'?') === false ? '?' : '&';
-		$ret['downloadURL'] = $iniData['link'] . (empty($auth) ? '' : $glue.$auth);
-		if(array_key_exists('stability', $iniData)) {
+		if (!array_key_exists('link', $iniData))
+		{
+			$iniData['link'] = '';
+		}
+		$ret['downloadURL'] = $iniData['link'];
+		if (array_key_exists('stability', $iniData))
+		{
 			$stability = $iniData['stability'];
-		} else {
+		}
+		else
+		{
 			// Stability not defined; guesswork mode enabled
 			$version = $ret['version'];
-			if( preg_match('#^[0-9\.]*a[0-9\.]*#', $version) == 1 ) {
+			if (preg_match('#^[0-9\.]*a[0-9\.]*#', $version) == 1)
+			{
 				$stability = 'alpha';
-			} elseif( preg_match('#^[0-9\.]*b[0-9\.]*#', $version) == 1 ) {
+			}
+			elseif (preg_match('#^[0-9\.]*b[0-9\.]*#', $version) == 1)
+			{
 				$stability = 'beta';
-			} elseif( preg_match('#^[0-9\.]*rc[0-9\.]*#', $version) == 1 ) {
+			}
+			elseif (preg_match('#^[0-9\.]*rc[0-9\.]*#', $version) == 1)
+			{
 				$stability = 'rc';
-			} elseif( preg_match('#^[0-9\.]*$#', $version) == 1 ) {
+			}
+			elseif (preg_match('#^[0-9\.]*$#', $version) == 1)
+			{
 				$stability = 'stable';
-			} else {
+			}
+			else
+			{
 				$stability = 'svn';
 			}
 		}
 		$ret['stability'] = $stability;
 
-		if(array_key_exists('releasenotes', $iniData)) {
+		if (array_key_exists('releasenotes', $iniData))
+		{
 			$ret['releasenotes'] = $iniData['releasenotes'];
 		}
 
-		if(array_key_exists('infourl', $iniData)) {
+		if (array_key_exists('infourl', $iniData))
+		{
 			$ret['infoURL'] = $iniData['infourl'];
 		}
 

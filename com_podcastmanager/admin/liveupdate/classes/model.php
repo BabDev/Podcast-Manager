@@ -1,26 +1,18 @@
 <?php
 /**
- * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @package   LiveUpdate
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license   GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.application.component.model');
 
-if(!class_exists('JoomlaCompatModel')) {
-	if(interface_exists('JModel')) {
-		abstract class JoomlaCompatModel extends JModelLegacy {}
-	} else {
-		class JoomlaCompatModel extends JModel {}
-	}
-}
-
 /**
  * The Live Update MVC model
  */
-class LiveUpdateModel extends JoomlaCompatModel
+class LiveUpdateModel extends JModelLegacy
 {
 	public function download()
 	{
@@ -31,49 +23,82 @@ class LiveUpdateModel extends JoomlaCompatModel
 		JLoader::import('joomla.filesystem.folder');
 		// Make sure the user doesn't use the system-wide tmp directory. You know, the one that's
 		// being erased periodically and will cause a real mess while installing extensions (Grrr!)
-		if(realpath($tmpdir) == '/tmp') {
+		if (realpath($tmpdir) == '/tmp')
+		{
 			// Someone inform the user that what he's doing is insecure and stupid, please. In the
 			// meantime, I will fix what is broken.
-			$tmpdir = JPATH_SITE.'/tmp';
+			$tmpdir = JPATH_SITE . '/tmp';
 		} // Make sure that folder exists (users do stupid things too often; you'd be surprised)
-		elseif(!JFolder::exists($tmpdir)) {
+		elseif (!JFolder::exists($tmpdir))
+		{
 			// Darn it, user! WTF where you thinking? OK, let's use a directory I know it's there...
-			$tmpdir = JPATH_SITE.'/tmp';
+			$tmpdir = JPATH_SITE . '/tmp';
 		}
 
 		// Oki. Let's get the URL of the package
 		$updateInfo = LiveUpdate::getUpdateInformation();
-		$config = LiveUpdateConfig::getInstance();
-		$auth = $config->getAuthorization();
 		$url = $updateInfo->downloadURL;
 
 		// Sniff the package type. If sniffing is impossible, I'll assume a ZIP package
 		$basename = basename($url);
-		if(strstr($basename,'?')) {
-			$basename = substr($basename, strstr($basename,'?')+1);
+		if (strstr($basename, '?'))
+		{
+			$basename = substr($basename, strstr($basename, '?') + 1);
 		}
-		if(substr($basename,-4) == '.zip') {
+		if (substr($basename, -4) == '.zip')
+		{
 			$type = 'zip';
-		} elseif(substr($basename,-4) == '.tar') {
+		}
+		elseif (substr($basename, -4) == '.tar')
+		{
 			$type = 'tar';
-		} elseif(substr($basename,-4) == '.tgz') {
+		}
+		elseif (substr($basename, -4) == '.tgz')
+		{
 			$type = 'tar.gz';
-		} elseif(substr($basename,-7) == '.tar.gz') {
+		}
+		elseif (substr($basename, -7) == '.tar.gz')
+		{
 			$type = 'tar.gz';
-		} else {
+		}
+		else
+		{
 			$type = 'zip';
 		}
 
 		// Cache the path to the package file and the temp installation directory in the session
-		$target = $tmpdir.'/'.$updateInfo->extInfo->name.'.update.'.$type;
-		$tempdir = $tmpdir.'/'.$updateInfo->extInfo->name.'_update';
+		$target = $tmpdir . '/' . $updateInfo->extInfo->name . '.update.' . $type;
+		$tempdir = $tmpdir . '/' . $updateInfo->extInfo->name . '_update';
 
 		$session = JFactory::getSession();
 		$session->set('target', $target, 'liveupdate');
 		$session->set('tempdir', $tempdir, 'liveupdate');
 
+		// Add the authentication string to the URL
+		/** @var LiveUpdateAbstractConfig $config */
+		$config = LiveUpdateConfig::getInstance();
+
+		if ($config->requiresAuthorization())
+		{
+			$authParams = $config->getAuthorizationParameters();
+
+			if (!empty($authParams))
+			{
+				JLoader::import('joomla.uri.uri');
+				$uri = new JUri($url);
+
+				foreach ($authParams as $k => $v)
+				{
+					$uri->setVar($k, $v);
+				}
+
+				$url = $uri->toString();
+			}
+		}
+
 		// Let's download!
-		require_once dirname(__FILE__).'/download.php';
+		require_once dirname(__FILE__) . '/download.php';
+
 		return LiveUpdateDownloadHelper::download($url, $target);
 	}
 
@@ -84,7 +109,8 @@ class LiveUpdateModel extends JoomlaCompatModel
 		$tempdir = $session->get('tempdir', '', 'liveupdate');
 
 		JLoader::import('joomla.filesystem.archive');
-		return JArchive::extract( $target, $tempdir);
+
+		return JArchive::extract($target, $tempdir);
 	}
 
 	public function install()
@@ -97,14 +123,19 @@ class LiveUpdateModel extends JoomlaCompatModel
 		$installer = JInstaller::getInstance();
 		$packageType = JInstallerHelper::detectType($tempdir);
 
-		if(!$packageType) {
+		if (!$packageType)
+		{
 			$msg = JText::_('LIVEUPDATE_INVALID_PACKAGE_TYPE');
 			$result = false;
-		} elseif (!$installer->install($tempdir)) {
+		}
+		elseif (!$installer->install($tempdir))
+		{
 			// There was an error installing the package
 			$msg = JText::sprintf('LIVEUPDATE_INSTALLEXT', JText::_($packageType), JText::_('LIVEUPDATE_Error'));
 			$result = false;
-		} else {
+		}
+		else
+		{
 			// Package installed sucessfully
 			$msg = JText::sprintf('LIVEUPDATE_INSTALLEXT', JText::_($packageType), JText::_('LIVEUPDATE_Success'));
 			$result = true;
@@ -114,7 +145,8 @@ class LiveUpdateModel extends JoomlaCompatModel
 		$app->enqueueMessage($msg);
 		$this->setState('result', $result);
 		$this->setState('packageType', $packageType);
-		if($packageType) {
+		if ($packageType)
+		{
 			$this->setState('name', $installer->get('name'));
 			$this->setState('message', $installer->message);
 			$this->setState('extmessage', $installer->get('extension_message'));
@@ -132,8 +164,8 @@ class LiveUpdateModel extends JoomlaCompatModel
 		JLoader::import('joomla.installer.helper');
 		JInstallerHelper::cleanupInstall($target, $tempdir);
 
-		$session->clear('target','liveupdate');
-		$session->clear('tempdir','liveupdate');
+		$session->clear('target', 'liveupdate');
+		$session->clear('tempdir', 'liveupdate');
 	}
 
 	public function getSRPURL($return = '')
@@ -145,29 +177,37 @@ class LiveUpdateModel extends JoomlaCompatModel
 		JLoader::import('joomla.installer.helper');
 		JLoader::import('joomla.filesystem.file');
 
-		$instModelFile = JPATH_ADMINISTRATOR.'/components/com_akeeba/models/installer.php';
-		if(!JFile::exists($instModelFile)) {
-			$instModelFile = JPATH_ADMINISTRATOR.'/components/com_akeeba/plugins/models/installer.php';
+		$instModelFile = JPATH_ADMINISTRATOR . '/components/com_akeeba/models/installer.php';
+		if (!JFile::exists($instModelFile))
+		{
+			$instModelFile = JPATH_ADMINISTRATOR . '/components/com_akeeba/plugins/models/installer.php';
 		};
-		if(!JFile::exists($instModelFile)) return false;
+		if (!JFile::exists($instModelFile))
+		{
+			return false;
+		}
 
 		require_once $instModelFile;
-		$model	= JoomlaCompatModel::getInstance('Installer', 'AkeebaModel');
+		$model = JoomlaCompatModel::getInstance('Installer', 'AkeebaModel');
 		$packageType = JInstallerHelper::detectType($tempdir);
 		$name = $model->getExtensionName($tempdir);
 
-		$url = 'index.php?option=com_akeeba&view=backup&tag=restorepoint&type='.$packageType.'&name='.urlencode($name['name']);
-		switch($packageType) {
+		$url = 'index.php?option=com_akeeba&view=backup&tag=restorepoint&type=' . $packageType . '&name=' . urlencode($name['name']);
+		switch ($packageType)
+		{
 			case 'module':
 			case 'template':
-				$url .= '&group='.$name['client'];
+				$url .= '&group=' . $name['client'];
 				break;
 			case 'plugin':
-				$url .= '&group='.$name['group'];
+				$url .= '&group=' . $name['group'];
 				break;
 		}
 
-		if(!empty($return)) $url .= '&returnurl='.urlencode($return);
+		if (!empty($return))
+		{
+			$url .= '&returnurl=' . urlencode($return);
+		}
 
 		return $url;
 	}

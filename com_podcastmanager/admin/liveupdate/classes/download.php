@@ -1,8 +1,8 @@
 <?php
 /**
  * @package    LiveUpdate
- * @copyright  Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
- * @license    GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
+ * @copyright  Copyright (c)2010-2016 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license    GNU GPLv3 or later <https://www.gnu.org/licenses/gpl.html>
  */
 
 defined('_JEXEC') or die();
@@ -15,8 +15,8 @@ class LiveUpdateDownloadHelper
 	/**
 	 * Downloads from a URL and saves the result as a local file
 	 *
-	 * @param   string  $url     The URL to fetch
-	 * @param   string  $target  Where to save the file
+	 * @param   string $url    The URL to fetch
+	 * @param   string $target Where to save the file
 	 *
 	 * @return  boolean  True on success
 	 */
@@ -48,7 +48,7 @@ class LiveUpdateDownloadHelper
 			{
 				if (self::chmod($target, 511))
 				{
-					$fp				 = @fopen($target, 'wb');
+					$fp = @fopen($target, 'wb');
 					$hackPermissions = true;
 				}
 			}
@@ -59,14 +59,14 @@ class LiveUpdateDownloadHelper
 		if ($fp !== false)
 		{
 			// First try to download directly to file if $fp !== false
-			$adapters	 = self::getAdapters();
-			$result		 = false;
+			$adapters = self::getAdapters();
+			$result = false;
 
 			while (!empty($adapters) && ($result === false))
 			{
 				// Run the current download method
-				$method	 = 'get' . strtoupper(array_shift($adapters));
-				$result	 = self::$method($url, $fp);
+				$method = 'get' . strtoupper(array_shift($adapters));
+				$result = self::$method($url, $fp);
 
 				// Check if we have a download
 				if ($result === true)
@@ -80,8 +80,8 @@ class LiveUpdateDownloadHelper
 
 					if ($filesize <= 0)
 					{
-						$result	 = false;
-						$fp		 = @fopen($target, 'wb');
+						$result = false;
+						$fp = @fopen($target, 'wb');
 					}
 				}
 			}
@@ -113,20 +113,20 @@ class LiveUpdateDownloadHelper
 	/**
 	 * Downloads from a URL and returns the result as a string
 	 *
-	 * @param   string  $url  The URL to download from
+	 * @param   string $url The URL to download from
 	 *
 	 * @return  mixed  Result string on success, false on failure
 	 */
 	public static function downloadAndReturn($url)
 	{
-		$adapters	 = self::getAdapters();
-		$result		 = false;
+		$adapters = self::getAdapters();
+		$result = false;
 
 		while (!empty($adapters) && ($result === false))
 		{
 			// Run the current download method
-			$method	 = 'get' . strtoupper(array_shift($adapters));
-			$result	 = self::$method($url, null);
+			$method = 'get' . strtoupper(array_shift($adapters));
+			$result = self::$method($url, null);
 		}
 
 		return $result;
@@ -153,17 +153,20 @@ class LiveUpdateDownloadHelper
 	 * Downloads the contents of a URL and writes them to disk (if $fp is not null)
 	 * or returns them as a string (if $fp is null) using cURL
 	 *
-	 * @param   string    $url  The URL to download from
-	 * @param   resource  $fp   The file pointer to download to. Omit to return the contents.
+	 * @param   string   $url      The URL to download from
+	 * @param   resource $fp       The file pointer to download to. Omit to return the contents.
+	 * @param   boolean  $nofollow Should we ignore 30x redirects?
 	 *
 	 * @return  boolean|string  False on failure, true on success ($fp not null) or the URL contents (if $fp is null)
+	 *
+	 * @throws  LiveUpdateDownloadException  When we get a 4xx/5xx HTTP status
 	 */
 	private static function &getCURL($url, $fp = null, $nofollow = false)
 	{
 		$result = false;
 
-		$ch		 = curl_init($url);
-		$config	 = new LiveUpdateConfig();
+		$ch = curl_init($url);
+		$config = new LiveUpdateConfig();
 		$config->applyCACert($ch);
 
 		if (!@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1) && !$nofollow)
@@ -227,6 +230,13 @@ class LiveUpdateDownloadHelper
 		}
 
 		$result = curl_exec($ch);
+		$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if ($http_status >= 400)
+		{
+			throw new LiveUpdateDownloadException('Invalid header', 403);
+		}
+
 		curl_close($ch);
 
 		return $result;
@@ -262,8 +272,8 @@ class LiveUpdateDownloadHelper
 	 * Downloads the contents of a URL and writes them to disk (if $fp is not null)
 	 * or returns them as a string (if $fp is null) using fopen() URL wrappers
 	 *
-	 * @param   string    $url  The URL to download from
-	 * @param   resource  $fp   The file pointer to download to. Omit to return the contents.
+	 * @param   string   $url The URL to download from
+	 * @param   resource $fp  The file pointer to download to. Omit to return the contents.
 	 *
 	 * @return  boolean|string  False on failure, true on success ($fp not null) or the URL contents (if $fp is null)
 	 */
@@ -281,12 +291,12 @@ class LiveUpdateDownloadHelper
 		if (function_exists('stream_context_create'))
 		{
 			// PHP 5+ way (best)
-			$httpopts	 = array(
+			$httpopts = array(
 				'user_agent' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.0.3705; .NET CLR 1.1.4322; Media Center PC 4.0)',
-				'timeout'	 => 10.0,
+				'timeout'    => 10.0,
 			);
-			$context	 = stream_context_create(array('http' => $httpopts));
-			$ih			 = @fopen($url, 'r', false, $context);
+			$context = stream_context_create(array('http' => $httpopts));
+			$ih = @fopen($url, 'r', false, $context);
 		}
 		else
 		{
@@ -305,9 +315,9 @@ class LiveUpdateDownloadHelper
 		}
 
 		// Try to download
-		$bytes	 = 0;
-		$result	 = true;
-		$return	 = '';
+		$bytes = 0;
+		$result = true;
+		$return = '';
 		while (!feof($ih) && $result)
 		{
 			$contents = fread($ih, 4096);
@@ -315,6 +325,7 @@ class LiveUpdateDownloadHelper
 			{
 				@fclose($ih);
 				$result = false;
+
 				return $result;
 			}
 			else
@@ -333,6 +344,32 @@ class LiveUpdateDownloadHelper
 		}
 
 		@fclose($ih);
+
+		if (!isset($http_response_header))
+		{
+			throw new LiveUpdateDownloadException('No headers', 404);
+		}
+		else
+		{
+			$http_code = 200;
+			$nLines = count($http_response_header);
+
+			for ($i = $nLines - 1; $i >= 0; $i--)
+			{
+				$line = $http_response_header[$i];
+				if (strncasecmp("HTTP", $line, 4) == 0)
+				{
+					$response = explode(' ', $line);
+					$http_code = $response[1];
+					break;
+				}
+			}
+
+			if ($http_code >= 400)
+			{
+				throw new LiveUpdateDownloadException('Invalid HTTP status', $http_code);
+			}
+		}
 
 		if (is_resource($fp))
 		{
@@ -356,19 +393,24 @@ class LiveUpdateDownloadHelper
 	private static function getAdapters()
 	{
 		// Detect available adapters
-		$adapters	 = array();
+		$adapters = array();
 		if (self::hasCURL())
-			$adapters[]	 = 'curl';
+		{
+			$adapters[] = 'curl';
+		}
 		if (self::hasFOPEN())
-			$adapters[]	 = 'fopen';
+		{
+			$adapters[] = 'fopen';
+		}
+
 		return $adapters;
 	}
 
 	/**
 	 * Change the permissions of a file, optionally using FTP
 	 *
-	 * @param   string  $file  Absolute path to file
-	 * @param   int     $mode  Permissions, e.g. 0755
+	 * @param   string $file Absolute path to file
+	 * @param   int    $mode Permissions, e.g. 0755
 	 *
 	 * @return  boolean  Ture if successful
 	 */
@@ -376,9 +418,11 @@ class LiveUpdateDownloadHelper
 	{
 		if (is_string($mode))
 		{
-			$mode	 = octdec($mode);
+			$mode = octdec($mode);
 			if (($mode < 0600) || ($mode > 0777))
-				$mode	 = 0755;
+			{
+				$mode = 0755;
+			}
 		}
 
 		// Initialize variables
@@ -395,7 +439,7 @@ class LiveUpdateDownloadHelper
 			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				$ftp = JClientFTP::getInstance(
-						$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
+					$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
 				);
 			}
 			else
@@ -403,13 +447,13 @@ class LiveUpdateDownloadHelper
 				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
 					$ftp = JClientFTP::getInstance(
-							$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
+						$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
 					);
 				}
 				else
 				{
 					$ftp = JFTP::getInstance(
-							$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
+						$ftpOptions['host'], $ftpOptions['port'], array(), $ftpOptions['user'], $ftpOptions['pass']
 					);
 				}
 			}
@@ -423,14 +467,19 @@ class LiveUpdateDownloadHelper
 		{
 			// Translate path and delete
 			JLoader::import('joomla.client.ftp');
-			$path	 = JPath::clean(str_replace(JPATH_ROOT, $ftpOptions['root'], $path), '/');
+			$path = JPath::clean(str_replace(JPATH_ROOT, $ftpOptions['root'], $path), '/');
 			// FTP connector throws an error
-			$ret	 = $ftp->chmod($path, $mode);
+			$ret = $ftp->chmod($path, $mode);
 		}
 		else
 		{
 			return false;
 		}
 	}
-
 }
+
+class LiveUpdateDownloadException extends Exception
+{
+}
+
+;
