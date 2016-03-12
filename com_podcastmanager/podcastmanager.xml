@@ -71,7 +71,6 @@
 			<dir>components/com_podcastmedia</dir>
 			<dir>libraries/getid3</dir>
 			<dir>media/com_podcastmanager</dir>
-			<dir>media/mediaelements</dir>
 			<dir>modules/mod_podcastmanager</dir>
 			<dir>modules/mod_podcastmanagerfeed</dir>
 			<dir>plugins/content/podcastmanager</dir>

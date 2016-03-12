@@ -15,10 +15,6 @@
 		<filename>player.php</filename>
 		<folder>language</folder>
 	</files>
-	<media destination="mediaelements" folder="mediaelements">
-		<folder>css</folder>
-		<folder>js</folder>
-	</media>
 	<config>
 		<fields name="params">
 			<fieldset name="advanced">

@@ -259,8 +259,8 @@ class PodcastManagerPlayer
 		JHtml::_('jquery.framework');
 
 		// And finally, load in MediaElement.JS
-		JHtml::_('script', 'mediaelements/mediaelement-and-player.min.js', false, true);
-		JHtml::_('stylesheet', 'mediaelements/mediaelementplayer.min.css', false, true, false);
+		JHtml::_('script', 'media/mediaelement-and-player.min.js', false, true);
+		JHtml::_('stylesheet', 'media/mediaelementplayer.css', array(), true);
 		$player .= "<br /><script>var player = new MediaElementPlayer('#$ID');</script>";
 
 		return $player;

@@ -83,6 +83,12 @@ class PlgContentPodcastManagerInstallerScript
 
 			return;
 		}
+
+		// If coming from versions earlier than 3.0, remove the MediaElement.JS files as core now ships with this
+		if (version_compare($version, '3.0', 'lt'))
+		{
+			$this->removeMediaElementJs();
+		}
 	}
 
 	/**
@@ -144,5 +150,24 @@ class PlgContentPodcastManagerInstallerScript
 
 		// Get the version
 		return $record->version;
+	}
+
+	/**
+	 * Remove the MediaElement.JS media previously shipped with this extension
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	private function removeMediaElementJs()
+	{
+		jimport('joomla.filesystem.folder');
+
+		$folder = JPATH_ROOT . '/media/mediaelements';
+
+		if (is_dir($folder))
+		{
+			JFolder::delete($folder);
+		}
 	}
 }
