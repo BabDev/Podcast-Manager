@@ -18,14 +18,15 @@ function parseMetadata () {
 		'index.php?option=com_podcastmanager&task=podcast.getMetadata&format=json',
 		{ filename: fileName },
 		function(r) {
-			if (r.error) {
-				Joomla.renderMessages(r.messages);
-			} else {
+			if (r.success) {
 				Joomla.removeMessages();
+				Joomla.renderMessages(r.messages);
 
 				jQuery.each(r.data, function(key, value) {
 					jQuery('input[id=jform_' + key + ']').val(value);
 				});
+			} else {
+				Joomla.renderMessages({message: [r.message], error: ['warning']});
 			}
 		}
 	);

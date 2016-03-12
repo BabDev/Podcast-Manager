@@ -39,16 +39,18 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 
 		try
 		{
-			$response['data'] = PodcastManagerHelper::fillMetaData($filename);
-			$response['error'] = false;
+			$data = PodcastManagerHelper::fillMetaData($filename);
 
-			// Something in the messages array causes issues with JSON encoding, remove it
-			unset($response['data']->messages);
+			// Grab the messages to attach them separately to the response object
+			$messages = $data->messages;
+			unset($data->messages);
+
+			$response = new JResponseJson($data);
+			$response->messages = $messages;
 		}
 		catch (RuntimeException $e)
 		{
-			$response['error'] = true;
-			$response['messages'] = ['warning' => [$e->getMessage()]];
+			$response = new JResponseJson($e);
 		}
 
 		echo json_encode($response);

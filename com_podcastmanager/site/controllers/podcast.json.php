@@ -14,43 +14,5 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
-
-/**
- * Podcast edit controller class for AJAX requests.
- *
- * @package     PodcastManager
- * @subpackage  com_podcastmanager
- * @since       2.2
- */
-class PodcastManagerControllerPodcast extends JControllerLegacy
-{
-	/**
-	 * Retrieves the metadata for a specified podcast and returns it in a JSON string
-	 *
-	 * @return  void
-	 *
-	 * @since   2.2
-	 */
-	public function getMetadata()
-	{
-		$filename = $this->input->post->getString('filename', '');
-		$response = [];
-
-		try
-		{
-			$response['data'] = PodcastManagerHelper::fillMetaData($filename);
-			$response['error'] = false;
-
-			// Something in the messages array causes issues with JSON encoding, remove it
-			unset($response['data']->messages);
-		}
-		catch (RuntimeException $e)
-		{
-			$response['error'] = true;
-			$response['messages'] = ['warning' => [$e->getMessage()]];
-		}
-
-		echo json_encode($response);
-	}
-}
+// Use the backend controller as it's the same thing
+require_once JPATH_ADMINISTRATOR . '/components/com_podcastmanager/controllers/podcast.json.php';
