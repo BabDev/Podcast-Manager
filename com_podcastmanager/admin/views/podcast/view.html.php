@@ -71,8 +71,9 @@ class PodcastManagerViewPodcast extends JViewLegacy
 			return false;
 		}
 
-		// Ensure jQuery is loaded for the metadata parser
+		// Ensure JavaScript dependencies are loaded for the metadata parser
 		JHtml::_('jquery.framework');
+		JHtml::_('behavior.core');
 
 		// Add the component media
 		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
