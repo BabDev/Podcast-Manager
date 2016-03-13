@@ -18,15 +18,40 @@ JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
+$spinner = JHtml::_('image', 'jui/ajax-loader.gif', '', null, true, true);
+
 $js = <<< JS
 Joomla.submitbutton = function(task) {
 	if (task == 'podcast.cancel' || document.formvalidator.isValid(document.getElementById('item-form'))) {
 		Joomla.submitform(task, document.getElementById('item-form'));
 	}
 };
+
+// Add the spinner animation for processing metadata:
+jQuery(document).ready(function ($) {
+    var outerContainer = $('#item-form');
+
+    $('#loading').css('top', outerContainer.position().top - $(window).scrollTop())
+        .css('left', outerContainer.position().left - $(window).scrollLeft())
+        .css('width', outerContainer.width())
+        .css('height', outerContainer.height())
+        .css('display', 'none');
+});
 JS;
 
-JFactory::getDocument()->addScriptDeclaration($js);
+$css = <<< CSS
+#loading {
+	background: rgba(255, 255, 255, .8) url('{$spinner}') 50% 15% no-repeat;
+	position: fixed;
+	opacity: 0.8;
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 80);
+	filter: alpha(opacity = 80);
+	margin: -10px -50px 0 -50px;
+	overflow: hidden;
+}
+CSS;
+
+JFactory::getDocument()->addScriptDeclaration($js)->addStyleDeclaration($css);
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
@@ -70,4 +95,5 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
+	<div id="loading"></div>
 </form>

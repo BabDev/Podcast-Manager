@@ -19,7 +19,7 @@ if (typeof Joomla === 'undefined') {
     throw new Error('PodcastManager JavaScript requires the Joomla core JavaScript API')
 }
 
-!function (jQuery, Joomla) {
+!function (jQuery, Joomla, window) {
     'use strict';
 
     window.PodcastManager = {
@@ -27,23 +27,33 @@ if (typeof Joomla === 'undefined') {
          * Parse the metadata for a podcast
          */
         parseMetadata: function () {
-            var fileName = jQuery('input[id=jform_filename]').val();
+            var fileName = jQuery('input[id=jform_filename]').val(),
+                spinner = jQuery('#loading');
 
-            jQuery.post(
+            jQuery.ajax(
                 'index.php?option=com_podcastmanager&task=podcast.getMetadata&format=json',
-                {filename: fileName},
-                function (r) {
-                    if (r.success) {
-                        Joomla.renderMessages(r.messages);
+                {
+                    type: 'POST',
+                    data: {filename: fileName},
+                    beforeSend: function (jqXHR, settings) {
+                        spinner.css('display', 'block');
+                    },
+                    success: function (response, textStatus, xhr) {
+                        if (response.success) {
+                            Joomla.renderMessages(response.messages);
 
-                        jQuery.each(r.data, function (key, value) {
-                            jQuery('input[id=jform_' + key + ']').val(value);
-                        });
-                    } else {
-                        Joomla.renderMessages({message: [r.message], error: ['warning']});
+                            jQuery.each(response.data, function (key, value) {
+                                jQuery('input[id=jform_' + key + ']').val(value);
+                            });
+                        } else {
+                            Joomla.renderMessages({message: [response.message], error: ['warning']});
+                        }
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        spinner.css('display', 'none');
                     }
                 }
             );
         }
     }
-}(jQuery, Joomla);
+}(jQuery, Joomla, window);
