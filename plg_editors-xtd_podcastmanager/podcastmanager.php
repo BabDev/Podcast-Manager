@@ -52,7 +52,7 @@ class PlgButtonPodcastManager extends JPlugin
 		function PodcastManagerSelectPodcast(id, object) {
 			var tag = '{podcast id=' + id + '}';
 			jInsertEditorText(tag, '$name');
-			SqueezeBox.close();
+			jModalClose();
 		}
 JS;
 
@@ -71,7 +71,7 @@ JS;
 		$button->text    = JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON');
 		$button->name    = 'broadcast';
 		$button->title   = JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_BUTTON_TOOLTIP');
-		$button->options = "{handler: 'iframe', size: {x: 770, y: 400}}";
+		$button->options = "{handler: 'iframe', size: {x: 800, y: 500}}";
 
 		return $button;
 	}
