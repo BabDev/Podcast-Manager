@@ -35,13 +35,8 @@ $podmedparams = JComponentHelper::getParams('com_podcastmedia');
 JLoader::register('PodcastMediaHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/podcastmedia.php');
 
 // Set the path definitions
-$popup_upload = $input->getCmd('pop_up', null);
-$path         = 'file_path';
-
-$view = $input->getCmd('view', '');
-
-define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get($path, 'media/com_podcastmanager'));
-define('COM_PODCASTMEDIA_BASEURL', JUri::root() . $podmedparams->get($path, 'media/com_podcastmanager'));
+define('COM_PODCASTMEDIA_BASE', JPATH_ROOT . '/' . $podmedparams->get('file_path', 'media/com_podcastmanager'));
+define('COM_PODCASTMEDIA_BASEURL', JUri::root() . $podmedparams->get('file_path', 'media/com_podcastmanager'));
 
 $controller = JControllerLegacy::getInstance('PodcastMedia', ['base_path' => JPATH_COMPONENT_ADMINISTRATOR]);
 $controller->execute($input->getCmd('task', ''));

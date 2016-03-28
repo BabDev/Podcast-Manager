@@ -13,20 +13,3 @@
  */
 
 defined('_JEXEC') or die;
-
-$style = JComponentHelper::getParams('com_podcastmedia')->get('layout', 'thumbs');
-?>
-<div id="submenu-box">
-	<div class="submenu-box">
-		<div class="submenu-pad">
-			<ul id="submenu" class="media">
-				<li><a href="index.php?option=com_podcastmanager&amp;view=feeds"><?php echo JText::_('COM_PODCASTMEDIA_SUBMENU_FEEDS'); ?></a></li>
-				<li><a href="index.php?option=com_podcastmanager&amp;view=podcasts"><?php echo JText::_('COM_PODCASTMEDIA_SUBMENU_PODCASTS'); ?></a></li>
-				<li><a href="#" id="<?php echo $style; ?>" class="active">
-				<?php echo JText::_('COM_PODCASTMEDIA_SUBMENU_FILES'); ?></a></li>
-			</ul>
-			<div class="clr"></div>
-		</div>
-	</div>
-	<div class="clr"></div>
-</div>

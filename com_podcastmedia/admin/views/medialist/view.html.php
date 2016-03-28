@@ -66,31 +66,33 @@ class PodcastMediaViewMedialist extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		$app = JFactory::getApplication();
+
+		if (!$app->isAdmin())
+		{
+			return $app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
+		}
+
 		// Do not allow cache
-		JFactory::getApplication()->allowCache(false);
-
-		$params = JComponentHelper::getParams('com_podcastmedia');
-		$style  = $params->get('layout', 'thumbs');
-
-		JHtml::_('behavior.framework', true);
-
-		$js = <<< JS
-			window.addEvent('domready', function() {
-				window.parent.document.updateUploader();
-				$$('a.img-preview').each(function(el) {
-					el.addEvent('click', function(e) {
-						new Event(e).stop();
-						window.top.document.preview.fromElement(el);
-					});
-				});
-			});
-JS;
-		JFactory::getDocument()->addScriptDeclaration($js);
+		$app->allowCache(false);
 
 		$this->baseURL = JUri::root();
 		$this->audio   = $this->get('Audio');
 		$this->folders = $this->get('Folders');
 		$this->state   = $this->get('State');
+
+		// Check for invalid folder name
+		if (empty($this->state->folder))
+		{
+			$dirname = $app->input->getPath('folder', '');
+
+			if (!empty($dirname))
+			{
+				$dirname = htmlspecialchars($dirname, ENT_COMPAT, 'UTF-8');
+
+				$app->enqueueMessage(JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname), 'warning');
+			}
+		}
 
 		return parent::display($tpl);
 	}

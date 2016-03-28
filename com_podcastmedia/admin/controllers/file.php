@@ -167,8 +167,6 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			if (!$mediaHelper->canUpload($file, $err))
 			{
 				// The file can't be uploaded
-				JError::raiseNotice(100, JText::_($err));
-
 				return false;
 			}
 

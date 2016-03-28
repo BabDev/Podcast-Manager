@@ -14,18 +14,20 @@
 
 defined('_JEXEC') or die;
 ?>
-<li class="imgOutline thumbnail height-80 width-80 center">
-	<div class="imgTotal">
-		<div align="center" class="imgBorder">
-			<a class="btn" href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
-				<i class="icon-arrow-up"></i>
-			</a>
+<?php if ($this->state->folder != '') : ?>
+	<li class="imgOutline thumbnail height-80 width-80 center">
+		<div class="imgTotal">
+			<div align="center" class="imgBorder">
+				<a class="btn" href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
+					<i class="icon-arrow-up"></i>
+				</a>
+			</div>
 		</div>
-	</div>
-	<div class="controls">
-		<span>&#160;</span>
-	</div>
-	<div class="imginfoBorder">
-		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
-	</div>
-</li>
+		<div class="controls">
+			<span>&#160;</span>
+		</div>
+		<div class="imginfoBorder">
+			<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">..</a>
+		</div>
+	</li>
+<?php endif;

@@ -18,7 +18,7 @@ $input = JFactory::getApplication()->input;
 ?>
 <tr>
 	<td class="description">
-		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->get('asset', '', 'cmd'); ?>&amp;author=<?php echo $input->get('author', '', 'cmd'); ?>">
+		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->_tmp_folder->path_relative; ?>&amp;asset=<?php echo $input->getCmd('asset', ''); ?>&amp;author=<?php echo $input->getCmd('author', ''); ?>">
 			<i class="icon-folder-2"></i> <?php echo $this->_tmp_folder->name; ?>
 		</a>
 	</td>

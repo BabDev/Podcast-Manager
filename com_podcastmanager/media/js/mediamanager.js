@@ -85,20 +85,6 @@ if (typeof jQuery === 'undefined') {
 		},
 
 		/**
-		 * Switch the view type
-		 *
-		 * @param {String} type
-		 */
-		setViewType: function (type) {
-			jQuery('#' + type).addClass('active');
-			jQuery('#' + viewstyle).removeClass('active');
-			viewstyle = type;
-			var folder = this.getFolder();
-
-			this.setFrameUrl('index.php?option=com_podcastmedia&view=medialist&tmpl=component&folder=' + folder + '&layout=' + type);
-		},
-
-		/**
 		 * Refresh the iframe
 		 */
 		refreshFrame: function () {

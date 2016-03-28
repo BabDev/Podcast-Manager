@@ -14,16 +14,16 @@
 
 defined('_JEXEC') or die;
 
-$user = JFactory::getUser();
-$params = new JRegistry;
-$dispatcher	= JDispatcher::getInstance();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
+use Joomla\Registry\Registry;
+
+$user       = JFactory::getUser();
+$params     = new Registry;
+$dispatcher = JEventDispatcher::getInstance();
+$dispatcher->trigger('onContentBeforeDisplay', ['com_podcastmedia.file', &$this->_tmp_audio, &$params]);
 ?>
-<li class="imgOutline thumbnail height-80 width-80 center">
-	<?php if ($user->authorise('core.delete', 'com_podcastmanager')):?>
-		<a class="close delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_audio->name; ?>" rel="<?php echo $this->_tmp_audio->name; ?>" title="<?php echo JText::_('JACTION_DELETE');?>">
-			x
-		</a>
+	<li class="imgOutline thumbnail height-80 width-80 center">
+	<?php if ($user->authorise('core.delete', 'com_podcastmanager')) : ?>
+		<a class="close delete-item" target="_top" href="index.php?option=com_podcastmedia&amp;task=file.delete&amp;tmpl=index&amp;<?php echo JSession::getFormToken(); ?>=1&amp;folder=<?php echo $this->state->folder; ?>&amp;rm[]=<?php echo $this->_tmp_audio->name; ?>" rel="<?php echo $this->_tmp_audio->name; ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">&#215;</a>
 		<input class="pull-left" type="checkbox" name="rm[]" value="<?php echo $this->_tmp_audio->name; ?>" />
 		<div class="clearfix"></div>
 	<?php endif;?>
@@ -37,4 +37,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 	</div>
 </li>
 <?php
-$dispatcher->trigger('onContentAfterDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
+$dispatcher->trigger('onContentAfterDisplay', ['com_podcastmedia.file', &$this->_tmp_audio, &$params]);

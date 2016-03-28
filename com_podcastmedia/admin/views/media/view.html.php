@@ -82,56 +82,24 @@ class PodcastMediaViewMedia extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$medmanparams = JComponentHelper::getParams('com_media');
-		$params       = JComponentHelper::getParams('com_podcastmedia');
+		$app = JFactory::getApplication();
 
-		$style = $params->get('layout', 'thumbs');
-
-		JHtml::_('behavior.framework', true);
-		JHtml::_('behavior.modal');
-
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration(
-			"window.addEvent('domready', function() {
-				document.preview = SqueezeBox;
-			});"
-		);
-
-		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
-		JHtml::_('script', 'podcastmanager/mediamanager.js', false, true);
-
-		if (DIRECTORY_SEPARATOR == '\\')
+		if (!$app->isAdmin())
 		{
-			$base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_PODCASTMEDIA_BASE);
+			return $app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
 		}
-		else
-		{
-			$base = COM_PODCASTMEDIA_BASE;
-		}
-
-		$js = <<< JS
-			var basepath = '"$base"';
-			var viewstyle = '"$style"';
-JS;
-		$document->addScriptDeclaration($js);
-
-		/*
-		 * Display form for FTP credentials?
-		 * Don't set them here, as there are other functions called before this one if there is any file write operation
-		 */
-		$ftp = !JClientHelper::hasCredentials('ftp');
 
 		$this->session      = JFactory::getSession();
-		$this->medmanparams = $medmanparams;
+		$this->medmanparams = JComponentHelper::getParams('com_media');
 		$this->state        = $this->get('state');
-		$this->require_ftp  = $ftp;
+		$this->require_ftp  = !JClientHelper::hasCredentials('ftp');
 		$this->folders_id   = ' id="media-tree"';
 		$this->folders      = $this->get('folderTree');
 
+		$this->sidebar = JHtmlSidebar::render();
+
 		// Set the toolbar
 		$this->addToolbar();
-
-		JHtml::_('behavior.keepalive');
 
 		return parent::display($tpl);
 	}
@@ -146,7 +114,7 @@ JS;
 	protected function addToolbar()
 	{
 		// Get the toolbar object instance
-		$bar  = JToolBar::getInstance('toolbar');
+		$bar  = JToolbar::getInstance('toolbar');
 		$user = JFactory::getUser();
 
 		// Set the titlebar text
@@ -155,35 +123,24 @@ JS;
 		// Add a upload button
 		if ($user->authorise('core.create', 'com_podcastmanager'))
 		{
-			$title = JText::_('JTOOLBAR_UPLOAD');
-			$dhtml = '<button data-toggle="collapse" data-target="#collapseUpload" class="btn btn-small btn-success">
-						<i class="icon-plus icon-white" title="' . $title . '"></i>
-						' . $title . '</button>';
-			$bar->appendButton('Custom', $dhtml, 'upload');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$bar->appendButton('Custom', (new JLayoutFile('toolbar.uploadmedia'))->render([]), 'upload');
 			JToolbarHelper::divider();
 		}
 
 		// Add a create folder button
 		if ($user->authorise('core.create', 'com_podcastmanager'))
 		{
-			$title = JText::_('COM_PODCASTMEDIA_CREATE_FOLDER');
-			$dhtml = '<button data-toggle="collapse" data-target="#collapseFolder" class="btn btn-small">
-						<i class="icon-folder" title="' . $title . '"></i>
-						' . $title . '</button>';
-			$bar->appendButton('Custom', $dhtml, 'folder');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$bar->appendButton('Custom', (new JLayoutFile('toolbar.newfolder'))->render([]), 'upload');
 			JToolbarHelper::divider();
 		}
 
 		// Add a delete button
 		if ($user->authorise('core.delete', 'com_podcastmanager'))
 		{
-			$title = JText::_('JTOOLBAR_DELETE');
-
-			$dhtml = '<button href="#" onclick="PodcastMediaManager.submit("folder.delete")" class="btn btn-small">
-						<i class="icon-remove" title="' . $title . '"></i>
-						' . $title . '</button>';
-
-			$bar->appendButton('Custom', $dhtml, 'delete');
+			// Instantiate a new JLayoutFile instance and render the layout
+			$bar->appendButton('Custom', (new JLayoutFile('toolbar.deletemedia'))->render([]), 'upload');
 			JToolbarHelper::divider();
 		}
 
@@ -191,7 +148,7 @@ JS;
 		JToolbarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_podcastmanager');
 		JToolbarHelper::divider();
 
-		if ($user->authorise('core.admin', 'com_podcastmanager'))
+		if ($user->authorise('core.admin', 'com_podcastmanager') || $user->authorise('core.options', 'com_podcastmanager'))
 		{
 			JToolbarHelper::preferences('com_podcastmedia');
 			JToolbarHelper::divider();

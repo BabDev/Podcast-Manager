@@ -15,6 +15,7 @@
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
 ?>
+<?php if ($this->state->folder != '') : ?>
 <tr>
 	<td class="imgTotal">
 		<a href="index.php?option=com_podcastmedia&amp;view=medialist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>" target="folderframe">
@@ -27,8 +28,8 @@ $user = JFactory::getUser();
 		</a>
 	</td>
 	<td>&#160;</td>
-<?php if ($user->authorise('core.delete', 'com_podcastmanager'))
-{ ?>
-	<td>&#160;</td>
-<?php } ?>
+	<?php if ($user->authorise('core.delete', 'com_podcastmanager')) : ?>
+		<td>&#160;</td>
+	<?php endif; ?>
 </tr>
+<?php endif;

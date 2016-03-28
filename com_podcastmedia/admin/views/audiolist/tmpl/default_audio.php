@@ -16,11 +16,11 @@ defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
 
-$params = new Registry;
-$dispatcher	= JEventDispatcher::getInstance();
-$dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
+$params     = new Registry;
+$dispatcher = JEventDispatcher::getInstance();
+$dispatcher->trigger('onContentBeforeDisplay', ['com_podcastmedia.file', &$this->_tmp_audio, &$params]);
 ?>
-<tr>
+	<tr>
 	<td class="description">
 		<a href="javascript:AudioManager.populateFields('<?php echo $this->_tmp_audio->path_relative; ?>')" title="<?php echo $this->_tmp_audio->name; ?>">
 			<?php echo $this->escape($this->_tmp_audio->title); ?>
@@ -31,4 +31,4 @@ $dispatcher->trigger('onContentBeforeDisplay', array('com_podcastmedia.file', &$
 	</td>
 </tr>
 <?php
-$dispatcher->trigger('onContentAfterDisplay', array('com_podcastmedia.file', &$this->_tmp_audio, &$params));
+$dispatcher->trigger('onContentAfterDisplay', ['com_podcastmedia.file', &$this->_tmp_audio, &$params]);

@@ -13,24 +13,34 @@
  */
 
 defined('_JEXEC') or die;
+
+$params = JComponentHelper::getParams('com_podcastmedia');
+
 ?>
 <form target="_parent" action="index.php?option=com_podcastmedia&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
-	<ul class="manager thumbnails">
-		<?php echo $this->loadTemplate('up');
+	<div class="muted">
+		<p>
+			<span class="icon-folder"></span>
+			<?php if ($this->state->folder != '') : ?>
+				<?php echo JText::_('JGLOBAL_ROOT') . ': ' . $params->get('file_path', 'media/com_podcastmanager') . '/' . $this->state->folder; ?>
+			<?php else : ?>
+				<?php echo JText::_('JGLOBAL_ROOT') . ': ' . $params->get('file_path', 'media/com_podcastmanager'); ?>
+			<?php endif; ?>
+		</p>
+	</div>
 
-		// Load the folders
-		for ($i = 0, $n = count($this->folders); $i < $n; $i++)
-		{
+	<ul class="manager thumbnails">
+		<?php echo $this->loadTemplate('up'); ?>
+
+		<?php for ($i = 0, $n = count($this->folders); $i < $n; $i++) :
 			$this->setFolder($i);
 			echo $this->loadTemplate('folder');
-		}
+		endfor; ?>
 
-		// Load the files
-		for ($i = 0, $n = count($this->audio); $i < $n; $i++)
-		{
+		<?php for ($i = 0, $n = count($this->audio); $i < $n; $i++) :
 			$this->setAudio($i);
 			echo $this->loadTemplate('audio');
-		} ?>
+		endfor; ?>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="username" value="" />
