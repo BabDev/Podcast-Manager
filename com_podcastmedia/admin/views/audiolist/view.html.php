@@ -69,16 +69,6 @@ class PodcastMediaViewAudiolist extends JViewLegacy
 		// Do not allow cache
 		JFactory::getApplication()->allowCache(false);
 
-		JHtml::_('stylesheet', 'media/popup-imagelist.css', [], true);
-
-		if (JFactory::getLanguage()->isRTL())
-		{
-			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', [], true);
-		}
-
-		JHtml::_('stylesheet', 'media/popup-medialist-details.css', [], true);
-		JFactory::getDocument()->addScriptDeclaration("var AudioManager = window.parent.AudioManager;");
-
 		$this->baseURL = COM_PODCASTMEDIA_BASEURL;
 		$this->audio   = $this->get('Audio');
 		$this->folders = $this->get('Folders');

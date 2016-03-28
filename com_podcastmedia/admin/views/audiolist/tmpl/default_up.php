@@ -15,14 +15,9 @@
 defined('_JEXEC') or die;
 ?>
 <tr>
-	<td class="imgTotal">
-		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">
-			<i class="icon-arrow-up"></i>
-		</a>
-	</td>
 	<td class="description">
 		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">
-			..
+			<i class="icon-arrow-up"></i>
 		</a>
 	</td>
 	<td>&#160;</td>

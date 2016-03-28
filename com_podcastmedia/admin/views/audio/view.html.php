@@ -74,30 +74,11 @@ class PodcastMediaViewAudio extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$medmanparams = JComponentHelper::getParams('com_media');
-		$lang         = JFactory::getLanguage();
-
-		/*
-		 * Display form for FTP credentials?
-		 * Don't set them here, as there are other functions called before this one if there is any file write operation
-		 */
-		$ftp = !JClientHelper::hasCredentials('ftp');
-
 		$this->session      = JFactory::getSession();
-		$this->medmanparams = $medmanparams;
+		$this->medmanparams = JComponentHelper::getParams('com_media');
 		$this->state        = $this->get('state');
 		$this->folderList   = $this->get('folderList');
-		$this->require_ftp  = $ftp;
-
-		JHtml::_('behavior.framework', true);
-		JHtml::_('jquery.framework');
-		JHtml::_('script', 'podcastmanager/popup-audiomanager.js', false, true);
-		JHtml::_('stylesheet', 'media/popup-imagemanager.css', [], true);
-
-		if ($lang->isRTL())
-		{
-			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', [], true);
-		}
+		$this->require_ftp  = !JClientHelper::hasCredentials('ftp');
 
 		return parent::display($tpl);
 	}
