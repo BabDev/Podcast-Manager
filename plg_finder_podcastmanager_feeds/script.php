@@ -27,9 +27,10 @@ class PlgFinderPodcastManager_FeedsInstallerScript
 	 * @param   string                   $type    The action being performed
 	 * @param   JInstallerAdapterPlugin  $parent  The function calling this method
 	 *
-	 * @return  boolean  True on success, false on error
+	 * @return  boolean
 	 *
 	 * @since   2.0
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
@@ -39,9 +40,7 @@ class PlgFinderPodcastManager_FeedsInstallerScript
 			// Check if Podcast Manager is installed
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
-				JError::raiseNotice(null, JText::_('PLG_FINDER_PODCASTMANAGER_FEEDS_ERROR_COMPONENT'));
-
-				return false;
+				throw new RuntimeException(JText::_('PLG_FINDER_PODCASTMANAGER_FEEDS_ERROR_COMPONENT'));
 			}
 		}
 

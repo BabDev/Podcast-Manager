@@ -24,27 +24,26 @@ class Files_PodcastManager_HathorInstallerScript
 	/**
 	 * Function to act prior to installation process begins
 	 *
-	 * @param   string          $type    The action being performed
-	 * @param   JInstallerFile  $parent  The class calling this method
+	 * @param   string                 $type    The action being performed
+	 * @param   JInstallerAdapterFile  $parent  The class calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean
 	 *
 	 * @since   1.8
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
 		// Check if the Hathor template is installed
 		if (!is_dir(JPATH_BASE . '/templates/hathor'))
 		{
-			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_TEMPLATE'));
-			return false;
+			throw new RuntimeException(JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_TEMPLATE'));
 		}
 
 		// Check if Podcast Manager is installed
 		if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 		{
-			JError::raiseNotice(null, JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_COMPONENT'));
-			return false;
+			throw new RuntimeException(JText::_('FILES_PODCASTMANAGER_HATHOR_ERROR_COMPONENT'));
 		}
 
 		return true;

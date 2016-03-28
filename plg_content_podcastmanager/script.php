@@ -30,6 +30,7 @@ class PlgContentPodcastManagerInstallerScript
 	 * @return  boolean
 	 *
 	 * @since   1.7
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
@@ -39,9 +40,7 @@ class PlgContentPodcastManagerInstallerScript
 			// Check if Podcast Manager is installed
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
-				JError::raiseNotice(null, JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_COMPONENT'));
-
-				return false;
+				throw new RuntimeException(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_COMPONENT'));
 			}
 		}
 
@@ -79,7 +78,7 @@ class PlgContentPodcastManagerInstallerScript
 		// If in error, throw a message about the language files
 		if ($version == 'Error')
 		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+			JFactory::getApplication()->enqueueMessage(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_INSTALL_UPDATE'), 'warning');
 
 			return;
 		}
@@ -113,7 +112,7 @@ class PlgContentPodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseNotice(1, JText::_('PLG_EDITORS-PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			JFactory::getApplication()->enqueueMessage(JText::_('PLG_EDITORS-PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'), 'notice');
 		}
 	}
 
@@ -140,7 +139,7 @@ class PlgContentPodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), 'warning');
 
 			return 'Error';
 		}

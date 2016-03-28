@@ -52,35 +52,26 @@ class Pkg_PodcastManagerInstallerScript
 	 * @return  boolean  True on success
 	 *
 	 * @since   2.0
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
 		// PHP Version Check
 		if (version_compare(PHP_VERSION, $this->minimumPHPVersion, 'lt'))
 		{
-			JError::raiseNotice(
-				null, JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION', $this->minimumPHPVersion)
-			);
-
-			return false;
+			throw new RuntimeException(JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION', $this->minimumPHPVersion));
 		}
 
 		// Joomla! Version Check
 		if (version_compare(JVERSION, $this->minimumJoomlaVersion, 'lt'))
 		{
-			JError::raiseNotice(
-				null, JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION', $this->minimumJoomlaVersion)
-			);
-
-			return false;
+			throw new RuntimeException(JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION', $this->minimumJoomlaVersion));
 		}
 
 		// Check to see if the database type is supported
 		if (!in_array(JFactory::getDbo()->name, $this->dbSupport))
 		{
-			JError::raiseNotice(null, JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
-
-			return false;
+			throw new RuntimeException(JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
 		}
 
 		return true;
@@ -103,7 +94,7 @@ class Pkg_PodcastManagerInstallerScript
 		// If in error, throw a message about the language files
 		if ($version == 'Error')
 		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
+			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
 
 			return;
 		}
@@ -235,7 +226,7 @@ class Pkg_PodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), 'warning');
 
 			return 'Error';
 		}
@@ -332,7 +323,7 @@ class Pkg_PodcastManagerInstallerScript
 
 		if ($failed)
 		{
-			JError::raiseWarning(1, JText::_('PKG_PODCASTMANAGER_FAILED_REMOVING_STRAPPED_EXTENSION'));
+			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_FAILED_REMOVING_STRAPPED_EXTENSION'), 'warning');
 		}
 	}
 }

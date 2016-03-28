@@ -30,6 +30,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 	 * @return  boolean
 	 *
 	 * @since   1.7
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
@@ -39,9 +40,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 			// Check if Podcast Manager is installed
 			if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 			{
-				JError::raiseNotice(null, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_COMPONENT'));
-
-				return false;
+				throw new RuntimeException(JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_COMPONENT'));
 			}
 		}
 
@@ -83,7 +82,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseNotice(1, JText::_('PLG_EDITORS-XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'));
+			JFactory::getApplication()->enqueueMessage(JText::_('XTD_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN', $e->getMessage()), 'notice');
 		}
 	}
 }

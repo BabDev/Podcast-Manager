@@ -27,77 +27,19 @@ class Mod_PodcastManagerInstallerScript
 	 * @param   string                   $type    The action being performed
 	 * @param   JInstallerAdapterModule  $parent  The function calling this method
 	 *
-	 * @return  mixed  Boolean false on failure, void otherwise
+	 * @return  boolean
 	 *
 	 * @since   1.8
+	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
 		// Check if Podcast Manager is installed
 		if (!is_dir(JPATH_BASE . '/components/com_podcastmanager'))
 		{
-			JError::raiseNotice(null, JText::_('MOD_PODCASTMANAGER_ERROR_COMPONENT'));
-
-			return false;
+			throw new RuntimeException(JText::_('MOD_PODCASTMANAGER_ERROR_COMPONENT'));
 		}
 
 		return true;
-	}
-
-	/**
-	 * Function to perform changes during update
-	 *
-	 * @param   JInstallerAdapterModule  $parent  The class calling this method
-	 *
-	 * @return  void
-	 *
-	 * @since   2.1
-	 */
-	public function update($parent)
-	{
-		// Get the pre-update version
-		$version = $this->getVersion();
-
-		// If in error, throw a message about the language files
-		if ($version == 'Error')
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
-
-			return;
-		}
-	}
-
-	/**
-	 * Function to get the currently installed version from the manifest cache
-	 *
-	 * @return  string  The version that is installed
-	 *
-	 * @since   2.1
-	 */
-	private function getVersion()
-	{
-		// Get the record from the database
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('manifest_cache'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote('mod_podcastmanager'));
-
-		try
-		{
-			$manifest = $db->setQuery($query)->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-
-			return 'Error';
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		return $record->version;
 	}
 }

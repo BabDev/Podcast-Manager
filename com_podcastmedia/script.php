@@ -22,29 +22,6 @@
 class Com_PodcastMediaInstallerScript
 {
 	/**
-	 * Function to perform changes during update
-	 *
-	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
-	 *
-	 * @return  void
-	 *
-	 * @since   2.0
-	 */
-	public function update($parent)
-	{
-		// Get the pre-update version
-		$version = $this->getVersion();
-
-		// If in error, throw a message
-		if ($version == 'Error')
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMEDIA_ERROR_INSTALL_UPDATE'));
-
-			return;
-		}
-	}
-
-	/**
 	 * Function to perform changes when component is initially installed
 	 *
 	 * @param   string                      $type    The action being performed
@@ -57,40 +34,6 @@ class Com_PodcastMediaInstallerScript
 	public function postflight($type, $parent)
 	{
 		$this->removeMenu();
-	}
-
-	/**
-	 * Function to get the currently installed version from the manifest cache
-	 *
-	 * @return  string  The version that is installed
-	 *
-	 * @since   2.0
-	 */
-	private function getVersion()
-	{
-		// Get the record from the database
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('manifest_cache'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmedia'));
-
-		try
-		{
-			$manifest = $db->setQuery($query)->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-
-			return 'Error';
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		return $record->version;
 	}
 
 	/**
@@ -113,7 +56,7 @@ class Com_PodcastMediaInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), 'warning');
 		}
 	}
 }
