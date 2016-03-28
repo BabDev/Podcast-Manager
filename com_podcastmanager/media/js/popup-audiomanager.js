@@ -1,208 +1,215 @@
 /**
-* Podcast Manager for Joomla!
-*
-* @copyright	Copyright (C) 2011-2015 Michael Babker. All rights reserved.
-* @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-* @package		PodcastManager
-* @subpackage	com_podcastmedia
-*
-* Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
-* Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
-*/
+ * Podcast Manager for Joomla!
+ *
+ * @package		PodcastManager
+ * @subpackage	com_podcastmanager
+ *
+ * @copyright	Copyright (C) 2011-2015 Michael Babker. All rights reserved.
+ * @license		GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Podcast Manager is based upon the ideas found in Podcast Suite created by Joe LeBlanc
+ * Original copyright (c) 2005 - 2008 Joseph L. LeBlanc and released under the GPLv2 license
+ */
 
-(function($) {
-var AudioManager = this.AudioManager = {
-	initialize: function()
-	{
-		o = this._getUriObject(window.self.location.href);
-		q = this._getQueryObject(o.query);
-		this.editor = decodeURIComponent(q['e_name']);
+if (typeof jQuery === 'undefined') {
+    throw new Error('AudioManager JavaScript requires jQuery')
+}
 
-		// Setup audio listing objects
-		this.folderlist = document.getElementById('folderlist');
+!function (jQuery, document, window) {
+    'use strict';
 
-		this.frame		= window.frames['audioframe'];
-		this.frameurl	= this.frame.location.href;
+    window.AudioManager = {
+        /**
+         * Basic setup
+         */
+        initialize: function () {
+            var o = this.getUriObject(window.self.location.href),
+                q = this.getQueryObject(o.query);
 
-		// Setup audio listing frame
-		this.audioframe = document.getElementById('audioframe');
-		this.audioframe.manager = this;
-		$(this.audioframe).on('load', function(){ AudioManager.onloadaudioview(); });
+            this.editor = decodeURIComponent(q.e_name);
 
-		// Setup folder up button
-		this.upbutton = document.getElementById('upbutton');
-		$(this.upbutton).off('click');
-		$(this.upbutton).on('click', function(){ AudioManager.upFolder(); });
-	},
+            // Setup audio listing objects
+            this.folderlist = document.getElementById('folderlist');
+            this.frame = window.frames.audioframe;
+            this.frameurl = this.frame.location.href;
 
-	onloadaudioview: function()
-	{
-		// Update the frame url
-		this.frameurl = this.frame.location.href;
+            // Setup audio listing frame
+            jQuery('#audioframe').on('load', function () {
+                AudioManager.onloadaudioview();
+            });
 
-		var folder = this.getAudioFolder();
-		for(var i = 0; i < this.folderlist.length; i++)
-		{
-			if (folder == this.folderlist.options[i].value) {
-				this.folderlist.selectedIndex = i;
-				if (this.folderlist.className.test(/\bchzn-done\b/)) {
-					$(this.folderlist).trigger('liszt:updated');
-				}
-				break;
-			}
-		}
+            // Setup folder up button
+            jQuery('#upbutton').off('click').on('click', function () {
+                AudioManager.upFolder();
+            });
+        },
 
-		a = this._getUriObject($('#uploadForm').attr('action'));
-		q = this._getQueryObject(a.query);
-		q['folder'] = folder;
-		var query = [];
-		for (var k in q) {
-			var v = q[k];
-			if (q.hasOwnProperty(k) && v !== null) {
-				query.push(k+'='+v);
-			}
-		}
-		a.query = query.join('&');
-		var portString = '';
-		if (typeof(a.port) !== 'undefined' && a.port != 80) {
-			portString = ':'+a.port;
-		}
-		$('#uploadForm').attr('action', a.scheme+'://'+a.domain+portString+a.path+'?'+a.query);
-	},
+        /**
+         * Called when the iframe is reloaded and updates the form action with the correct folder
+         */
+        onloadaudioview: function () {
+            var folder = this.getAudioFolder(),
+                $form = jQuery('#uploadForm'),
+                portString = '';
 
-	getAudioFolder: function()
-	{
-		var url 	= this.frame.location.search.substring(1);
-		var args	= this.parseQuery(url);
+            // Update the frame url
+            this.frameurl = this.frame.location.href;
+            this.setFolder(folder);
 
-		return args['folder'];
-	},
+            var a = this.getUriObject($form.attr('action')),
+                q = this.getQueryObject(a.query);
 
-	setFolder: function(folder,asset,author)
-	{
-		for(var i = 0; i < this.folderlist.length; i++)
-		{
-			if (folder == this.folderlist.options[i].value) {
-				this.folderlist.selectedIndex = i;
-				if (this.folderlist.className.test(/\bchzn-done\b/)) {
-					$(this.folderlist).trigger('liszt:updated');
-				}
-				break;
-			}
-		}
-		this.frame.location.href='index.php?option=com_podcastmedia&view=audiolist&tmpl=component&folder=' + folder + '&asset=' + asset + '&author=' + author;
-	},
+            q.folder = folder;
+            a.query = jQuery.param(q);
 
-	getFolder: function() {
-		return this.folderlist.value;
-	},
+            if (typeof (a.port) !== 'undefined' && a.port != 80) {
+                portString = ':' + a.port;
+            }
 
-	upFolder: function()
-	{
-		var currentFolder = this.getFolder();
+            $form.attr('action', a.scheme + '://' + a.domain + portString + a.path + '?' + a.query);
+        },
 
-		if(currentFolder.length < 2) {
-			return false;
-		}
+        /**
+         * Get the current directory based on the query string of the iframe
+         *
+         * @returns {String}
+         */
+        getAudioFolder: function () {
+            return this.getQueryObject(this.frame.location.search.substring(1)).folder;
+        },
 
-		var folders = currentFolder.split('/');
-		var search = '';
+        /**
+         * Called when the directory selector is used.
+         *
+         * @param {String} folder The folder to switch to
+         * @param {Number} asset  Probably an integer or undefined, optional
+         * @param {Number} author Probably an integer or undefined, optional
+         */
+        setFolder: function (folder, asset, author) {
+            for (var i = 0, l = this.folderlist.length; i < l; i++) {
+                if (folder == this.folderlist.options[i].value) {
+                    this.folderlist.selectedIndex = i;
 
-		for(var i = 0; i < folders.length - 1; i++) {
-			search += folders[i];
-			search += '/';
-		}
+                    jQuery(this.folderlist)
+                        .trigger('liszt:updated') // Mootools
+                        .trigger('chosen:updated'); // jQuery
 
-		// remove the trailing slash
-		search = search.substring(0, search.length - 1);
+                    break;
+                }
+            }
 
-		for(var i = 0; i < this.folderlist.length; i++)
-		{
-			var thisFolder = this.folderlist.options[i].value;
+            if (!!asset || !!author) {
+                this.setFrameUrl(folder, asset, author);
+            }
+        },
 
-			if(thisFolder == search)
-			{
-				this.folderlist.selectedIndex = i;
-				var newFolder = this.folderlist.options[i].value;
-				this.setFolder(newFolder);
-				break;
-			}
-		}
-	},
+        /**
+         * Move up one directory
+         *
+         * @return  void
+         */
+        upFolder: function () {
+            var path = this.folderlist.value.split('/'),
+                search;
 
-	populateFields: function(file)
-	{
-		$("#f_url").val(audio_base_path+file);
-	},
+            path.pop();
+            search = path.join('/');
 
-	showMessage: function(text)
-	{
-		var message  = document.getElementById('message');
-		var messages = document.getElementById('messages');
+            this.setFolder(search);
+            this.setFrameUrl(search);
+        },
 
-		if (message.firstChild)
-			message.removeChild(message.firstChild);
+        /**
+         * Called when a file is selected
+         *
+         * @param {String} file Relative path to the file.
+         */
+        populateFields: function (file) {
+            jQuery('#f_url').val(audio_base_path + file);
+        },
 
-		message.appendChild(document.createTextNode(text));
-		messages.style.display = "block";
-	},
+        /**
+         * Not used.
+         * Should display messages. There are none.
+         *
+         * @param {String} text The message text
+         */
+        showMessage: function (text) {
+            var $message = jQuery('#message');
 
-	parseQuery: function(query)
-	{
-		var params = new Object();
-		if (!query) {
-			return params;
-		}
-		var pairs = query.split(/[;&]/);
-		for ( var i = 0; i < pairs.length; i++ )
-		{
-			var KeyVal = pairs[i].split('=');
-			if ( ! KeyVal || KeyVal.length != 2 ) {
-				continue;
-			}
-			var key = unescape( KeyVal[0] );
-			var val = unescape( KeyVal[1] ).replace(/\+ /g, ' ');
-			params[key] = val;
-	   }
-	   return params;
-	},
+            $message.find('>:first-child').remove();
+            $message.append(text);
+            jQuery('#messages').css('display', 'block');
+        },
 
-	refreshFrame: function()
-	{
-		this._setFrameUrl();
-	},
+        /**
+         * Not used.
+         * Refreshes the iframe
+         *
+         * @return  void
+         */
+        refreshFrame: function () {
+            this.frame.location.href = this.frameurl;
+        },
 
-	_setFrameUrl: function(url)
-	{
-		if (url != null) {
-			this.frameurl = url;
-		}
-		this.frame.location.href = this.frameurl;
-	},
+        /**
+         * Sets the iframe URL, loading a new page. Usually for changing directory.
+         *
+         * @param {String} folder Relative path to directory
+         * @param {Number} asset  Probably an integer or undefined, optional
+         * @param {Number} author Probably an integer or undefined, optional
+         */
+        setFrameUrl: function (folder, asset, author) {
+            var qs = {
+                option: 'com_podcastmedia',
+                view: 'audiolist',
+                tmpl: 'component',
+                asset: asset,
+                author: author
+            };
 
-	_getQueryObject: function(q) {
-		var vars = q.split(/[&;]/);
-		var rs = {};
-		if (vars.length) vars.forEach(function(val) {
-			var keys = val.split('=');
-			if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
-		});
-		return rs;
-	},
+            // Don't run folder through params because / will end up double encoded.
+            this.frameurl = 'index.php?' + jQuery.param(qs) + '&folder=' + folder;
+            this.frame.location.href = this.frameurl;
+        },
 
-	_getUriObject: function(u){
-		var bitsAssociate = {}, bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
-		['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'].forEach(function(key, index) {
-			bitsAssociate[key] = bits[index];
-		});
+        /**
+         * Convert a query string to an object
+         *
+         * @param {String} q A query string (no leading ?)
+         * @returns {Object}
+         */
+        getQueryObject: function (q) {
+            var rs = {};
 
-		return (bits)
-			? bitsAssociate
-			: null;
-	}
-};
-})(jQuery);
+            jQuery.each((q || '').split(/[&;]/), function (key, val) {
+                var keys = val.split('=');
 
-jQuery(function(){
-	AudioManager.initialize();
-});
+                rs[keys[0]] = keys.length == 2 ? keys[1] : null;
+            });
+
+            return rs;
+        },
+
+        /**
+         * Break a URL into its component parts
+         *
+         * @param {String} u URL
+         * @return {Object}
+         */
+        getUriObject: function (u) {
+            var bitsAssociate = {},
+                bits = u.match(/^(?:([^:\/?#.]+):)?(?:\/\/)?(([^:\/?#]*)(?::(\d*))?)((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[\?#]|$)))*\/?)?([^?#\/]*))?(?:\?([^#]*))?(?:#(.*))?/);
+
+            jQuery.each(['uri', 'scheme', 'authority', 'domain', 'port', 'path', 'directory', 'file', 'query', 'fragment'], function (key, index) {
+                bitsAssociate[index] = (!!bits && !!bits[key]) ? bits[key] : '';
+            });
+
+            return bitsAssociate;
+        }
+    }
+
+    jQuery(function () {
+        AudioManager.initialize();
+    });
+}(jQuery, document, window);

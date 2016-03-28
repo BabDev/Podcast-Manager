@@ -15,9 +15,6 @@ if (typeof jQuery === 'undefined') {
     throw new Error('fieldPodcastMedia JavaScript requires jQuery')
 }
 
-/**
- * Field media
- */
 !function (jQuery, document) {
     'use strict';
 
@@ -73,15 +70,18 @@ if (typeof jQuery === 'undefined') {
             jQuery('body').addClass('modal-open');
 
             var self = this; // save context
+
             $iframe.load(function () {
                 var content = jQuery(this).contents();
 
                 // bind insert
                 content.on('click', self.options.buttonSaveSelected, function () {
                     var value = content.find('#f_url').val();
+
                     if (value) {
                         self.setValue(value);
                     }
+
                     self.modalClose.call(self);
                 });
 

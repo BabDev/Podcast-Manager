@@ -21,8 +21,6 @@ if (typeof jQuery === 'undefined') {
 	var PodcastMediaManager = window.PodcastMediaManager = {
 		/**
 		 * Basic setup
-		 *
-		 * @return  void
 		 */
 		initialize: function () {
 			this.folderpath = jQuery('#folderpath');
