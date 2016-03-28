@@ -14,6 +14,7 @@
 
 defined('_JEXEC') or die;
 ?>
+<?php if ($this->state->folder != '') : ?>
 <tr>
 	<td class="description">
 		<a href="index.php?option=com_podcastmedia&amp;view=audiolist&amp;tmpl=component&amp;folder=<?php echo $this->state->parent; ?>">
@@ -22,3 +23,4 @@ defined('_JEXEC') or die;
 	</td>
 	<td>&#160;</td>
 </tr>
+<?php endif;
