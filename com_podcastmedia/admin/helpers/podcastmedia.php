@@ -46,7 +46,7 @@ class PodcastMediaHelper extends JHelperMedia
 
 		jimport('joomla.filesystem.file');
 
-		if ($file['name'] !== JFile::makesafe($file['name']))
+		if ($file['name'] !== JFile::makeSafe($file['name']))
 		{
 			$err = 'COM_PODCASTMEDIA_ERROR_WARNFILENAME';
 

@@ -80,14 +80,14 @@ class PodcastMediaModelManager extends JModelLegacy
 		jimport('joomla.filesystem.folder');
 		$folders = JFolder::folders($base, '.', true, true);
 
-		JFactory::getDocument()->setTitle(JText::_('COM_PODCASTMEDIA_INSERT_IMAGE'));
+		JFactory::getDocument()->setTitle(JText::_('COM_PODCASTMEDIA_INSERT_FILE'));
 
 		// Build the array of select options for the folder list
-		$options[] = JHtml::_('select.option', "", "/");
+		$options = [JHtml::_('select.option', '', '/')];
 
 		foreach ($folders as $folder)
 		{
-			$folder    = str_replace($comPodcastMediaBaseUni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
+			$folder    = str_replace($comPodcastMediaBaseUni, '', str_replace(DIRECTORY_SEPARATOR, '/', $folder));
 			$value     = substr($folder, 1);
 			$text      = str_replace(DIRECTORY_SEPARATOR, '/', $folder);
 			$options[] = JHtml::_('select.option', $value, $text);
@@ -105,7 +105,7 @@ class PodcastMediaModelManager extends JModelLegacy
 		$author = $input->getInt('author', 0);
 
 		// Create the drop-down folder select list
-		$list = JHtml::_(
+		return JHtml::_(
 			'select.genericlist',
 			$options,
 			'folderlist',
@@ -114,8 +114,6 @@ class PodcastMediaModelManager extends JModelLegacy
 			'text',
 			$base
 		);
-
-		return $list;
 	}
 
 	/**
@@ -165,6 +163,7 @@ class PodcastMediaModelManager extends JModelLegacy
 				{
 					// We need to place the node
 					$tmp['children'][$relative] = ['data' => $node, 'children' => []];
+
 					break;
 				}
 

@@ -70,13 +70,23 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Get some data from the request
 		$files        = $this->input->files->get('Filedata', [], 'array');
+		$return       = JFactory::getSession()->get('com_podcastmedia.return_url');
 		$this->folder = $this->input->getPath('folder', '');
-		$return       = $this->input->post->getBase64('return-url', null);
+
+		// Don't redirect to an external URL.
+		if (!JUri::isInternal($return))
+		{
+			$return = '';
+		}
 
 		// Set the redirect
 		if ($return)
 		{
-			$this->setRedirect(base64_decode($return) . '&folder=' . $this->folder);
+			$this->setRedirect($return . '&folder=' . $this->folder);
+		}
+		else
+		{
+			$this->setRedirect('index.php?option=com_podcastmedia&folder=' . $this->folder);
 		}
 
 		// Authorize the user
@@ -85,18 +95,31 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			return false;
 		}
 
-		$params = JComponentHelper::getParams('com_media');
+		// Total length of post back data in bytes.
+		$contentLength = $this->input->server->getUint('CONTENT_LENGTH', 0);
 
-		if ($_SERVER['CONTENT_LENGTH'] > ($params->get('upload_maxsize', 0) * 1024 * 1024)
-			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('upload_max_filesize')) * 1024 * 1024
-			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('post_max_size')) * 1024 * 1024
-			|| $_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024
-		)
+		// Instantiate the media helper
+		$mediaHelper = new PodcastMediaHelper;
+
+		// Maximum allowed size of post back data in MB.
+		$postMaxSize = $mediaHelper->toBytes(ini_get('post_max_size'));
+
+		// Maximum allowed size of script execution in MB.
+		$memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
+
+		// Check for the total size of post back data.
+		if (($postMaxSize > 0 && $contentLength > $postMaxSize)
+			|| ($memoryLimit != -1 && $contentLength > $memoryLimit))
 		{
 			JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
 
 			return false;
 		}
+
+		$params = JComponentHelper::getParams('com_media');
+
+		$uploadMaxSize     = $params->get('upload_maxsize', 0) * 1024 * 1024;
+		$uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
 
 		// Perform basic checks on file info before attempting anything
 		foreach ($files as &$file)
@@ -104,16 +127,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			$file['name']     = JFile::makeSafe(str_replace(' ', '_', $file['name']));
 			$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, [COM_PODCASTMEDIA_BASE, $this->folder, $file['name']]));
 
-			if ($file['error'] == 1)
+			if (($file['error'] == 1)
+				|| ($uploadMaxSize > 0 && $file['size'] > $uploadMaxSize)
+				|| ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
 			{
+				// File size exceed either 'upload_max_filesize' or 'upload_maxsize'.
 				JError::raiseWarning(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
-
-				return false;
-			}
-
-			if ($file['size'] > ($params->get('upload_maxsize', 0) * 1024 * 1024))
-			{
-				JError::raiseNotice(100, JText::_('COM_PODCASTMEDIA_ERROR_WARNFILETOOLARGE'));
 
 				return false;
 			}
@@ -145,9 +164,9 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			// The request is valid
 			$err = null;
 
-			if (!PodcastMediaHelper::canUpload($file, $err))
+			if (!$mediaHelper->canUpload($file, $err))
 			{
-				// The file can't be upload
+				// The file can't be uploaded
 				JError::raiseNotice(100, JText::_($err));
 
 				return false;
@@ -179,12 +198,10 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 				return false;
 			}
-			else
-			{
-				// Trigger the onContentAfterSave event.
-				$dispatcher->trigger('onContentAfterSave', ['com_podcastmedia.file', &$object_file, true]);
-				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
-			}
+
+			// Trigger the onContentAfterSave event.
+			$dispatcher->trigger('onContentAfterSave', ['com_podcastmedia.file', &$object_file, true]);
+			$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_UPLOAD_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 		}
 
 		return true;
@@ -200,7 +217,6 @@ class PodcastMediaControllerFile extends JControllerLegacy
 	public function delete()
 	{
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-		$user = JFactory::getUser();
 
 		// Get some data from the request
 		$tmpl   = $this->input->getCmd('tmpl', '');
@@ -229,7 +245,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			return false;
 		}
 
-		if (!$user->authorise('core.delete', 'com_podcastmanager'))
+		if (!JFactory::getUser()->authorise('core.delete', 'com_podcastmanager'))
 		{
 			// User is not authorised to delete
 			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
@@ -244,6 +260,7 @@ class PodcastMediaControllerFile extends JControllerLegacy
 
 		// Initialise variables.
 		$ret = true;
+		$app = JFactory::getApplication();
 
 		foreach ($paths as $path)
 		{
@@ -251,13 +268,12 @@ class PodcastMediaControllerFile extends JControllerLegacy
 			{
 				// Filename is not safe
 				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-				JError::raiseWarning(
-					100,
-					JText::sprintf(
-						'COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME',
-						substr($filename, strlen(COM_PODCASTMEDIA_BASE))
-					)
+
+				$app->enqueueMessage(
+					JText::sprintf('COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_PODCASTMEDIA_BASE))),
+					'warning'
 				);
+
 				continue;
 			}
 
@@ -272,14 +288,11 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				if (in_array(false, $result, true))
 				{
 					// There are some errors in the plugins
-					JError::raiseWarning(
-						100,
-						JText::plural(
-							'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
-							count($errors = $object_file->getErrors()),
-							implode('<br />', $errors)
-						)
+					$app->enqueueMessage(
+						JText::plural('COM_PODCASTMEDIA_ERROR_BEFORE_DELETE', count($errors = $object_file->getErrors()), implode('<br />', $errors)),
+						'warning'
 					);
+
 					continue;
 				}
 
@@ -288,47 +301,51 @@ class PodcastMediaControllerFile extends JControllerLegacy
 				// Trigger the onContentAfterDelete event.
 				$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.file', &$object_file]);
 				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
+
+				continue;
 			}
-			elseif (is_dir($object_file->filepath))
+
+			if (is_dir($object_file->filepath))
 			{
 				$contents = JFolder::files($object_file->filepath, '.', true, false, ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html']);
 
-				if (empty($contents))
-				{
-					// Trigger the onContentBeforeDelete event.
-					$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.folder', &$object_file]);
-
-					if (in_array(false, $result, true))
-					{
-						// There are some errors in the plugins
-						JError::raiseWarning(
-							100,
-							JText::plural(
-								'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
-								count($errors = $object_file->getErrors()),
-								implode('<br />', $errors)
-							)
-						);
-						continue;
-					}
-
-					$ret &= JFolder::delete($object_file->filepath);
-
-					// Trigger the onContentAfterDelete event.
-					$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.folder', &$object_file]);
-					$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
-				}
-				else
+				if (!empty($contents))
 				{
 					// This makes no sense...
-					JError::raiseWarning(
-						100,
+					$app->enqueueMessage(
 						JText::sprintf(
 							'COM_PODCASTMEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',
 							substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))
-						)
+						),
+						'warning'
 					);
+
+					continue;
 				}
+
+				// Trigger the onContentBeforeDelete event.
+				$result = $dispatcher->trigger('onContentBeforeDelete', ['com_podcastmedia.folder', &$object_file]);
+
+				if (in_array(false, $result, true))
+				{
+					// There are some errors in the plugins
+					$app->enqueueMessage(
+						JText::plural(
+							'COM_PODCASTMEDIA_ERROR_BEFORE_DELETE',
+							count($errors = $object_file->getErrors()),
+							implode('<br />', $errors)
+						),
+						'warning'
+					);
+
+					continue;
+				}
+
+				$ret &= JFolder::delete($object_file->filepath);
+
+				// Trigger the onContentAfterDelete event.
+				$dispatcher->trigger('onContentAfterDelete', ['com_podcastmedia.folder', &$object_file]);
+				$this->setMessage(JText::sprintf('COM_PODCASTMEDIA_DELETE_COMPLETE', substr($object_file->filepath, strlen(COM_PODCASTMEDIA_BASE))));
 			}
 		}
 

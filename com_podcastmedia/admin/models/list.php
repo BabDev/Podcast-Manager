@@ -100,38 +100,23 @@ class PodcastMediaModelList extends JModelLegacy
 		}
 
 		// Get current path from request
-		$current = $this->getState('folder');
+		$current = (string) $this->getState('folder');
 
-		// If undefined, set to empty
-		if ($current == 'undefined')
-		{
-			$current = '';
-		}
-
-		// Check if current is the same as the configured default path
-		if ($current == JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager'))
-		{
-			$current = '';
-		}
-
-		// Initialise variables.
-		if (strlen($current) > 0)
-		{
-			$basePath = COM_PODCASTMEDIA_BASE . '/' . $current;
-		}
-		else
-		{
-			$basePath = COM_PODCASTMEDIA_BASE;
-		}
-
+		$basePath  = COM_PODCASTMEDIA_BASE . ((strlen($current) > 0) ? '/' . $current : '');
 		$mediaBase = str_replace(DIRECTORY_SEPARATOR, '/', COM_PODCASTMEDIA_BASE . '/');
 
 		$folders = [];
 		$audio   = [];
 
-		// Get the list of files and folders from the given folder
-		$fileList   = JFolder::files($basePath);
-		$folderList = JFolder::folders($basePath);
+		$fileList   = false;
+		$folderList = false;
+
+		if (file_exists($basePath))
+		{
+			// Get the list of files and folders from the given folder
+			$fileList   = JFolder::files($basePath);
+			$folderList = JFolder::folders($basePath);
+		}
 
 		// Iterate over the files if they exist
 		if ($fileList !== false)
@@ -175,7 +160,7 @@ class PodcastMediaModelList extends JModelLegacy
 				$tmp->name          = basename($folder);
 				$tmp->path          = str_replace(DIRECTORY_SEPARATOR, '/', JPath::clean($basePath . '/' . $folder));
 				$tmp->path_relative = str_replace($mediaBase, '', $tmp->path);
-				$count              = PodcastMediaHelper::countFiles($tmp->path);
+				$count              = (new PodcastMediaHelper)->countFiles($tmp->path);
 				$tmp->files         = $count[0];
 				$tmp->folders       = $count[1];
 
