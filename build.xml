@@ -24,7 +24,6 @@
 		<echo message="Deleting old master builds" />
 		<delete includeemptydirs="true">
 			<fileset dir=".">
-				<include name="files_podcastmanager_hathor_${version}.zip" />
 				<include name="pkg_podcastmanager_${version}.zip" />
 			</fileset>
 		</delete>
@@ -37,8 +36,6 @@
 				<include name="script.php" />
 			</fileset>
 		</zip>
-		<echo message="Building Hathor Overrides package" />
-		<zip destfile="files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
 	</target>
 
 	<!-- Build a package for release -->
@@ -53,8 +50,6 @@
 				<include name="script.php" />
 			</fileset>
 		</zip>
-		<echo message="Building Hathor Overrides package" />
-		<zip destfile="releases/files_podcastmanager_hathor_${version}.zip" basedir="packaging/files_podcastmanager_hathor" />
 		<echo message="Committing version" />
 		<git command="commit">
 			<args>
@@ -171,13 +166,6 @@
 			<copy todir="packaging/language">
 				<fileset dir="language" />
 			</copy>
-
-		<echo message="Create files_podcastmanager_hathor package" />
-			<copy todir="packaging/files_podcastmanager_hathor">
-				<fileset dir="files_podcastmanager_hathor" />
-			</copy>
-			<replace file="packaging/files_podcastmanager_hathor/podcastmanager_hathor.xml" token="##DATE##" value="${build.date}" />
-			<replace file="packaging/files_podcastmanager_hathor/podcastmanager_hathor.xml" token="##VERSION##" value="${version}" />
 	</target>
 
 	<!-- ZIP the separate extension packages -->

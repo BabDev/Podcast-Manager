@@ -64,16 +64,6 @@ file_filter = com_podcastmedia/admin/language/<lang>/<lang>.com_podcastmedia.sys
 source_file = com_podcastmedia/admin/language/en-GB/en-GB.com_podcastmedia.sys.ini
 source_lang = en
 
-[podcast-manager.podcast-manager-hathor-overrides]
-file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
-source_file = files_podcastmanager_hathor/language/en-GB/en-GB.files_podcastmanager_hathor.sys.ini
-source_lang = en
-
-[podcast-manager.podcast-manager-hathor-overrides-system]
-file_filter = files_podcastmanager_hathor/language/<lang>/<lang>.files_podcastmanager_hathor.sys.ini
-source_file = files_podcastmanager_hathor/language/en-GB/en-GB.files_podcastmanager_hathor.sys.ini
-source_lang = en
-
 [podcast-manager.podcast-manager-installation-package]
 file_filter = language/<lang>/<lang>.pkg_podcastmanager.sys.ini
 source_file = language/en-GB/en-GB.pkg_podcastmanager.sys.ini
