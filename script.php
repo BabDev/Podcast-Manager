@@ -142,59 +142,13 @@ class Pkg_PodcastManagerInstallerScript
 				$enabled[$extension] = 2;
 			}
 		}
-		?>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th class="title"><?php echo JText::_('PKG_PODCASTMANAGER_EXTENSION'); ?></th>
-					<th class="title" width="20%"><?php echo JText::_('PKG_PODCASTMANAGER_TYPE'); ?></th>
-					<th class="title" width="20%"><?php echo JText::_('JSTATUS'); ?></th>
-					<th class="title" width="15%"><?php echo JText::_('JENABLED'); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="4"></td>
-				</tr>
-			</tfoot>
-			<tbody>
-				<?php foreach ($results as $result) :
-					$extension = (string) $result['name'];
-					$e_type = substr($extension, 0, 3); ?>
-				<tr class="row<?php echo ($result % 2); ?>">
-					<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
-					<td><strong>
-						<?php if ($e_type == 'com') :
-							echo JText::_('COM_INSTALLER_TYPE_COMPONENT');
-						elseif ($e_type == 'mod') :
-							echo JText::_('COM_INSTALLER_TYPE_MODULE');
-						elseif ($e_type == 'plg') :
-							echo JText::_('COM_INSTALLER_TYPE_PLUGIN');
-						elseif ($e_type == 'get') :
-							echo JText::_('COM_INSTALLER_TYPE_LIBRARY');
-						endif; ?></strong>
-					</td>
-					<td><strong>
-						<?php if ($result['result'] == true) :
-							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-						else :
-							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-						endif; ?></strong>
-					</td>
-					<td><strong>
-						<?php if ($enabled[$extension] == 1) :
-							echo JText::_('JYES');
-						elseif ($enabled[$extension] == 2) :
-							echo JText::_('PKG_PODCASTMANAGER_NA');
-						else :
-							echo JText::_('JNO');
-						endif; ?></strong>
-					</td>
-				</tr>
-				<?php endforeach;?>
-			</tbody>
-		</table>
-		<?php
+
+		// Add the result table for the post-install screen
+		echo (new JLayoutFile('install.result', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/layouts'))->render(
+			[
+				'results' => $results, 'enabled' => $enabled
+			]
+		);
 	}
 
 	/**
@@ -344,24 +298,27 @@ class Pkg_PodcastManagerInstallerScript
 			// Set up our full path to the folder
 			$path = $base . $folder;
 
-			// Get the list of child folders
-			$children = JFolder::folders($path);
-
-			if (count($children))
+			if (is_dir($path))
 			{
-				// Process the child folders and remove their files
-				foreach ($children as $child)
+				// Get the list of child folders
+				$children = JFolder::folders($path);
+
+				if ($children && count($children))
 				{
-					// Set the path for the child
-					$cPath = $path . '/' . $child;
-
-					// Get the list of files
-					$files = JFolder::files($cPath);
-
-					// Now, remove the files
-					foreach ($files as $file)
+					// Process the child folders and remove their files
+					foreach ($children as $child)
 					{
-						JFile::delete($cPath . '/' . $file);
+						// Set the path for the child
+						$cPath = $path . '/' . $child;
+
+						// Get the list of files
+						$files = JFolder::files($cPath);
+
+						// Now, remove the files
+						foreach ($files as $file)
+						{
+							JFile::delete($cPath . '/' . $file);
+						}
 					}
 				}
 			}
