@@ -29,8 +29,6 @@ if (!$plainlink)
 	$plainlink = JRoute::_(PodcastManagerHelperRoute::getFeedRssRoute($feed), false, 2);
 }
 
-$img = JHtml::_('image', 'mod_podcastmanager/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'), null, true);
-
 if ($params->get('urischeme') == 'http')
 {
 	$link = $plainlink;

@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 </div>
 <div>
 	<a href="<?php echo $link; ?>">
-		<?php echo $img; ?>
+		<?php echo JHtml::_('image', 'mod_podcastmanager/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'), null, true);; ?>
 	</a>
 </div>
 <?php if ($params->get('plainlink') == 1) : ?>

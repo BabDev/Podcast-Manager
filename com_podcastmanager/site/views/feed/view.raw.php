@@ -79,7 +79,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		JFactory::getDocument()->setMimeEncoding('application/rss+xml');
 
-		$xw = new xmlWriter;
+		$xw = new XMLWriter;
 		$xw->openMemory();
 		$xw->setIndent(true);
 		$xw->setIndentString("\t");

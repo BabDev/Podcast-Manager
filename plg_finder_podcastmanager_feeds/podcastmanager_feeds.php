@@ -15,7 +15,7 @@
 defined('_JEXEC') or die;
 
 // Load the base adapter.
-require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+JLoader::register('FinderIndexerAdapter', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php');
 
 /**
  * Finder adapter for Podcast Manager Feeds.
@@ -194,7 +194,7 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	protected function setup()
 	{
 		// Load dependent classes.
-		require_once JPATH_SITE . '/components/com_podcastmanager/helpers/route.php';
+		JLoader::register('PodcastManagerHelperRoute', JPATH_SITE . '/components/com_podcastmanager/helpers/route.php');
 
 		return true;
 	}
@@ -211,20 +211,19 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	protected function getListQuery($sql = null)
 	{
 		// Check if we can use the supplied SQL query.
-		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('a.id'));
-		$sql->select($this->db->quoteName('a.name', 'title'));
-		$sql->select($this->db->quoteName('a.description', 'summary'));
-		$sql->select($this->db->quoteName('a.published', 'state'));
-		$sql->select($this->db->quoteName('a.created', 'start_date'));
-		$sql->select($this->db->quoteName('a.author'));
-		$sql->select($this->db->quoteName('a.language'));
-		$sql->select('0 AS publish_start_date');
-		$sql->select('0 AS publish_end_date');
-		$sql->select('1 AS access');
-		$sql->from($this->db->quoteName('#__podcastmanager_feeds', 'a'));
+		$sql = $sql instanceof JDatabaseQuery ? $sql : $this->db->getQuery(true);
 
-		return $sql;
+		return $sql->select($this->db->quoteName('a.id'))
+			->select($this->db->quoteName('a.name', 'title'))
+			->select($this->db->quoteName('a.description', 'summary'))
+			->select($this->db->quoteName('a.published', 'state'))
+			->select($this->db->quoteName('a.created', 'start_date'))
+			->select($this->db->quoteName('a.author'))
+			->select($this->db->quoteName('a.language'))
+			->select('0 AS publish_start_date')
+			->select('0 AS publish_end_date')
+			->select('1 AS access')
+			->from($this->db->quoteName('#__podcastmanager_feeds', 'a'));
 	}
 
 	/**
@@ -254,12 +253,10 @@ class PlgFinderPodcastManager_Feeds extends FinderIndexerAdapter
 	 */
 	protected function getStateQuery()
 	{
-		$sql = $this->db->getQuery(true);
-		$sql->select($this->db->quoteName('a.id'));
-		$sql->select($this->db->quoteName('a.' . $this->state_field, 'state'));
-		$sql->select('NULL AS cat_state');
-		$sql->from($this->db->quoteName($this->table, 'a'));
-
-		return $sql;
+		return $this->db->getQuery(true)
+			->select($this->db->quoteName('a.id'))
+			->select($this->db->quoteName('a.' . $this->state_field, 'state'))
+			->select('NULL AS cat_state')
+			->from($this->db->quoteName($this->table, 'a'));
 	}
 }
