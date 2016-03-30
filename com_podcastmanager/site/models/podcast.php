@@ -85,7 +85,7 @@ class PodcastManagerModelPodcast extends JModelForm
 			}
 
 			// Get a level row instance.
-			$table = JTable::getInstance('Podcast', 'PodcastManagerTable');
+			$table = $this->getTable();
 
 			// Attempt to load the row.
 			if ($table->load($id))
@@ -136,7 +136,7 @@ class PodcastManagerModelPodcast extends JModelForm
 	 */
 	public function getTable($name = 'Podcast', $prefix = 'PodcastManagerTable', $options = [])
 	{
-		return JTable::getInstance($name, $prefix, $options);
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**

@@ -115,6 +115,8 @@ class PodcastManagerViewFeed extends JViewLegacy
 			return false;
 		}
 
+		$dispatcher = JEventDispatcher::getInstance();
+
 		// Prepare the content (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
@@ -123,7 +125,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 			// Set the text object to prevent errors with other plugins
 			$item->text = '';
-			$dispatcher = JEventDispatcher::getInstance();
 
 			// Process the content plugins.
 			JPluginHelper::importPlugin('content');
@@ -146,7 +147,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 		$this->prepareDocument($this->feed);
 
 		// Add external behaviors
-		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 		return parent::display($tpl);

@@ -22,13 +22,15 @@ if ($app->isSite())
 	JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 }
 
+JHtml::_('stylesheet', 'system/adminlist.css', [], true);
+
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.framework', true);
 JHtml::_('formbehavior.chosen', 'select');
 
-$function = $app->input->getCmd('function', 'PodcastManagerSelectPodcast');
+$function  = $app->input->getCmd('function', 'PodcastManagerSelectPodcast');
 $listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn = $this->escape($this->state->get('list.direction'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1');?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 	<fieldset class="filter clearfix">

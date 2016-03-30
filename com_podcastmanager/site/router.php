@@ -33,7 +33,7 @@ class PodcastManagerRouter extends JComponentRouterBase
 		$segments = [];
 
 		// Get a menu item based on Itemid or currently active
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = $this->app->getMenu();
 
 		if (empty($query['Itemid']))
 		{
@@ -68,7 +68,7 @@ class PodcastManagerRouter extends JComponentRouterBase
 			return $segments;
 		}
 
-		if (isset($view) and ($view == 'feed'))
+		if (isset($view) && ($view == 'feed'))
 		{
 			if (isset($query['feedname']) && $mId != intval($query['feedname']) || $mView != $view)
 			{
@@ -128,11 +128,8 @@ class PodcastManagerRouter extends JComponentRouterBase
 			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
 		}
 
-		$app   = JFactory::getApplication();
-		$input = $app->input;
-
 		// Get the active menu item.
-		$item = $app->getMenu()->getActive();
+		$item = $this->app->getMenu()->getActive();
 
 		// Count route segments
 		$count = count($segments);
@@ -146,8 +143,8 @@ class PodcastManagerRouter extends JComponentRouterBase
 			return $vars;
 		}
 
-		$vars['view']     = $input->getCmd('view', '');
-		$vars['feedname'] = $input->getUint('feedname', '');
+		$vars['view']     = $this->app->input->getCmd('view', '');
+		$vars['feedname'] = $this->app->input->getUint('feedname', '');
 
 		return $vars;
 	}

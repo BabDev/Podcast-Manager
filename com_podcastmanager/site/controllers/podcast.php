@@ -26,6 +26,14 @@ use Joomla\Utilities\ArrayHelper;
 class PodcastManagerControllerPodcast extends JControllerForm
 {
 	/**
+	 * The prefix of the models
+	 *
+	 * @var    string
+	 * @since  3.0
+	 */
+	protected $model_prefix = 'PodcastManagerModel';
+
+	/**
 	 * The default single item view
 	 *
 	 * @var    string
@@ -50,11 +58,13 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 */
 	public function add()
 	{
-		if (!parent::add())
+		if ($result = parent::add())
 		{
 			// Redirect to the return page.
 			$this->setRedirect($this->getReturnPage());
 		}
+
+		return $result;
 	}
 
 	/**
@@ -69,13 +79,12 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
-		$user   = JFactory::getUser();
 		$feedId = ArrayHelper::getValue($data, 'feedname', $this->input->getUint('filter_feedname', ''), 'int');
 
 		if ($feedId)
 		{
 			// If the feed has been passed in the data or URL check it.
-			return $user->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
+			return JFactory::getUser()->authorise('core.create', 'com_podcastmanager.feed.' . $feedId);
 		}
 
 		// In the absence of better information, revert to the component permissions.
@@ -147,10 +156,12 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 */
 	public function cancel($key = 'p_id')
 	{
-		parent::cancel($key);
+		$result = parent::cancel($key);
 
 		// Redirect to the return page.
 		$this->setRedirect($this->getReturnPage());
+
+		return $result;
 	}
 
 	/**
@@ -225,22 +236,6 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	}
 
 	/**
-	 * Method to get a model object, loading it if required.
-	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  JModelLegacy  The model.
-	 *
-	 * @since   1.8
-	 */
-	public function getModel($name = 'Podcast', $prefix = 'PodcastManagerModel', $config = ['ignore_request' => true])
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
-
-	/**
 	 * Gets the URL arguments to append to an item redirect.
 	 *
 	 * @param   integer  $recordId  The primary key id for the item.
@@ -253,15 +248,13 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId = $this->input->getUint('Itemid', '');
-		$return = $this->getReturnPage();
 
-		if ($itemId)
+		if ($itemId = $this->input->getUint('Itemid', ''))
 		{
 			$append .= '&Itemid=' . $itemId;
 		}
 
-		if ($return)
+		if ($return = $this->getReturnPage())
 		{
 			$append .= '&return=' . base64_encode($return);
 		}
@@ -318,10 +311,8 @@ class PodcastManagerControllerPodcast extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = 'p_id')
 	{
-		$result = parent::save($key, $urlVar);
-
 		// If ok, redirect to the return page.
-		if ($result)
+		if ($result = parent::save($key, $urlVar))
 		{
 			$this->setRedirect($this->getReturnPage());
 		}

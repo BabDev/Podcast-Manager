@@ -24,6 +24,14 @@ defined('_JEXEC') or die;
 class PodcastManagerControllerForm extends JControllerForm
 {
 	/**
+	 * The prefix of the models
+	 *
+	 * @var    string
+	 * @since  3.0
+	 */
+	protected $model_prefix = 'PodcastManagerModel';
+
+	/**
 	 * The default single item view
 	 *
 	 * @var    string
@@ -48,11 +56,15 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	public function add()
 	{
-		if (!parent::add())
+		$result = parent::add();
+
+		if ($result)
 		{
 			// Redirect to the return page.
 			$this->setRedirect($this->getReturnPage());
 		}
+
+		return $result;
 	}
 
 	/**
@@ -125,10 +137,12 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	public function cancel($key = 'feedname')
 	{
-		parent::cancel($key);
+		$result = parent::cancel($key);
 
 		// Redirect to the return page.
 		$this->setRedirect($this->getReturnPage());
+
+		return $result;
 	}
 
 	/**
@@ -203,22 +217,6 @@ class PodcastManagerControllerForm extends JControllerForm
 	}
 
 	/**
-	 * Method to get a model object, loading it if required.
-	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  JModelLegacy  The model.
-	 *
-	 * @since   1.8
-	 */
-	public function getModel($name = 'Form', $prefix = 'PodcastManagerModel', $config = ['ignore_request' => true])
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
-
-	/**
 	 * Gets the URL arguments to append to an item redirect.
 	 *
 	 * @param   integer  $recordId  The primary key id for the item.
@@ -231,15 +229,13 @@ class PodcastManagerControllerForm extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId = $this->input->getUint('Itemid', 0);
-		$return = $this->getReturnPage();
 
-		if ($itemId)
+		if ($itemId = $this->input->getUint('Itemid', 0))
 		{
 			$append .= '&Itemid=' . $itemId;
 		}
 
-		if ($return)
+		if ($return = $this->getReturnPage())
 		{
 			$append .= '&return=' . base64_encode($return);
 		}
@@ -296,10 +292,8 @@ class PodcastManagerControllerForm extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = 'feedname')
 	{
-		$result = parent::save($key, $urlVar);
-
 		// If ok, redirect to the return page.
-		if ($result)
+		if ($result = parent::save($key, $urlVar))
 		{
 			$this->setRedirect($this->getReturnPage());
 		}

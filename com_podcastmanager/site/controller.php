@@ -24,6 +24,14 @@ defined('_JEXEC') or die;
 class PodcastManagerController extends JControllerLegacy
 {
 	/**
+	 * The default view for the display method.
+	 *
+	 * @var    string
+	 * @since  3.0
+	 */
+	protected $default_view = 'feed';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
@@ -36,9 +44,8 @@ class PodcastManagerController extends JControllerLegacy
 		$input = JFactory::getApplication()->input;
 
 		// Frontpage Editor podcast proxying:
-		if ($input->getCmd('view', '') === 'podcasts' && $input->getCmd('layout', '') === 'modal')
+		if ($input->getCmd('view', $this->default_view) === 'podcasts' && $input->getCmd('layout', '') === 'modal')
 		{
-			JHtml::_('stylesheet', 'system/adminlist.css', [], true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;
 		}
 
@@ -59,7 +66,7 @@ class PodcastManagerController extends JControllerLegacy
 	{
 		// Set the default view name and format from the Request.
 		$id    = $this->input->getUint('p_id', '');
-		$vName = $this->input->getCmd('view', 'feed');
+		$vName = $this->input->getCmd('view', $this->default_view);
 		$this->input->set('view', $vName);
 
 		if (JFactory::getUser()->id || ($this->input->getMethod() == 'POST' && $vName = 'feed'))
@@ -77,8 +84,9 @@ class PodcastManagerController extends JControllerLegacy
 			'lang'             => 'CMD'
 		];
 
-		// Check for edit form.
-		if ($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))
+		// Check for edit forms.
+		if (($vName == 'podcast' && !$this->checkEditId('com_podcastmanager.edit.podcast', $id))
+			|| ($vName == 'form' && !$this->checkEditId('com_podcastmanager.edit.form', $id)))
 		{
 			// Somehow the person just went to the form - we don't allow that.
 			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
