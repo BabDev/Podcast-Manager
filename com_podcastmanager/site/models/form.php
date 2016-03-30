@@ -67,9 +67,9 @@ class PodcastManagerModelForm extends JModelForm
 	/**
 	 * Method to get an object.
 	 *
-	 * @param   integer $id The id of the object to get.
+	 * @param   integer  $id  The id of the object to get.
 	 *
-	 * @return  mixed  Object on success, false on failure.
+	 * @return  boolean|object  Object on success, false on failure.
 	 *
 	 * @since   1.8
 	 */

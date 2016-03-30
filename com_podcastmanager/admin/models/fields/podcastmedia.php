@@ -227,6 +227,8 @@ class JFormFieldPodcastMedia extends JFormField
 			$asset = JFactory::getApplication()->input->get('option');
 		}
 
+		$mediaDir = JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager');
+
 		if ($this->value && file_exists(JPATH_ROOT . '/' . $this->value))
 		{
 			$folder = explode('/', $this->value);
@@ -240,7 +242,7 @@ class JFormFieldPodcastMedia extends JFormField
 			array_pop($folder);
 			$folder = implode('/', $folder);
 		}
-		elseif (file_exists(JPATH_ROOT . '/' . JComponentHelper::getParams('com_podcastmedia')->get('file_path', 'media/com_podcastmanager' . '/' . $this->directory)))
+		elseif (file_exists(JPATH_ROOT . '/' . $mediaDir . '/' . $this->directory))
 		{
 			$folder = $this->directory;
 		}

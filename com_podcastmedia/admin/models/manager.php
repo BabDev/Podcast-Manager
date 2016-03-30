@@ -119,7 +119,7 @@ class PodcastMediaModelManager extends JModelLegacy
 	/**
 	 * Creates a tree of folders
 	 *
-	 * @param   string $base The base file path
+	 * @param   string  $base  The base file path
 	 *
 	 * @return  array  An array containing the folders and their children
 	 *

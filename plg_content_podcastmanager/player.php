@@ -151,7 +151,7 @@ class PodcastManagerPlayer
 	/**
 	 * Function to create the URL for a podcast episode file
 	 *
-	 * @param   object $podfilepath The filename of the podcast file.
+	 * @param   object  $podfilepath  The filename of the podcast file.
 	 *
 	 * @return  string  The URL to the file
 	 *

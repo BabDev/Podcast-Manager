@@ -207,7 +207,7 @@
 			<arg value="-p" />
 			<arg value="--report-file=${repo.dir}/build/logs/checkstyle.xml" />
 			<arg value="--standard=${repo.dir}/build/phpcs/Joomla" />
-			<arg value="--ignore=${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/admin/media/js,${repo.dir}/com_podcastmanager/site/media,${repo.dir}/lib_getid3,${repo.dir}/plg_content_podcastmanager/mediaelements,${repo.dir}/packaging,${repo.dir}/releases,*/tmpl/*,${repo.dir}/files_podcastmanager_*,${repo.dir}/build/*" />
+			<arg value="--ignore=${repo.dir}/com_podcastmanager/admin/liveupdate,${repo.dir}/com_podcastmanager/media,${repo.dir}/lib_getid3,${repo.dir}/packaging,${repo.dir}/releases,*/layouts/*,*/tmpl/*,${repo.dir}/build/*" />
 			<arg path="${repo.dir}" />
 		</exec>
 	</target>
