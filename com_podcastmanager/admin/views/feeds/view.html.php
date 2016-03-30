@@ -92,9 +92,6 @@ class PodcastManagerViewFeeds extends JViewLegacy
 		// Require the front end routing helper
 		JLoader::register('PodcastManagerHelperRoute', JPATH_COMPONENT_SITE . '/helpers/route.php');
 
-		// Add the component media
-		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
-
 		// Make text JS available
 		JText::script('COM_PODCASTMANAGER_CONFIRM_FEED_DELETE');
 

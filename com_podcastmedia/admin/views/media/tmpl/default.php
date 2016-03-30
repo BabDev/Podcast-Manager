@@ -35,7 +35,6 @@ JFactory::getDocument()->addScriptDeclaration($js);
 
 JHtml::_('behavior.keepalive');
 JHtml::_('bootstrap.framework');
-JHtml::_('stylesheet', 'podcastmanager/template.css', [], true);
 JHtml::_('script', 'podcastmanager/mediamanager.js', false, true);
 
 ?>

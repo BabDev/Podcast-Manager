@@ -37,8 +37,6 @@
 		</schemas>
 	</update>
 	<media destination="podcastmanager" folder="media">
-		<folder>css</folder>
-		<folder>images</folder>
 		<folder>js</folder>
 	</media>
 	<administration>
@@ -57,7 +55,7 @@
 			<folder>tables</folder>
 			<folder>views</folder>
 		</files>
-		<menu img="../media/podcastmanager/images/icons/icon-16-podcastmanager.png">COM_PODCASTMANAGER</menu>
+		<menu>COM_PODCASTMANAGER</menu>
 	</administration>
 	<!-- Below section is data for Akeeba Backup System Restore Points -->
 	<restorepoint>

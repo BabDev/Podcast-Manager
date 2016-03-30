@@ -42,9 +42,6 @@ class PodcastManagerViewCpanel extends JViewLegacy
 			return false;
 		}
 
-		// Add the component media
-		JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
-
 		$this->addToolbar();
 
 		return parent::display($tpl);

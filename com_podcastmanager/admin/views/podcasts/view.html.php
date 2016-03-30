@@ -114,9 +114,6 @@ class PodcastManagerViewPodcasts extends JViewLegacy
 		// We don't need the toolbar or external media in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
-			// Add the component media
-			JHtml::_('stylesheet', 'podcastmanager/template.css', false, true, false);
-
 			// Make text JS available
 			JText::script('COM_PODCASTMANAGER_CONFIRM_PODCAST_UNPUBLISH');
 

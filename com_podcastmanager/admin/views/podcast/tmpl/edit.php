@@ -14,6 +14,13 @@
 
 defined('_JEXEC') or die;
 
+// Ensure JavaScript dependencies are loaded for the metadata parser
+JHtml::_('jquery.framework');
+JHtml::_('behavior.core');
+
+// Add the component media
+JHtml::_('script', 'podcastmanager/podcast.js', false, true);
+
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
