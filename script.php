@@ -99,9 +99,10 @@ class Pkg_PodcastManagerInstallerScript
 			return;
 		}
 
-		// If coming from 2.x, remove the strapped extension
+		// If coming from 2.x, remove the layout override extensions
 		if (version_compare($version, '3.0', 'lt'))
 		{
+			$this->removeHathorExtension();
 			$this->removeStrappedExtension();
 		}
 	}
@@ -241,6 +242,80 @@ class Pkg_PodcastManagerInstallerScript
 	}
 
 	/**
+	 * Removes the files_podcastmanager_hathor extension
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	private function removeHathorExtension()
+	{
+		// We need to get the extension ID for our Hathor layouts first
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('extension_id'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('files_podcastmanager_hathor'));
+
+		try
+		{
+			$id = $db->setQuery($query)->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$id = 0;
+		}
+
+		// If we don't have an ID we can assume the extension isn't installed
+		if (!$id)
+		{
+			return;
+		}
+
+		/*
+		 * Since the adapter doesn't remove folders with content, we have to remove the content here
+		 * And, lucky us, the file scriptfile isn't copied!
+		 */
+		// Import dependencies
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+
+		// First, the array of folders we need to get the children for
+		$folders = ['html/com_podcastmanager'];
+
+		// Set up our full path to the folder
+		$path = JPATH_ADMINISTRATOR . '/templates/hathor/html/com_podcastmanager';
+
+		// Get the list of child folders
+		$children = JFolder::folders($path);
+
+		if (count($children))
+		{
+			// Process the child folders and remove their files
+			foreach ($children as $child)
+			{
+				// Set the path for the child
+				$cPath = $path . '/' . $child;
+
+				// Get the list of files
+				$files = JFolder::files($cPath);
+
+				// Now, remove the files
+				foreach ($files as $file)
+				{
+					JFile::delete($cPath . '/' . $file);
+				}
+			}
+		}
+
+		// Now uninstall the extension
+		if (!(new JInstaller)->uninstall('file', $id))
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_FAILED_REMOVING_HATHOR_EXTENSION'), 'warning');
+		}
+	}
+
+	/**
 	 * Removes the files_podcastmanager_strapped extension
 	 *
 	 * @return  void
@@ -308,9 +383,7 @@ class Pkg_PodcastManagerInstallerScript
 			// Instantiate a new installer instance and uninstall the layouts if present
 			if ($id)
 			{
-				$installer = new JInstaller;
-
-				if (!$installer->uninstall('file', $id))
+				if (!(new JInstaller)->uninstall('file', $id))
 				{
 					$failed = true;
 				}
