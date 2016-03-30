@@ -25,7 +25,7 @@ class Pkg_PodcastManagerInstallerScript
 	 * @var    array
 	 * @since  2.0
 	 */
-	protected $dbSupport = ['mysql', 'mysqli', 'pdomysql', 'postgresql', 'sqlsrv', 'sqlazure'];
+	protected $dbSupport = ['mysql', 'mysqli', 'pdomysql'];
 
 	/**
 	 * Minimum supported Joomla! version
