@@ -146,7 +146,7 @@ abstract class JHtmlIcon
 		}
 
 		$date   = JHtml::_('date', $podcast->created);
-		$author = $podcast->author;
+		$author = $podcast->itAuthor;
 
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= $date;

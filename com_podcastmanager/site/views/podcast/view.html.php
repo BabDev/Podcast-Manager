@@ -92,12 +92,6 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		$this->return_page = $this->get('ReturnPage');
 		$this->params      = $this->state->params;
 
-		// Ensure jQuery is loaded for the metadata parser
-		JHtml::_('jquery.framework');
-
-		// Add the component media
-		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
-
 		if (empty($this->item->id))
 		{
 			$authorised = $this->user->authorise('core.create', 'com_podcastmanager');

@@ -106,7 +106,7 @@ $url = ($readonly
 		<?php if ($disabled != true) : ?>
 			<a class="btn add-on button-select"><?php echo JText::_('JLIB_FORM_BUTTON_SELECT'); ?></a>
 			<a class="btn icon-remove hasTooltip add-on button-clear" title="<?php echo JText::_('JLIB_FORM_BUTTON_CLEAR'); ?>"></a>
-			<a class="btn" title="<?php echo JText::_('COM_PODCASTMANAGER_PARSE_METADATA'); ?>" href="#" onclick="PodcastManager.parseMetadata()"><i class="icon-loop"></i> <?php echo JText::_('COM_PODCASTMANAGER_PARSE_METADATA'); ?></a>
+			<button class="btn" type="button" title="<?php echo JText::_('COM_PODCASTMANAGER_PARSE_METADATA'); ?>" onclick="PodcastManager.parseMetadata()"><i class="icon-loop"></i> <?php echo JText::_('COM_PODCASTMANAGER_PARSE_METADATA'); ?></button>
 		<?php endif; ?>
 	</div>
 </div>

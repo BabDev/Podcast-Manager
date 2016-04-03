@@ -14,140 +14,101 @@
 
 defined('_JEXEC') or die;
 
-// Load the tooltip behavior.
+// Ensure JavaScript dependencies are loaded for the metadata parser
+JHtml::_('jquery.framework');
+JHtml::_('behavior.core');
+
+// Add the component media
+JHtml::_('script', 'podcastmanager/podcast.js', false, true);
+
+JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
+
+$js = <<< JS
+Joomla.submitbutton = function(task) {
+	if (task == 'podcast.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
+		Joomla.submitform(task);
+	} else {
+		alert(Joomla.JText._('JGLOBAL_VALIDATION_FORM_FAILED'));
+	}
+};
+JS;
+
+JFactory::getDocument()->addScriptDeclaration($js);
 ?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task) {
-		if (task == 'podcast.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-			Joomla.submitform(task);
-		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
-</script>
 <div class="edit<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->def('show_page_heading', 1)) : ?>
-	<h1>
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcast&p_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-		<fieldset>
-			<legend><?php echo JText::_('COM_PODCASTMANAGER_METADATA'); ?></legend>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('filename'); ?>
-				<?php echo $this->form->getInput('filename'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('feedname'); ?>
-				<?php echo $this->form->getInput('feedname'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('mime'); ?>
-				<?php echo $this->form->getInput('mime'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itSummary'); ?>
-				<?php echo $this->form->getInput('itSummary'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itImage'); ?>
-				<?php echo $this->form->getInput('itImage'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itAuthor'); ?>
-				<?php echo $this->form->getInput('itAuthor'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itBlock'); ?>
-				<?php echo $this->form->getInput('itBlock'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itDuration'); ?>
-				<?php echo $this->form->getInput('itDuration'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itExplicit'); ?>
-				<?php echo $this->form->getInput('itExplicit'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itKeywords'); ?>
-				<?php echo $this->form->getInput('itKeywords'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('itSubtitle'); ?>
-				<?php echo $this->form->getInput('itSubtitle'); ?>
-			</div>
-			<div class="formelm-buttons">
-				<button type="button" onclick="Joomla.submitbutton('podcast.save')">
-					<?php echo JText::_('JSAVE') ?>
+		<div class="btn-toolbar">
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('podcast.save')">
+					<span class="icon-ok"></span><?php echo JText::_('JSAVE') ?>
 				</button>
-				<button type="button" onclick="Joomla.submitbutton('podcast.cancel')">
-					<?php echo JText::_('JCANCEL') ?>
+			</div>
+			<div class="btn-group">
+				<button type="button" class="btn" onclick="Joomla.submitbutton('podcast.cancel')">
+					<span class="icon-cancel"></span><?php echo JText::_('JCANCEL') ?>
 				</button>
-				<?php if ($this->params->get('save_history', 0)) : ?>
+			</div>
+			<?php if ($this->params->get('save_history', 0) && $this->item->id) : ?>
 				<div class="btn-group">
 					<?php echo $this->form->getInput('contenthistory'); ?>
 				</div>
-				<?php endif; ?>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_PUBLISHING'); ?></legend>
-			<?php if ($this->user->authorise('core.edit.state', 'com_podcastmanager')) : ?>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('created'); ?>
-				<?php echo $this->form->getInput('created'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('created_by'); ?>
-				<?php echo $this->form->getInput('created_by'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('published'); ?>
-				<?php echo $this->form->getInput('published'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('publish_up'); ?>
-				<?php echo $this->form->getInput('publish_up'); ?>
-			</div>
-			<?php if ($this->item->modified_by) : ?>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('modified_by'); ?>
-				<?php echo $this->form->getInput('modified_by'); ?>
-			</div>
-			<div class="formelm">
-				<?php echo $this->form->getLabel('modified'); ?>
-				<?php echo $this->form->getInput('modified'); ?>
-			</div>
 			<?php endif; ?>
-			<?php endif; ?>
-		</fieldset>
+		</div>
+
 		<fieldset>
-			<legend><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></legend>
-			<div class="formelm-area">
-			<?php echo $this->form->getLabel('language'); ?>
-			<?php echo $this->form->getInput('language'); ?>
-			</div>
-			<?php foreach ($this->form->getFieldset('jmetadata') as $field) : ?>
-				<div class="formelm-area">
-					<?php echo $field->label; ?>
-					<?php echo $field->input; ?>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#general" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_METADATA') ?></a></li>
+				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_PODCASTMANAGER_FIELDSET_PUBLISHING') ?></a></li>
+				<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL') ?></a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div class="tab-pane active" id="general">
+					<?php echo $this->form->renderField('filename'); ?>
+					<?php echo $this->form->renderField('title'); ?>
+					<?php echo $this->form->renderField('feedname'); ?>
+					<?php echo $this->form->renderField('mime'); ?>
+					<?php echo $this->form->renderField('itSummary'); ?>
+					<?php echo $this->form->renderField('itImage'); ?>
+					<?php echo $this->form->renderField('itAuthor'); ?>
+					<?php echo $this->form->renderField('itBlock'); ?>
+					<?php echo $this->form->renderField('itDuration'); ?>
+					<?php echo $this->form->renderField('itExplicit'); ?>
+					<?php echo $this->form->renderField('itKeywords'); ?>
+					<?php echo $this->form->renderField('itSubtitle'); ?>
 				</div>
-			<?php endforeach ?>
-			<div class="formelm-area">
-				<?php echo $this->form->getLabel('version_note'); ?>
-				<?php echo $this->form->getInput('version_note'); ?>
+				<div class="tab-pane" id="publishing">
+					<?php echo $this->form->renderField('tags'); ?>
+					<?php if ($this->params->get('save_history', 0)) : ?>
+						<?php echo $this->form->renderField('version_note'); ?>
+					<?php endif; ?>
+					<?php if ($this->user->authorise('core.edit.state', 'com_podcastmanager')) : ?>
+						<?php echo $this->form->renderField('created'); ?>
+						<?php echo $this->form->renderField('created_by'); ?>
+						<?php echo $this->form->renderField('published'); ?>
+						<?php echo $this->form->renderField('publish_up'); ?>
+						<?php if ($this->item->modified_by) : ?>
+							<?php echo $this->form->renderField('modified_by'); ?>
+							<?php echo $this->form->renderField('modified'); ?>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+				<div class="tab-pane" id="language">
+					<?php echo $this->form->renderField('language'); ?>
+				</div>
 			</div>
 		</fieldset>
+		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />
 		<?php echo JHtml::_('form.token'); ?>
