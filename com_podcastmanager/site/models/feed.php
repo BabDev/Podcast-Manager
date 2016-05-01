@@ -48,6 +48,7 @@ class PodcastManagerModelFeed extends JModelList
 			$config['filter_fields'] = [
 				'title', 'a.title',
 				'publish_up', 'a.publish_up',
+				'created', 'a.created',
 				'itAuthor', 'a.itAuthor'
 			];
 		}
