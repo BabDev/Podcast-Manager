@@ -92,9 +92,6 @@ class PodcastManagerViewForm extends JViewLegacy
 		$this->return_page = $this->get('ReturnPage');
 		$this->params      = $this->state->params;
 
-		// Add the component media
-		JHtml::_('script', 'podcastmanager/podcast.js', false, true);
-
 		if (empty($this->item->id))
 		{
 			$authorised = $this->user->authorise('core.create', 'com_podcastmanager');
@@ -126,6 +123,9 @@ class PodcastManagerViewForm extends JViewLegacy
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+
+		// Make text JS available
+		JText::script('JGLOBAL_VALIDATION_FORM_FAILED');
 
 		$this->prepareDocument();
 

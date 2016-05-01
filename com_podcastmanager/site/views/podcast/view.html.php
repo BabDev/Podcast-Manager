@@ -124,6 +124,9 @@ class PodcastManagerViewPodcast extends JViewLegacy
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
+		// Make text JS available
+		JText::script('JGLOBAL_VALIDATION_FORM_FAILED');
+
 		$this->prepareDocument();
 
 		return parent::display($tpl);
