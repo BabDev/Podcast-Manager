@@ -9,24 +9,17 @@
 		</options>
 	</layout>
 	<fields name="request">
-		<fieldset name="request"
-			addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
-			<field name="feedname" type="feedname"
-				description="COM_PODCASTMANAGER_MENU_FEEDNAME_DESCRIPTION"
-				label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL">
+		<fieldset name="request" addfieldpath="/administrator/components/com_podcastmanager/models/fields">
+			<field name="feedname" type="feedname" description="COM_PODCASTMANAGER_MENU_FEEDNAME_DESCRIPTION" label="COM_PODCASTMANAGER_MENU_FEEDNAME_LABEL">
 				<option value="">JALL</option>
 			</field>
-			<field name="filter_order" type="list" filter="options"
-				description="COM_PODCASTMANAGER_ORDER_DESCRIPTION"
-				label="COM_PODCASTMANAGER_ORDER_LABEL" default="a.publish_up">
+			<field name="filter_order" type="list" validate="options" description="COM_PODCASTMANAGER_ORDER_DESCRIPTION" label="COM_PODCASTMANAGER_ORDER_LABEL" default="a.publish_up">
 				<option value="">JDEFAULT</option>
 				<option value="a.title">COM_PODCASTMANAGER_ORDER_TITLE_LABEL</option>
 				<option value="a.publish_up">COM_PODCASTMANAGER_ORDER_PUBLISHED_LABEL</option>
 				<option value="a.created">COM_PODCASTMANAGER_ORDER_CREATED_LABEL</option>
 			</field>
-			<field name="filter_order_Dir" type="list" filter="options"
-				description="COM_PODCASTMANAGER_DIRECTION_DESCRIPTION"
-				label="COM_PODCASTMANAGER_DIRECTION_LABEL" default="desc">
+			<field name="filter_order_Dir" type="list" validate="options" description="COM_PODCASTMANAGER_DIRECTION_DESCRIPTION" label="COM_PODCASTMANAGER_DIRECTION_LABEL" default="desc">
 				<option value="">JDEFAULT</option>
 				<option value="asc">COM_PODCASTMANAGER_DIRECTION_ASC_LABEL</option>
 				<option value="desc">COM_PODCASTMANAGER_DIRECTION_DESC_LABEL</option>
@@ -38,95 +31,69 @@
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params">
 		<fieldset name="basic" label="COM_PODCASTMANAGER_HTML_VIEW_OPTIONS">
-			<field name="show_feed_title" type="list"
-				label="COM_PODCASTMANAGER_SHOW_FEED_TITLE_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_FEED_TITLE_DESCRIPTION" >
+			<field name="show_feed_title" type="list" validate="options" label="COM_PODCASTMANAGER_SHOW_FEED_TITLE_LABEL" description="COM_PODCASTMANAGER_SHOW_FEED_TITLE_DESCRIPTION">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_feed_description" type="list"
-				label="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_DESCRIPTION" >
+			<field name="show_feed_description" type="list" validate="options" label="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_LABEL" description="COM_PODCASTMANAGER_SHOW_FEED_DESCRIPTION_DESCRIPTION">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_feed_image" type="list"
-				label="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_DESCRIPTION" >
+			<field name="show_feed_image" type="list" validate="options" label="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_LABEL" description="COM_PODCASTMANAGER_SHOW_FEED_IMAGE_DESCRIPTION">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_item_author" type="list" default="1"
-				label="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_DESCRIPTION" >
+			<field name="show_item_author" type="list" filter="intval" validate="options" default="1" label="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_LABEL" description="COM_PODCASTMANAGER_SHOW_ITEM_AUTHOR_DESCRIPTION" >
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 		</fieldset>
 		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
-			<field name="filter_field" type="list"
-				description="JGLOBAL_FILTER_FIELD_DESC"
-				label="JGLOBAL_FILTER_FIELD_LABEL" >
+			<field name="filter_field" type="list" validate="options" description="JGLOBAL_FILTER_FIELD_DESC" label="JGLOBAL_FILTER_FIELD_LABEL" >
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="hide">JHIDE</option>
                 <option value="show">JSHOW</option>
 			</field>
-			<field name="show_pagination_limit" type="list"
-			label="JGLOBAL_DISPLAY_SELECT_LABEL"
-			description="JGLOBAL_DISPLAY_SELECT_DESC">
+			<field name="show_pagination_limit" type="list" validate="options" label="JGLOBAL_DISPLAY_SELECT_LABEL" description="JGLOBAL_DISPLAY_SELECT_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_headings" type="list"
-				label="JGLOBAL_SHOW_HEADINGS_LABEL"
-				description="JGLOBAL_SHOW_HEADINGS_DESC" >
+			<field name="show_headings" type="list" validate="options" label="JGLOBAL_SHOW_HEADINGS_LABEL" description="JGLOBAL_SHOW_HEADINGS_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_item_player" type="list" default="0"
-				label="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_DESCRIPTION" >
+			<field name="show_item_player" type="list" filter="intval" validate="options" default="0" label="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_LABEL" description="COM_PODCASTMANAGER_SHOW_ITEM_PLAYER_DESCRIPTION" >
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_item_description" type="list"
-				label="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_DESCRIPTION" >
+			<field name="show_item_description" type="list" validate="options" label="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_LABEL" description="COM_PODCASTMANAGER_SHOW_ITEM_DESCRIPTION_DESCRIPTION">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_item_image" type="list" default="0"
-				label="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_LABEL"
-				description="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_DESCRIPTION" >
+			<field name="show_item_image" type="list" filter="intval" validate="options" default="0" label="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_LABEL" description="COM_PODCASTMANAGER_SHOW_ITEM_IMAGE_DESCRIPTION" >
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-			<field name="show_pagination" type="list"
-				description="JGLOBAL_PAGINATION_DESC"
-				label="JGLOBAL_PAGINATION_LABEL" >
+			<field name="show_pagination" type="list" validate="options" description="JGLOBAL_PAGINATION_DESC" label="JGLOBAL_PAGINATION_LABEL">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 				<option value="2">JGLOBAL_AUTO</option>
 			</field>
-			<field name="show_pagination_results" type="list"
-				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
-				description="JGLOBAL_PAGINATION_RESULTS_DESC" >
+			<field name="show_pagination_results" type="list" validate="options" label="JGLOBAL_PAGINATION_RESULTS_LABEL" description="JGLOBAL_PAGINATION_RESULTS_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 		</fieldset>
 		<fieldset name="integration">
-			<field name="show_feed_link" type="list"
-				description="JGLOBAL_SHOW_FEED_LINK_DESC"
-				label="JGLOBAL_SHOW_FEED_LINK_LABEL" >
+			<field name="show_feed_link" type="list" validate="options" description="JGLOBAL_SHOW_FEED_LINK_DESC" label="JGLOBAL_SHOW_FEED_LINK_LABEL">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
