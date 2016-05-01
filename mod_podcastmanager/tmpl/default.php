@@ -15,18 +15,20 @@
 defined('_JEXEC') or die;
 ?>
 
-<div>
-	<?php echo $params->get('text'); ?>
+<div<?php if ($moduleclass_sfx) : echo ' class="' . $moduleclass_sfx . '"'; endif; ?>>
+	<div>
+		<?php echo $params->get('text'); ?>
+	</div>
+	<div>
+		<a href="<?php echo $link; ?>">
+			<?php echo JHtml::_('image', 'mod_podcastmanager/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'), null, true);; ?>
+		</a>
+	</div>
+	<?php if ($params->get('plainlink') == 1) : ?>
+	<div>
+		<a href="<?php echo $plainlink; ?>">
+			<?php echo JText::_('MOD_PODCASTMANAGER_FULLFEED');?>
+		</a>
+	</div>
+	<?php endif; ?>
 </div>
-<div>
-	<a href="<?php echo $link; ?>">
-		<?php echo JHtml::_('image', 'mod_podcastmanager/podcast-mini2.png', JText::_('MOD_PODCASTMANAGER_PODCASTFEED'), null, true);; ?>
-	</a>
-</div>
-<?php if ($params->get('plainlink') == 1) : ?>
-<div>
-	<a href="<?php echo $plainlink; ?>">
-		<?php echo JText::_('MOD_PODCASTMANAGER_FULLFEED');?>
-	</a>
-</div>
-<?php endif;

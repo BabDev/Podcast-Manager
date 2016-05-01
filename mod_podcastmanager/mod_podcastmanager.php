@@ -38,4 +38,6 @@ else
 	$link = str_replace(['http:', 'https:'], $params->get('urischeme') . ':', $plainlink);
 }
 
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
 require JModuleHelper::getLayoutPath('mod_podcastmanager', $params->get('layout', 'default'));

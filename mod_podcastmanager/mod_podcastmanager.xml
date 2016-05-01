@@ -20,84 +20,29 @@
 	</media>
 	<config>
 		<fields name="params">
-			<fieldset name="basic"
-				addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
-				<field
-					name="text"
-					type="text"
-					label="MOD_PODCASTMANAGER_FIELD_TEXT_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_TEXT_DESCRIPTION" />
-				<field
-					name="feedname"
-					type="feedname"
-					class="inputbox"
-					label="MOD_PODCASTMANAGER_FIELD_FEEDNAME_LABEL"
-					size="1" />
-				<field
-					name="urischeme"
-					type="radio"
-					class="btn-group"
-					default="http"
-					label="MOD_PODCASTMANAGER_FIELD_URISCHEME_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_URISCHEME_DESCRIPTION">
-					<option
-						value="http">http://</option>
-					<option
-						value="itpc">itpc://</option>
+			<fieldset name="basic" addfieldpath="/administrator/components/com_podcastmanager/models/fields">
+				<field name="text" type="text" label="MOD_PODCASTMANAGER_FIELD_TEXT_LABEL" description="MOD_PODCASTMANAGER_FIELD_TEXT_DESCRIPTION" />
+				<field name="feedname" type="feedname" class="inputbox" label="MOD_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" size="1" />
+				<field name="urischeme" type="radio" class="btn-group" default="http" label="MOD_PODCASTMANAGER_FIELD_URISCHEME_LABEL" description="MOD_PODCASTMANAGER_FIELD_URISCHEME_DESCRIPTION">
+					<option value="http">http://</option>
+					<option value="itpc">itpc://</option>
 				</field>
-				<field
-					name="plainlink"
-					type="radio"
-					class="btn-group"
-					default="1"
-					label="MOD_PODCASTMANAGER_FIELD_PLAINLINK_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_PLAINLINK_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="plainlink" type="radio" filter="intval" validate="options" class="btn-group" default="1" label="MOD_PODCASTMANAGER_FIELD_PLAINLINK_LABEL" description="MOD_PODCASTMANAGER_FIELD_PLAINLINK_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field
-					name="otherlink"
-					type="text"
-					label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
+				<field name="moduleclass_sfx" type="text" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field name="otherlink" type="text" label="MOD_PODCASTMANAGER_FIELD_OTHERLINK_LABEL" description="MOD_PODCASTMANAGER_FIELD_OTHERLINK_DESCRIPTION" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field
-					name="layout"
-					type="modulelayout"
-					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-				<field
-					name="cache"
-					type="radio"
-					default="0"
-					label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field name="moduleclass_sfx" type="textarea" rows="3" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field name="cache" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="0" label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL" description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="cache_time"
-					type="text"
-					default="900"
-					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
-				<field
-					name="cachemode"
-					type="hidden"
-					default="static">
-					<option
-						value="static"></option>
-				</field>
+				<field name="cache_time" type="number" filter="integer" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" showon="cache:1" />
+				<field name="cachemode" type="hidden" default="static" />
 			</fieldset>
 		</fields>
 	</config>

@@ -18,111 +18,37 @@
 	</files>
 	<config>
 		<fields name="params">
-			<fieldset name="basic"
-				addfieldpath="/administrator/components/com_podcastmanager/models/fields" >
-				<field
-					name="feed"
-					type="feedname"
-					class="inputbox"
-					label="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_LABEL"
-					description="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_DESCRIPTION"
-					size="1">
-					<option
-						value="">JALL</option>
+			<fieldset name="basic" addfieldpath="/administrator/components/com_podcastmanager/models/fields">
+				<field name="feed" type="feedname" class="inputbox" label="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_LABEL" description="MOD_PODCASTMANAGERFEED_FIELD_FEEDNAME_DESCRIPTION" size="1">
+					<option value="">JALL</option>
 				</field>
-				<field
-					name="count"
-					type="text"
-					default="5"
-					filter="integer"
-					label="MOD_PODCASTMANAGERFEED_FIELD_COUNT_LABEL"
-					description="MOD_PODCASTMANAGERFEED_FIELD_COUNT_DESCRIPTION" />
-				<field
-					name="description"
-					type="radio"
-					class="btn-group"
-					default="1"
-					label="MOD_PODCASTMANAGERFEED_FIELD_DESCRIPTION_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_DESCRIPTION_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="count" type="number" default="5" filter="integer" label="MOD_PODCASTMANAGERFEED_FIELD_COUNT_LABEL" description="MOD_PODCASTMANAGERFEED_FIELD_COUNT_DESCRIPTION" />
+				<field name="description" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="1" label="MOD_PODCASTMANAGERFEED_FIELD_DESCRIPTION_LABEL" description="MOD_PODCASTMANAGER_FIELD_DESCRIPTION_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="author"
-					type="radio"
-					class="btn-group"
-					default="1"
-					label="MOD_PODCASTMANAGERFEED_FIELD_AUTHOR_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_AUTHOR_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="author" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="1" label="MOD_PODCASTMANAGERFEED_FIELD_AUTHOR_LABEL" description="MOD_PODCASTMANAGER_FIELD_AUTHOR_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="created"
-					type="radio"
-					class="btn-group"
-					default="1"
-					label="MOD_PODCASTMANAGERFEED_FIELD_CREATED_LABEL"
-					description="MOD_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="created" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="1" label="MOD_PODCASTMANAGERFEED_FIELD_CREATED_LABEL" description="MOD_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="show_item_player"
-					type="radio"
-					class="btn-group"
-					default="0"
-					label="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_LABEL"
-					description="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_DESCRIPTION">
-					<option
-						value="0">JNO</option>
-					<option
-						value="1">JYES</option>
+				<field name="show_item_player" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="0" label="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_LABEL" description="MOD_PODCASTMANAGERFEED_FIELD_SHOW_ITEM_PLAYER_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
-			<fieldset
-				name="advanced">
-				<field
-					name="layout"
-					type="modulelayout"
-					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-				<field
-					name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-				<field
-					name="cache"
-					type="radio"
-					class="btn-group"
-					default="1"
-					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC">
-					<option
-						value="1">JGLOBAL_USE_GLOBAL</option>
-					<option
-						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+			<fieldset name="advanced">
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field name="moduleclass_sfx" type="textarea" rows="3" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field name="cache" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" default="0" label="MOD_PODCASTMANAGER_FIELD_CACHE_LABEL" description="MOD_PODCASTMANAGER_FIELD_CACHE_DESCRIPTION">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field
-					name="cache_time"
-					type="text"
-					default="900"
-					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
-				<field
-					name="cachemode"
-					type="hidden"
-					default="static">
-					<option
-						value="static"></option>
-				</field>
+				<field name="cache_time" type="number" filter="integer" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" showon="cache:1" />
+				<field name="cachemode" type="hidden" default="static" />
 			</fieldset>
 		</fields>
 	</config>
