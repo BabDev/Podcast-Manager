@@ -345,7 +345,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 					$xw->writeElement('itunes:explicit', 'no');
 				}
 
-				$xw->writeElement('pubDate', date('r', strtotime($item->publish_up)));
+				$xw->writeElement('pubDate', (new JDate($item->publish_up))->format(DateTime::RFC2822));
 
 				$xw->writeElement('itunes:duration', $item->itDuration);
 				$xw->writeElement('itunes:keywords', $item->itKeywords);
