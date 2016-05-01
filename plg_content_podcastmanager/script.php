@@ -72,22 +72,7 @@ class PlgContentPodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		// Get the pre-update version
-		$version = $this->getVersion();
-
-		// If in error, throw a message about the language files
-		if ($version == 'Error')
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('PLG_CONTENT_PODCASTMANAGER_ERROR_INSTALL_UPDATE'), 'warning');
-
-			return;
-		}
-
-		// If coming from versions earlier than 3.0, remove the MediaElement.JS files as core now ships with this
-		if (version_compare($version, '3.0', 'lt'))
-		{
-			$this->removeMediaElementJs();
-		}
+		$this->removeMediaElementJs();
 	}
 
 	/**
@@ -114,41 +99,6 @@ class PlgContentPodcastManagerInstallerScript
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('PLG_EDITORS-PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'), 'notice');
 		}
-	}
-
-	/**
-	 * Function to get the currently installed version from the manifest cache
-	 *
-	 * @return  string  The version that is installed
-	 *
-	 * @since   2.0
-	 */
-	private function getVersion()
-	{
-		// Get the record from the database
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('manifest_cache'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote('podcastmanager'), 'AND')
-			->where($db->quoteName('folder') . ' = ' . $db->quote('content'), 'AND');
-
-		try
-		{
-			$manifest = $db->setQuery($query)->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), 'warning');
-
-			return 'Error';
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		return $record->version;
 	}
 
 	/**

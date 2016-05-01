@@ -57,16 +57,7 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		// Get the pre-update version
-		$version = $this->getVersion();
-
-		// If in error, throw a message about the language files
-		if ($version == 'Error')
-		{
-			JError::raiseNotice(null, JText::_('COM_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
-
-			return;
-		}
+		$this->removeOldMedia();
 	}
 
 	/**
@@ -80,47 +71,7 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function uninstall($parent)
 	{
-		// Build a menu record for the media component to prevent the "cannot delete admin menu" error
-		// Get the component's ID from the database
-		$option = 'com_podcastmedia';
-		$db     = JFactory::getDbo();
-		$query  = $db->getQuery(true)
-			->select($db->quoteName('extension_id'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote($option));
-
-		try
-		{
-			$component_id = $db->setQuery($query)->loadResult();
-		}
-		catch (RuntimeException $e)
-		{
-			// TODO - Error handling
-		}
-
-		// Add the record
-		$table = JTable::getInstance('menu');
-
-		$data = [
-			'menutype'     => 'main',
-			'client_id'    => 1,
-			'title'        => $option,
-			'alias'        => $option,
-			'link'         => 'index.php?option=' . $option,
-			'type'         => 'component',
-			'published'    => 0,
-			'parent_id'    => 1,
-			'component_id' => $component_id,
-			'img'          => 'class:component',
-			'home'         => 0
-		];
-
-		// All the table processing without error checks since we're hacking to prevent an error message
-		if (!$table->setLocation(1, 'last-child') || !$table->bind($data) || !$table->check() || !$table->store())
-		{
-			// Do nothing ;-)
-		}
-
+		// Remove the content type definitions for the component
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__content_types'))
 			->where($db->quoteName('type_alias') . ' LIKE ' . $db->quote('com_podcastmanager.%'));
@@ -131,7 +82,7 @@ class Com_PodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			// TODO - Error handling
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_PODCASTMANAGER_UNINSTALL_ERROR_CONTENT_TYPES'), 'error');
 		}
 
 		$query->clear()
@@ -144,7 +95,7 @@ class Com_PodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			// TODO - Error handling
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_PODCASTMANAGER_UNINSTALL_ERROR_TAG_MAP'), 'error');
 		}
 
 		$query->clear()
@@ -157,7 +108,7 @@ class Com_PodcastManagerInstallerScript
 		}
 		catch (RuntimeException $e)
 		{
-			// TODO - Error handling
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_PODCASTMANAGER_UNINSTALL_ERROR_UCM_CONTENT'), 'error');
 		}
 	}
 
@@ -185,7 +136,7 @@ class Com_PodcastManagerInstallerScript
 		}
 
 		// Deal with UCM support
-		include_once JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php';
+		JLoader::register('PodcastManagerHelper', JPATH_ADMINISTRATOR . '/components/com_podcastmanager/helpers/podcastmanager.php');
 
 		PodcastManagerHelper::insertUcmRecords();
 	}
@@ -398,83 +349,29 @@ class Com_PodcastManagerInstallerScript
 				}
 			}
 		}
-
-		// Remove #__menu records for good measure!
-		$query->clear()
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__menu'))
-			->where($db->quoteName('type') . ' = ' . $db->quote('component'))
-			->where($db->quoteName('menutype') . ' = ' . $db->quote('main'))
-			->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_podcastmanager%'));
-
-		try
-		{
-			$ids = $db->setQuery($query)->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			$ids = [];
-		}
-
-		if (!empty($ids))
-		{
-			foreach ($ids as $id)
-			{
-				$query->clear()
-					->delete($db->quoteName('#__menu'))
-					->where($db->quoteName('id') . ' = ' . $db->quote($id));
-
-				try
-				{
-					$db->setQuery($query)->execute();
-				}
-				catch (RuntimeException $e)
-				{
-					// TODO - Error handling
-				}
-			}
-		}
 	}
 
 	/**
-	 * Function to get the currently installed version from the manifest cache
+	 * Remove the old component media
 	 *
-	 * @return  string  The version that is installed
+	 * @return  void
 	 *
-	 * @since   1.7
+	 * @since   3.0
 	 */
-	private function getVersion()
+	private function removeOldMedia()
 	{
-		static $version;
+		jimport('joomla.filesystem.folder');
 
-		// Only retrieve the version info once
-		if (!$version)
+		$base = JPATH_ROOT . '/media/podcastmanager/';
+
+		foreach (['css', 'images'] as $folder)
 		{
-			return $version;
+			$path = $base . $folder;
+
+			if (is_dir($path))
+			{
+				JFolder::delete($path);
+			}
 		}
-
-		// Get the record from the database
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('manifest_cache'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote('com_podcastmanager'));
-
-		try
-		{
-			$manifest = $db->setQuery($query)->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()));
-
-			return 'Error';
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		return $record->version;
 	}
 }

@@ -88,23 +88,8 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		// Get the pre-update version
-		$version = $this->getVersion();
-
-		// If in error, throw a message about the language files
-		if ($version == 'Error')
-		{
-			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_ERROR_INSTALL_UPDATE'));
-
-			return;
-		}
-
-		// If coming from 2.x, remove the layout override extensions
-		if (version_compare($version, '3.0', 'lt'))
-		{
-			$this->removeHathorExtension();
-			$this->removeStrappedExtension();
-		}
+		$this->removeHathorExtension();
+		$this->removeStrappedExtension();
 	}
 
 	/**
@@ -152,50 +137,6 @@ class Pkg_PodcastManagerInstallerScript
 	}
 
 	/**
-	 * Function to get the currently installed version from the manifest cache
-	 *
-	 * @return  string  The version that is installed
-	 *
-	 * @since   3.0
-	 */
-	private function getVersion()
-	{
-		static $version;
-
-		// Only retrieve the version info once
-		if (!$version)
-		{
-			return $version;
-		}
-
-		// Get the record from the database
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('manifest_cache'))
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('element') . ' = ' . $db->quote('pkg_podcastmanager'));
-
-		try
-		{
-			$manifest = $db->setQuery($query)->loadObject();
-		}
-		catch (RuntimeException $e)
-		{
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $e->getMessage()), 'warning');
-
-			return 'Error';
-		}
-
-		// Decode the JSON
-		$record = json_decode($manifest->manifest_cache);
-
-		// Get the version
-		$version = $record->version;
-
-		return $version;
-	}
-
-	/**
 	 * Removes the files_podcastmanager_hathor extension
 	 *
 	 * @return  void
@@ -232,7 +173,6 @@ class Pkg_PodcastManagerInstallerScript
 		 */
 		// Import dependencies
 		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
 
 		// First, the array of folders we need to get the children for
 		$folders = ['html/com_podcastmanager'];
@@ -240,32 +180,19 @@ class Pkg_PodcastManagerInstallerScript
 		// Set up our full path to the folder
 		$path = JPATH_ADMINISTRATOR . '/templates/hathor/html/com_podcastmanager';
 
-		// Get the list of child folders
-		$children = JFolder::folders($path);
-
-		if (count($children))
+		if (is_dir($path))
 		{
-			// Process the child folders and remove their files
-			foreach ($children as $child)
-			{
-				// Set the path for the child
-				$cPath = $path . '/' . $child;
-
-				// Get the list of files
-				$files = JFolder::files($cPath);
-
-				// Now, remove the files
-				foreach ($files as $file)
-				{
-					JFile::delete($cPath . '/' . $file);
-				}
-			}
+			JFolder::delete($path);
 		}
 
 		// Now uninstall the extension
 		if (!(new JInstaller)->uninstall('file', $id))
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_FAILED_REMOVING_HATHOR_EXTENSION'), 'warning');
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_HATHOR_EXTENSION_REMOVED'), 'notice');
 		}
 	}
 
@@ -278,54 +205,6 @@ class Pkg_PodcastManagerInstallerScript
 	 */
 	private function removeStrappedExtension()
 	{
-		/*
-		 * Since the adapter doesn't remove folders with content, we have to remove the content here
-		 * And, lucky us, the file scriptfile isn't copied!
-		 */
-		// Import dependencies
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-
-		// First, the array of folders we need to get the children for
-		$folders = ['html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager'];
-
-		// Set up our base path
-		$base = JPATH_ADMINISTRATOR . '/templates/isis/';
-
-		// Process our parent folders
-		foreach ($folders as $folder)
-		{
-			// Set up our full path to the folder
-			$path = $base . $folder;
-
-			if (is_dir($path))
-			{
-				// Get the list of child folders
-				$children = JFolder::folders($path);
-
-				if ($children && count($children))
-				{
-					// Process the child folders and remove their files
-					foreach ($children as $child)
-					{
-						// Set the path for the child
-						$cPath = $path . '/' . $child;
-
-						// Get the list of files
-						$files = JFolder::files($cPath);
-
-						// Now, remove the files
-						foreach ($files as $file)
-						{
-							JFile::delete($cPath . '/' . $file);
-						}
-					}
-				}
-			}
-		}
-
-		$failed = false;
-
 		// We need to get the extension ID for our Strapped layouts first
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -336,24 +215,47 @@ class Pkg_PodcastManagerInstallerScript
 		try
 		{
 			$id = $db->setQuery($query)->loadResult();
-
-			// Instantiate a new installer instance and uninstall the layouts if present
-			if ($id)
-			{
-				if (!(new JInstaller)->uninstall('file', $id))
-				{
-					$failed = true;
-				}
-			}
 		}
 		catch (RuntimeException $e)
 		{
 			$failed = true;
 		}
 
-		if ($failed)
+		// If we don't have an ID we can assume the extension isn't installed
+		if (!$id)
+		{
+			return;
+		}
+
+		/*
+		 * Since the adapter doesn't remove folders with content, we have to remove the content here
+		 * And, lucky us, the file scriptfile isn't copied!
+		 */
+		// Import dependencies
+		jimport('joomla.filesystem.folder');
+
+		// Set up our base path
+		$base = JPATH_ADMINISTRATOR . '/templates/isis/';
+
+		// Process our parent folders
+		foreach (['html/com_podcastmanager', 'html/com_podcastmedia', 'js/podcastmanager'] as $folder)
+		{
+			// Set up our full path to the folder
+			$path = $base . $folder;
+
+			if (is_dir($path))
+			{
+				JFolder::delete($path);
+			}
+		}
+
+		if (!(new JInstaller)->uninstall('file', $id))
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_FAILED_REMOVING_STRAPPED_EXTENSION'), 'warning');
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('PKG_PODCASTMANAGER_STRAPPED_EXTENSION_REMOVED'), 'notice');
 		}
 	}
 }
