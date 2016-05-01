@@ -87,7 +87,6 @@ JFactory::getDocument()->addScriptDeclaration($js);
 						<?php echo $this->form->renderField('created'); ?>
 						<?php echo $this->form->renderField('created_by'); ?>
 						<?php echo $this->form->renderField('published'); ?>
-						<?php echo $this->form->renderField('publish_up'); ?>
 						<?php if ($this->item->modified_by) : ?>
 							<?php echo $this->form->renderField('modified_by'); ?>
 							<?php echo $this->form->renderField('modified'); ?>
