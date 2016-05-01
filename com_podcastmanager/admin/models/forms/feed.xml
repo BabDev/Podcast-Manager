@@ -14,7 +14,7 @@
 		</field>
 		<field name="boilerplate" type="textarea" filter="safehtml" label="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_BOILERPLATE_DESCRIPTION" rows="3" cols="40" />
 		<field name="copyright" type="text" filter="safehtml" label="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_LABEL" description="COM_PODCASTMANAGER_FEED_FIELD_COPYRIGHT_DESCRIPTION" size="30" />
-		<field name="owneremail" type="text" size="30" filter="safehtml" label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
+		<field name="owneremail" type="email" size="30" filter="safehtml" validate="email" label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNEREMAIL_DESCRIPTION" />
 		<field name="ownername" type="text" size="30" filter="safehtml" label="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_LABEL" description="COM_PODCASTMANAGER_CONFIG_FIELD_ITOWNERNAME_DESCRIPTION" />
 		<field name="keywords" type="text" size="30" filter="safehtml" label="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_LABEL" description="COM_PODCASTMANAGER_FIELD_ITKEYWORDS_DESCRIPTION" />
 		<field name="author" type="text" size="30" filter="safehtml" label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" />
