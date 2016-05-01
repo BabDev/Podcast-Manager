@@ -6,12 +6,12 @@
 		<field name="filename" type="podcastmedia" hide_none="1" label="COM_PODCASTMANAGER_FIELD_FILENAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FILENAME_DESCRIPTION" required="true" />
 		<field name="title" type="text" class="input-xxlarge input-large-text" label="COM_PODCASTMANAGER_FIELD_TITLE_LABEL" description="COM_PODCASTMANAGER_FIELD_TITLE_DESCRIPTION" size="30" required="true" />
 		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" hint="JFIELD_ALIAS_PLACEHOLDER" size="40" />
-		<field name="published" type="list" class="chzn-color-state" filter="intval" label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION" size="1" default="1">
+		<field name="published" type="list" filter="intval" validate="options" class="chzn-color-state" label="JSTATUS" description="COM_PODCASTMANAGER_FIELD_PUBLISHED_DESCRIPTION" size="1" default="1">
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
 			<option value="-2">JTRASH</option>
 		</field>
-		<field name="feedname" type="feedname" filter="intval" label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION" size="1" required="true">
+		<field name="feedname" type="feedname" filter="intval" validate="options" label="COM_PODCASTMANAGER_FIELD_FEEDNAME_LABEL" description="COM_PODCASTMANAGER_FIELD_FEEDNAME_DESCRIPTION" size="1" required="true">
 			<option value="0">JNONE</option>
 		</field>
 		<field name="created" type="calendar" label="COM_PODCASTMANAGER_FIELD_CREATED_LABEL" description="COM_PODCASTMANAGER_FIELD_CREATED_DESCRIPTION" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
@@ -22,12 +22,12 @@
 		<field name="checked_out_time" type="hidden" filter="unset" />
 		<field name="publish_up" type="calendar" label="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_LABEL" description="COM_PODCASTMANAGER_FIELD_PUBLISH_UP_DESCRIPTION" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" />
 		<field name="itAuthor" type="text" label="COM_PODCASTMANAGER_FIELD_ITAUTHOR_LABEL" description="COM_PODCASTMANAGER_FIELD_ITAUTHOR_DESCRIPTION" size="30" required="true" />
-		<field name="itBlock" type="radio" filter="intval" class="btn-group btn-group-yesno" label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" default="0">
+		<field name="itBlock" type="radio" filter="intval" validate="options" class="btn-group btn-group-yesno" label="COM_PODCASTMANAGER_FIELD_ITBLOCK_LABEL" description="COM_PODCASTMANAGER_FIELD_ITBLOCK_DESCRIPTION" default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="itDuration" type="text" label="COM_PODCASTMANAGER_FIELD_ITDURATION_LABEL" description="COM_PODCASTMANAGER_FIELD_ITDURATION_DESCRIPTION" size="30" />
-		<field name="itExplicit" type="radio" filter="intval" class="btn-group" label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" default="0">
+		<field name="itExplicit" type="radio" filter="intval" validate="options" class="btn-group" label="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_LABEL" description="COM_PODCASTMANAGER_FIELD_ITEXPLICIT_DESCRIPTION" default="0">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 			<option value="2">COM_PODCASTMANAGER_FIELD_ITEXPLICIT_OPTION_CLEAN</option>
