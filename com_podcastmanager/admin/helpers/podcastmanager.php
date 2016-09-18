@@ -60,15 +60,15 @@ abstract class PodcastManagerHelper
 	 */
 	public static function countMediaPlugins()
 	{
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('COUNT(extension_id)')
-			->from($db->quoteName('#__extensions'))
-			->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'))
-			->where($db->quoteName('enabled') . ' = 1');
-		$count = $db->setQuery($query)->loadResult();
+		$db = JFactory::getDbo();
 
-		return (int) $count;
+		return (int) $db->setQuery(
+			$db->getQuery(true)
+				->select('COUNT(extension_id)')
+				->from($db->quoteName('#__extensions'))
+				->where($db->quoteName('folder') . ' = ' . $db->quote('podcastmedia'))
+				->where($db->quoteName('enabled') . ' = 1')
+		)->loadResult();
 	}
 
 	/**
@@ -232,16 +232,18 @@ abstract class PodcastManagerHelper
 	 */
 	public static function getAuthorisedFeeds($action)
 	{
-		$user  = JFactory::getUser();
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName(['f.id', 'a.name'], ['id', 'asset_name']))
-			->from($db->quoteName('#__podcastmanager_feeds', 'f'))
-			->innerJoin($db->quoteName('#__assets', 'a') . ' ON f.asset_id = a.id')
-			->where($db->quoteName('f.published') . ' = 1');
+		$db = JFactory::getDbo();
 
-		$allFeeds     = $db->setQuery($query)->loadObjectList('id');
+		$allFeeds = $db->setQuery(
+			$db->getQuery(true)
+				->select($db->quoteName(['f.id', 'a.name'], ['id', 'asset_name']))
+				->from($db->quoteName('#__podcastmanager_feeds', 'f'))
+				->innerJoin($db->quoteName('#__assets', 'a') . ' ON f.asset_id = a.id')
+				->where($db->quoteName('f.published') . ' = 1')
+		)->loadObjectList('id');
+
 		$allowedFeeds = [];
+		$user         = JFactory::getUser();
 
 		foreach ($allFeeds as $feed)
 		{
@@ -308,13 +310,7 @@ abstract class PodcastManagerHelper
 	 */
 	public static function getMediaUrl($url)
 	{
-		static $params;
-
-		// Get the component params if we don't have them already
-		if (!$params)
-		{
-			$params = JComponentHelper::getParams('com_podcastmanager');
-		}
+		$params = JComponentHelper::getParams('com_podcastmanager');
 
 		// Get the values for the tracking service
 		$tracking  = $params->get('tracking', 'none');
@@ -357,7 +353,7 @@ abstract class PodcastManagerHelper
 		{
 			$feedTypeId = $db->setQuery($query)->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			// TODO - Error handling
 		}
@@ -370,7 +366,7 @@ abstract class PodcastManagerHelper
 		{
 			$podcastTypeId = $db->setQuery($query)->loadResult();
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			// TODO - Error handling
 		}
@@ -379,38 +375,40 @@ abstract class PodcastManagerHelper
 		if (!$feedTypeId)
 		{
 			// This object contains all fields that are mapped to the core_content table
-			$commonObject                           = new stdClass;
-			$commonObject->core_title               = 'name';
-			$commonObject->core_alias               = 'alias';
-			$commonObject->core_body                = 'description';
-			$commonObject->core_state               = 'published';
-			$commonObject->core_checked_out_time    = 'checked_out_time';
-			$commonObject->core_checked_out_user_id = 'checked_out';
-			$commonObject->core_created_user_id     = 'created_by';
-			$commonObject->core_created_by_alias    = 'author';
-			$commonObject->core_created_time        = 'created';
-			$commonObject->core_modified_user_id    = 'modified_by';
-			$commonObject->core_modified_time       = 'modified';
-			$commonObject->core_language            = 'language';
-			$commonObject->core_content_item_id     = 'id';
-			$commonObject->asset_id                 = 'asset_id';
+			$commonObject = (object) [
+				'core_title'               => 'name',
+				'core_alias'               => 'alias',
+				'core_body'                => 'description',
+				'core_state'               => 'published',
+				'core_checked_out_time'    => 'checked_out_time',
+				'core_checked_out_user_id' => 'checked_out',
+				'core_created_user_id'     => 'created_by',
+				'core_created_by_alias'    => 'author',
+				'core_created_time'        => 'created',
+				'core_modified_user_id'    => 'modified_by',
+				'core_modified_time'       => 'modified',
+				'core_language'            => 'language',
+				'core_content_item_id'     => 'id',
+				'asset_id'                 => 'asset_id',
+			];
 
 			// This object contains unique fields
-			$specialObject              = new stdClass;
-			$specialObject->subtitle    = 'subtitle';
-			$specialObject->boilerplate = 'boilerplate';
-			$specialObject->bp_position = 'bp_position';
-			$specialObject->copyright   = 'copyright';
-			$specialObject->explicit    = 'explicit';
-			$specialObject->block       = 'block';
-			$specialObject->ownername   = 'ownername';
-			$specialObject->owneremail  = 'owneremail';
-			$specialObject->keywords    = 'keywords';
-			$specialObject->newFeed     = 'newFeed';
-			$specialObject->image       = 'image';
-			$specialObject->category1   = 'category1';
-			$specialObject->category2   = 'category2';
-			$specialObject->category3   = 'category3';
+			$specialObject = (object) [
+				'subtitle'    => 'subtitle',
+				'boilerplate' => 'boilerplate',
+				'bp_position' => 'bp_position',
+				'copyright'   => 'copyright',
+				'explicit'    => 'explicit',
+				'block'       => 'block',
+				'ownername'   => 'ownername',
+				'owneremail'  => 'owneremail',
+				'keywords'    => 'keywords',
+				'newFeed'     => 'newFeed',
+				'image'       => 'image',
+				'category1'   => 'category1',
+				'category2'   => 'category2',
+				'category3'   => 'category3',
+			];
 
 			// Prepare the object
 			$fieldMappings = [
@@ -424,31 +422,36 @@ abstract class PodcastManagerHelper
 
 			// Set the table columns to insert table to
 			$columnsArray = [
-				$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-				$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router'),
-				$db->quoteName('content_history_options')
+				$db->quoteName('type_title'),
+				$db->quoteName('type_alias'),
+				$db->quoteName('table'),
+				$db->quoteName('rules'),
+				$db->quoteName('field_mappings'),
+				$db->quoteName('router'),
+				$db->quoteName('content_history_options'),
 			];
 
-			// Insert the data. @TODO - Break the columns into objects for better management
-			$query->clear()
-				->insert($db->quoteName('#__content_types'))
-				->columns($columnsArray)
-				->values(
-					$db->quote('Podcast Manager Feed') . ', '
-					. $db->quote('com_podcastmanager.feed') . ', '
-					. $db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}')
-					. ', '
-					. $db->quote('') . ', '
-					. $db->quote(json_encode($fieldMappings)) . ', '
-					. $db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute') . ', '
-					. $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/feed.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":[],"displayLookup":[{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}')
-				);
+			$valuesArray = [
+				$db->quote('Podcast Manager Feed'),
+				$db->quote('com_podcastmanager.feed'),
+				$db->quote('{"special":{"dbtable":"#__podcastmanager_feeds","key":"id","type":"Feed","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}'),
+				$db->quote(''),
+				$db->quote(json_encode($fieldMappings)),
+				$db->quote('PodcastManagerHelperRoute::getFeedHtmlRoute'),
+				$db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/feed.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":[],"displayLookup":[{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}'),
+			];
 
 			try
 			{
-				$db->setQuery($query)->execute();
+				// Insert the link.
+				$db->setQuery(
+					$db->getQuery(true)
+						->insert($db->quoteName('#__content_types'))
+						->columns($columnsArray)
+						->values(implode(', ', $valuesArray))
+				)->execute();
 			}
-			catch (RuntimeException $e)
+			catch (JDatabaseExceptionExecuting $e)
 			{
 				// TODO - Error handling
 			}
@@ -458,34 +461,36 @@ abstract class PodcastManagerHelper
 		if (!$podcastTypeId)
 		{
 			// This object contains all fields that are mapped to the core_content table
-			$commonObject                           = new stdClass;
-			$commonObject->core_title               = 'title';
-			$commonObject->core_alias               = 'alias';
-			$commonObject->core_body                = 'itSummary';
-			$commonObject->core_state               = 'published';
-			$commonObject->core_checked_out_time    = 'checked_out_time';
-			$commonObject->core_checked_out_user_id = 'checked_out';
-			$commonObject->core_created_user_id     = 'created_by';
-			$commonObject->core_created_by_alias    = 'itAuthor';
-			$commonObject->core_created_time        = 'created';
-			$commonObject->core_modified_user_id    = 'modified_by';
-			$commonObject->core_modified_time       = 'modified';
-			$commonObject->core_language            = 'language';
-			$commonObject->core_publish_up          = 'publish_up';
-			$commonObject->core_content_item_id     = 'id';
-			$commonObject->asset_id                 = 'asset_id';
+			$commonObject = (object) [
+				'core_title'               => 'title',
+				'core_alias'               => 'alias',
+				'core_body'                => 'itSummary',
+				'core_state'               => 'published',
+				'core_checked_out_time'    => 'checked_out_time',
+				'core_checked_out_user_id' => 'checked_out',
+				'core_created_user_id'     => 'created_by',
+				'core_created_by_alias'    => 'itAuthor',
+				'core_created_time'        => 'created',
+				'core_modified_user_id'    => 'modified_by',
+				'core_modified_time'       => 'modified',
+				'core_language'            => 'language',
+				'core_publish_up'          => 'publish_up',
+				'core_content_item_id'     => 'id',
+				'asset_id'                 => 'asset_id',
+			];
 
 			// This object contains unique fields
-			$specialObject             = new stdClass;
-			$specialObject->filename   = 'filename';
-			$specialObject->feedname   = 'feedname';
-			$specialObject->itBlock    = 'itBlock';
-			$specialObject->itDuration = 'itDuration';
-			$specialObject->itExplicit = 'itExplicit';
-			$specialObject->itImage    = 'itImage';
-			$specialObject->itKeywords = 'itKeywords';
-			$specialObject->itSubtitle = 'itSubtitle';
-			$specialObject->mime       = 'mime';
+			$specialObject = (object) [
+				'filename'   => 'filename',
+				'feedname'   => 'feedname',
+				'itBlock'    => 'itBlock',
+				'itDuration' => 'itDuration',
+				'itExplicit' => 'itExplicit',
+				'itImage'    => 'itImage',
+				'itKeywords' => 'itKeywords',
+				'itSubtitle' => 'itSubtitle',
+				'mime'       => 'mime',
+			];
 
 			// Prepare the object
 			$fieldMappings = [
@@ -499,31 +504,36 @@ abstract class PodcastManagerHelper
 
 			// Set the table columns to insert table to
 			$columnsArray = [
-				$db->quoteName('type_title'), $db->quoteName('type_alias'), $db->quoteName('table'),
-				$db->quoteName('rules'), $db->quoteName('field_mappings'), $db->quoteName('router'),
+				$db->quoteName('type_title'),
+				$db->quoteName('type_alias'),
+				$db->quoteName('table'),
+				$db->quoteName('rules'),
+				$db->quoteName('field_mappings'),
+				$db->quoteName('router'),
 				$db->quoteName('content_history_options')
 			];
 
-			// Insert the link.
-			$query->clear()
-				->insert($db->quoteName('#__content_types'))
-				->columns($columnsArray)
-				->values(
-					$db->quote('Podcast Manager Podcast') . ', '
-					. $db->quote('com_podcastmanager.podcast') . ', '
-					. $db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}')
-					. ', '
-					. $db->quote('') . ', '
-					. $db->quote(json_encode($fieldMappings)) . ', '
-					. $db->quote('PodcastManagerHelperRoute::getPodcastRoute') . ', '
-					. $db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/podcast.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":["publish_up"],"displayLookup":[{"sourceColumn":"feedname","targetTable":"#__podcastmanager_feeds","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}')
-				);
+			$valuesArray = [
+				$db->quote('Podcast Manager Podcast'),
+				$db->quote('com_podcastmanager.podcast'),
+				$db->quote('{"special":{"dbtable":"#__podcastmanager","key":"id","type":"Podcast","prefix":"PodcastManagerTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}'),
+				$db->quote(''),
+				$db->quote(json_encode($fieldMappings)),
+				$db->quote('PodcastManagerHelperRoute::getPodcastRoute'),
+				$db->quote('{"formFile":"administrator\\/components\\/com_podcastmanager\\/models\\/forms\\/podcast.xml", "hideFields":["asset_id","checked_out","checked_out_time"],"ignoreChanges":["modified_by","modified","checked_out","checked_out_time"],"convertToInt":["publish_up"],"displayLookup":[{"sourceColumn":"feedname","targetTable":"#__podcastmanager_feeds","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"created_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"},{"sourceColumn":"modified_by","targetTable":"#__users","targetColumn":"id","displayColumn":"name"}]}'),
+			];
 
 			try
 			{
-				$db->setQuery($query)->execute();
+				// Insert the link.
+				$db->setQuery(
+					$db->getQuery(true)
+						->insert($db->quoteName('#__content_types'))
+						->columns($columnsArray)
+						->values(implode(', ', $valuesArray))
+				)->execute();
 			}
-			catch (RuntimeException $e)
+			catch (JDatabaseExceptionExecuting $e)
 			{
 				// TODO - Error handling
 			}

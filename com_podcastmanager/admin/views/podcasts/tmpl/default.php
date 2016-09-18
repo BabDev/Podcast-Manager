@@ -34,13 +34,12 @@ JS;
 
 JFactory::getDocument()->addScriptDeclaration($js);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_podcastmanager&view=podcasts'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
 	</div>
 	<div id="j-main-container" class="span10">
-		<?php // Search tools bar
-		echo JLayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
+		<?php echo JLayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
 				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
@@ -131,8 +130,7 @@ JFactory::getDocument()->addScriptDeclaration($js);
 		<?php endif; ?>
 
 		<?php echo $this->pagination->getListFooter(); ?>
-		<?php // Load the batch processing form.
-		echo $this->loadTemplate('batch'); ?>
+		<?php echo $this->loadTemplate('batch'); ?>
 
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />

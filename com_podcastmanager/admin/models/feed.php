@@ -170,7 +170,7 @@ class PodcastManagerModelFeed extends JModelAdmin
 	 */
 	public function getTable($type = 'Feed', $prefix = 'PodcastManagerTable', $config = [])
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return parent::getTable($type, $prefix, $config);
 	}
 
 	/**

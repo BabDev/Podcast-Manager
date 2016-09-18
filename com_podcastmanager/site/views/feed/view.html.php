@@ -116,6 +116,7 @@ class PodcastManagerViewFeed extends JViewLegacy
 		}
 
 		$dispatcher = JEventDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
 
 		// Prepare the content (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)
@@ -127,7 +128,6 @@ class PodcastManagerViewFeed extends JViewLegacy
 			$item->text = '';
 
 			// Process the content plugins.
-			JPluginHelper::importPlugin('content');
 			$dispatcher->trigger('onContentPrepare', ['com_podcastmanager.feed', &$item, &$this->params]);
 		}
 
@@ -218,12 +218,12 @@ class PodcastManagerViewFeed extends JViewLegacy
 
 		if ($this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
 		if ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 
 		if (isset($this->feed->author))

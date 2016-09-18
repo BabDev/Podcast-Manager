@@ -46,10 +46,14 @@ class PodcastManagerModelFeed extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
-				'title', 'a.title',
-				'publish_up', 'a.publish_up',
-				'created', 'a.created',
-				'itAuthor', 'a.itAuthor'
+				'title',
+				'a.title',
+				'publish_up',
+				'a.publish_up',
+				'created',
+				'a.created',
+				'itAuthor',
+				'a.itAuthor'
 			];
 		}
 
@@ -68,13 +72,14 @@ class PodcastManagerModelFeed extends JModelList
 		// Only query if state->feed.id is valid
 		if ($this->getState('feed.id') > 0)
 		{
-			$db    = $this->getDbo();
-			$query = $db->getQuery(true)
-				->select('*')
-				->from($db->quoteName('#__podcastmanager_feeds'))
-				->where($db->quoteName('id') . ' = ' . (int) $this->getState('feed.id'));
+			$db = $this->getDbo();
 
-			return $db->setQuery($query)->loadObject();
+			return $db->setQuery(
+				$db->getQuery(true)
+					->select('*')
+					->from($db->quoteName('#__podcastmanager_feeds'))
+					->where($db->quoteName('id') . ' = ' . (int) $this->getState('feed.id'))
+			)->loadObject();
 		}
 
 		return new stdClass;

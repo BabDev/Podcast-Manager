@@ -106,7 +106,6 @@ class PodcastManagerControllerPodcast extends JControllerForm
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
 		$user     = JFactory::getUser();
-		$userId   = $user->id;
 
 		// Check feed edit permission.
 		if ($user->authorise('core.edit', 'com_podcastmanager.podcast.' . $recordId))
@@ -135,7 +134,7 @@ class PodcastManagerControllerPodcast extends JControllerForm
 			}
 
 			// If the owner matches 'me' then do the test.
-			if ($ownerId == $userId)
+			if ($ownerId == $user->id)
 			{
 				return true;
 			}

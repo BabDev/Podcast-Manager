@@ -38,12 +38,18 @@ class PodcastManagerModelFeeds extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
-				'id', 'a.id',
-				'name', 'a.name',
-				'checked_out', 'a.checked_out',
-				'checked_out_time', 'a.checked_out_time',
-				'published', 'a.published',
-				'language', 'a.language'
+				'id',
+				'a.id',
+				'name',
+				'a.name',
+				'checked_out',
+				'a.checked_out',
+				'checked_out_time',
+				'a.checked_out_time',
+				'published',
+				'a.published',
+				'language',
+				'a.language'
 			];
 		}
 
@@ -98,7 +104,7 @@ class PodcastManagerModelFeeds extends JModelList
 		{
 			$countPublished = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			$this->setError($e->getMessage());
 
@@ -114,7 +120,7 @@ class PodcastManagerModelFeeds extends JModelList
 		{
 			$countUnpublished = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			$this->setError($e->getMessage());
 
@@ -130,7 +136,7 @@ class PodcastManagerModelFeeds extends JModelList
 		{
 			$countTrashed = $db->setQuery($query)->loadAssocList('feedname', 'count_published');
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			$this->setError($e->getMessage());
 
@@ -223,7 +229,7 @@ class PodcastManagerModelFeeds extends JModelList
 	 *
 	 * @since   1.7
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.id', $direction = 'asc')
 	{
 		// Load the filter state.
 		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
@@ -236,6 +242,6 @@ class PodcastManagerModelFeeds extends JModelList
 		$this->setState('params', JComponentHelper::getParams('com_podcastmanager'));
 
 		// List state information.
-		parent::populateState('a.id', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 }

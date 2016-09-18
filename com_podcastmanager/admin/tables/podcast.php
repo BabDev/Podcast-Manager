@@ -145,9 +145,7 @@ class PodcastManagerTablePodcast extends JTable
 		// Bind the metadata.
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new Registry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
+			$array['metadata'] = (string) new Registry($array['metadata']);
 		}
 
 		return parent::bind($array, $ignore);

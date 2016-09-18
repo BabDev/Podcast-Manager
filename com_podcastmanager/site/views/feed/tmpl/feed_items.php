@@ -49,7 +49,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<?php endif; ?>
 
 	<?php if (empty($this->items)) : ?>
-		<p><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></p>
+		<div class="alert alert-info"><?php echo JText::_('COM_PODCASTMANAGER_NO_ITEMS'); ?></div>
 	<?php else : ?>
 		<table class="table table-striped table-bordered table-hover">
 			<?php
@@ -143,7 +143,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo $this->pagination->getPagesCounter(); ?>
 					</p>
 				<?php endif; ?>
-		
+
 				<?php echo $this->pagination->getPagesLinks(); ?>
 			</div>
 		<?php endif;?>

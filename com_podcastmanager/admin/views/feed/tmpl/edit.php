@@ -21,8 +21,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 $js = <<< JS
-Joomla.submitbutton = function(task)
-{
+Joomla.submitbutton = function(task) {
 	if (task == 'feed.cancel' || document.formvalidator.isValid(document.getElementById('item-form'))) {
 		Joomla.submitform(task, document.getElementById('item-form'));
 	}

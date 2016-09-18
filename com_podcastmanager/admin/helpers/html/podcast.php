@@ -69,8 +69,7 @@ abstract class JHtmlPodcast
 
 			$query->order('a.id');
 
-			$db->setQuery($query);
-			$items = $db->loadObjectList();
+			$items = $db->setQuery($query)->loadObjectList();
 
 			// Assemble the list options.
 			static::$items[$hash] = [];

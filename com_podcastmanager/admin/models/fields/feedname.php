@@ -45,20 +45,19 @@ class JFormFieldFeedName extends JFormFieldList
 		// Initialize variables.
 		$options = [];
 
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName(['a.id', 'a.name'], ['value', 'text']))
-			->from($db->quoteName('#__podcastmanager_feeds', 'a'))
-			->where($db->quoteName('a.name') . ' != ' . $db->quote(''))
-			->where($db->quoteName('a.published') . ' != -2')
-			->group('a.id, a.name, a.published')
-			->order('a.id ASC');
-
 		try
 		{
-			$options = $db->setQuery($query)->loadObjectList();
+			$options = $db->setQuery(
+				$db->getQuery(true)
+					->select($db->quoteName(['a.id', 'a.name'], ['value', 'text']))
+					->from($db->quoteName('#__podcastmanager_feeds', 'a'))
+					->where($db->quoteName('a.name') . ' != ' . $db->quote(''))
+					->where($db->quoteName('a.published') . ' != -2')
+					->group('a.id, a.name, a.published')
+					->order('a.id ASC')
+			)->loadObjectList();
 		}
-		catch (RuntimeException $e)
+		catch (JDatabaseExceptionExecuting $e)
 		{
 			JError::raiseWarning(500, $e->getMessage());
 		}

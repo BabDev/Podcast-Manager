@@ -27,42 +27,42 @@ extract($displayData);
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($results as $result) :
-			$extension = (string) $result['name'];
-			$e_type = substr($extension, 0, 3); ?>
+		<?php foreach ($results as $result) : ?>
+			<?php $extension = (string) $result['name']; ?>
+			<?php $e_type = substr($extension, 0, 3); ?>
 			<tr>
 				<td class="key"><?php echo JText::_(strtoupper($extension)); ?></td>
 				<td>
 					<strong>
-						<?php if ($e_type == 'com') :
-							echo JText::_('COM_INSTALLER_TYPE_COMPONENT');
-						elseif ($e_type == 'mod') :
-							echo JText::_('COM_INSTALLER_TYPE_MODULE');
-						elseif ($e_type == 'plg') :
-							echo JText::_('COM_INSTALLER_TYPE_PLUGIN');
-						elseif ($e_type == 'get') :
-							echo JText::_('COM_INSTALLER_TYPE_LIBRARY');
-						endif; ?>
+						<?php if ($e_type == 'com') : ?>
+							<?php echo JText::_('COM_INSTALLER_TYPE_COMPONENT'); ?>
+						<?php elseif ($e_type == 'mod') : ?>
+							<?php echo JText::_('COM_INSTALLER_TYPE_MODULE'); ?>
+						<?php elseif ($e_type == 'plg') : ?>
+							<?php echo JText::_('COM_INSTALLER_TYPE_PLUGIN'); ?>
+						<?php elseif ($e_type == 'get') : ?>
+							<?php echo JText::_('COM_INSTALLER_TYPE_LIBRARY'); ?>
+						<?php endif; ?>
 					</strong>
 				</td>
 				<td>
 					<strong>
-						<?php if ($result['result'] == true) :
-							echo JText::_('PKG_PODCASTMANAGER_INSTALLED');
-						else :
-							echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED');
-						endif; ?>
+						<?php if ($result['result'] == true) : ?>
+							<?php echo JText::_('PKG_PODCASTMANAGER_INSTALLED'); ?>
+						<?php else : ?>
+							<?php echo JText::_('PKG_PODCASTMANAGER_NOT_INSTALLED'); ?>
+						<?php endif; ?>
 					</strong>
 				</td>
 				<td>
 					<strong>
-						<?php if ($enabled[$extension] == 1) :
-							echo JText::_('JYES');
-						elseif ($enabled[$extension] == 2) :
-							echo JText::_('PKG_PODCASTMANAGER_NA');
-						else :
-							echo JText::_('JNO');
-						endif; ?>
+						<?php if ($enabled[$extension] == 1) : ?>
+							<?php echo JText::_('JYES'); ?>
+						<?php elseif ($enabled[$extension] == 2) : ?>
+							<?php echo JText::_('PKG_PODCASTMANAGER_NA'); ?>
+						<?php else : ?>
+							<?php echo JText::_('JNO'); ?>
+						<?php endif; ?>
 					</strong>
 				</td>
 			</tr>

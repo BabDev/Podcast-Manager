@@ -36,15 +36,24 @@ class PodcastManagerModelPodcasts extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
-				'id', 'a.id',
-				'title', 'a.title',
-				'checked_out', 'a.checked_out',
-				'checked_out_time', 'a.checked_out_time',
-				'feedname', 'a.feedname',
-				'published', 'a.published',
-				'created', 'a.created',
-				'language', 'a.language',
-				'publish_up', 'a.publish_up'
+				'id',
+				'a.id',
+				'title',
+				'a.title',
+				'checked_out',
+				'a.checked_out',
+				'checked_out_time',
+				'a.checked_out_time',
+				'feedname',
+				'a.feedname',
+				'published',
+				'a.published',
+				'created',
+				'a.created',
+				'language',
+				'a.language',
+				'publish_up',
+				'a.publish_up'
 			];
 		}
 
@@ -183,7 +192,7 @@ class PodcastManagerModelPodcasts extends JModelList
 	 *
 	 * @since   1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.created', $direction = 'desc')
 	{
 		// Load the filter state.
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
@@ -214,6 +223,6 @@ class PodcastManagerModelPodcasts extends JModelList
 		$this->setState('params', JComponentHelper::getParams('com_podcastmanager'));
 
 		// List state information.
-		parent::populateState('a.created', 'desc');
+		parent::populateState($ordering, $direction);
 	}
 }

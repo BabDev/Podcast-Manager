@@ -127,16 +127,13 @@ class PodcastManagerTableFeed extends JTable
 		// Bind the metadata.
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new Registry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
+			$array['metadata'] = (string) new Registry($array['metadata']);
 		}
 
 		// Bind the rules.
 		if (isset($array['rules']) && is_array($array['rules']))
 		{
-			$rules = new JAccessRules($array['rules']);
-			$this->setRules($rules);
+			$this->setRules(new JAccessRules($array['rules']));
 		}
 
 		return parent::bind($array, $ignore);

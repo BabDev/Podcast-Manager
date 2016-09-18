@@ -14,11 +14,11 @@
 
 defined('_JEXEC') or die;
 
-$options = array(
+$options   = [
 	JHtml::_('select.option', 'c', JText::_('JLIB_HTML_BATCH_COPY')),
 	JHtml::_('select.option', 'm', JText::_('JLIB_HTML_BATCH_MOVE'))
-);
-$published	= $this->state->get('filter.published');
+];
+$published = $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">

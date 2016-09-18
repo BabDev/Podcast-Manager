@@ -34,12 +34,9 @@ class PodcastManagerControllerPodcast extends JControllerLegacy
 	 */
 	public function getMetadata()
 	{
-		$filename = $this->input->post->getString('filename', '');
-		$response = [];
-
 		try
 		{
-			$data = PodcastManagerHelper::fillMetaData($filename);
+			$data = PodcastManagerHelper::fillMetaData($this->input->post->getString('filename', ''));
 
 			// Grab the messages to attach them separately to the response object
 			$messages = $data->messages;
