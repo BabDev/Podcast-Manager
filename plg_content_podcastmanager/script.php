@@ -19,8 +19,24 @@
  * @subpackage  plg_content_podcastmanager
  * @since       1.6
  */
-class PlgContentPodcastManagerInstallerScript
+class PlgContentPodcastManagerInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'podcastmanager';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+
+		$this->deleteFolders = [
+			'/media/mediaelements',
+		];
+	}
+
 	/**
 	 * Function to act prior to installation process begins
 	 *
@@ -44,7 +60,7 @@ class PlgContentPodcastManagerInstallerScript
 			}
 		}
 
-		return true;
+		return parent::preflight($type, $parent);
 	}
 
 	/**
@@ -72,7 +88,7 @@ class PlgContentPodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		$this->removeMediaElementJs();
+		$this->removeFiles();
 	}
 
 	/**
@@ -98,25 +114,6 @@ class PlgContentPodcastManagerInstallerScript
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('PLG_EDITORS-PLG_CONTENT_PODCASTMANAGER_ERROR_ACTIVATING_PLUGIN'), 'notice');
-		}
-	}
-
-	/**
-	 * Remove the MediaElement.JS media previously shipped with this extension
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	private function removeMediaElementJs()
-	{
-		jimport('joomla.filesystem.folder');
-
-		$folder = JPATH_ROOT . '/media/mediaelements';
-
-		if (is_dir($folder))
-		{
-			JFolder::delete($folder);
 		}
 	}
 }

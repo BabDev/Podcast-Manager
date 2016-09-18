@@ -9,6 +9,7 @@
 	<version>##VERSION##</version>
 	<license>GNU/GPL Version 2 or later</license>
 	<description>PLG_PODCASTMEDIA_USER_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		<filename plugin="user">user.php</filename>
 		<folder>language</folder>

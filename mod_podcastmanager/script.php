@@ -19,8 +19,20 @@
  * @subpackage  mod_podcastmanager
  * @since       1.8
  */
-class Mod_PodcastManagerInstallerScript
+class Mod_PodcastManagerInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'mod_podcastmanager';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+	}
+
 	/**
 	 * Function to act prior to installation process begins
 	 *
@@ -40,6 +52,6 @@ class Mod_PodcastManagerInstallerScript
 			throw new RuntimeException(JText::_('MOD_PODCASTMANAGER_ERROR_COMPONENT'));
 		}
 
-		return true;
+		return parent::preflight($type, $parent);
 	}
 }

@@ -19,8 +19,25 @@
  * @subpackage  com_podcastmanager
  * @since       1.7
  */
-class Com_PodcastManagerInstallerScript
+class Com_PodcastManagerInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'com_podcastmanager';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+
+		$this->deleteFolders = [
+			'/media/podcastmanager/css',
+			'/media/podcastmanager/images',
+		];
+	}
+
 	/**
 	 * Function to act prior to installation process begins
 	 *
@@ -33,17 +50,22 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Bugfix for "Can not build admin menus"
-		if (in_array($type, ['install', 'discover_install']))
+		$return = parent::preflight($type, $parent);
+
+		if ($return)
 		{
-			$this->bugfixDBFunctionReturnedNoError();
-		}
-		else
-		{
-			$this->bugfixCantBuildAdminMenus();
+			// Bugfix for "Can not build admin menus"
+			if (in_array($type, ['install', 'discover_install']))
+			{
+				$this->bugfixDBFunctionReturnedNoError();
+			}
+			else
+			{
+				$this->bugfixCantBuildAdminMenus();
+			}
 		}
 
-		return true;
+		return $return;
 	}
 
 	/**
@@ -57,7 +79,7 @@ class Com_PodcastManagerInstallerScript
 	 */
 	public function update($parent)
 	{
-		$this->removeOldMedia();
+		$this->removeFiles();
 	}
 
 	/**
@@ -347,30 +369,6 @@ class Com_PodcastManagerInstallerScript
 				{
 					// TODO - Error handling
 				}
-			}
-		}
-	}
-
-	/**
-	 * Remove the old component media
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	private function removeOldMedia()
-	{
-		jimport('joomla.filesystem.folder');
-
-		$base = JPATH_ROOT . '/media/podcastmanager/';
-
-		foreach (['css', 'images'] as $folder)
-		{
-			$path = $base . $folder;
-
-			if (is_dir($path))
-			{
-				JFolder::delete($path);
 			}
 		}
 	}

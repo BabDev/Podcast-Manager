@@ -17,7 +17,7 @@
  * @package  PodcastManager
  * @since    2.0
  */
-class Pkg_PodcastManagerInstallerScript
+class Pkg_PodcastManagerInstallerScript extends JInstallerScript
 {
 	/**
 	 * An array of supported database types
@@ -28,20 +28,16 @@ class Pkg_PodcastManagerInstallerScript
 	protected $dbSupport = ['mysql', 'mysqli', 'pdomysql'];
 
 	/**
-	 * Minimum supported Joomla! version
+	 * Extension script constructor.
 	 *
-	 * @var    string
-	 * @since  3.0
+	 * @since   3.0
 	 */
-	protected $minimumJoomlaVersion = '3.5';
-
-	/**
-	 * Minimum supported PHP version
-	 *
-	 * @var    string
-	 * @since  3.0
-	 */
-	protected $minimumPHPVersion = '5.4';
+	public function __construct()
+	{
+		$this->extension     = 'pkg_podcastmanager';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+	}
 
 	/**
 	 * Function to act prior to installation process begins
@@ -49,32 +45,25 @@ class Pkg_PodcastManagerInstallerScript
 	 * @param   string                    $type    The action being performed
 	 * @param   JInstallerAdapterPackage  $parent  The class calling this method
 	 *
-	 * @return  boolean  True on success
+	 * @return  boolean
 	 *
 	 * @since   2.0
 	 * @throws  RuntimeException
 	 */
 	public function preflight($type, $parent)
 	{
-		// PHP Version Check
-		if (version_compare(PHP_VERSION, $this->minimumPHPVersion, 'lt'))
+		$return = parent::preflight($type, $parent);
+
+		if ($return)
 		{
-			throw new RuntimeException(JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_PHPVERSION', $this->minimumPHPVersion));
+			// Check to see if the database type is supported
+			if (!in_array(JFactory::getDbo()->name, $this->dbSupport))
+			{
+				throw new RuntimeException(JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
+			}
 		}
 
-		// Joomla! Version Check
-		if (version_compare(JVERSION, $this->minimumJoomlaVersion, 'lt'))
-		{
-			throw new RuntimeException(JText::sprintf('PKG_PODCASTMANAGER_ERROR_INSTALL_JVERSION', $this->minimumJoomlaVersion));
-		}
-
-		// Check to see if the database type is supported
-		if (!in_array(JFactory::getDbo()->name, $this->dbSupport))
-		{
-			throw new RuntimeException(JText::_('PKG_PODCASTMANAGER_ERROR_DB_SUPPORT'));
-		}
-
-		return true;
+		return $return;
 	}
 
 	/**

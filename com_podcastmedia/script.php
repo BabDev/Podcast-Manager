@@ -19,8 +19,20 @@
  * @subpackage  com_podcastmedia
  * @since       1.6
  */
-class Com_PodcastMediaInstallerScript
+class Com_PodcastMediaInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'com_podcastmedia';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+	}
+
 	/**
 	 * Function to perform changes when component is initially installed
 	 *

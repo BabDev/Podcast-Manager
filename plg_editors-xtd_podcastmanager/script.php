@@ -19,8 +19,20 @@
  * @subpackage  plg_editors-xtd_podcastmanager
  * @since       1.6
  */
-class PlgEditorsXtdPodcastManagerInstallerScript
+class PlgEditorsXtdPodcastManagerInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'podcastmanager';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+	}
+
 	/**
 	 * Function to act prior to installation process begins
 	 *
@@ -44,7 +56,7 @@ class PlgEditorsXtdPodcastManagerInstallerScript
 			}
 		}
 
-		return true;
+		return parent::preflight($type, $parent);
 	}
 
 	/**

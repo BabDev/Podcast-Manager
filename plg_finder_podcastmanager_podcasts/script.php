@@ -19,8 +19,20 @@
  * @subpackage  plg_finder_podcastmanager_podcasts
  * @since       2.0
  */
-class PlgFinderPodcastManager_PodcastsInstallerScript
+class PlgFinderPodcastManager_PodcastsInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @since   3.0
+	 */
+	public function __construct()
+	{
+		$this->extension     = 'podcastmanager_podcasts';
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = '5.4';
+	}
+
 	/**
 	 * Function to act prior to installation process begins
 	 *
@@ -44,6 +56,6 @@ class PlgFinderPodcastManager_PodcastsInstallerScript
 			}
 		}
 
-		return true;
+		return parent::preflight($type, $parent);
 	}
 }
