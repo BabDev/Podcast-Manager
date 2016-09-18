@@ -24,7 +24,7 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_podcastmanager'))
 }
 
 // Check if Live Update is being accessed and bypass all other component data
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php';
+JLoader::register('LiveUpdate', __DIR__ . '/liveupdate/liveupdate.php');
 
 if ($input->get('view', '', 'cmd') == 'liveupdate')
 {

@@ -43,7 +43,7 @@ class PodcastManagerController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = [])
 	{
-		include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
+		JLoader::register('PodcastManagerHelper', __DIR__ . '/helpers/podcastmanager.php');
 
 		$view   = $this->input->get('view', $this->default_view, 'word');
 		$layout = $this->input->get('layout', $this->default_view, 'word');
@@ -97,7 +97,7 @@ class PodcastManagerController extends JControllerLegacy
 				{
 					case 'noFeedType' :
 					case 'noPodcastType' :
-						include_once JPATH_COMPONENT . '/helpers/podcastmanager.php';
+					JLoader::register('PodcastManagerHelper', __DIR__ . '/helpers/podcastmanager.php');
 
 						try
 						{

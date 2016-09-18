@@ -90,7 +90,7 @@ abstract class PodcastManagerHelper
 		}
 
 		// Import the getID3 library
-		jimport('getid3.getid3');
+		JLoader::register('getID3', JPATH_PLATFORM . '/getid3/getid3.php');
 		define('GETID3_HELPERAPPSDIR', JPATH_PLATFORM . '/getid3');
 
 		// Only push through getID3 if the file actually exists and is local
