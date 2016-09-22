@@ -40,6 +40,16 @@
 					<option value="1">JYES</option>
 				</field>
 			</fieldset>
+			<fieldset name="ordering" label="MOD_PODCASTMANAGERFEED_FIELD_GROUP_ORDERING_LABEL">
+				<field name="item_ordering" type="list" validate="options" default="a.publish_up" label="MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_LABEL" description="MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_DESCRIPTION">
+					<option value="a.created">MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_OPTION_CREATED</option>
+					<option value="a.publish_up">MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_OPTION_PUBLISH_UP</option>
+				</field>
+				<field name="item_ordering_direction" type="list" validate="options" default="ASC" label="MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_DIRECTION_LABEL" description="MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_DIRECTION_DESCRIPTION">
+					<option value="ASC">MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_DIRECTION_OPTION_ASCENDING</option>
+					<option value="DESC">MOD_PODCASTMANAGERFEED_FIELD_ITEM_ORDERING_DIRECTION_OPTION_DESCENDING</option>
+				</field>
+			</fieldset>
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 				<field name="moduleclass_sfx" type="textarea" rows="3" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />

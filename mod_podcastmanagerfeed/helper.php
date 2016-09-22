@@ -40,6 +40,7 @@ abstract class ModPodcastManagerFeedHelper
 	public static function getList(&$params)
 	{
 		// Get an instance of the generic feed model
+		/** @var PodcastManagerModelFeed $model */
 		$model = JModelLegacy::getInstance('Feed', 'PodcastManagerModel', ['ignore_request' => true]);
 
 		// Set application parameters in model
@@ -60,8 +61,8 @@ abstract class ModPodcastManagerFeedHelper
 		$model->setState('filter.language', $app->getLanguageFilter());
 
 		// Set ordering
-		$model->setState('list.ordering', 'a.publish_up');
-		$model->setState('list.direction', 'DESC');
+		$model->setState('list.ordering', $params->get('item_ordering', 'a.publish_up'));
+		$model->setState('list.direction', $params->get('item_ordering_direction', 'DESC'));
 
 		$items = $model->getItems();
 
